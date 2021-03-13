@@ -1,0 +1,26 @@
+session_name: oembed
+start_directory: ./ # load session relative to config location (project root).
+windows:
+- window_name: oembed
+  layout: main-horizontal
+  focus: true
+  options:
+    main-pane-height: 35
+  start_directory: ./
+  panes:
+  - focus: true
+  - pane
+  - yarn test:watch
+  - yarn serve
+  - shell_command:
+    - '[ -d node_modules ] && yarn'
+    - yarn build:watch
+- window_name: docs
+  layout: main-horizontal
+  options:
+    main-pane-height: 35
+  panes:
+  - focus: true
+  - pane
+  - yarn docs && yarn docs:gen:watch
+  - yarn docs:serve
