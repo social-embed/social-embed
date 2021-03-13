@@ -28,5 +28,5 @@ For this element to work from unpkg.com specifically, you need to include the `?
 ### JavaScript
 
 ```html
-import {MyElement} from 'https://unpkg.com/o-embed?module';
+import {OEmbedElement} from 'https://unpkg.com/o-embed?module';
 ```

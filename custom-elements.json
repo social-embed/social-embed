@@ -7,10 +7,29 @@
       "description": "An example element.",
       "attributes": [
         {
-          "name": "name",
+          "name": "url",
           "description": "The name to say \"Hello\" to.",
-          "type": "string",
-          "default": "\"World\""
+          "type": "string"
+        },
+        {
+          "name": "width",
+          "type": "number",
+          "default": "560"
+        },
+        {
+          "name": "height",
+          "type": "number",
+          "default": "315"
+        },
+        {
+          "name": "frameborder",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "allowfullscreen",
+          "type": "string | boolean",
+          "default": "false"
         },
         {
           "name": "count",
@@ -26,11 +45,34 @@
           "default": "\"css`\\n    :host {\\n      display: block;\\n      border: solid 1px gray;\\n      padding: 16px;\\n      max-width: 800px;\\n    }\\n  `\""
         },
         {
-          "name": "name",
-          "attribute": "name",
+          "name": "url",
+          "attribute": "url",
           "description": "The name to say \"Hello\" to.",
-          "type": "string",
-          "default": "\"World\""
+          "type": "string"
+        },
+        {
+          "name": "width",
+          "attribute": "width",
+          "type": "number",
+          "default": "560"
+        },
+        {
+          "name": "height",
+          "attribute": "height",
+          "type": "number",
+          "default": "315"
+        },
+        {
+          "name": "frameborder",
+          "attribute": "frameborder",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "allowfullscreen",
+          "attribute": "allowfullscreen",
+          "type": "string | boolean",
+          "default": "false"
         },
         {
           "name": "count",

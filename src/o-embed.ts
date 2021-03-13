@@ -39,7 +39,7 @@ export class MyElement extends LitElement {
   @property({type: Number}) width = 560;
   @property({type: Number}) height = 315;
   @property({type: 'String'}) frameborder = 0;
-  @property({type: 'Boolean'}) allowfullscreen = false;
+  @property({type: 'Boolean'}) allowfullscreen: string | boolean = false;
 
   /**
    * The number of times the button has been clicked.

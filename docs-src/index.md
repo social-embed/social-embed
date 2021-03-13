@@ -34,13 +34,13 @@ title: <o-embed> ⌲ Home
 `<o-embed>` can be configured with attributed in plain HTML.
 
 ```html
-<o-embed name="HTML"></o-embed>
+<o-embed url="URL"></o-embed>
 ```
 
   </div>
   <div>
 
-<o-embed name="HTML"></o-embed>
+<o-embed url="URL"></o-embed>
 
   </div>
 </section>
@@ -55,12 +55,12 @@ title: <o-embed> ⌲ Home
 ```js
 import {html, render} from 'lit-html';
 
-const name = 'lit-html';
+const url ='https://youtu.be/FTQbiNvZqaY?list=RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs';
 
 render(
   html`
     <h2>This is a &lt;o-embed&gt;</h2>
-    <o-embed .name=${name}></o-embed>
+    <o-embed .url=${url}></o-embed>
   `,
   document.body
 );
@@ -70,7 +70,7 @@ render(
   <div>
 
 <h2>This is a &lt;o-embed&gt;</h2>
-<o-embed name="lit-html"></o-embed>
+<o-embed url="https://youtu.be/FTQbiNvZqaY?list=RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs"></o-embed>
 
   </div>
 </section>
