@@ -40,8 +40,8 @@ export class OEmbedElement extends LitElement {
   static styles = css`
     :host {
       display: block;
-      border: solid 1px gray;
-      padding: 16px;
+      border: 0;
+      padding: 0;
       max-width: 800px;
     }
   `;
