@@ -1,9 +1,8 @@
-module.exports = function(data) {
+module.exports = function (data) {
   return `
 <footer>
   <p>
-    Made with
-    <a href="https://github.com/PolymerLabs/lit-element-starter-ts">lit-element-starter-ts</a>
+    View on <a href="https://github.com/tony/oembed-component" target="_blank">GitHub</a>, <a href="https://www.npmjs.com/package/@tony/oembed-component">NPM</a>
   </p>
 </footer>`;
 };
