@@ -1,6 +1,6 @@
 {
   "name": "@tony/oembed-component",
-  "version": "0.0.1-next.9",
+  "version": "0.0.1-next.10",
   "description": "A drop-in component for <o-embed> tags",
   "main": "./dist/o-embed.js",
   "module": "./dist/o-embed.js",
