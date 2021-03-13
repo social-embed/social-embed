@@ -1,4 +1,4 @@
-# [`<o-element />`](https://oembed-component.git-pull.com/) (proof of concept) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/tony/oembed-component/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/@tony/oembed-component.svg?style=flat)](https://www.npmjs.com/package/react)
+# [`<o-embed />`](https://oembed-component.git-pull.com/) (proof of concept) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/tony/oembed-component/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/@tony/oembed-component.svg?style=flat)](https://www.npmjs.com/package/react)
 
 A modern, TypeScript [web component] for [OEmbed] tags. Built in [LitElement].
 
@@ -18,6 +18,15 @@ npm i @tony/oembed-component
 
 ```bash
 yarn add @tony/oembed-component
+```
+
+## Usage
+
+```html
+<o-embed
+  src="https://www.youtube.com/watch?v=G_QhTdzWBJk"
+  allowfullscreen
+></o-embed>
 ```
 
 ## Contributing
