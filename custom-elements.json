@@ -30,12 +30,6 @@
           "name": "allowfullscreen",
           "type": "string | boolean | undefined",
           "default": "\"undefined\""
-        },
-        {
-          "name": "count",
-          "description": "The number of times the button has been clicked.",
-          "type": "number",
-          "default": "0"
         }
       ],
       "properties": [
@@ -73,13 +67,6 @@
           "attribute": "allowfullscreen",
           "type": "string | boolean | undefined",
           "default": "\"undefined\""
-        },
-        {
-          "name": "count",
-          "attribute": "count",
-          "description": "The number of times the button has been clicked.",
-          "type": "number",
-          "default": "0"
         }
       ],
       "slots": [

@@ -19,7 +19,7 @@ body {
 }
 
 main {
-  max-width: 1024px;
+  max-width: 1224px;
   margin: 0 auto;
 }
 
@@ -36,6 +36,10 @@ header {
   height: 360px;
   margin: 0;
   background: linear-gradient(0deg, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 100%);
+  color: white;
+}
+
+header a {
   color: white;
 }
 
@@ -127,8 +131,8 @@ nav.collection a:hover {
 
 section.columns {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 488px));
-  grid-gap: 48px;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 578px));
+  grid-gap: 24px;
   justify-content: center;
 }
 
@@ -138,9 +142,13 @@ section.columns > div {
 
 section.examples {
   display: grid;
-  grid-template-columns: 240px minmax(400px, 784px);
-  grid-gap: 48px;
+  grid-template-columns: 240px minmax(450px, 834px);
+  grid-gap: 24px;
   justify-content: center;
+}
+
+section code[class*="language-"], section pre[class*="language-"] {
+  font-size: 0.95rem;
 }
 
 section.examples h2:first-of-type {
