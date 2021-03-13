@@ -22,11 +22,37 @@ For this element to work from unpkg.com specifically, you need to include the `?
 ### HTML
 
 ```html
-<script type="module" src="https://unpkg.com/o-embed?module"></script>
+<script
+  type="module"
+  src="https://unpkg.com/@tony/oembed-component?module"
+></script>
+
+<o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
+<o-embed
+  url="https://www.youtube.com/watch?v=NB5hH3ksvKE"
+  allowfullscreen
+></o-embed>
 ```
+
+#### Codepen
+
+Codepen: https://codepen.io/attachment/pen/bGBZGEv
+
+<p class="codepen" data-height="265" data-theme-id="dark"
+data-default-tab="html,result" data-user="attachment" data-slug-hash="bGBZGEv"
+data-preview="true" style="height: 265px; box-sizing: border-box; display: flex;
+align-items: center; justify-content: center; border: 2px solid; margin: 1em 0;
+padding: 1em;" data-pen-title="Example of o-embed">
+  <span>See the Pen <a href="https://codepen.io/attachment/pen/bGBZGEv">
+    Example of o-embed</a> by Tony (<a
+    href="https://codepen.io/attachment">@attachment</a>)
+      on <a href="https://codepen.io">CodePen</a>.</span>
+      </p>
+      <script async
+      src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
 
 ### JavaScript
 
-```html
-import {OEmbedElement} from 'https://unpkg.com/o-embed?module';
+```js
+import {OEmbedElement} from 'https://unpkg.com/@tony/oembed-component?module';
 ```
