@@ -67,7 +67,7 @@ const url = 'https://www.youtube.com/watch?v=XLOCQw5s9Uw';
 
 render(
   html`
-    <h2>This is a &lt;o-embed&gt;</h2>
+    <h2>This is an &lt;o-embed&gt;</h2>
     <o-embed .url=${url}></o-embed>
   `,
   document.body
