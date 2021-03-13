@@ -27,7 +27,7 @@
     "test:watch": "karma start karma.conf.cjs --auto-watch=true --single-run=false",
     "test:update-snapshots": "karma start karma.conf.cjs --update-snapshots",
     "test:prune-snapshots": "karma start karma.conf.cjs --prune-snapshots",
-    "checksize": "rollup -c ; cat o-embed.bundled.js | gzip -9 | wc -c ; rm o-embed.bundled.js"
+    "checksize": "rollup -c ; cat dist/o-embed.bundled.js | gzip -9 | wc -c ; rm dist/o-embed.bundled.js"
   },
   "keywords": [
     "web-components",
