@@ -15,6 +15,20 @@
 import {LitElement, html, customElement, property, css} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined';
 
+export const extractYouTubeID = (url: string | undefined) => {
+  if (url) {
+    // credit: https://stackoverflow.com/a/42442074
+    return url.match(
+      '^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)'
+    )?.[1];
+  }
+  return '';
+};
+
+export const youtubeUrlFromYoutubeId = (youtubeID: string | undefined) => {
+  return `https://www.youtube.com/embed/${youtubeID}`;
+};
+
 /**
  * An example element.
  *
@@ -22,7 +36,7 @@ import {ifDefined} from 'lit-html/directives/if-defined';
  * @csspart button - The button
  */
 @customElement('o-embed')
-export class MyElement extends LitElement {
+export class OEmbedElement extends LitElement {
   static styles = css`
     :host {
       display: block;
@@ -44,27 +58,11 @@ export class MyElement extends LitElement {
     | boolean
     | undefined = undefined;
 
-  /**
-   * The number of times the button has been clicked.
-   */
-  @property({type: Number})
-  count = 0;
-
   render() {
-    let youtubeId;
-    if (this.url) {
-      // credit: https://stackoverflow.com/a/42442074
-      youtubeId = this.url.match(
-        '^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)'
-      )?.[1];
-    }
+    const youtubeId = extractYouTubeID(this.url);
     console.log('this.allowfullscreen', this.allowfullscreen);
-    const youtubeUrl = `https://www.youtube.com/embed/${youtubeId}`;
+    const youtubeUrl = youtubeUrlFromYoutubeId(youtubeId);
     return html`
-      <h1>Hello, ${this.url}!</h1>
-      <button @click=${this._onClick} part="button">
-        Click Count: ${this.count}
-      </button>
       <iframe
         width="${this.width}"
         height="${this.height}"
@@ -82,18 +80,10 @@ export class MyElement extends LitElement {
       <slot></slot>
     `;
   }
-
-  private _onClick() {
-    this.count++;
-  }
-
-  foo(): string {
-    return 'foo';
-  }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'o-embed': MyElement;
+    'o-embed': OEmbedElement;
   }
 }

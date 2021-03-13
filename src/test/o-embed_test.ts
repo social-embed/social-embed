@@ -1,4 +1,8 @@
-import {MyElement} from '../o-embed.js';
+import {
+  OEmbedElement,
+  extractYouTubeID,
+  youtubeUrlFromYoutubeId,
+} from '../o-embed.js';
 import {fixture, html} from '@open-wc/testing';
 
 const assert = chai.assert;
@@ -6,7 +10,7 @@ const assert = chai.assert;
 suite('o-embed', () => {
   test('is defined', () => {
     const el = document.createElement('o-embed');
-    assert.instanceOf(el, MyElement);
+    assert.instanceOf(el, OEmbedElement);
   });
 
   test('renders with default values', async () => {
@@ -14,36 +18,53 @@ suite('o-embed', () => {
     assert.shadowDom.equal(
       el,
       `
-      <h1>Hello, !</h1>
-      <button part="button">Click Count: 0</button>
+      <iframe
+        frameborder="0"
+        src=${youtubeUrlFromYoutubeId('')}
+        width="560"
+        height="315">
+      </iframe>
       <slot></slot>
     `
     );
   });
 
-  test('renders with a set name', async () => {
-    const url = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-    const el = await fixture(html`<o-embed url=${url}></o-embed>`);
+  test('renders with a set url', async () => {
+    const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
+    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeID(src));
+    const el = await fixture(html`<o-embed url=${src}></o-embed>`);
     assert.shadowDom.equal(
       el,
       `
-      <h1>Hello, ${url}!</h1>
-      <button part="button">Click Count: 0</button>
+      <iframe
+        frameborder="0"
+        width="560"
+        src=${embedSrc}
+        height="315">
+      </iframe>
       <slot></slot>
     `
     );
   });
 
   test('handles a click', async () => {
-    const el = (await fixture(html`<o-embed></o-embed>`)) as MyElement;
-    const button = el.shadowRoot!.querySelector('button')!;
-    button.click();
+    const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
+    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeID(src));
+    const el = (await fixture(
+      html`<o-embed url=${src}></o-embed>`
+    )) as OEmbedElement;
+    const iframe = el.shadowRoot!.querySelector('iframe')!;
+    iframe.click();
     await el.updateComplete;
     assert.shadowDom.equal(
       el,
       `
-      <h1>Hello, !</h1>
-      <button part="button">Click Count: 1</button>
+      <iframe
+        frameborder="0"
+        width="560"
+        src=${embedSrc}
+        height="315">
+      </iframe>
       <slot></slot>
     `
     );
