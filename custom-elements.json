@@ -2,8 +2,8 @@
   "version": "experimental",
   "tags": [
     {
-      "name": "my-element",
-      "path": "./src/my-element.ts",
+      "name": "o-embed",
+      "path": "./src/o-embed.ts",
       "description": "An example element.",
       "attributes": [
         {
@@ -20,6 +20,11 @@
         }
       ],
       "properties": [
+        {
+          "name": "styles",
+          "type": "CSSResult",
+          "default": "\"css`\\n    :host {\\n      display: block;\\n      border: solid 1px gray;\\n      padding: 16px;\\n      max-width: 800px;\\n    }\\n  `\""
+        },
         {
           "name": "name",
           "attribute": "name",

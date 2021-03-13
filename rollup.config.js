@@ -18,9 +18,9 @@ import resolve from 'rollup-plugin-node-resolve';
 import {terser} from 'rollup-plugin-terser';
 
 export default {
-  input: 'dist/my-element.js',
+  input: 'dist/o-embed.js',
   output: {
-    file: 'my-element.bundled.js',
+    file: 'o-embed.bundled.js',
     format: 'esm',
   },
   onwarn(warning) {

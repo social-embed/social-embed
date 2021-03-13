@@ -2,9 +2,9 @@
   "name": "lit-element-starter-ts",
   "version": "0.0.0",
   "description": "A simple web component",
-  "main": "./dist/my-element.js",
-  "module": "./dist/my-element.js",
-  "types": "./dist/my-element.d.ts",
+  "main": "./dist/o-embed.js",
+  "module": "./dist/o-embed.js",
+  "types": "./dist/o-embed.d.ts",
   "type": "module",
   "scripts": {
     "build": "tsc",
@@ -18,7 +18,7 @@
     "docs:clean": "rimraf docs/",
     "docs:gen": "eleventy --config=.eleventy.cjs",
     "docs:gen:watch": "eleventy --config=.eleventy.cjs --watch",
-    "docs:build": "rollup -c --file docs/my-element.bundled.js",
+    "docs:build": "rollup -c --file docs/o-embed.bundled.js",
     "docs:assets": "cp node_modules/prismjs/themes/prism-okaidia.css docs/",
     "docs:serve": "es-dev-server --root-dir=docs --node-resolve --watch",
     "analyze": "wca analyze \"src/**/*.ts\" --outFile custom-elements.json",
@@ -27,7 +27,7 @@
     "test:watch": "karma start karma.conf.cjs --auto-watch=true --single-run=false",
     "test:update-snapshots": "karma start karma.conf.cjs --update-snapshots",
     "test:prune-snapshots": "karma start karma.conf.cjs --prune-snapshots",
-    "checksize": "rollup -c ; cat my-element.bundled.js | gzip -9 | wc -c ; rm my-element.bundled.js"
+    "checksize": "rollup -c ; cat o-embed.bundled.js | gzip -9 | wc -c ; rm o-embed.bundled.js"
   },
   "keywords": [
     "web-components",

@@ -20,7 +20,7 @@ import {LitElement, html, customElement, property, css} from 'lit-element';
  * @slot - This element has a slot
  * @csspart button - The button
  */
-@customElement('my-element')
+@customElement('o-embed')
 export class MyElement extends LitElement {
   static styles = css`
     :host {
@@ -64,6 +64,6 @@ export class MyElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'my-element': MyElement;
+    'o-embed': MyElement;
   }
 }
