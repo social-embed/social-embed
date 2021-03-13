@@ -21,7 +21,7 @@ Vimeo, and Spotify.
 
 ```html
 <o-embed 
-  url="https://youtu.be/VixChkcDC2g"
+  url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"
   allowfullscreen
 ></o-embed>
 ```
@@ -29,7 +29,7 @@ Vimeo, and Spotify.
   </div>
   <div>
 
-<o-embed url="https://youtu.be/VixChkcDC2g" allowfullscreen></o-embed>
+<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo" allowfullscreen></o-embed>
 
   </div>
 </section>
