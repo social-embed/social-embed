@@ -10,7 +10,7 @@ title: <o-embed> ⌲ Install
 ## Local Installation
 
 ```bash
-npm i o-embed
+npm i @tony/oembed-component
 ```
 
 ## CDN

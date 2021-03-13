@@ -1,7 +1,7 @@
 {
-  "name": "lit-element-starter-ts",
-  "version": "0.0.0",
-  "description": "A simple web component",
+  "name": "@tony/oembed-component",
+  "version": "0.0.1-next.0",
+  "description": "A drop-in component for <o-embed> tags",
   "main": "./dist/o-embed.js",
   "module": "./dist/o-embed.js",
   "types": "./dist/o-embed.d.ts",
@@ -32,7 +32,9 @@
   "keywords": [
     "web-components",
     "lit-element",
-    "typescript"
+    "typescript",
+    "oembed",
+    "o-embed"
   ],
   "author": "The Polymer Authors",
   "license": "BSD-3-Clause",
