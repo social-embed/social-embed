@@ -49,25 +49,26 @@ export class OEmbedElement extends LitElement {
   /**
    * The name to say "Hello" to.
    */
-  @property({type: 'String'}) url!: string;
+  @property({type: String}) url!: string;
   @property({type: Number}) width = 560;
   @property({type: Number}) height = 315;
-  @property({type: 'String'}) frameborder = 0;
-  @property({type: 'Boolean'}) allowfullscreen:
+  @property({type: String}) frameborder = '0';
+  @property({type: String}) allowfullscreen:
     | string
     | boolean
     | undefined = undefined;
 
   render() {
     const youtubeId = extractYouTubeID(this.url);
-    console.log('this.allowfullscreen', this.allowfullscreen);
     const youtubeUrl = youtubeUrlFromYoutubeId(youtubeId);
     return html`
       <iframe
         width="${this.width}"
         height="${this.height}"
         src="${youtubeUrl}"
-        frameborder="${this.frameborder}"
+        frameborder=${ifDefined(
+          this.frameborder ? this.frameborder : undefined
+        )}
         allowfullscreen=${ifDefined(
           this.allowfullscreen === '' ||
             this.allowfullscreen == 'true' ||

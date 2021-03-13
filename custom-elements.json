@@ -23,8 +23,8 @@
         },
         {
           "name": "frameborder",
-          "type": "number",
-          "default": "0"
+          "type": "string",
+          "default": "\"0\""
         },
         {
           "name": "allowfullscreen",
@@ -59,8 +59,8 @@
         {
           "name": "frameborder",
           "attribute": "frameborder",
-          "type": "number",
-          "default": "0"
+          "type": "string",
+          "default": "\"0\""
         },
         {
           "name": "allowfullscreen",
