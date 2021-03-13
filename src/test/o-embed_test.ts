@@ -14,7 +14,7 @@ suite('o-embed', () => {
     assert.shadowDom.equal(
       el,
       `
-      <h1>Hello, World!</h1>
+      <h1>Hello, !</h1>
       <button part="button">Click Count: 0</button>
       <slot></slot>
     `
@@ -22,11 +22,12 @@ suite('o-embed', () => {
   });
 
   test('renders with a set name', async () => {
-    const el = await fixture(html`<o-embed name="Test"></o-embed>`);
+    const url = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
+    const el = await fixture(html`<o-embed url=${url}></o-embed>`);
     assert.shadowDom.equal(
       el,
       `
-      <h1>Hello, Test!</h1>
+      <h1>Hello, ${url}!</h1>
       <button part="button">Click Count: 0</button>
       <slot></slot>
     `
@@ -41,7 +42,7 @@ suite('o-embed', () => {
     assert.shadowDom.equal(
       el,
       `
-      <h1>Hello, World!</h1>
+      <h1>Hello, !</h1>
       <button part="button">Click Count: 1</button>
       <slot></slot>
     `

@@ -34,8 +34,9 @@ export class MyElement extends LitElement {
   /**
    * The name to say "Hello" to.
    */
-  @property()
-  name = 'World';
+  @property({type: 'String'}) url!: string;
+  @property({type: Number}) width = 560;
+  @property({type: Number}) height = 315;
 
   /**
    * The number of times the button has been clicked.
@@ -44,11 +45,26 @@ export class MyElement extends LitElement {
   count = 0;
 
   render() {
+    let youtubeId;
+    if (this.url) {
+      // credit: https://stackoverflow.com/a/42442074
+      youtubeId = this.url.match(
+        '^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)'
+      )?.[1];
+    }
+    const youtubeUrl = `https://www.youtube.com/embed/${youtubeId}`;
     return html`
-      <h1>Hello, ${this.name}!</h1>
+      <h1>Hello, ${this.url}!</h1>
       <button @click=${this._onClick} part="button">
         Click Count: ${this.count}
       </button>
+      <iframe
+        width="${this.width}"
+        height="${this.height}"
+        src="${youtubeUrl}"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
       <slot></slot>
     `;
   }
