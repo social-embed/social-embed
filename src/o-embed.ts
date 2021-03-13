@@ -13,7 +13,7 @@
  */
 
 import {LitElement, html, customElement, property, css} from 'lit-element';
-import {ifDefined} from 'lit-html/directives/if-defined';
+import {ifDefined} from 'lit-html/directives/if-defined.js';
 
 export const extractYouTubeID = (url: string | undefined) => {
   if (url) {
