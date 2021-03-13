@@ -10,7 +10,7 @@ windows:
   panes:
   - focus: true
   - pane
-  - yarn test:watch
+  - yarn build && yarn test:watch
   - yarn serve
   - shell_command:
     - '[ -d node_modules ] && yarn'
