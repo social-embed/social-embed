@@ -20,13 +20,16 @@ embedded content. You can it anywhere you can use HTML!
 Vimeo, and Spotify.
 
 ```html
-<o-embed url="https://youtu.be/VixChkcDC2g"></o-embed>
+<o-embed 
+  url="https://youtu.be/VixChkcDC2g"
+  allowfullscreen
+></o-embed>
 ```
 
   </div>
   <div>
 
-<o-embed url="https://youtu.be/VixChkcDC2g"></o-embed>
+<o-embed url="https://youtu.be/VixChkcDC2g" allowfullscreen></o-embed>
 
   </div>
 </section>
