@@ -1,6 +1,6 @@
 {
   "name": "@tony/oembed-component",
-  "version": "0.0.1-next.0",
+  "version": "0.0.1-next.1",
   "description": "A drop-in component for <o-embed> tags",
   "main": "./dist/o-embed.js",
   "module": "./dist/o-embed.js",
@@ -36,8 +36,12 @@
     "oembed",
     "o-embed"
   ],
-  "author": "The Polymer Authors",
-  "license": "BSD-3-Clause",
+  "author": "Tony Narlock <tony@git-pull.com> (https://www.git-pull.com)",
+  "license": "MIT",
+  "homepage": "https://github.com/tony/oembed-component",
+  "bugs": {
+    "url": "https://github.com/tony/oembed-component/issues"
+  },
   "dependencies": {
     "lit-element": "^2.4.0"
   },
