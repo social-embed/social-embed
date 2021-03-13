@@ -13,6 +13,7 @@
  */
 
 import {LitElement, html, customElement, property, css} from 'lit-element';
+import {ifDefined} from 'lit-html/directives/if-defined';
 
 /**
  * An example element.
@@ -37,6 +38,8 @@ export class MyElement extends LitElement {
   @property({type: 'String'}) url!: string;
   @property({type: Number}) width = 560;
   @property({type: Number}) height = 315;
+  @property({type: 'String'}) frameborder = 0;
+  @property({type: 'Boolean'}) allowfullscreen = false;
 
   /**
    * The number of times the button has been clicked.
@@ -62,8 +65,12 @@ export class MyElement extends LitElement {
         width="${this.width}"
         height="${this.height}"
         src="${youtubeUrl}"
-        frameborder="0"
-        allowfullscreen
+        frameborder="${this.frameborder}"
+        allowfullscreen=${ifDefined(
+          this.allowfullscreen && this.allowfullscreen != '0'
+            ? this.allowfullscreen
+            : undefined
+        )}
       ></iframe>
       <slot></slot>
     `;
