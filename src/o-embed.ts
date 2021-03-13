@@ -39,7 +39,10 @@ export class MyElement extends LitElement {
   @property({type: Number}) width = 560;
   @property({type: Number}) height = 315;
   @property({type: 'String'}) frameborder = 0;
-  @property({type: 'Boolean'}) allowfullscreen: string | boolean = false;
+  @property({type: 'Boolean'}) allowfullscreen:
+    | string
+    | boolean
+    | undefined = undefined;
 
   /**
    * The number of times the button has been clicked.
@@ -55,6 +58,7 @@ export class MyElement extends LitElement {
         '^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)'
       )?.[1];
     }
+    console.log('this.allowfullscreen', this.allowfullscreen);
     const youtubeUrl = `https://www.youtube.com/embed/${youtubeId}`;
     return html`
       <h1>Hello, ${this.url}!</h1>
@@ -67,8 +71,11 @@ export class MyElement extends LitElement {
         src="${youtubeUrl}"
         frameborder="${this.frameborder}"
         allowfullscreen=${ifDefined(
-          this.allowfullscreen && this.allowfullscreen != '0'
-            ? this.allowfullscreen
+          this.allowfullscreen === '' ||
+            this.allowfullscreen == 'true' ||
+            this.allowfullscreen === true ||
+            this.allowfullscreen === '1'
+            ? true
             : undefined
         )}
       ></iframe>

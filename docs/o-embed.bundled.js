@@ -183,7 +183,7 @@ found at http://polymer.github.io/PATENTS.txt
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
-const tt=new WeakMap,st=(it=t=>s=>{const i=tt.get(s);if(void 0===t&&s instanceof $){if(void 0!==i||!tt.has(s)){const t=s.committer.name;s.committer.element.removeAttribute(t)}}else t!==i&&s.setValue(t);tt.set(s,t)},(...t)=>{const s=it(...t);return f.set(s,!0),s});var it,et=function(t,s,i,e){for(var n,o=arguments.length,r=o<3?s:null===e?e=Object.getOwnPropertyDescriptor(s,i):e,h=t.length-1;h>=0;h--)(n=t[h])&&(r=(o<3?n(r):o>3?n(s,i,r):n(s,i))||r);return o>3&&r&&Object.defineProperty(s,i,r),r};let nt=class extends Z{constructor(){super(...arguments),this.width=560,this.height=315,this.frameborder=0,this.allowfullscreen=!1,this.count=0}render(){var t;let s;this.url&&(s=null===(t=this.url.match("^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)"))||void 0===t?void 0:t[1]);const i=`https://www.youtube.com/embed/${s}`;return V`
+const tt=new WeakMap,st=(it=t=>s=>{const i=tt.get(s);if(void 0===t&&s instanceof $){if(void 0!==i||!tt.has(s)){const t=s.committer.name;s.committer.element.removeAttribute(t)}}else t!==i&&s.setValue(t);tt.set(s,t)},(...t)=>{const s=it(...t);return f.set(s,!0),s});var it,et=function(t,s,i,e){for(var n,o=arguments.length,r=o<3?s:null===e?e=Object.getOwnPropertyDescriptor(s,i):e,h=t.length-1;h>=0;h--)(n=t[h])&&(r=(o<3?n(r):o>3?n(s,i,r):n(s,i))||r);return o>3&&r&&Object.defineProperty(s,i,r),r};let nt=class extends Z{constructor(){super(...arguments),this.width=560,this.height=315,this.frameborder=0,this.allowfullscreen=void 0,this.count=0}render(){var t;let s;this.url&&(s=null===(t=this.url.match("^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)"))||void 0===t?void 0:t[1]),console.log("this.allowfullscreen",this.allowfullscreen);const i=`https://www.youtube.com/embed/${s}`;return V`
       <h1>Hello, ${this.url}!</h1>
       <button @click=${this._onClick} part="button">
         Click Count: ${this.count}
@@ -193,7 +193,7 @@ const tt=new WeakMap,st=(it=t=>s=>{const i=tt.get(s);if(void 0===t&&s instanceof
         height="${this.height}"
         src="${i}"
         frameborder="${this.frameborder}"
-        allowfullscreen=${st(this.allowfullscreen&&"0"!=this.allowfullscreen?this.allowfullscreen:void 0)}
+        allowfullscreen=${st(""===this.allowfullscreen||"true"==this.allowfullscreen||!0===this.allowfullscreen||"1"===this.allowfullscreen||void 0)}
       ></iframe>
       <slot></slot>
     `}_onClick(){this.count++}foo(){return"foo"}};var ot;nt.styles=((t,...s)=>{const i=s.reduce(((s,i,e)=>s+(t=>{if(t instanceof X)return t.cssText;if("number"==typeof t)return t;throw new Error(`Value passed to 'css' function must be a 'css' function result: ${t}. Use 'unsafeCSS' to pass non-literal values, but\n            take care to ensure page security.`)})(i)+t[e+1]),t[0]);return new X(i,Q)})`

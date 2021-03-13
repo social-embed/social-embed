@@ -12,10 +12,6 @@ description: A basic example
     padding: 8px;
   }
 </style>
-<o-embed>
-  <p>This is child content</p>
-</o-embed>
-
 <h3>CSS</h3>
 
 ```css
@@ -32,3 +28,7 @@ p {
   <p>This is child content</p>
 </o-embed>
 ```
+
+<o-embed>
+  <p>This is child content</p>
+</o-embed>

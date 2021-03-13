@@ -28,8 +28,8 @@
         },
         {
           "name": "allowfullscreen",
-          "type": "string | boolean",
-          "default": "false"
+          "type": "string | boolean | undefined",
+          "default": "\"undefined\""
         },
         {
           "name": "count",
@@ -71,8 +71,8 @@
         {
           "name": "allowfullscreen",
           "attribute": "allowfullscreen",
-          "type": "string | boolean",
-          "default": "false"
+          "type": "string | boolean | undefined",
+          "default": "\"undefined\""
         },
         {
           "name": "count",

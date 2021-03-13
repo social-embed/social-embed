@@ -6,8 +6,15 @@ name: URL Property
 description: Setting the url property
 ---
 
-<o-embed url="https://youtu.be/FTQbiNvZqaY?list=RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs"></o-embed>
+<h3>HTML</h3>
 
+```html
+<o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
+```
+
+<o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
+
+<h2>Playlist URL</h2>
 <h3>HTML</h3>
 
 ```html
@@ -15,3 +22,5 @@ description: Setting the url property
   url="https://youtu.be/FTQbiNvZqaY?list=RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs"
 ></o-embed>
 ```
+
+<o-embed url="https://youtu.be/FTQbiNvZqaY?list=RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs"></o-embed>
