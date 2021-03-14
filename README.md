@@ -6,10 +6,17 @@ At this stage: This doesn't actually use OEmbed, rather it finds IDs and swaps o
 with an embed template. It's created for use with CKEditor 5, see
 [ckeditor5#2737].
 
+Demo: [CodeSandbox], Examples: [YouTube], [Spotify], [Vimeo], [DailyMotion]
+
 [litelement]: https://lit-element.polymer-project.org/
 [web component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [oembed]: https://oembed.com/
 [ckeditor5#2737]: https://github.com/ckeditor/ckeditor5/issues/2737
+[codesandbox]: https://codepen.io/attachment/pen/bGBZGEv
+[youtube]: https://oembed-component.git-pull.com/examples/
+[spotify]: https://oembed-component.git-pull.com/examples/spotify/
+[dailymotion]: https://oembed-component.git-pull.com/examples/dailymotion/
+[vimeo]: https://oembed-component.git-pull.com/examples/vimeo/
 
 Compare to [thangman22/oembed-component](https://github.com/thangman22/oembed-component).
 
