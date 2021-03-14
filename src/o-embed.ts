@@ -52,29 +52,38 @@ export const youtubeUrlFromYoutubeId = (
 };
 
 /**
- * An example element.
+ * Renders embeds from <o-embed url=""> tags
  *
- * @slot - This element has a slot
- * @csspart button - The button
+ * @slot - Directly pass through child contents to bottom of embed, optional.
  */
 @customElement('o-embed')
 export class OEmbedElement extends LitElement {
   static styles = css`
     :host {
-      display: block;
       border: 0;
       padding: 0;
-      max-width: 800px;
     }
   `;
 
   /**
-   * The name to say "Hello" to.
+   * The URL or ID (if supported)
    */
   @property({type: String}) url!: string;
+  /**
+   * Pass-through of width attribute
+   */
   @property({type: Number}) width = 560;
+  /**
+   * Pass-through of height attribute
+   */
   @property({type: Number}) height = 315;
+  /**
+   * Pass-through of frameborder attribute, only used in iframe embeds.
+   */
   @property({type: String}) frameborder = '0';
+  /**
+   * For YouTube only. Passing anything other than 1/true omits the tag.
+   */
   @property({type: String}) allowfullscreen: string | boolean | undefined =
     'true';
 
