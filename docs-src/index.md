@@ -76,7 +76,7 @@ render(
   </div>
   <div>
 
-<h2>This is a &lt;o-embed&gt;</h2>
+<h2>This is an &lt;o-embed&gt;</h2>
 <o-embed url="https://www.youtube.com/watch?v=XLOCQw5s9Uw"></o-embed>
 
   </div>
