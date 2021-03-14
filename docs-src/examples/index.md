@@ -8,6 +8,8 @@ description: A basic example
 
 <h3>HTML</h3>
 
+URL: https://youtu.be/FTQbiNvZqaY
+
 ```html
 <o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
 ```

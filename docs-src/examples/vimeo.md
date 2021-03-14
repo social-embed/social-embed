@@ -8,6 +8,8 @@ description: Vimeo embed
 
 <h1>Default dimensions</h1>
 
+URL: https://vimeo.com/134668506
+
 ```html
 <o-embed url="https://vimeo.com/134668506"></o-embed>
 ```
