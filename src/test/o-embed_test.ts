@@ -10,15 +10,27 @@ suite('o-embed', () => {
     assert.instanceOf(el, OEmbedElement);
   });
 
+  test('empty', async () => {
+    const el = await fixture(html`<o-embed></o-embed>`);
+    assert.shadowDom.equal(
+      el,
+      `
+    `
+    );
+  });
+
   suite('youtube', () => {
-    test('renders with default values', async () => {
-      const el = await fixture(html`<o-embed></o-embed>`);
+    const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
+    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
+
+    test('renders with default values and sets URL', async () => {
+      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
       assert.shadowDom.equal(
         el,
         `
       <iframe
         frameborder="0"
-        src=${youtubeUrlFromYoutubeId('')}
+        src=${embedSrc}
         width="560"
         height="315">
       </iframe>
@@ -27,16 +39,16 @@ suite('o-embed', () => {
       );
     });
 
-    test('renders with a set url', async () => {
-      const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-      const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
-      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+    test('renders with a width', async () => {
+      const el = await fixture(
+        html`<o-embed url=${src} width="500"></o-embed>`
+      );
       assert.shadowDom.equal(
         el,
         `
       <iframe
         frameborder="0"
-        width="560"
+        width="500"
         src=${embedSrc}
         height="315">
       </iframe>
@@ -45,9 +57,43 @@ suite('o-embed', () => {
       );
     });
 
+    test('renders with a height', async () => {
+      const el = await fixture(
+        html`<o-embed url=${src} height="500"></o-embed>`
+      );
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        frameborder="0"
+        width="560"
+        src=${embedSrc}
+        height="500">
+      </iframe>
+      <slot></slot>
+    `
+      );
+    });
+
+    test('renders with a height / width', async () => {
+      const el = await fixture(
+        html`<o-embed url=${src} height="500" width="500"></o-embed>`
+      );
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        frameborder="0"
+        width="500"
+        src=${embedSrc}
+        height="500">
+      </iframe>
+      <slot></slot>
+    `
+      );
+    });
+
     test('handles a click', async () => {
-      const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-      const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
       const el = (await fixture(
         html`<o-embed url=${src}></o-embed>`
       )) as OEmbedElement;
@@ -69,8 +115,6 @@ suite('o-embed', () => {
     });
 
     test('renders with a set frameborder', async () => {
-      const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-      const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
       const el = await fixture(
         html`<o-embed url=${src} frameborder="1"></o-embed>`
       );
@@ -89,8 +133,6 @@ suite('o-embed', () => {
     });
 
     test('renders with a set allowfullscreen', async () => {
-      const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-      const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
       const el = await fixture(
         html`<o-embed url=${src} allowfullscreen></o-embed>`
       );
@@ -110,8 +152,6 @@ suite('o-embed', () => {
     });
 
     test('renders with a set allowfullscreen="true"', async () => {
-      const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-      const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
       const el = await fixture(
         html`<o-embed url=${src} allowfullscreen="true"></o-embed>`
       );
@@ -131,8 +171,6 @@ suite('o-embed', () => {
     });
 
     test('renders with a set allowfullscreen="false"', async () => {
-      const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-      const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
       const el = await fixture(
         html`<o-embed url=${src} allowfullscreen="false"></o-embed>`
       );
