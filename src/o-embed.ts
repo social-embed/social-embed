@@ -19,14 +19,15 @@ export enum Provider {
   YouTube = 'YouTube',
   Spotify = 'Spotify',
   Vimeo = 'Vimeo',
+  DailyMotion = 'DailyMotion',
 }
 
 export const getProviderFromUrl = (url: string): Provider | undefined => {
   if (!url) {
     return undefined;
   }
-  if (url.match(/youtube/)) {
-    return Provider.YouTube;
+  if (url.match(/dailymotion/)) {
+    return Provider.DailyMotion;
   }
   if (url.match(/spotify/)) {
     return Provider.Spotify;
@@ -34,7 +35,19 @@ export const getProviderFromUrl = (url: string): Provider | undefined => {
   if (url.match(/vimeo/)) {
     return Provider.Vimeo;
   }
+  if (url.match(/youtube/)) {
+    return Provider.YouTube;
+  }
   return undefined;
+};
+
+// Credit: https://stackoverflow.com/a/50644701, (2021-03-14: Support ?playlist)
+export const dailyMotionURLRegex = /^(?:(?:https?):)?(?:\/\/)?(?:www\.)?(?:(?:dailymotion\.com(?:\/embed)?\/video)|dai\.ly)\/([a-zA-Z0-9]+)(?:_[\w_-]+)?(?:\?playlist=[a-zA-Z0-9]+)?$/;
+export const getDailyMotionIdFromUrl = (url: string): string => {
+  return url.match(dailyMotionURLRegex)?.[1] ?? '';
+};
+export const getDailyMotionEmbedFromId = (dailyMotionId: string): string => {
+  return `https://www.dailymotion.com/embed/video/${dailyMotionId}`; // ?autoplay=1
 };
 
 // Credit: https://stackoverflow.com/a/50777192 (2021-03-14: modified / fixed to ignore unused groups)
@@ -108,6 +121,8 @@ export class OEmbedElement extends LitElement {
         return this.renderSpotify();
       case Provider.Vimeo:
         return this.renderVimeo();
+      case Provider.DailyMotion:
+        return this.renderDailyMotion();
       default:
         return this.renderYouTube();
     }
@@ -135,6 +150,46 @@ export class OEmbedElement extends LitElement {
         allow="encrypted-media"
       ></iframe>
       <slot></slot>
+    `;
+  }
+
+  public renderDailyMotion(): TemplateResult {
+    const dailyMotionId = getDailyMotionIdFromUrl(this.url);
+    if (!dailyMotionId) {
+      return html`Could not find dailyMotionId in ${dailyMotionId}`;
+    }
+    const url = getDailyMotionEmbedFromId(dailyMotionId);
+
+    const width = this.getAttribute('width') || this.width;
+    const height = this.getAttribute('height') || this.height;
+
+    return html`
+      <div
+        style="position:relative;width:${width}px;height:${height}px;overflow:hidden;"
+      >
+        <iframe
+          allow="autoplay"
+          width="${width}"
+          height="${height}"
+          src="${url}"
+          frameborder=${ifDefined(
+            this.frameborder ? this.frameborder : undefined
+          )}
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen=${ifDefined(
+            this.allowfullscreen === '' ||
+              this.allowfullscreen == 'true' ||
+              this.allowfullscreen === 'true' ||
+              this.allowfullscreen === true ||
+              this.allowfullscreen === '1'
+              ? true
+              : undefined
+          )}
+          style="width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden"
+          type="text/html"
+        ></iframe>
+        <slot></slot>
+      </div>
     `;
   }
 
