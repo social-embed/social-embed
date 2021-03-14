@@ -18,6 +18,7 @@ import {ifDefined} from 'lit-html/directives/if-defined.js';
 export enum Provider {
   YouTube = 'YouTube',
   Spotify = 'Spotify',
+  Vimeo = 'Vimeo',
 }
 
 export const getProviderFromUrl = (url: string): Provider | undefined => {
@@ -30,10 +31,21 @@ export const getProviderFromUrl = (url: string): Provider | undefined => {
   if (url.match(/spotify/)) {
     return Provider.Spotify;
   }
+  if (url.match(/vimeo/)) {
+    return Provider.Vimeo;
+  }
   return undefined;
 };
 
-export const youTubeExtractId = (url: string | undefined): string => {
+// Credit: https://stackoverflow.com/a/50777192 (2021-03-14: modified / fixed to ignore unused groups)
+export const vimeoURLRegex = /(?:http|https)?:\/\/(?:www\.|player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)/;
+export const getVimeoIdFromUrl = (url: string) =>
+  url.match(vimeoURLRegex)?.[1] ?? '';
+
+export const getVimeoEmbedUrlFromId = (vimeoId: string): string =>
+  `https://player.vimeo.com/video/${vimeoId}`;
+
+export const getYouTubeIdFromUrl = (url: string | undefined): string => {
   if (url) {
     // credit: https://stackoverflow.com/a/42442074
     return (
@@ -45,7 +57,7 @@ export const youTubeExtractId = (url: string | undefined): string => {
   return '';
 };
 
-export const youtubeUrlFromYoutubeId = (
+export const getYouTubeEmbedUrlFromId = (
   youtubeID: string | undefined
 ): string => {
   return `https://www.youtube.com/embed/${youtubeID}`;
@@ -94,6 +106,8 @@ export class OEmbedElement extends LitElement {
         return this.renderYouTube();
       case Provider.Spotify:
         return this.renderSpotify();
+      case Provider.Vimeo:
+        return this.renderVimeo();
       default:
         return this.renderYouTube();
     }
@@ -124,9 +138,39 @@ export class OEmbedElement extends LitElement {
     `;
   }
 
+  public renderVimeo(): TemplateResult {
+    const vimeoId = getVimeoIdFromUrl(this.url);
+    if (!vimeoId) {
+      return html`Could not find vimeoId in ${vimeoId}`;
+    }
+    const url = getVimeoEmbedUrlFromId(vimeoId);
+
+    return html`
+      <iframe
+        width="${this.width}"
+        height="${this.height}"
+        src="${url}"
+        frameborder=${ifDefined(
+          this.frameborder ? this.frameborder : undefined
+        )}
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen=${ifDefined(
+          this.allowfullscreen === '' ||
+            this.allowfullscreen == 'true' ||
+            this.allowfullscreen === 'true' ||
+            this.allowfullscreen === true ||
+            this.allowfullscreen === '1'
+            ? true
+            : undefined
+        )}
+      ></iframe>
+      <slot></slot>
+    `;
+  }
+
   public renderYouTube(): TemplateResult {
-    const youtubeId = youTubeExtractId(this.url);
-    const youtubeUrl = youtubeUrlFromYoutubeId(youtubeId);
+    const youtubeId = getYouTubeIdFromUrl(this.url);
+    const youtubeUrl = getYouTubeEmbedUrlFromId(youtubeId);
 
     if (!youtubeId) {
       return html``;
