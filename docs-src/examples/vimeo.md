@@ -2,7 +2,7 @@
 layout: example.11ty.cjs
 title: <o-embed> ⌲ Examples ⌲ Vimeo
 tags: example
-name: Basic
+name: Vimeo
 description: Vimeo embed
 ---
 

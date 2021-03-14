@@ -1,8 +1,8 @@
 ---
 layout: example.11ty.cjs
-title: <o-embed> ⌲ Examples ⌲ Basic
+title: <o-embed> ⌲ Examples ⌲ YouTube
 tags: example
-name: Basic
+name: YouTube
 description: A basic example
 ---
 

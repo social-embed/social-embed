@@ -2,7 +2,7 @@
 layout: example.11ty.cjs
 title: <o-embed> ⌲ Examples ⌲ Spotify
 tags: example
-name: Basic
+name: Spotify
 description: Spotify embed
 ---
 
