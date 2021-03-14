@@ -17,17 +17,23 @@ import {ifDefined} from 'lit-html/directives/if-defined.js';
 
 export enum Provider {
   YouTube = 'YouTube',
-  Vimeo = 'Vimeo',
+  Spotify = 'Spotify',
 }
 
 export const getProviderFromUrl = (url: string): Provider | undefined => {
+  if (!url) {
+    return undefined;
+  }
   if (url.match(/youtube/)) {
     return Provider.YouTube;
+  }
+  if (url.match(/spotify/)) {
+    return Provider.Spotify;
   }
   return undefined;
 };
 
-export const extractYouTubeId = (url: string | undefined): string => {
+export const youTubeExtractId = (url: string | undefined): string => {
   if (url) {
     // credit: https://stackoverflow.com/a/42442074
     return (
@@ -73,7 +79,40 @@ export class OEmbedElement extends LitElement {
     'true';
 
   render(): TemplateResult {
-    const youtubeId = extractYouTubeId(this.url);
+    const provider = getProviderFromUrl(this.url);
+    switch (provider) {
+      case Provider.YouTube:
+        return this.renderYouTube();
+      case Provider.Spotify:
+        return this.renderSpotify();
+      default:
+        return this.renderYouTube();
+    }
+  }
+
+  public renderSpotify(): TemplateResult {
+    // regex: derived from https://gist.github.com/TrevorJTClarke/a14c37db3c11ee23a700
+    // Thank you @TrevorJTClarke
+    const spotifyURLRegex = /https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:album\/|track\/|playlist\/|\?uri=spotify:track:)((\w|-){22})/;
+    const spotifyId = this.url.match(spotifyURLRegex)?.[1];
+    const url = `https://open.spotify.com/embed/album/${spotifyId}`;
+    return html`
+      <iframe
+        src="${url}"
+        width="${this.width}"
+        frameborder=${ifDefined(
+          this.frameborder ? this.frameborder : undefined
+        )}
+        height="${this.height}"
+        allowtransparency="true"
+        allow="encrypted-media"
+      ></iframe>
+      <slot></slot>
+    `;
+  }
+
+  public renderYouTube(): TemplateResult {
+    const youtubeId = youTubeExtractId(this.url);
     const youtubeUrl = youtubeUrlFromYoutubeId(youtubeId);
 
     if (!youtubeId) {

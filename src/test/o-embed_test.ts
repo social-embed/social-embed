@@ -1,5 +1,5 @@
 import {
-  extractYouTubeId,
+  youTubeExtractId,
   youtubeUrlFromYoutubeId,
   OEmbedElement,
 } from '../o-embed.js';
@@ -24,7 +24,7 @@ suite('o-embed', () => {
 
   suite('youtube', () => {
     const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
+    const embedSrc = youtubeUrlFromYoutubeId(youTubeExtractId(src));
 
     test('renders with default values and sets URL', async () => {
       const el = await fixture(html`<o-embed url=${src}></o-embed>`);
