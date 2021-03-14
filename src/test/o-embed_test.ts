@@ -1,5 +1,8 @@
-import {OEmbedElement} from '../o-embed.js';
-import {extractYouTubeId, youtubeUrlFromYoutubeId} from '../lib.js';
+import {
+  extractYouTubeId,
+  youtubeUrlFromYoutubeId,
+  OEmbedElement,
+} from '../o-embed.js';
 import {fixture, html} from '@open-wc/testing';
 
 const assert = chai.assert;
