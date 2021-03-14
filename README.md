@@ -2,9 +2,14 @@
 
 A modern, TypeScript [web component] for [OEmbed] tags. Built in [LitElement].
 
+At this stage: This doesn't actually use OEmbed, rather it finds IDs and swaps out
+with an embed template. It's created for use with CKEditor 5, see
+[ckeditor5#2737].
+
 [litelement]: https://lit-element.polymer-project.org/
 [web component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [oembed]: https://oembed.com/
+[ckeditor5#2737]: https://github.com/ckeditor/ckeditor5/issues/2737
 
 Compare to [thangman22/oembed-component](https://github.com/thangman22/oembed-component).
 
@@ -23,10 +28,7 @@ yarn add @tony/oembed-component
 ## Usage
 
 ```html
-<o-embed
-  src="https://www.youtube.com/watch?v=G_QhTdzWBJk"
-  allowfullscreen
-></o-embed>
+<o-embed src="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
 ```
 
 ## Contributing
