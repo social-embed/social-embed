@@ -22,14 +22,13 @@ Vimeo, and Spotify.
 ```html
 <o-embed 
   url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"
-  allowfullscreen
 ></o-embed>
 ```
 
   </div>
   <div>
 
-<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo" allowfullscreen></o-embed>
+<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
 
   </div>
 </section>
