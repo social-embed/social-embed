@@ -145,10 +145,13 @@ export class OEmbedElement extends LitElement {
     }
     const url = getVimeoEmbedUrlFromId(vimeoId);
 
+    const width = this.getAttribute('width') || 640;
+    const height = this.getAttribute('height') || 268;
+
     return html`
       <iframe
-        width="${this.width}"
-        height="${this.height}"
+        width="${width}"
+        height="${height}"
         src="${url}"
         frameborder=${ifDefined(
           this.frameborder ? this.frameborder : undefined

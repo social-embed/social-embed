@@ -6,7 +6,7 @@ name: Basic
 description: Vimeo embed
 ---
 
-<h1>Playlists</h1>
+<h1>Default dimensions</h1>
 
 ```html
 <o-embed url="https://vimeo.com/134668506"></o-embed>
@@ -20,3 +20,22 @@ url="https://vimeo.com/134668506"></o-embed>
 ```
 
 <o-embed url="https://vimeo.com/channels/staffpicks/134668506"></o-embed>
+
+<h1>Custom dimensions</h1>
+
+```html
+<o-embed url="https://vimeo.com/134668506" width="1080" height="536"></o-embed>
+```
+
+<o-embed
+url="https://vimeo.com/134668506"  width="1080" height="536"></o-embed>
+
+```html
+<o-embed
+  url="https://vimeo.com/channels/staffpicks/134668506"
+  width="1080"
+  height="536"
+></o-embed>
+```
+
+<o-embed url="https://vimeo.com/channels/staffpicks/134668506"  width="1080" height="536"></o-embed>

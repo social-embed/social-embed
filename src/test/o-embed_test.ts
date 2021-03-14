@@ -232,8 +232,8 @@ suite('o-embed', () => {
         allowfullscreen="true"
         frameborder="0"
         src=${embedSrc}
-        width="560"
-        height="315">
+        width="640"
+        height="268">
       </iframe>
       <slot></slot>
     `
@@ -253,7 +253,7 @@ suite('o-embed', () => {
         frameborder="0"
         width="500"
         src=${embedSrc}
-        height="315">
+        height="268">
       </iframe>
       <slot></slot>
     `
@@ -271,7 +271,7 @@ suite('o-embed', () => {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen="true"
         frameborder="0"
-        width="560"
+        width="640"
         src=${embedSrc}
         height="500">
       </iframe>
@@ -314,9 +314,9 @@ suite('o-embed', () => {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen="true"
         frameborder="0"
-        width="560"
+        width="640"
         src=${embedSrc}
-        height="315">
+        height="268">
       </iframe>
       <slot></slot>
     `
@@ -334,9 +334,9 @@ suite('o-embed', () => {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen="true"
         frameborder="1"
-        width="560"
+        width="640"
         src=${embedSrc}
-        height="315">
+        height="268">
       </iframe>
       <slot></slot>
     `
@@ -354,9 +354,9 @@ suite('o-embed', () => {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen="true"
         frameborder="0"
-        width="560"
+        width="640"
         src=${embedSrc}
-        height="315">
+        height="268">
       </iframe>
       <slot></slot>
     `
@@ -374,9 +374,9 @@ suite('o-embed', () => {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen="true"
         frameborder="0"
-        width="560"
+        width="640"
         src=${embedSrc}
-        height="315">
+        height="268">
       </iframe>
       <slot></slot>
     `
@@ -393,9 +393,9 @@ suite('o-embed', () => {
       <iframe
         allow="autoplay; fullscreen; picture-in-picture"
         frameborder="0"
-        width="560"
+        width="640"
         src=${embedSrc}
-        height="315">
+        height="268">
       </iframe>
       <slot></slot>
     `
@@ -412,9 +412,9 @@ suite('o-embed', () => {
       <iframe
         allow="autoplay; fullscreen; picture-in-picture"
         frameborder="0"
-        width="560"
+        width="640"
         src=${embedSrc}
-        height="315"
+        height="268"
         >
       </iframe>
       <slot></slot>
