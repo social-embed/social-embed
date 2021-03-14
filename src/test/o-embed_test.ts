@@ -1,8 +1,5 @@
-import {
-  OEmbedElement,
-  extractYouTubeID,
-  youtubeUrlFromYoutubeId,
-} from '../o-embed.js';
+import {OEmbedElement} from '../o-embed.js';
+import {extractYouTubeId, youtubeUrlFromYoutubeId} from '../lib.js';
 import {fixture, html} from '@open-wc/testing';
 
 const assert = chai.assert;
@@ -31,7 +28,7 @@ suite('o-embed', () => {
 
   test('renders with a set url', async () => {
     const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeID(src));
+    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
     const el = await fixture(html`<o-embed url=${src}></o-embed>`);
     assert.shadowDom.equal(
       el,
@@ -49,7 +46,7 @@ suite('o-embed', () => {
 
   test('handles a click', async () => {
     const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeID(src));
+    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
     const el = (await fixture(
       html`<o-embed url=${src}></o-embed>`
     )) as OEmbedElement;
@@ -72,7 +69,7 @@ suite('o-embed', () => {
 
   test('renders with a set frameborder', async () => {
     const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeID(src));
+    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
     const el = await fixture(
       html`<o-embed url=${src} frameborder="1"></o-embed>`
     );
@@ -92,7 +89,7 @@ suite('o-embed', () => {
 
   test('renders with a set allowfullscreen', async () => {
     const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeID(src));
+    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
     const el = await fixture(
       html`<o-embed url=${src} allowfullscreen></o-embed>`
     );
@@ -113,7 +110,7 @@ suite('o-embed', () => {
 
   test('renders with a set allowfullscreen="true"', async () => {
     const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeID(src));
+    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
     const el = await fixture(
       html`<o-embed url=${src} allowfullscreen="true"></o-embed>`
     );
@@ -134,7 +131,7 @@ suite('o-embed', () => {
 
   test('renders with a set allowfullscreen="false"', async () => {
     const src = 'https://www.youtube.com/watch?v=G_QhTdzWBJk';
-    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeID(src));
+    const embedSrc = youtubeUrlFromYoutubeId(extractYouTubeId(src));
     const el = await fixture(
       html`<o-embed url=${src} allowfullscreen="false"></o-embed>`
     );

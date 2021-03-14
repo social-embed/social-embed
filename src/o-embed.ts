@@ -15,19 +15,7 @@
 import {LitElement, html, customElement, property, css} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
 
-export const extractYouTubeID = (url: string | undefined) => {
-  if (url) {
-    // credit: https://stackoverflow.com/a/42442074
-    return url.match(
-      '^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)'
-    )?.[1];
-  }
-  return '';
-};
-
-export const youtubeUrlFromYoutubeId = (youtubeID: string | undefined) => {
-  return `https://www.youtube.com/embed/${youtubeID}`;
-};
+import {extractYouTubeId, youtubeUrlFromYoutubeId} from './lib';
 
 /**
  * An example element.
@@ -59,7 +47,7 @@ export class OEmbedElement extends LitElement {
     | undefined = undefined;
 
   render() {
-    const youtubeId = extractYouTubeID(this.url);
+    const youtubeId = extractYouTubeId(this.url);
     const youtubeUrl = youtubeUrlFromYoutubeId(youtubeId);
     return html`
       <iframe
