@@ -41,10 +41,8 @@ export class OEmbedElement extends LitElement {
   @property({type: Number}) width = 560;
   @property({type: Number}) height = 315;
   @property({type: String}) frameborder = '0';
-  @property({type: String}) allowfullscreen:
-    | string
-    | boolean
-    | undefined = undefined;
+  @property({type: String}) allowfullscreen: string | boolean | undefined =
+    'true';
 
   render() {
     const youtubeId = extractYouTubeId(this.url);
@@ -64,6 +62,7 @@ export class OEmbedElement extends LitElement {
         allowfullscreen=${ifDefined(
           this.allowfullscreen === '' ||
             this.allowfullscreen == 'true' ||
+            this.allowfullscreen === 'true' ||
             this.allowfullscreen === true ||
             this.allowfullscreen === '1'
             ? true

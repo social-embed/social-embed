@@ -29,6 +29,7 @@ suite('o-embed', () => {
         el,
         `
       <iframe
+        allowfullscreen="true"
         frameborder="0"
         src=${embedSrc}
         width="560"
@@ -47,6 +48,7 @@ suite('o-embed', () => {
         el,
         `
       <iframe
+        allowfullscreen="true"
         frameborder="0"
         width="500"
         src=${embedSrc}
@@ -65,6 +67,7 @@ suite('o-embed', () => {
         el,
         `
       <iframe
+        allowfullscreen="true"
         frameborder="0"
         width="560"
         src=${embedSrc}
@@ -83,6 +86,7 @@ suite('o-embed', () => {
         el,
         `
       <iframe
+        allowfullscreen="true"
         frameborder="0"
         width="500"
         src=${embedSrc}
@@ -104,6 +108,7 @@ suite('o-embed', () => {
         el,
         `
       <iframe
+        allowfullscreen="true"
         frameborder="0"
         width="560"
         src=${embedSrc}
@@ -122,6 +127,7 @@ suite('o-embed', () => {
         el,
         `
       <iframe
+        allowfullscreen="true"
         frameborder="1"
         width="560"
         src=${embedSrc}
@@ -173,6 +179,24 @@ suite('o-embed', () => {
     test('renders with a set allowfullscreen="false"', async () => {
       const el = await fixture(
         html`<o-embed url=${src} allowfullscreen="false"></o-embed>`
+      );
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        frameborder="0"
+        width="560"
+        src=${embedSrc}
+        height="315">
+      </iframe>
+      <slot></slot>
+    `
+      );
+    });
+
+    test('renders with a set allowfullscreen="0"', async () => {
+      const el = await fixture(
+        html`<o-embed url=${src} allowfullscreen="0"></o-embed>`
       );
       assert.shadowDom.equal(
         el,
