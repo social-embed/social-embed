@@ -93,9 +93,13 @@ export class OEmbedElement extends LitElement {
   public renderSpotify(): TemplateResult {
     // regex: derived from https://gist.github.com/TrevorJTClarke/a14c37db3c11ee23a700
     // Thank you @TrevorJTClarke
-    const spotifyURLRegex = /https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:album\/|track\/|playlist\/|\?uri=spotify:track:)((\w|-){22})/;
-    const spotifyId = this.url.match(spotifyURLRegex)?.[1];
-    const url = `https://open.spotify.com/embed/album/${spotifyId}`;
+    const spotifyURLRegex = /https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:(album|track|playlist)\/|\?uri=spotify:track:)((\w|-){22})/;
+    const spotifySymbolRegex = /spotify:(?:(album|track|playlist):|\?uri=spotify:track:)((\w|-){22})/;
+    const [_, spotifyType, spotifyId] =
+      this.url.match(spotifyURLRegex) ||
+      this.url.match(spotifySymbolRegex) ||
+      [];
+    const url = `https://open.spotify.com/embed/${spotifyType}/${spotifyId}`;
     return html`
       <iframe
         src="${url}"
