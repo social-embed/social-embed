@@ -49,6 +49,10 @@ export class OEmbedElement extends LitElement {
   render() {
     const youtubeId = extractYouTubeId(this.url);
     const youtubeUrl = youtubeUrlFromYoutubeId(youtubeId);
+
+    if (!youtubeId) {
+      return null;
+    }
     return html`
       <iframe
         width="${this.width}"
