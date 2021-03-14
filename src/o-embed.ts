@@ -11,21 +11,37 @@
  * subject to an additional IP rights grant found at
  * http://polymer.github.io/PATENTS.txt
  */
-
+import type {TemplateResult} from 'lit-element';
 import {LitElement, html, customElement, property, css} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
 
-export const extractYouTubeId = (url: string | undefined) => {
+export enum Provider {
+  YouTube = 'YouTube',
+  Vimeo = 'Vimeo',
+}
+
+export const getProviderFromUrl = (url: string): Provider | undefined => {
+  if (url.match(/youtube/)) {
+    return Provider.YouTube;
+  }
+  return undefined;
+};
+
+export const extractYouTubeId = (url: string | undefined): string => {
   if (url) {
     // credit: https://stackoverflow.com/a/42442074
-    return url.match(
-      '^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)'
-    )?.[1];
+    return (
+      url.match(
+        '^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)'
+      )?.[1] ?? ''
+    );
   }
   return '';
 };
 
-export const youtubeUrlFromYoutubeId = (youtubeID: string | undefined) => {
+export const youtubeUrlFromYoutubeId = (
+  youtubeID: string | undefined
+): string => {
   return `https://www.youtube.com/embed/${youtubeID}`;
 };
 
@@ -56,12 +72,12 @@ export class OEmbedElement extends LitElement {
   @property({type: String}) allowfullscreen: string | boolean | undefined =
     'true';
 
-  render() {
+  render(): TemplateResult {
     const youtubeId = extractYouTubeId(this.url);
     const youtubeUrl = youtubeUrlFromYoutubeId(youtubeId);
 
     if (!youtubeId) {
-      return null;
+      return html``;
     }
     return html`
       <iframe
