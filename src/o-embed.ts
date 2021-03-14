@@ -39,7 +39,7 @@ export const getProviderFromUrl = (url: string): Provider | undefined => {
 
 // Credit: https://stackoverflow.com/a/50777192 (2021-03-14: modified / fixed to ignore unused groups)
 export const vimeoURLRegex = /(?:http|https)?:\/\/(?:www\.|player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)/;
-export const getVimeoIdFromUrl = (url: string) =>
+export const getVimeoIdFromUrl = (url: string): string =>
   url.match(vimeoURLRegex)?.[1] ?? '';
 
 export const getVimeoEmbedUrlFromId = (vimeoId: string): string =>
@@ -118,7 +118,7 @@ export class OEmbedElement extends LitElement {
     // Thank you @TrevorJTClarke
     const spotifyURLRegex = /https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:(album|track|playlist)\/|\?uri=spotify:track:)((\w|-){22})/;
     const spotifySymbolRegex = /spotify:(?:(album|track|playlist):|\?uri=spotify:track:)((\w|-){22})/;
-    const [_, spotifyType, spotifyId] =
+    const [, spotifyType, spotifyId] =
       this.url.match(spotifyURLRegex) ||
       this.url.match(spotifySymbolRegex) ||
       [];
