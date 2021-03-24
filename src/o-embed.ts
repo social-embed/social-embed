@@ -97,11 +97,11 @@ export class OEmbedElement extends LitElement {
   /**
    * Pass-through of width attribute
    */
-  @property({type: Number}) width = 560;
+  @property({type: String}) width = '560';
   /**
    * Pass-through of height attribute
    */
-  @property({type: Number}) height = 315;
+  @property({type: String}) height = '315';
   /**
    * Pass-through of frameborder attribute, only used in iframe embeds.
    */
@@ -200,8 +200,8 @@ export class OEmbedElement extends LitElement {
     }
     const url = getVimeoEmbedUrlFromId(vimeoId);
 
-    const width = this.getAttribute('width') || 640;
-    const height = this.getAttribute('height') || 268;
+    const width = this.getAttribute('width') || '640';
+    const height = this.getAttribute('height') || '268';
 
     return html`
       <iframe

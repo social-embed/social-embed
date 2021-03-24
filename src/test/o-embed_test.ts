@@ -46,8 +46,9 @@ suite('o-embed', () => {
     });
 
     test('renders with a width', async () => {
+      const width = '500';
       const el = await fixture(
-        html`<o-embed url=${src} width="500"></o-embed>`
+        html`<o-embed url=${src} width=${width}></o-embed>`
       );
       assert.shadowDom.equal(
         el,
@@ -55,7 +56,27 @@ suite('o-embed', () => {
       <iframe
         allowfullscreen="true"
         frameborder="0"
-        width="500"
+        width=${width}
+        src=${embedSrc}
+        height="315">
+      </iframe>
+      <slot></slot>
+    `
+      );
+    });
+
+    test('renders with a width at 100%', async () => {
+      const width = '100%';
+      const el = await fixture(
+        html`<o-embed url=${src} width=${width}></o-embed>`
+      );
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        allowfullscreen="true"
+        frameborder="0"
+        width=${width}
         src=${embedSrc}
         height="315">
       </iframe>
@@ -65,8 +86,9 @@ suite('o-embed', () => {
     });
 
     test('renders with a height', async () => {
+      const height = '500';
       const el = await fixture(
-        html`<o-embed url=${src} height="500"></o-embed>`
+        html`<o-embed url=${src} height=${height}></o-embed>`
       );
       assert.shadowDom.equal(
         el,
@@ -76,7 +98,29 @@ suite('o-embed', () => {
         frameborder="0"
         width="560"
         src=${embedSrc}
-        height="500">
+        height=${height}
+      >
+      </iframe>
+      <slot></slot>
+    `
+      );
+    });
+
+    test('renders with a height at 100%', async () => {
+      const height = '500';
+      const el = await fixture(
+        html`<o-embed url=${src} height=${height}></o-embed>`
+      );
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        allowfullscreen="true"
+        frameborder="0"
+        width="560"
+        src=${embedSrc}
+        height=${height}
+      >
       </iframe>
       <slot></slot>
     `
