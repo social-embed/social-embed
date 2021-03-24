@@ -261,3 +261,9 @@ declare global {
     'o-embed': OEmbedElement;
   }
 }
+
+declare module 'JSX' {
+  interface IntrinsicElements {
+    'o-embed': Partial<OEmbedElement>;
+  }
+}
