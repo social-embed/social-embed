@@ -262,7 +262,7 @@ declare global {
   }
 
   // eslint-disable-next-line
-  declare module JSX {
+  module JSX {
     interface IntrinsicElements {
       'o-embed': Partial<OEmbedElement>;
     }

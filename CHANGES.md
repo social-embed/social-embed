@@ -1,5 +1,20 @@
 # CHANGES
 
+## 0.0.1-next.20 (2020-03-24)
+
+Try to fix a build issue
+
+```typescript
+declare global {
+  // eslint-disable-next-line
+  module JSX {
+    interface IntrinsicElements {
+      'o-embed': Partial<OEmbedElement>;
+    }
+  }
+}
+```
+
 ## 0.0.1-next.19 (2020-03-24)
 
 Stab at React support in TypeScript out of the box

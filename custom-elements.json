@@ -14,14 +14,14 @@
         {
           "name": "width",
           "description": "Pass-through of width attribute",
-          "type": "number",
-          "default": "560"
+          "type": "string",
+          "default": "\"560\""
         },
         {
           "name": "height",
           "description": "Pass-through of height attribute",
-          "type": "number",
-          "default": "315"
+          "type": "string",
+          "default": "\"315\""
         },
         {
           "name": "frameborder",
@@ -52,15 +52,15 @@
           "name": "width",
           "attribute": "width",
           "description": "Pass-through of width attribute",
-          "type": "number",
-          "default": "560"
+          "type": "string",
+          "default": "\"560\""
         },
         {
           "name": "height",
           "attribute": "height",
           "description": "Pass-through of height attribute",
-          "type": "number",
-          "default": "315"
+          "type": "string",
+          "default": "\"315\""
         },
         {
           "name": "frameborder",
