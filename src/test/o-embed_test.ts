@@ -1,4 +1,5 @@
 import {
+  convertURLToEmbedURL,
   getVimeoEmbedUrlFromId,
   getVimeoIdFromUrl,
   getYouTubeEmbedUrlFromId,
@@ -465,5 +466,47 @@ suite('o-embed', () => {
     `
       );
     });
+  });
+});
+
+suite('convertUrlToEmbedUrl', () => {
+  test('is defined', () => {
+    assert.equal(convertURLToEmbedURL.name, 'convertURLToEmbedURL');
+  });
+
+  test('spotify', () => {
+    assert.equal(
+      convertURLToEmbedURL('spotify:album:1DFixLWuPkv3KT3TnV35m3'),
+      'https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3'
+    );
+    assert.equal(
+      convertURLToEmbedURL(
+        'https://open.spotify.com/album/4RuzGKLG99XctuBMBkFFOC'
+      ),
+      'https://open.spotify.com/embed/album/4RuzGKLG99XctuBMBkFFOC'
+    );
+  });
+
+  test('vimeo', () => {
+    assert.equal(
+      convertURLToEmbedURL('https://vimeo.com/134668506'),
+      'https://player.vimeo.com/video/134668506'
+    );
+    assert.equal(
+      convertURLToEmbedURL('https://vimeo.com/channels/staffpicks/134668506'),
+      'https://player.vimeo.com/video/134668506'
+    );
+  });
+
+  test('youtube', () => {
+    assert.equal(
+      convertURLToEmbedURL('https://www.youtube.com/watch?v=FTQbiNvZqaY'),
+      'https://www.youtube.com/embed/FTQbiNvZqaY'
+    );
+
+    assert.equal(
+      convertURLToEmbedURL('https://youtu.be/FTQbiNvZqaY'),
+      'https://www.youtube.com/embed/FTQbiNvZqaY'
+    );
   });
 });

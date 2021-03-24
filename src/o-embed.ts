@@ -92,6 +92,48 @@ export const getYouTubeEmbedUrlFromId = (
   return `https://www.youtube.com/embed/${youtubeID}`;
 };
 
+export type ProviderKey = keyof typeof Provider;
+export type ProviderType = typeof Provider[Provider];
+type ValueOfProvider = `${Provider}`;
+
+export const ProviderIDFunctionMap: {
+  [P in ValueOfProvider]: (url: string) => string | string[];
+} = {
+  [Provider.DailyMotion]: getDailyMotionIdFromUrl,
+  [Provider.Spotify]: getSpotifyIdAndTypeFromUrl,
+  [Provider.Vimeo]: getVimeoIdFromUrl,
+  [Provider.YouTube]: getYouTubeIdFromUrl,
+};
+
+export const ProviderIDURLFunctionMap: {
+  [P in ValueOfProvider]: (id: string, ...args: any) => string;
+} = {
+  [Provider.DailyMotion]: getDailyMotionEmbedFromId,
+  [Provider.Spotify]: getSpotifyEmbedUrlFromIdAndType,
+  [Provider.Vimeo]: getVimeoEmbedUrlFromId,
+  [Provider.YouTube]: getYouTubeEmbedUrlFromId,
+};
+
+export const convertURLToEmbedURL = (url: string): string => {
+  const provider = getProviderFromUrl(url);
+
+  if (!provider) return '';
+
+  const getId = ProviderIDFunctionMap[provider];
+  const getEmbedUrlFromId = ProviderIDURLFunctionMap[provider];
+
+  const id = getId(url);
+
+  if (Array.isArray(id)) {
+    const _id = id.shift();
+    if (!_id) {
+      return '';
+    }
+    return getEmbedUrlFromId(_id, ...id);
+  }
+  return getEmbedUrlFromId(id);
+};
+
 /**
  * Renders embeds from <o-embed url=""> tags
  *
