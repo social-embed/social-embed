@@ -97,7 +97,7 @@ export type ProviderType = typeof Provider[Provider];
 type ValueOfProvider = `${Provider}`;
 
 export const ProviderIDFunctionMap: {
-  [P in ValueOfProvider]: any;
+  [P in ValueOfProvider]: (url: string) => string | string[];
 } = {
   [Provider.DailyMotion]: getDailyMotionIdFromUrl,
   [Provider.Spotify]: getSpotifyIdAndTypeFromUrl,
@@ -106,7 +106,7 @@ export const ProviderIDFunctionMap: {
 };
 
 export const ProviderIDURLFunctionMap: {
-  [P in ValueOfProvider]: any;
+  [P in ValueOfProvider]: (id: string, ...args: any) => string;
 } = {
   [Provider.DailyMotion]: getDailyMotionEmbedFromId,
   [Provider.Spotify]: getSpotifyEmbedUrlFromIdAndType,
@@ -125,7 +125,11 @@ export const convertURLToEmbedURL = (url: string): string => {
   const id = getId(url);
 
   if (Array.isArray(id)) {
-    return getEmbedUrlFromId(...id);
+    const _id = id.shift();
+    if (!_id) {
+      return '';
+    }
+    return getEmbedUrlFromId(_id, ...id);
   }
   return getEmbedUrlFromId(id);
 };
