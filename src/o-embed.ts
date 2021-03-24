@@ -72,7 +72,7 @@ export const getSpotifyIdAndTypeFromUrl = (url: string): [string, string] => {
 const getSpotifyEmbedUrlFromIdAndType = (
   spotifyId: string,
   spotifyType: string
-) => `https://open.spotify.com/embed/${spotifyType}/${spotifyId}`;
+): string => `https://open.spotify.com/embed/${spotifyType}/${spotifyId}`;
 
 export const getYouTubeIdFromUrl = (url: string | undefined): string => {
   if (url) {
