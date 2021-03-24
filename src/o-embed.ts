@@ -58,6 +58,22 @@ export const getVimeoIdFromUrl = (url: string): string =>
 export const getVimeoEmbedUrlFromId = (vimeoId: string): string =>
   `https://player.vimeo.com/video/${vimeoId}`;
 
+// regex: derived from https://gist.github.com/TrevorJTClarke/a14c37db3c11ee23a700
+// Thank you @TrevorJTClarke
+export const spotifyURLRegex = /https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:(album|track|playlist)\/|\?uri=spotify:track:)((\w|-){22})/;
+export const spotifySymbolRegex = /spotify:(?:(album|track|playlist):|\?uri=spotify:track:)((\w|-){22})/;
+export const getSpotifyIdAndTypeFromUrl = (url: string): [string, string] => {
+  const [, spotifyType, spotifyId] =
+    url.match(spotifyURLRegex) || url.match(spotifySymbolRegex) || [];
+
+  return [spotifyId, spotifyType];
+};
+
+const getSpotifyEmbedUrlFromIdAndType = (
+  spotifyId: string,
+  spotifyType: string
+) => `https://open.spotify.com/embed/${spotifyType}/${spotifyId}`;
+
 export const getYouTubeIdFromUrl = (url: string | undefined): string => {
   if (url) {
     // credit: https://stackoverflow.com/a/42442074
@@ -129,15 +145,9 @@ export class OEmbedElement extends LitElement {
   }
 
   public renderSpotify(): TemplateResult {
-    // regex: derived from https://gist.github.com/TrevorJTClarke/a14c37db3c11ee23a700
-    // Thank you @TrevorJTClarke
-    const spotifyURLRegex = /https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:(album|track|playlist)\/|\?uri=spotify:track:)((\w|-){22})/;
-    const spotifySymbolRegex = /spotify:(?:(album|track|playlist):|\?uri=spotify:track:)((\w|-){22})/;
-    const [, spotifyType, spotifyId] =
-      this.url.match(spotifyURLRegex) ||
-      this.url.match(spotifySymbolRegex) ||
-      [];
-    const url = `https://open.spotify.com/embed/${spotifyType}/${spotifyId}`;
+    const url = getSpotifyEmbedUrlFromIdAndType(
+      ...getSpotifyIdAndTypeFromUrl(this.url)
+    );
     return html`
       <iframe
         src="${url}"
