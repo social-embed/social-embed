@@ -35,7 +35,7 @@ export const getProviderFromUrl = (url: string): Provider | undefined => {
   if (url.match(/vimeo/)) {
     return Provider.Vimeo;
   }
-  if (url.match(/youtube/)) {
+  if (url.match(/youtu\.?be/)) {
     return Provider.YouTube;
   }
   return undefined;
