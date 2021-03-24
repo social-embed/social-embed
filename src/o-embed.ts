@@ -114,7 +114,7 @@ export const ProviderIDURLFunctionMap: {
   [Provider.YouTube]: getYouTubeEmbedUrlFromId,
 };
 
-export const convertURLToEmbedURL = (url: string): string => {
+export const convertUrlToEmbedUrl = (url: string): string => {
   const provider = getProviderFromUrl(url);
 
   if (!provider) return '';
