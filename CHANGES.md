@@ -1,5 +1,10 @@
 # CHANGES
 
+## 0.0.1-next.22 (2020-03-24)
+
+- Typing fix for `getSpotifyEmbedUrlFromIdAndType()`
+- YouTube: Support https://youtu.be URLs
+
 ## 0.0.1-next.21 (2020-03-24)
 
 Extract spotify regex patterns, ID extraction and embed URL maker
