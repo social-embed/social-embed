@@ -1,5 +1,15 @@
 # CHANGES
 
+## 0.0.1-next.24 (2020-03-24)
+
+`convertURLToEmbedURL` -> `convertUrlToEmbedUrl`
+
+```typescript
+import {convertUrlToEmbedUrl} from '@tony/oembed-component';
+convertUrlToEmbedUrl('https://vimeo.com/134668506'); // https://player.vimeo.com/video/134668506
+convertUrlToEmbedUrl('https://youtu.be/FTQbiNvZqaY'); // https://www.youtube.com/embed/FTQbiNvZqaY
+```
+
 ## 0.0.1-next.23 (2020-03-24)
 
 New all-in-one function to URL to `<iframe>` friendly URL
