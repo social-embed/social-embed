@@ -1,5 +1,15 @@
 # CHANGES
 
+## 0.0.1-next.23 (2020-03-24)
+
+New all-in-one function to URL to `<iframe>` friendly URL
+
+```typescript
+import {convertURLToEmbedURL} from '@tony/oembed-component';
+convertUrlToEmbedURL('https://vimeo.com/134668506'); // https://player.vimeo.com/video/134668506
+convertURLToEmbedURL('https://youtu.be/FTQbiNvZqaY'); // https://www.youtube.com/embed/FTQbiNvZqaY
+```
+
 ## 0.0.1-next.22 (2020-03-24)
 
 - Typing fix for `getSpotifyEmbedUrlFromIdAndType()`
