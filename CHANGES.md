@@ -1,5 +1,9 @@
 # CHANGES
 
+## 0.0.1-next.21 (2020-03-24)
+
+Extract spotify regex patterns, ID extraction and embed URL maker
+
 ## 0.0.1-next.20 (2020-03-24)
 
 Try to fix a build issue
