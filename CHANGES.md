@@ -6,7 +6,7 @@ New all-in-one function to URL to `<iframe>` friendly URL
 
 ```typescript
 import {convertURLToEmbedURL} from '@tony/oembed-component';
-convertUrlToEmbedURL('https://vimeo.com/134668506'); // https://player.vimeo.com/video/134668506
+convertURLToEmbedURL('https://vimeo.com/134668506'); // https://player.vimeo.com/video/134668506
 convertURLToEmbedURL('https://youtu.be/FTQbiNvZqaY'); // https://www.youtube.com/embed/FTQbiNvZqaY
 ```
 
