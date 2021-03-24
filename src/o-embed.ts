@@ -260,10 +260,11 @@ declare global {
   interface HTMLElementTagNameMap {
     'o-embed': OEmbedElement;
   }
-}
 
-declare module 'JSX' {
-  interface IntrinsicElements {
-    'o-embed': Partial<OEmbedElement>;
+  // eslint-disable-next-line
+  declare module JSX {
+    interface IntrinsicElements {
+      'o-embed': Partial<OEmbedElement>;
+    }
   }
 }
