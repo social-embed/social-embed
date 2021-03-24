@@ -1,5 +1,22 @@
 # CHANGES
 
+## 0.0.1-next.19 (2020-03-24)
+
+Stab at React support in TypeScript out of the box
+
+```typescript
+declare global {
+  // eslint-disable-next-line
+  declare module JSX {
+    interface IntrinsicElements {
+      'o-embed': Partial<OEmbedElement>;
+    }
+  }
+}
+```
+
+See also: https://www.typescriptlang.org/docs/handbook/jsx.html#intrinsic-elements
+
 ## 0.0.1-next.18 (2020-03-24)
 
 Support passing string values to `width`/`height`, e.g. `width="100%"`
