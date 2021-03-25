@@ -1,5 +1,9 @@
 # CHANGES
 
+## 0.0.1-next.26 (2020-03-24)
+
+- Fix DailyMotion visibility issue, add tests for player
+
 ## 0.0.1-next.25 (2020-03-24)
 
 - Export `youTubeUrlRegex`
