@@ -485,6 +485,25 @@ suite('convertUrlToEmbedUrl', () => {
       ),
       'https://open.spotify.com/embed/album/4RuzGKLG99XctuBMBkFFOC'
     );
+    assert.equal(
+      convertUrlToEmbedUrl('open.spotify.com/album/4RuzGKLG99XctuBMBkFFOC'),
+      'https://open.spotify.com/embed/album/4RuzGKLG99XctuBMBkFFOC'
+    );
+  });
+
+  test('dailymotion', () => {
+    assert.equal(
+      convertUrlToEmbedUrl('https://www.dailymotion.com/video/x7znrd0'),
+      'https://www.dailymotion.com/embed/video/x7znrd0'
+    );
+    assert.equal(
+      convertUrlToEmbedUrl('http://dailymotion.com/video/x7znrd0'),
+      'https://www.dailymotion.com/embed/video/x7znrd0'
+    );
+    assert.equal(
+      convertUrlToEmbedUrl('dailymotion.com/video/x7znrd0'),
+      'https://www.dailymotion.com/embed/video/x7znrd0'
+    );
   });
 
   test('vimeo', () => {
@@ -494,6 +513,10 @@ suite('convertUrlToEmbedUrl', () => {
     );
     assert.equal(
       convertUrlToEmbedUrl('https://vimeo.com/channels/staffpicks/134668506'),
+      'https://player.vimeo.com/video/134668506'
+    );
+    assert.equal(
+      convertUrlToEmbedUrl('vimeo.com/channels/staffpicks/134668506'),
       'https://player.vimeo.com/video/134668506'
     );
   });
@@ -506,6 +529,11 @@ suite('convertUrlToEmbedUrl', () => {
 
     assert.equal(
       convertUrlToEmbedUrl('https://youtu.be/FTQbiNvZqaY'),
+      'https://www.youtube.com/embed/FTQbiNvZqaY'
+    );
+
+    assert.equal(
+      convertUrlToEmbedUrl('youtu.be/FTQbiNvZqaY'),
       'https://www.youtube.com/embed/FTQbiNvZqaY'
     );
   });

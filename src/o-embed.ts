@@ -51,7 +51,7 @@ export const getDailyMotionEmbedFromId = (dailyMotionId: string): string => {
 };
 
 // Credit: https://stackoverflow.com/a/50777192 (2021-03-14: modified / fixed to ignore unused groups)
-export const vimeoURLRegex = /(?:http|https)?:\/\/(?:www\.|player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)/;
+export const vimeoURLRegex = /(?:(?:https?):)?(?:\/\/)?(?:www\.|player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)/;
 export const getVimeoIdFromUrl = (url: string): string =>
   url.match(vimeoURLRegex)?.[1] ?? '';
 
@@ -60,7 +60,7 @@ export const getVimeoEmbedUrlFromId = (vimeoId: string): string =>
 
 // regex: derived from https://gist.github.com/TrevorJTClarke/a14c37db3c11ee23a700
 // Thank you @TrevorJTClarke
-export const spotifyURLRegex = /https?:\/\/(?:embed\.|open\.)(?:spotify\.com\/)(?:(album|track|playlist)\/|\?uri=spotify:track:)((\w|-){22})/;
+export const spotifyURLRegex = /(?:(?:https?):)?(?:\/\/)?(?:embed\.|open\.)(?:spotify\.com\/)(?:(album|track|playlist)\/|\?uri=spotify:track:)((\w|-){22})/;
 export const spotifySymbolRegex = /spotify:(?:(album|track|playlist):|\?uri=spotify:track:)((\w|-){22})/;
 export const getSpotifyIdAndTypeFromUrl = (url: string): [string, string] => {
   const [, spotifyType, spotifyId] =
@@ -68,6 +68,9 @@ export const getSpotifyIdAndTypeFromUrl = (url: string): [string, string] => {
 
   return [spotifyId, spotifyType];
 };
+
+export const youTubeUrlRegex =
+  '^(?:(?:https?):)?(?://)?[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)';
 
 const getSpotifyEmbedUrlFromIdAndType = (
   spotifyId: string,
@@ -77,11 +80,7 @@ const getSpotifyEmbedUrlFromIdAndType = (
 export const getYouTubeIdFromUrl = (url: string | undefined): string => {
   if (url) {
     // credit: https://stackoverflow.com/a/42442074
-    return (
-      url.match(
-        '^(?:https?:)?//[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)'
-      )?.[1] ?? ''
-    );
+    return url.match(youTubeUrlRegex)?.[1] ?? '';
   }
   return '';
 };
