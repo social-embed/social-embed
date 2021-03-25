@@ -212,11 +212,17 @@ export class OEmbedElement extends LitElement {
     const url = getDailyMotionEmbedFromId(dailyMotionId);
 
     const width = this.getAttribute('width') || this.width;
+    const widthWithUnits = this.width.match(/(px|%)/)
+      ? this.width
+      : `${this.width}px`;
     const height = this.getAttribute('height') || this.height;
+    const heightWithUnits = this.height.match(/(px|%)/)
+      ? this.height
+      : `${this.height}px`;
 
     return html`
       <div
-        style="position:relative;width:${width}px;height:${height}px;overflow:hidden;"
+        style="width:${widthWithUnits};height:${heightWithUnits};overflow:hidden;"
       >
         <iframe
           allow="autoplay"

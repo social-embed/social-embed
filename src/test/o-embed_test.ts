@@ -1,5 +1,7 @@
 import {
   convertUrlToEmbedUrl,
+  getDailyMotionEmbedFromId,
+  getDailyMotionIdFromUrl,
   getVimeoEmbedUrlFromId,
   getVimeoIdFromUrl,
   getYouTubeEmbedUrlFromId,
@@ -463,6 +465,61 @@ suite('o-embed', () => {
         >
       </iframe>
       <slot></slot>
+    `
+      );
+    });
+  });
+
+  suite('dailyMotion', () => {
+    const src = 'https://www.dailymotion.com/video/x7znrd0';
+    const embedSrc = getDailyMotionEmbedFromId(getDailyMotionIdFromUrl(src));
+
+    test('renders with url', async () => {
+      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      assert.shadowDom.equal(
+        el,
+        `
+      <div style="width:560px;height:315px;overflow:hidden;">
+      <iframe
+        width="560"
+        allow="autoplay"
+        allowfullscreen="true"
+        frameborder="0"
+        height="315"
+        src=${embedSrc}
+        style="width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden"
+        type="text/html"
+        width="560"
+      >
+      </iframe>
+      <slot></slot>
+      </div>
+    `
+      );
+    });
+
+    test('renders with with 100%', async () => {
+      const el = await fixture(
+        html`<o-embed url=${src} width="100%" height="100%"></o-embed>`
+      );
+      assert.shadowDom.equal(
+        el,
+        `
+      <div style="width:100%;height:100%;overflow:hidden;">
+      <iframe
+        width="100%"
+        allow="autoplay"
+        allowfullscreen="true"
+        frameborder="0"
+        height="100%"
+        src=${embedSrc}
+        style="width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden"
+        type="text/html"
+        width="560"
+      >
+      </iframe>
+      <slot></slot>
+      </div>
     `
       );
     });
