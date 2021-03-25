@@ -1,5 +1,12 @@
 # CHANGES
 
+## 0.0.1-next.25 (2020-03-24)
+
+- Export `youTubeUrlRegex`
+- Change casing on functions from `URL` -> `Url`
+- Make protocol optional
+- Add tests for Dailymotion
+
 ## 0.0.1-next.24 (2020-03-24)
 
 `convertURLToEmbedURL` -> `convertUrlToEmbedUrl`
