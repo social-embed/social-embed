@@ -9,8 +9,16 @@ title: <o-embed> ⌲ Install
 
 ## Local Installation
 
+NPM:
+
 ```bash
 npm i @tony/oembed-component
+```
+
+yarn:
+
+```bash
+yarn add @tony/oembed-component
 ```
 
 ## CDN
