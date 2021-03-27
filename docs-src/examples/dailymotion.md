@@ -3,7 +3,7 @@ layout: example.11ty.cjs
 title: <o-embed> ⌲ Examples ⌲ DailyMotion
 tags: example
 name: DailyMotion
-description: DailyMotion embed
+description: DailyMotion
 ---
 
 <h1>Default dimensions</h1>

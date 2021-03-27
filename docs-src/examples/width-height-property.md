@@ -1,9 +1,9 @@
 ---
 layout: example.11ty.cjs
 title: <o-embed> ⌲ Examples ⌲ Width / Height Property
-tags: example
+tags: customize
 name: Width / height Property
-description: Setting the width and height properties
+description: width and height
 ---
 
 <h2>Height</h2>

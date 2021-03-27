@@ -1,9 +1,9 @@
 ---
 layout: example.11ty.cjs
 title: <o-embed> ⌲ Examples ⌲ URL Property
-tags: example
+tags: customize
 name: URL Property
-description: Setting the url property
+description: url
 ---
 
 <h3>HTML</h3>

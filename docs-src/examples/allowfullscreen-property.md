@@ -1,9 +1,9 @@
 ---
 layout: example.11ty.cjs
 title: <o-embed> ⌲ Examples ⌲ allowfullscreen Property
-tags: example
+tags: customize
 name: allowfullscreen Property
-description: Setting the allowfullscreen property
+description: allowfullscreen
 ---
 
 Default behavior:

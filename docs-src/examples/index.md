@@ -3,7 +3,7 @@ layout: example.11ty.cjs
 title: <o-embed> ⌲ Examples ⌲ YouTube
 tags: example
 name: YouTube
-description: A basic example
+description: YouTube
 ---
 
 <h3>HTML</h3>

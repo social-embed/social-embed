@@ -4,8 +4,7 @@ const relative = require('./relative-path.cjs');
 /**
  * This template extends the page template and adds an examples list.
  */
-module.exports = function(data) {
-
+module.exports = function (data) {
   return page({
     ...data,
     content: renderExample(data),
@@ -17,15 +16,50 @@ const renderExample = ({name, content, collections, page}) => {
     <h1>Example: ${name}</h1>
     <section class="examples">
       <nav class="collection">
+      <strong>Providers:</strong>
         <ul>
-          ${collections.example === undefined
+          ${
+            collections.example === undefined
               ? ''
-              : collections.example.map((post) => `
+              : collections.example
+                  .map(
+                    (post) => `
                   <li class=${post.url === page.url ? 'selected' : ''}>
-                    <a href="${relative(page.url, post.url)}">${post.data.description.replace('<', '&lt;')}</a>
+                    <a href="${relative(
+                      page.url,
+                      post.url
+                    )}">${post.data.description.replace('<', '&lt;')}</a>
                   </li>
-                `).join('')}
+                `
+                  )
+                  .join('')
+          }
         </ul>
+
+     <strong>Customization:</strong>
+        <ul>
+          ${
+            collections.customize === undefined
+              ? ''
+              : collections.customize
+                  // .filter((post) => {
+                  //   console.log({post});
+                  //   return post.data.tags.includes('example');
+                  // })
+                  .map(
+                    (post) => `
+                  <li class=${post.url === page.url ? 'selected' : ''}>
+                    <a href="${relative(
+                      page.url,
+                      post.url
+                    )}">${post.data.description.replace('<', '&lt;')}</a>
+                  </li>
+                `
+                  )
+                  .join('')
+          }
+        </ul>
+
       </nav>
       <div>
         ${content}

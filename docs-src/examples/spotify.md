@@ -3,7 +3,7 @@ layout: example.11ty.cjs
 title: <o-embed> ⌲ Examples ⌲ Spotify
 tags: example
 name: Spotify
-description: Spotify embed
+description: Spotify
 ---
 
 <em>Attention: Turn your volume down a bit, the previews are loud.</em>
