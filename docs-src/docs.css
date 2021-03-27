@@ -85,7 +85,7 @@ nav {
   display: grid;
   width: 100%;
   max-width: 100%;
-  grid-template-columns: repeat(auto-fit, 240px);
+  grid-template-columns: repeat(auto-fit, 180px);
   justify-content: center;
   border-bottom: 1px solid #efefef;
 }

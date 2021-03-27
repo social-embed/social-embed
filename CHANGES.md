@@ -1,4 +1,4 @@
-# CHANGES
+# Changes
 
 ## 0.0.1-next.27 (2020-03-25)
 
