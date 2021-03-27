@@ -24,13 +24,13 @@ URL: https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs?si=_AayG1M6SkiRSomgoM
 <o-embed
 url="https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs?si=_AayG1M6SkiRSomgoM_Vxg"></o-embed>
 
+<h3>HTML</h3>
+
 ```html
 <o-embed url="spotify:track:1w4etUoKfql47wtTFq031f"></o-embed>
 ```
 
 <o-embed url="spotify:track:1w4etUoKfql47wtTFq031f"></o-embed>
-
-<h3>HTML</h3>
 
 <h1>Playlists</h1>
 
