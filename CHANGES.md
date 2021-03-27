@@ -1,5 +1,9 @@
 # CHANGES
 
+## Next release
+
+- Update dependency packages (rollup, docs, testing)
+
 ## 0.0.1-next.26 (2020-03-24)
 
 - Fix DailyMotion visibility issue, add tests for player
