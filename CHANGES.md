@@ -1,8 +1,9 @@
 # CHANGES
 
-## Next release
+## 0.0.1-next.27 (2020-03-25)
 
 - Update dependency packages (rollup, docs, testing)
+- DailyMotion: Fix iframe dimensions
 
 ## 0.0.1-next.26 (2020-03-24)
 
