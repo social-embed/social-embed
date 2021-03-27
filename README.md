@@ -1,4 +1,4 @@
-# [`<o-embed />`](https://oembed-component.git-pull.com/) (proof of concept) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/tony/oembed-component/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/@tony/oembed-component.svg?style=flat)](https://www.npmjs.com/package/@tony/oembed-component)
+# [`<o-embed>`](https://oembed-component.git-pull.com/) (proof of concept) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/tony/oembed-component/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/@tony/oembed-component.svg?style=flat)](https://www.npmjs.com/package/@tony/oembed-component)
 
 A modern, TypeScript [web component] for [OEmbed] tags. Built in [LitElement].
 
