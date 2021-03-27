@@ -487,7 +487,7 @@ suite('o-embed', () => {
         frameborder="0"
         height="315"
         src=${embedSrc}
-        style="width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden"
+        style="width:100%;height:100%;left:0px;top:0px;overflow:hidden"
         type="text/html"
         width="560"
       >
@@ -513,7 +513,7 @@ suite('o-embed', () => {
         frameborder="0"
         height="100%"
         src=${embedSrc}
-        style="width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden"
+        style="width:100%;height:100%;left:0px;top:0px;overflow:hidden"
         type="text/html"
         width="560"
       >

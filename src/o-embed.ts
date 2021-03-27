@@ -242,7 +242,7 @@ export class OEmbedElement extends LitElement {
               ? true
               : undefined
           )}
-          style="width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden"
+          style="width:100%;height:100%;left:0px;top:0px;overflow:hidden"
           type="text/html"
         ></iframe>
         <slot></slot>
