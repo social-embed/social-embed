@@ -5,7 +5,11 @@
 - Update dev dependencies: karma, eslint, rollup
 - Move to monorepo structure
 - Switch from karma to web-test-runner to get around import issues
-- Decouple library regexes to packages/embed-lib
+- Decouple library regexes to `packages/lib/`
+- Decouple docs to `packages/site/`
+- Add [typedoc] documentation: https://social-embed.git-pull.com/api/
+
+[typedoc]: https://typedoc.org/
 
 ## 0.0.1-next.27 (2020-03-25)
 
