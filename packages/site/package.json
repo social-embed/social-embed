@@ -1,0 +1,28 @@
+{
+  "name": "@social-embed/site",
+  "version": "0.0.1-next.0",
+  "license": "MIT",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "build": "npm run clean && yarn workspace @social-embed/lib build && yarn workspace @social-embed/wc build && yarn workspace @social-embed/wc analyze && npm run docs:build && npm run docs:assets && npm run docs:api && npm run docs:gen",
+    "clean": "rimraf dist/",
+    "lint": "echo 'NOOP'",
+    "test": "echo 'NOOP'",
+    "docs:gen": "eleventy --config=.eleventy.cjs",
+    "docs:gen:watch": "eleventy --config=.eleventy.cjs --watch",
+    "docs:build": "rollup -c --file dist/o-embed.bundled.js",
+    "docs:assets": "cp ../../node_modules/prismjs/themes/prism-okaidia.css ./typedoc-style.css dist/",
+    "docs:serve": "es-dev-server --root-dir=dist --node-resolve --watch",
+    "docs:api": "yarn typedoc"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@11ty/eleventy": "^0.12.1",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^3.1.0",
+    "@strictsoftware/typedoc-plugin-monorepo": "^0.4.2",
+    "es-dev-server": "^2.1.0",
+    "typedoc": "^0.17.0-3",
+    "typedoc-neo-theme": "^1.1.0"
+  }
+}

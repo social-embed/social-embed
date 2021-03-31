@@ -1,0 +1,43 @@
+{
+  "name": "@social-embed/lib",
+  "description": "Regexes, ID extraction, for embed providers (YouTube, other OEmbed compatible providers),",
+  "version": "0.0.1-next.6",
+  "main": "dist/index.js",
+  "module": "dist/lib.esm.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "embed",
+    "typescript",
+    "youtube",
+    "dailymotion"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/social-embed/social-embed"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "start": "tsdx start",
+    "build": "tsdx build",
+    "prepare": "tsdx build",
+    "bootstrap": "echo 'NOOP'",
+    "test": "tsdx test",
+    "docs": "yarn typedoc src/index.ts",
+    "docs:serve": "python -m http.server --directory docs 8082",
+    "lint": "eslint src",
+    "ncu": "ncu",
+    "update": "ncu",
+    "typedoc": "typedoc"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "prettier": "^2.2.1",
+    "tsdx": "^0.14.1",
+    "typedoc": "^0.20.34"
+  }
+}
