@@ -1,4 +1,4 @@
-# [`<o-embed>`](https://oembed-component.git-pull.com/) (proof of concept) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/@social-embed/wc.svg?style=flat)](https://www.npmjs.com/package/@social-embed/wc)
+# [`<o-embed>`](https://social-embed.git-pull.com/) (proof of concept) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/@social-embed/wc.svg?style=flat)](https://www.npmjs.com/package/@social-embed/wc)
 
 A modern, TypeScript [web component] for [OEmbed] tags. Built in [LitElement].
 
@@ -13,10 +13,10 @@ Demo: [CodeSandbox], Examples: [YouTube], [Spotify], [Vimeo], [DailyMotion]
 [oembed]: https://oembed.com/
 [ckeditor5#2737]: https://github.com/ckeditor/ckeditor5/issues/2737
 [codesandbox]: https://codepen.io/attachment/pen/poRRwdy
-[youtube]: https://oembed-component.git-pull.com/examples/
-[spotify]: https://oembed-component.git-pull.com/examples/spotify/
-[dailymotion]: https://oembed-component.git-pull.com/examples/dailymotion/
-[vimeo]: https://oembed-component.git-pull.com/examples/vimeo/
+[youtube]: https://social-embed.git-pull.com/examples/
+[spotify]: https://social-embed.git-pull.com/examples/spotify/
+[dailymotion]: https://social-embed.git-pull.com/examples/dailymotion/
+[vimeo]: https://social-embed.git-pull.com/examples/vimeo/
 
 Compare to [thangman22/oembed-component](https://github.com/thangman22/oembed-component).
 
