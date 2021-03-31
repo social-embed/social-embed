@@ -1,0 +1,4 @@
+node_modules/
+dist/
+yarn-error.log
+custom-elements.json

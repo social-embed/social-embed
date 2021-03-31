@@ -3,6 +3,9 @@
 ## current
 
 - Update dev dependencies: karma, eslint, rollup
+- Move to monorepo structure
+- Switch from karma to web-test-runner to get around import issues
+- Decouple library regexes to packages/embed-lib
 
 ## 0.0.1-next.27 (2020-03-25)
 

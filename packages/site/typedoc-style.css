@@ -1,0 +1,17 @@
+.secondary-menu {
+  width: 300px !important;
+}
+
+@media (min-width: 1300px) {
+  /** It would be much more efficient if this theme had #id's for sidebar, content, etc **/
+  .col-3.col-menu.menu-sticky-wrap.menu-highlight {  /* left sidebar */
+    width: 200px !important;
+  }
+  .tsd-navigation.outline.primary, .tsd-navigation.secondary.menu-sticky.sticky { /* left sidebar */
+    min-height: 300px;
+  }
+  .col-7.offset-3.col-content { /* content */
+    margin-left: 200px;
+    width: 800px;
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "version": "experimental",
+  "tags": [
+    {
+      "name": "o-embed",
+      "path": "./src/o-embed.ts",
+      "description": "Renders embeds from <o-embed url=\"\"> tags",
+      "attributes": [
+        {
+          "name": "url",
+          "description": "The URL or ID (if supported)",
+          "type": "string"
+        },
+        {
+          "name": "width",
+          "description": "Pass-through of width attribute",
+          "type": "string",
+          "default": "\"560\""
+        },
+        {
+          "name": "height",
+          "description": "Pass-through of height attribute",
+          "type": "string",
+          "default": "\"315\""
+        },
+        {
+          "name": "frameborder",
+          "description": "Pass-through of frameborder attribute, only used in iframe embeds.",
+          "type": "string",
+          "default": "\"0\""
+        },
+        {
+          "name": "allowfullscreen",
+          "description": "For YouTube only. Passing anything other than 1/true omits the tag.",
+          "type": "string | boolean | undefined",
+          "default": "\"true\""
+        }
+      ],
+      "properties": [
+        {
+          "name": "styles",
+          "type": "CSSResult",
+          "default": "\"css`\\n    :host {\\n      border: 0;\\n      padding: 0;\\n    }\\n  `\""
+        },
+        {
+          "name": "url",
+          "attribute": "url",
+          "description": "The URL or ID (if supported)",
+          "type": "string"
+        },
+        {
+          "name": "width",
+          "attribute": "width",
+          "description": "Pass-through of width attribute",
+          "type": "string",
+          "default": "\"560\""
+        },
+        {
+          "name": "height",
+          "attribute": "height",
+          "description": "Pass-through of height attribute",
+          "type": "string",
+          "default": "\"315\""
+        },
+        {
+          "name": "frameborder",
+          "attribute": "frameborder",
+          "description": "Pass-through of frameborder attribute, only used in iframe embeds.",
+          "type": "string",
+          "default": "\"0\""
+        },
+        {
+          "name": "allowfullscreen",
+          "attribute": "allowfullscreen",
+          "description": "For YouTube only. Passing anything other than 1/true omits the tag.",
+          "type": "string | boolean | undefined",
+          "default": "\"true\""
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Directly pass through child contents to bottom of embed, optional."
+        }
+      ]
+    }
+  ]
+}
