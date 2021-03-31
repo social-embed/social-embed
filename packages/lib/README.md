@@ -23,7 +23,7 @@ If you support ESM / Urls, you can also import via like this:
 
 ```typescript
 // unpkg
-import {getYouTubeIdFromUrl} from 'https://www.unpkg.com/@social-embed/lib@0.0.1-next.0?module';
+import {getYouTubeIdFromUrl} from 'https://www.unpkg.com/@social-embed/lib?module';
 // skypack
 import {getYouTubeIdFromUrl} from 'https://cdn.skypack.dev/@social-embed/lib';
 ```
