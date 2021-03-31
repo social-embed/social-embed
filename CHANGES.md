@@ -1,5 +1,9 @@
 # Changes
 
+## current
+
+- Update dev dependencies: karma, eslint, rollup
+
 ## 0.0.1-next.27 (2020-03-25)
 
 - Update dependency packages (rollup, docs, testing)
