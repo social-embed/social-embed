@@ -1,11 +1,10 @@
 {
   "name": "@social-embed/lib",
   "description": "Regexes, ID extraction, for embed providers (YouTube, other OEmbed compatible providers),",
-  "version": "0.0.1-next.7",
+  "version": "0.0.1-next.9",
   "main": "dist/index.js",
   "module": "dist/lib.esm.js",
   "typings": "dist/index.d.ts",
-  "type": "module",
   "license": "MIT",
   "keywords": [
     "embed",
@@ -16,9 +15,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "author": "Tony Narlock <tony@git-pull.com> (https://www.git-pull.com)",
+  "homepage": "https://social-embed.git-pull.com/",
   "repository": {
     "type": "git",
     "url": "https://github.com/social-embed/social-embed"
+  },
+  "bugs": {
+    "url": "https://github.com/social-embed/social-embed/issues"
   },
   "scripts": {
     "clean": "rimraf dist",
