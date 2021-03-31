@@ -1,10 +1,10 @@
 {
   "name": "@social-embed/lib",
   "description": "Regexes, ID extraction, for embed providers (YouTube, other OEmbed compatible providers),",
-  "version": "0.0.1-next.6",
+  "version": "0.0.1-next.7",
   "main": "dist/index.js",
   "module": "dist/lib.esm.js",
-  "types": "dist/index.d.ts",
+  "typings": "dist/index.d.ts",
   "type": "module",
   "license": "MIT",
   "keywords": [
