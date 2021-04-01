@@ -30,7 +30,7 @@ import {getYouTubeIdFromUrl} from 'https://cdn.skypack.dev/@social-embed/lib';
 
 ## API reference
 
-[https://oembed-components.git-pull.com/api/](https://oembed-components.git-pull.com/api/)
+[https://social-embed.git-pull.com/api/](https://social-embed.git-pull.com/api/)
 
 ## Try
 
