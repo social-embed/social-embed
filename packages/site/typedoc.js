@@ -5,7 +5,7 @@ const path = require(`path`);
 module.exports = {
   name: `@social-embed`,
   tsconfig: require.resolve(`../../tsconfig.json`),
-  inputFiles: [`./packages/`],
+  inputFiles: [`./packages/`, `./packages/lib/src/providers`],
   mode: `modules`,
   out: `./dist/api`,
   theme: `${path.dirname(
@@ -19,6 +19,7 @@ module.exports = {
   plugin: [`typedoc-neo-theme`, `@strictsoftware/typedoc-plugin-monorepo`],
   'external-modulemap': `.*packages/([^/]+)/.*`,
   ignoreCompilerErrors: true,
+  preserveConstEnums: 'true',
   links: [
     {
       label: `Back to homepage`,
