@@ -1,5 +1,5 @@
-import {youTubeUrlRegex} from './providers/youtube';
-export {youTubeUrlRegex};
+import * as youtube from './providers/youtube';
+export {youtube as YouTube};
 
 export enum Provider {
   YouTube = 'YouTube',
@@ -63,7 +63,7 @@ export const getSpotifyEmbedUrlFromIdAndType = (
 export const getYouTubeIdFromUrl = (url: string | undefined): string => {
   if (url) {
     // credit: https://stackoverflow.com/a/42442074
-    return url.match(youTubeUrlRegex)?.[1] ?? '';
+    return url.match(youtube.youTubeUrlRegex)?.[1] ?? '';
   }
   return '';
 };
