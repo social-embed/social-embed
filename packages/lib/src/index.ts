@@ -1,3 +1,6 @@
+import {youTubeUrlRegex} from './providers/youtube';
+export {youTubeUrlRegex};
+
 export enum Provider {
   YouTube = 'YouTube',
   Spotify = 'Spotify',
@@ -51,9 +54,6 @@ export const getSpotifyIdAndTypeFromUrl = (url: string): [string, string] => {
 
   return [spotifyId, spotifyType];
 };
-
-export const youTubeUrlRegex =
-  '^(?:(?:https?):)?(?://)?[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([-\\w]{11})(?:\\?|=|&|$)';
 
 export const getSpotifyEmbedUrlFromIdAndType = (
   spotifyId: string,
@@ -115,5 +115,3 @@ export const convertUrlToEmbedUrl = (url: string): string => {
   }
   return getEmbedUrlFromId(id);
 };
-
-
