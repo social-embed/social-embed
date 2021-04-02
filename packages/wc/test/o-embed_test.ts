@@ -7,7 +7,7 @@ import {
   getYouTubeEmbedUrlFromId,
   getYouTubeIdFromUrl,
 } from '@social-embed/lib';
-import {OEmbedElement} from '../o-embed.js';
+import {OEmbedElement} from '@social-embed/wc';
 import {fixture, html} from '@open-wc/testing';
 
 const assert = chai.assert;
