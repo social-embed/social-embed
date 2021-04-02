@@ -20,8 +20,9 @@ import {terser} from 'rollup-plugin-terser';
 export default {
   input: '../wc/dist/index.js',
   output: {
-    file: 'dist/o-embed.bundled.js',
-    format: 'esm',
+    file: 'static/js/o-embed.bundled.js',
+    name: 'oembed',
+    format: 'umd',
   },
   onwarn(warning) {
     if (warning.code !== 'THIS_IS_UNDEFINED') {

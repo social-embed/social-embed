@@ -31,17 +31,13 @@
     "prepare": "tsdx build",
     "bootstrap": "echo 'NOOP'",
     "test": "tsdx test",
-    "docs": "yarn typedoc src/index.ts",
-    "docs:serve": "python -m http.server --directory docs 8082",
     "lint": "eslint src",
     "ncu": "ncu",
-    "update": "ncu",
-    "typedoc": "typedoc"
+    "update": "ncu"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
     "prettier": "^2.2.1",
-    "tsdx": "^0.14.1",
-    "typedoc": "^0.20.34"
+    "tsdx": "^0.14.1"
   }
 }

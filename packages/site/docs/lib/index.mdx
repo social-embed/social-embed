@@ -1,0 +1,47 @@
+---
+id: index
+title: About
+---
+
+## Quick access to regular expressions
+
+### Quickstart
+
+If you just want to use [installation](./installatin/) you can do:
+
+```bash
+npm i @social-embed/lib
+# yarn
+yarn add @social-embed/lib
+```
+
+Then import and use as such:
+
+```typescript
+import {getYouTubeIdFromUrl} from '@social-embed/lib';
+
+console.log(getYouTubeIdFromUrl('https://www.youtube.com/watch?v=Bd8_vO5zrjo'));
+// output: Bd8_vO5zrjo
+```
+
+If you support ESM / Urls, you can also import via like this:
+
+```typescript
+// unpkg
+import {getYouTubeIdFromUrl} from 'https://www.unpkg.com/@social-embed/lib?module';
+// skypack
+import {getYouTubeIdFromUrl} from 'https://cdn.skypack.dev/@social-embed/lib';
+```
+
+## API reference
+
+[https://social-embed.git-pull.com/api/](https://social-embed.git-pull.com/api/)
+
+## Try
+
+- [CodePen], [codepen console]
+- [jsfiddle]
+
+[codepen]: https://codepen.io/attachment/pen/VwPPrNq
+[codepen console]: https://codepen.io/attachment/pen/poRRpdp?editors=0010
+[jsfiddle]: https://jsfiddle.net/gitpull/pcLagbsm/

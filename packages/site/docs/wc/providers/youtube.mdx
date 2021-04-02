@@ -1,12 +1,12 @@
 ---
-layout: example.11ty.cjs
-title: <o-embed> ⌲ Examples ⌲ YouTube
-tags: example
-name: YouTube
-description: YouTube
+id: youtube
+title: YouTube
+sidebar_label: YouTube
 ---
 
-<h3>HTML</h3>
+## Basic
+
+### HTML
 
 URL: https://youtu.be/FTQbiNvZqaY
 
@@ -16,25 +16,20 @@ URL: https://youtu.be/FTQbiNvZqaY
 
 <o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
 
-<h2>Optional: Inner / child content</h2>
+## Optional: Inner / child content
 
-<style>
-  o-embed p {
-    border: solid 1px blue;
-    padding: 8px;
-  }
-</style>
 
-<h3>CSS</h3>
+### CSS
 
 ```css
-p {
+o-embed p {
   border: solid 1px blue;
   padding: 8px;
 }
+
 ```
 
-<h3>HTML</h3>
+### HTML
 
 ```html
 <o-embed url="https://youtu.be/FTQbiNvZqaY">
@@ -43,5 +38,5 @@ p {
 ```
 
 <o-embed url="https://youtu.be/FTQbiNvZqaY">
-  <p>This is some content inside</p>
+  <p style={{border: 'solid 1px blue', padding: '8px'}}>This is some content inside</p>
 </o-embed>

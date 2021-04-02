@@ -23,7 +23,6 @@
     "nohoist": [
       "**/@open-wc/**",
       "**/@types/jest",
-      "**/@types/mocha",
       "**/@types/jasmine",
       "**/ts-loader"
     ],
