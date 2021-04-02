@@ -14,7 +14,9 @@
     "docs:build": "rollup -c --file dist/o-embed.bundled.js",
     "docs:assets": "cp ../../node_modules/prismjs/themes/prism-okaidia.css ./typedoc-style.css dist/",
     "docs:serve": "es-dev-server --root-dir=dist --node-resolve --watch",
-    "docs:api": "yarn typedoc"
+    "docs:api": "yarn typedoc", 
+    "ncu": "ncu",
+    "update": "ncu"
   },
   "dependencies": {},
   "devDependencies": {
