@@ -40,23 +40,38 @@ module.exports = {
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'left',
+          items: [
+            {
+              // type and docId not working...
+              type: 'doc',
+              docId: 'lib/index',
+
+              to: '/docs/lib/',
+              label: 'library (lib)',
+            },
+            {
+              // type and docId not working...
+              type: 'doc',
+              docId: 'wc/index',
+
+              to: '/docs/wc/',
+              label: 'web component (wc)',
+            },
+          ],
         },
         {
           href: 'https://social-embed.git-pull.com/api/',
           label: 'API Reference',
           position: 'left',
+          to: 'https://social-embed.git-pull.com/api/',
           items: [
             {
-              href: 'https://social-embed.git-pull.com/api/',
-              label: 'Homepage',
-            },
-            {
               href: 'https://social-embed.git-pull.com/api/modules/lib.html',
-              label: 'utility functions (lib)',
+              label: 'library (lib)',
             },
             {
               href: 'https://social-embed.git-pull.com/api/modules/wc.html',
-              label: '<o-embed> web component (wc)',
+              label: 'web component (wc)',
             },
           ],
         },
@@ -67,7 +82,33 @@ module.exports = {
           position: 'left',
         },
         {
-          href: 'https://github.com/social-embed/social-embed',
+          label: 'NPM',
+          position: 'right',
+          items: [
+            {
+              href: 'https://www.npmjs.com/package/@social-embed/lib',
+              label: '@social-embed/lib',
+            },
+            {
+              href: 'https://www.npmjs.com/package/@social-embed/wc',
+              label: '@social-embed/wc',
+            },
+          ],
+        },
+        {
+          to: 'https://github.com/social-embed/social-embed',
+          items: [
+            {
+              href:
+                'https://github.com/social-embed/social-embed/tree/master/packages/lib',
+              label: '@social-embed/lib',
+            },
+            {
+              href:
+                'https://github.com/social-embed/social-embed/tree/master/packages/wc',
+              label: '@social-embed/wc',
+            },
+          ],
           label: 'GitHub',
           position: 'right',
         },
