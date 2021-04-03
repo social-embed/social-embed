@@ -58,11 +58,12 @@ getId("https://www.youtu.be/watch?v=Bd8_vO5zrjo")
 `}
         </CodeBlock>
         Try it now:{' '}
-        <Link href="https://codepen.io/attachment/pen/VwPPrNq">codepen.io</Link>
+        <Link href="https://codepen.io/attachment/pen/VwPPrNq">codepen.io</Link>{' '}
+        (
         <Link href="https://codepen.io/attachment/pen/poRRpdp?editors=0010">
-          (console)
+          console
         </Link>
-        , <Link href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</Link>{' '}
+        ), <Link href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</Link>{' '}
         also,{' '}
         <Link href="https://social-embed.git-pull.com/api/modules/lib.html">
           API Documentation
