@@ -5,6 +5,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import CodeBlock from '@theme/CodeBlock';
+import Playground from '@docusaurus/theme-live-codeblock/src/theme/Playground';
 
 import styles from './styles.module.css';
 
@@ -20,8 +21,7 @@ const features = [
           </Link>
           :
         </div>
-        <CodeBlock className="language-html">{`<o-embed\n  url="https://youtu.be/FTQbiNvZqaY"\n  width="100%"\n></o-embed>`}</CodeBlock>
-        <o-embed url="https://youtu.be/FTQbiNvZqaY" width="100%"></o-embed>
+        <Playground className="language-html">{`<o-embed\n  url="https://youtu.be/FTQbiNvZqaY"\n  width="100%"\n></o-embed>`}</Playground>
         <br />
         Try it live:{' '}
         <Link href="https://codepen.io/attachment/pen/poRRwdy">codepen.io</Link>
