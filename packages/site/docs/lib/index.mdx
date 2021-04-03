@@ -4,14 +4,30 @@ title: About
 slug: .
 ---
 
-## Tools for parsing embeddable content
+`@social-embed/lib` is a repository of patterns and parsers for embed-friendly websites. You can use
+it in your web apps and scripts. It also powers the project's [`<o-embed>` web component](../wc/index.mdx).
 
-### Supported embeds
+## Supported embeds
 
-Only oEmbed, `@social-embed/lib` supports providers by hand.
+See [`src/providers`](https://github.com/social-embed/social-embed/tree/master/packages/lib/src/providers) for
+the full manifest of supported content. As of 2021-04-21, it includes at least:
 
-Internally [`Provider`](https://social-embed.git-pull.com/api/enums/lib.provider.html)
-is a [String enum](https://www.typescriptlang.org/docs/handbook/enums.html#string-enums) of supported embeds.
+- DailyMotion
+- Spotify
+- Vimeo
+- YouTube
+
+## Usage
+
+### Lingo
+
+- [`Provider`](https://social-embed.git-pull.com/api/enums/lib.provider.html): [String enum](https://www.typescriptlang.org/docs/handbook/enums.html#string-enums) of supported embeds.
+- `<providerName>Regex`: Name for JS regular expressions
+- `get${providerName}IdFromUrl`: Extracts ID from URLs (various formats), e.g.
+  - `'https://youtu.be/watch?v=Bd8_vO5zrjo'` -> `'Bd8_vO5zrjo'`
+  - `'https://www.youtube.com/watch?v=Bd8_vO5zrjo'` -> `'Bd8_vO5zrjo'`
+- `get${providerName}EmbedUrlFromId`: Turns ID into embed-friendly URL, e.g.
+  - `'Bd8_vO5zrjo'` -> `"https://www.youtube.com/embed/Bd8_vO5zrjo"`
 
 ### Regular expressions
 
@@ -20,8 +36,8 @@ import {
   getYouTubeIdFromUrl,
   youTubeUrlRegex
 } from '@social-embed/lib';
-'https://www.youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex)
-// ["https://www.youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
+'https://youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex)
+// ["https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
 ```
 
 ### Detect provider (e.g. YouTube) from URL
@@ -31,7 +47,7 @@ import {
   getProviderFromUrl,
 } from '@social-embed/lib';
 const provider = getProviderFromUrl(
-  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+  'https://youtu.be/watch?v=Bd8_vO5zrjo'
 )
 // YouTube
 ```
@@ -44,12 +60,12 @@ import {
   ProviderIdFunctionMap,
 } from '@social-embed/lib';
 const provider = getProviderFromUrl(
-  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+  'https://youtu.be/watch?v=Bd8_vO5zrjo'
 )  // YouTube
 
 if (provider) {
   const getId = ProviderIdFunctionMap[provider]
-  getId("https://www.youtu.be/watch?v=Bd8_vO5zrjo")
+  getId("https://youtu.be/watch?v=Bd8_vO5zrjo")
   // "Bd8_vO5zrjo"
 }
 ```
@@ -61,7 +77,7 @@ import {
   getYouTubeIdFromUrl
 } from '@social-embed/lib';
 const embedId = getYouTubeIdFromUrl(
-  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+  'https://youtu.be/watch?v=Bd8_vO5zrjo'
 )  // "Bd8_vO5zrjo"
 ```
 
@@ -74,11 +90,11 @@ import {
   getYouTubeEmbedUrlFromId,
 } from '@social-embed/lib';
 const embedId = getYouTubeIdFromUrl(
-  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+  'https://youtu.be/watch?v=Bd8_vO5zrjo'
 )  // "Bd8_vO5zrjo"
 
 const embedFriendlyUrl = getYouTubeEmbedUrlFromId(
-  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+  'https://youtu.be/watch?v=Bd8_vO5zrjo'
 )  // "https://www.youtube.com/embed/Bd8_vO5zrjo"
 ```
 
@@ -92,7 +108,7 @@ The above embed URL can fit right into an `<iframe>`:
 
 This is what the [`<o-embed>` web component](../wc/index.mdx) uses under the hood to render embeds.
 
-### Quickstart
+## Quickstart
 
 If you just want to use [installation](./installation.mdx) you can do:
 
