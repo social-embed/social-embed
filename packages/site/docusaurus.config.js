@@ -1,6 +1,7 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 // const typegenOptions = require('./typedoc.js');
 // console.log({typegenOptions});
+const path = require('path');
 module.exports = {
   title: '@social-embed',
   tagline: 'Easy embedding',
@@ -13,7 +14,10 @@ module.exports = {
   projectName: 'docusaurus', // Usually your repo name.
   onBrokenLinks: 'warn', // ignore until we find a way to support /api/
   scripts: ['/js/o-embed.bundled.js'],
+
   plugins: [
+    path.resolve(__dirname, 'plugins', 'more-mdx-paths'),
+
     // [
     //   'docusaurus-plugin-typedoc',
     //
