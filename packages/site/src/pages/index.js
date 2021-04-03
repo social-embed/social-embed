@@ -10,7 +10,7 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: 'Easy to Use (Web component)',
+    title: 'Web component: Drop-in. Native players.',
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: (
       <>
@@ -28,15 +28,15 @@ const features = [
     ),
   },
   {
-    title: 'Parse embeddable URLs (library only)',
+    title: 'Library only: Detect and parse embeddable URLs',
     imageUrl: 'img/undraw_docusaurus_react.svg',
     description: (
       <>
         <Link to={'docs/lib/'}>
           <code>{'@social-embed/lib'}</code>
         </Link>{' '}
-        is a typed library for scraping IDs and converting IDs into an
-        embed-friendly format.
+        is a repository of embed friendly sites and typed library for scraping
+        IDs and converting IDs into an embed-friendly format.
         <CodeBlock className="language-typescript">
           {`import {
   getProviderFromUrl,
@@ -95,8 +95,8 @@ export default function Home() {
   const {siteConfig = {}} = context;
   return (
     <Layout
-      title={`${siteConfig.title}: Embeds made easy`}
-      description="Utilities and web component for adding embeds"
+      title={`${siteConfig.title}: Embedding media players have never been so easy`}
+      description="Utilities and web component for embed-friendly websites"
     >
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">

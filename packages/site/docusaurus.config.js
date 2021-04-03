@@ -4,7 +4,7 @@
 const path = require('path');
 module.exports = {
   title: '@social-embed',
-  tagline: 'Easy embedding',
+  tagline: 'Instantly integrate with embed-friendly websites',
   url: 'https://social-embed.git-pull.com',
   baseUrl: '/',
   onBrokenLinks: 'throw',
