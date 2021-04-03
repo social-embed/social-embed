@@ -45,17 +45,17 @@ const features = [
   youTubeUrlRegex,
 } from '@social-embed/lib';
 
-'https://www.youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex)
-// ["https://www.youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
+'https://youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex)
+// ["https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
 
-getYouTubeIdFromUrl('https://www.youtu.be/watch?v=Bd8_vO5zrjo')
+getYouTubeIdFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo')
 // "Bd8_vO5zrjo"
 const provider = getProviderFromUrl(
-  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+  'https://youtu.be/watch?v=Bd8_vO5zrjo'
 )
 // YouTube
 const getId = ProviderIdFunctionMap[provider]
-getId("https://www.youtu.be/watch?v=Bd8_vO5zrjo")
+getId("https://youtu.be/watch?v=Bd8_vO5zrjo")
 // "Bd8_vO5zrjo"
 `}
         </CodeBlock>
