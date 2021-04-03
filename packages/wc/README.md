@@ -60,7 +60,7 @@ Both the TypeScript compiler and lit-analyzer are configured to be very strict. 
 
 ### Testing
 
-This sample uses Karma, Chai, Mocha, and the open-wc test helpers for testing. See the [open-wc testing documentation](https://open-wc.org/testing/testing.html) for more information.
+This sample uses web-test-runner and the open-wc test helpers for testing. See the [open-wc testing documentation](https://open-wc.org/testing/testing.html) for more information.
 
 Tests can be run with the `test` script:
 

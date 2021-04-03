@@ -19,7 +19,7 @@ import {
 } from '@social-embed/lib';
 
 /**
- * Renders embeds from <o-embed url=""> tags
+ * Renders embeds from `<o-embed url="">` tags
  *
  * @slot - Directly pass through child contents to bottom of embed, optional.
  */
