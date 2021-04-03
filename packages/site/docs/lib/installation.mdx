@@ -10,9 +10,7 @@ Want the `<o-embed></o-embed>` library? See [@social-embed/wc](../wc/index.mdx).
 :::
 
 
-## Common embed constants, patterns and functions
-
-### Quickstart
+## Quickstart
 
 If you just want to use [installation](./installation/) you can do:
 
@@ -27,3 +25,17 @@ yarn:
 ```bash
 yarn add @social-embed/lib
 ```
+
+## Via ESM
+
+If you support ESM / URLs (such as via code sandboxes and [streaming imports] in [snowpack], you can also import via like this:
+
+```typescript
+// unpkg
+import { getYouTubeIdFromUrl } from 'https://www.unpkg.com/@social-embed/lib?module';
+// skypack
+import { getYouTubeIdFromUrl } from 'https://cdn.skypack.dev/@social-embed/lib';
+```
+
+[streaming imports]: https://www.snowpack.dev/guides/streaming-imports
+[snowpack]: https://www.snowpack.dev

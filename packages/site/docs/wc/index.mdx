@@ -62,25 +62,3 @@ render(
 
 <h2>This is an &lt;o-embed&gt;</h2>
 <o-embed url="https://www.youtube.com/watch?v=XLOCQw5s9Uw"></o-embed>
-
-## Just the lib, please
-
-If you just want to use [API utilities](/api/) you can do:
-
-```bash
-npm i @social-embed/lib
-# or
-yarn add @social-embed/lib
-```
-
-Then import and use as such:
-
-```typescript
-import {getYouTubeIdFromUrl} from '@social-embed/lib';
-
-console.log(getYouTubeIdFromUrl('https://www.youtube.com/watch?v=Bd8_vO5zrjo'));
-// output: Bd8_vO5zrjo
-```
-
-Demo: [CodePen](https://codepen.io/attachment/pen/VwPPrNq),
-[jsfiddle](https://jsfiddle.net/gitpull/pcLagbsm/)
