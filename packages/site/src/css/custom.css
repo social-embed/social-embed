@@ -19,7 +19,10 @@
 }
 
 html[data-theme='dark'] {
-  --ifm-link-color: white;
+  --ifm-color-primary: #2c5282;
+  --ifm-navbar-link-hover-color: #3f80d4;
+  --ifm-menu-color-active: #3f80d4;
+  --ifm-link-color: #3f80d4;
   --ifm-font-color-base-inverse: white;
   --ifm-hero-text-color: white;
 }
