@@ -14,10 +14,12 @@ const features = [
     imageUrl: 'img/undraw_media_player_ylg8.svg',
     description: (
       <>
-        <Link to={'docs/wc/'}>
-          <code>{'<o-embed />'}</code> Web component
-        </Link>
-        :
+        <div style={{marginBottom: '.5rem'}}>
+          <Link to={'docs/wc/'}>
+            <code>{'<o-embed />'}</code> Web component
+          </Link>
+          :
+        </div>
         <CodeBlock className="language-html">{`<o-embed\n  url="https://youtu.be/FTQbiNvZqaY"\n  width="100%"\n></o-embed>`}</CodeBlock>
         <o-embed url="https://youtu.be/FTQbiNvZqaY" width="100%"></o-embed>
         <br />
@@ -32,11 +34,13 @@ const features = [
     imageUrl: 'img/undraw_select_player_64ca.svg',
     description: (
       <>
-        <Link to={'docs/lib/'}>
-          <code>{'@social-embed/lib'}</code>
-        </Link>{' '}
-        is a repository of embed friendly sites and typed library for scraping
-        IDs and converting IDs into an embed-friendly format.
+        <div style={{marginBottom: '.5rem'}}>
+          <Link to={'docs/lib/'}>
+            <code>{'@social-embed/lib'}</code>
+          </Link>{' '}
+          is a repository of embed friendly sites and typed library for scraping
+          IDs and converting IDs into an embed-friendly format.
+        </div>
         <CodeBlock className="language-typescript">
           {`import {
   getProviderFromUrl,
@@ -80,7 +84,16 @@ function Feature({imageUrl, title, description}) {
   return (
     <div className={clsx('col col--6', styles.feature)}>
       {imgUrl && (
-        <div className="text--center">
+        <div
+          className="text--center"
+          style={{
+            backgroundColor: 'white',
+            padding: '1rem',
+            borderRadius: '1rem',
+            width: 'fit-content',
+            margin: '0 auto 1rem auto',
+          }}
+        >
           <img className={styles.featureImage} src={imgUrl} alt={title} />
         </div>
       )}
