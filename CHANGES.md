@@ -8,8 +8,14 @@
 - Decouple library regexes to `packages/lib/`
 - Decouple docs to `packages/site/`
 - Add [typedoc] documentation: https://social-embed.git-pull.com/api/
+- Move documentation to [docusaurus]
 
 [typedoc]: https://typedoc.org/
+[docusaurus]: https://docusaurus.io/
+
+# Legacy changes
+
+This project was formerly one repository, named `@tony/oembed-component`
 
 ## 0.0.1-next.27 (2020-03-25)
 
