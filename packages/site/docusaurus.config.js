@@ -80,10 +80,19 @@ module.exports = {
           ],
         },
         {
-          href:
-            'https://github.com/social-embed/social-embed/blob/master/CHANGES.md',
+          to: '/docs/news/',
           label: 'Release notes',
           position: 'left',
+          items: [
+            {
+              href: '/docs/lib/release-notes',
+              label: 'library (lib)',
+            },
+            {
+              href: '/docs/wc/release-notes',
+              label: 'web component (wc)',
+            },
+          ],
         },
         {
           label: 'Playground',
