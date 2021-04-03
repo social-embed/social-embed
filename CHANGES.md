@@ -1,4 +1,11 @@
-# Changes
+---
+title: News
+---
+
+Here you can find project-wide changes. For more detailed changes:
+
+- [`@social-embed/lib`](https://social-embed.git-pull.com/docs/lib/release-notes)
+- [`@social-embed/wc`](https://social-embed.git-pull.com/docs/wc/release-notes)
 
 ## current
 
