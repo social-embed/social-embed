@@ -2,9 +2,23 @@
 id: home
 title: Getting started
 slug: /
+hide_table_of_contents: true
 ---
 
-`@social-embed` is two tools:
+`@social-embed` is comprised of two packages:
 
-1. [lib](./lib/index.mdx): A library of javascript / TypeScript functions and regexes to grab URLs
-2. [wc](./wc/index.mdx): A [web-component](https://developer.mozilla.org/en-US/docs/Web/Web_Components) to switch out embed tags
+| Name    | Package               | Source location  | Type            | Description                                                                                                                                |
+| ------- | --------------------- | ---------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`lib`] | [`@social-embed/lib`] | [/packages/lib/] | Library         | Repository of regexes / parsers for embed-friendly websites (e.g. YouTube)                                               |
+| [`wc`]  | [`@social-embed/lib`] | [/packages/wc/]  | [Web component] | Renders native web players. Built with [LitElement] + [TypeScript] + [@social-embed/lib](./lib/index.mdx) |
+
+[/packages/lib/]: https://github.com/social-embed/social-embed/tree/master/packages/lib
+[/packages/wc/]: https://github.com/social-embed/social-embed/tree/master/packages/wc
+[`wc`]: ./wc/index.mdx
+[`lib`]: ./lib/index.mdx
+[`@social-embed/lib`]: https://www.npmjs.com/package/@social-embed/lib
+[`@social-embed/wc`]: https://www.npmjs.com/package/@social-embed/wc
+[web component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
+[litelement]: https://lit-element.polymer-project.org/
+[lit-html]: https://lit-html.polymer-project.org/
+[typescript]: https://www.typescriptlang.org/
