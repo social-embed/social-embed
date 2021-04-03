@@ -4,11 +4,74 @@ title: About
 slug: .
 ---
 
-## Quick access to regular expressions
+## Tools for parsing embeddable content
+
+### Supported embeds
+
+Only oEmbed, `@social-embed/lib` supports providers by hand.
+
+Internally [`Provider`](https://social-embed.git-pull.com/api/enums/lib.provider.html)
+is a [String enum](https://www.typescriptlang.org/docs/handbook/enums.html#string-enums) of supported embeds.
+
+### Regular expressions
+
+```typescript
+import {
+getYouTubeIdFromUrl,
+youTubeUrlRegex
+} from '@social-embed/lib';
+'https://www.youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex)
+// ["https://www.youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
+```
+
+### Detect provider (e.g. YouTube) from URL
+
+```typescript
+import {
+  getProviderFromUrl,
+} from '@social-embed/lib';
+const provider = getProviderFromUrl(
+  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+)
+// YouTube
+```
+
+### Get IDs from URLs
+
+```typescript
+import {
+  getProviderFromUrl,
+  ProviderIdFunctionMap,
+} from '@social-embed/lib';
+const provider = getProviderFromUrl(
+  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+)  // YouTube
+
+if (provider) {
+  const getId = ProviderIdFunctionMap[provider]
+  getId("https://www.youtu.be/watch?v=Bd8_vO5zrjo")
+  // "Bd8_vO5zrjo"
+}
+```
+
+### IDs
+
+```typescript
+import {
+  getYouTubeIdFromUrl
+} from '@social-embed/lib';
+const embedId = getYouTubeIdFromUrl(
+  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+)  // "Bd8_vO5zrjo"
+```
+
+### Get `iframe` friendly URL
+
+Coming soon
 
 ### Quickstart
 
-If you just want to use [installation](./installatin/) you can do:
+If you just want to use [installation](./installation.mdx) you can do:
 
 ```bash
 npm i @social-embed/lib
