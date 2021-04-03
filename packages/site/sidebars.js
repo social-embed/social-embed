@@ -5,13 +5,13 @@ module.exports = {
         'home',
         {
           type: 'category',
-          label: 'lib',
+          label: '⚙️ @social-embed/lib',
           collapsed: false,
           items: ['lib/index', 'lib/installation', 'lib/release-notes'],
         },
         {
           type: 'category',
-          label: '<o-embed> (wc)',
+          label: '▶️ @social-embed/wc',
           collapsed: false,
           items: [
             'wc/index',
