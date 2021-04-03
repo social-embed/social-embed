@@ -39,8 +39,10 @@ const features = [
         embed-friendly format.
         <CodeBlock className="language-typescript">
           {`import {
+  getProviderFromUrl,
+  ProviderIdFunctionMap,
   getYouTubeIdFromUrl,
-  youTubeUrlRegex
+  youTubeUrlRegex,
 } from '@social-embed/lib';
 
 'https://www.youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex)
