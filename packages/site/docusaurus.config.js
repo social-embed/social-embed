@@ -43,7 +43,27 @@ module.exports = {
         },
         {
           href: 'https://social-embed.git-pull.com/api/',
-          label: 'API',
+          label: 'API Reference',
+          position: 'left',
+          items: [
+            {
+              href: 'https://social-embed.git-pull.com/api/',
+              label: 'Homepage',
+            },
+            {
+              href: 'https://social-embed.git-pull.com/api/modules/lib.html',
+              label: 'utility functions (lib)',
+            },
+            {
+              href: 'https://social-embed.git-pull.com/api/modules/wc.html',
+              label: '<o-embed> web component (wc)',
+            },
+          ],
+        },
+        {
+          href:
+            'https://github.com/social-embed/social-embed/blob/master/CHANGES.md',
+          label: 'Release notes',
           position: 'left',
         },
         {
