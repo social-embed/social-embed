@@ -14,7 +14,7 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: (
       <>
-        <Link to={'docs/wc/index'}>
+        <Link to={'docs/wc/'}>
           <code>{'<o-embed />'}</code> Web component
         </Link>
         :
@@ -32,7 +32,7 @@ const features = [
     imageUrl: 'img/undraw_docusaurus_react.svg',
     description: (
       <>
-        <Link to={'docs/lib/index'}>
+        <Link to={'docs/lib/'}>
           <code>{'@social-embed/lib'}</code>
         </Link>{' '}
         is a typed library for scraping IDs and converting IDs into an
