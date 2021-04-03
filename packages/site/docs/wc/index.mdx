@@ -7,8 +7,19 @@ slug: .
 `<o-embed>` is a [web component] to automatically switch out tags with
 [oEmbed]-compatible social websites. You can it anywhere you can use HTML!
 
+Under the hood, this embed doesn't use oEmbed directly, rather, it uses [@social-embed/lib](../lib/index.mdx)'s
+repository of patterns and functions to fetch the ID and translate the URL into a compatible format.
+
+The reason this works is providers like YouTube, Vimeo, and so on are inclined to keep embed
+formats stable (so existing embeds across the web don't break).
+
+The component is built in [LitElement] w/ [lit-html] + [TypeScript].
+
 [web component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [oembed]: https://oembed.com/
+[LitElement]: https://lit-element.polymer-project.org/
+[lit-html]: https://lit-html.polymer-project.org/
+[TypeScript]: https://www.typescriptlang.org/
 
 ## As easy as HTML
 

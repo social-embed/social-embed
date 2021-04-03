@@ -17,8 +17,8 @@ is a [String enum](https://www.typescriptlang.org/docs/handbook/enums.html#strin
 
 ```typescript
 import {
-getYouTubeIdFromUrl,
-youTubeUrlRegex
+  getYouTubeIdFromUrl,
+  youTubeUrlRegex
 } from '@social-embed/lib';
 'https://www.youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex)
 // ["https://www.youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
@@ -67,7 +67,30 @@ const embedId = getYouTubeIdFromUrl(
 
 ### Get `iframe` friendly URL
 
-Coming soon
+
+```typescript
+import {
+  getYouTubeIdFromUrl,
+  getYouTubeEmbedUrlFromId,
+} from '@social-embed/lib';
+const embedId = getYouTubeIdFromUrl(
+  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+)  // "Bd8_vO5zrjo"
+
+const embedFriendlyUrl = getYouTubeEmbedUrlFromId(
+  'https://www.youtu.be/watch?v=Bd8_vO5zrjo'
+)  // "https://www.youtube.com/embed/Bd8_vO5zrjo"
+```
+
+The above embed URL can fit right into an `<iframe>`:
+
+```html
+<iframe src="https://www.youtube.com/embed/Bd8_vO5zrjo"></iframe>
+```
+
+<iframe src="https://www.youtube.com/embed/Bd8_vO5zrjo"></iframe>
+
+This is what the [`<o-embed>` web component](../wc/index.mdx) uses under the hood to render embeds.
 
 ### Quickstart
 
@@ -79,22 +102,13 @@ npm i @social-embed/lib
 yarn add @social-embed/lib
 ```
 
-Then import and use as such:
-
-```typescript
-import {getYouTubeIdFromUrl} from '@social-embed/lib';
-
-console.log(getYouTubeIdFromUrl('https://www.youtube.com/watch?v=Bd8_vO5zrjo'));
-// output: Bd8_vO5zrjo
-```
-
-If you support ESM / Urls, you can also import via like this:
+If you support ESM / URLs, you can also import via like this:
 
 ```typescript
 // unpkg
-import {getYouTubeIdFromUrl} from 'https://www.unpkg.com/@social-embed/lib?module';
+import { getYouTubeIdFromUrl } from 'https://www.unpkg.com/@social-embed/lib?module';
 // skypack
-import {getYouTubeIdFromUrl} from 'https://cdn.skypack.dev/@social-embed/lib';
+import { getYouTubeIdFromUrl } from 'https://cdn.skypack.dev/@social-embed/lib';
 ```
 
 ## API reference
