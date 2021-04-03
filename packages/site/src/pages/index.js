@@ -10,8 +10,8 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: 'Web component: Drop-in. Native players.',
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    title: '▶️ Web component: Drop-in. Native players.',
+    imageUrl: 'img/undraw_media_player_ylg8.svg',
     description: (
       <>
         <Link to={'docs/wc/'}>
@@ -28,8 +28,8 @@ const features = [
     ),
   },
   {
-    title: 'Library only: Detect and parse embeddable URLs',
-    imageUrl: 'img/undraw_docusaurus_react.svg',
+    title: '⚙️ Library only: Detect and parse embeddable URLs',
+    imageUrl: 'img/undraw_select_player_64ca.svg',
     description: (
       <>
         <Link to={'docs/lib/'}>
