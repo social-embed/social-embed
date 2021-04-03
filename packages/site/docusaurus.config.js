@@ -82,6 +82,33 @@ module.exports = {
           position: 'left',
         },
         {
+          label: 'Playground',
+          position: 'right',
+          items: [
+            {
+              href: 'https://codepen.io/attachment/pen/VwPPrNq',
+              label: 'lib on codepen',
+            },
+            {
+              href: 'https://codepen.io/attachment/pen/poRRpdp?editors=0010',
+              label: 'lib on codepen (w/ console)',
+            },
+            {
+              href: 'https://jsfiddle.net/gitpull/pcLagbsm/',
+              label: 'lib on jsfiddle',
+            },
+            {
+              href: 'https://codepen.io/attachment/pen/poRRwdy',
+              label: 'web component on codepen',
+            },
+            {
+              href: 'https://jsfiddle.net/gitpull/vc13Lhkz/',
+              label: 'web component on jsfiddle',
+            },
+          ],
+        },
+
+        {
           label: 'NPM',
           position: 'right',
           items: [
