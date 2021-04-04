@@ -9,7 +9,7 @@
   "scripts": {
     "prebuild": "yarn clean",
     "build": "tsc",
-    "build:watch": "tsc --watch",
+    "build:watch": "yarn build --watch",
     "clean": "rimraf dist/",
     "ncu": "ncu",
     "update": "ncu",
@@ -19,8 +19,7 @@
     "format": "prettier src/* --write",
     "analyze": "wca analyze \"src/**/*.ts\" --outFile ../site/custom-elements.json",
     "serve": "es-dev-server --node-resolve --watch",
-    "test:build": "yarn clean && yarn tsc && yarn tsc --build ./tsconfig.test.json",
-    "test": "yarn test:build && wtr dist/test/o-embed_test.js --puppeteer --node-resolve",
+    "test": "wtr test/o-embed_test.ts --puppeteer --node-resolve",
     "test:watch": "yarn test --watch",
     "checksize": "rollup -c ; cat dist/o-embed.bundled.js | gzip -9 | wc -c ; rm dist/o-embed.bundled.js",
     "wtr": "wtr"
@@ -52,6 +51,7 @@
     "@rollup/plugin-replace": "^2.4.2",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
     "@typescript-eslint/parser": "^4.20.0",
+    "@web/dev-server-esbuild": "^0.2.11",
     "@web/dev-server-import-maps": "^0.0.5",
     "@web/test-runner": "^0.12.18",
     "@web/test-runner-puppeteer": "^0.9.3",
