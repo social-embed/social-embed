@@ -69,10 +69,7 @@ getId("https://youtu.be/watch?v=Bd8_vO5zrjo")
           console
         </Link>
         ), <Link href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</Link>{' '}
-        also,{' '}
-        <Link href="https://social-embed.git-pull.com/api/modules/lib.html">
-          API Documentation
-        </Link>
+        also, <Link href="/docs/lib/api/">API Documentation</Link>
       </>
     ),
   },
