@@ -1,21 +1,41 @@
-session_name: oembed
+session_name: social-embed
 start_directory: ./ # load session relative to config location (project root).
-before_script: yarn workspace @social-embed/wc build
+before_script: yarn
 windows:
-- window_name: oembed
+- window_name: social-embed
   layout: main-horizontal
   focus: true
   options:
     main-pane-height: 35
-  start_directory: ./
   panes:
   - focus: true
   - pane
   - pane
-  - yarn workspace @social-embed/wc test:watch
-  - shell_command:
-    - '[ -d node_modules ] && yarn'
-    - yarn workspace @social-embed/wc build:watch
+  - pane
+  - pane
+- window_name: lib
+  layout: main-horizontal
+  options:
+    main-pane-height: 35
+  start_directory: ./packages/lib
+  panes:
+  - focus: true
+  - pane
+  - pane
+  - pane
+  - pane
+- window_name: wc
+  layout: main-horizontal
+  options:
+    main-pane-height: 35
+  start_directory: ./packages/wc
+  panes:
+  - focus: true
+  - pane
+  - pane
+  - yarn test:watch
+  - yarn build:watch
+
 - window_name: docs
   layout: main-horizontal
   start_directory: ./packages/site
@@ -25,4 +45,4 @@ windows:
   - focus: true
   - pane
   - pane
-  - yarn workspace @social-embed/site start
+  - yarn workspace start
