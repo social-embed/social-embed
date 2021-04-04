@@ -22,7 +22,6 @@ const features = [
           :
         </div>
         <Playground className="language-html">{`<o-embed\n  url="https://youtu.be/FTQbiNvZqaY"\n  width="100%"\n></o-embed>`}</Playground>
-        <br />
         Try it live:{' '}
         <Link href="https://codepen.io/attachment/pen/poRRwdy">codepen.io</Link>
         , <Link href="https://jsfiddle.net/gitpull/vc13Lhkz/">jsfiddle</Link>
