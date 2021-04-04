@@ -17,9 +17,27 @@ the full manifest of supported content. As of 2021-04-21, it includes at least:
 - Vimeo
 - YouTube
 
+## Usecases
+
+- Detecting if a URL is embeddable
+  - Detecting subtle variations: `https://youtu.be/watch?v=Bd8_vO5zrjo`, `https://www.youtube.com/watch?v=Bd8_vO5zrjo`
+- Extracting IDs from embed-friendly sites, e.g. `Bd8_vO5zrjo` out of https://youtu.be/watch?v=Bd8_vO5zrjo
+- Creating embed friendly URLs: `https://youtu.be/watch?v=Bd8_vO5zrjo` -> `https://www.youtube.com/embed/Bd8_vO5zrjo`
+- Avoid the repetition. StackOverflow, Regex websites detecting embed URLs
+
+  (google search: [youtube regex site:stackoverflow.com])
+
+[youtube regex site:stackoverflow.com]: https://www.google.com/search?q=youtube+regex+site%3Astackoverflow.com
+
 ## Usage
 
-### Lingo
+### Internal API naming
+
+:::warning
+
+These naming conventions aren't stable yet arnd are subject to change
+
+:::
 
 - [`Provider`](https://social-embed.git-pull.com/api/enums/lib.provider.html): [String enum](https://www.typescriptlang.org/docs/handbook/enums.html#string-enums) of supported embeds.
 - `${providerName}Regex`: Name for JS regular expressions

@@ -7,7 +7,7 @@ slug: .
 `<o-embed>` is a [web component] to automatically switch out tags with
 [oEmbed]-compatible social websites. You can it anywhere you can use HTML!
 
-Under the hood, this embed doesn't use oEmbed directly, rather, it uses [@social-embed/lib](../lib/index.mdx)'s
+Under the hood, this embed doesn't use oEmbed directly, rather, it uses [`@social-embed/lib`]'s
 repository of patterns and functions to fetch the ID and translate the URL into a compatible format.
 
 The reason this works is providers like YouTube, Vimeo, and so on are inclined to keep embed
@@ -21,7 +21,34 @@ The component is built in [LitElement] w/ [lit-html] + [TypeScript]. [View the s
 [lit-html]: https://lit-html.polymer-project.org/
 [TypeScript]: https://www.typescriptlang.org/
 
-## As easy as HTML
+## Usecases
+
+- Dynamic content backends
+  - users enter a media URL, such as a YouTube link
+  - HTML content where embeds are saved
+- HTML Editors
+  This package was originally created for [CKEditor]'s [`MediaEmbed`] module (see issue [ckeditor#2737])
+- Also common is detecting if a URL is embeddable or not, in that case see [`@social-embed/lib`]
+  See StackOverflow, Regex websites detecting embed URLs
+
+  (google search: [youtube regex site:stackoverflow.com])
+
+[youtube regex site:stackoverflow.com]: https://www.google.com/search?q=youtube+regex+site%3Astackoverflow.com
+[`MediaEmbed`]: https://ckeditor.com/docs/ckeditor5/latest/features/media-embed.html
+[ckeditor#2737]: https://github.com/ckeditor/ckeditor5/issues/2737
+[CKEditor]: https://github.com/ckeditor/ckeditor5/issues/2737
+[`@social-embed/lib`]: ../lib/index.mdx
+
+## Similar tools
+
+- [embed.ly](https://embed.ly/) and [iframely](https://iframely.com/) - invoked as script. finds / replaces urls with rich context
+- [plyr](https://plyr.io/) - component. customizable frontend for video players, intakes URLs
+- `<oembed>` components:
+  - [angular component from ckeditor#2737](https://github.com/ckeditor/ckeditor5/issues/2737#issuecomment-471326090)
+- `<o-embed>` components:
+  - https://github.com/thangman22/oembed-component
+
+## Try it live
 
 `<o-embed>` can handle simple embeds with _open_ embedding, such as YouTube, DailyMotion,
 Vimeo, and Spotify.
@@ -30,7 +57,7 @@ Vimeo, and Spotify.
 <o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
 ```
 
-## Declarative rendering
+### Declarative rendering
 
 `<o-embed>` can be used with declarative rendering libraries like Angular, React, Vue, and lit-html
 
