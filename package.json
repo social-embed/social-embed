@@ -22,6 +22,7 @@
   "workspaces": {
     "nohoist": [
       "**/@open-wc/**",
+      "**/@types/chai",
       "**/@types/jest",
       "**/@types/jasmine",
       "**/ts-loader"
