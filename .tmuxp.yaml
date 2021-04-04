@@ -45,4 +45,4 @@ windows:
   - focus: true
   - pane
   - pane
-  - yarn workspace start
+  - yarn start
