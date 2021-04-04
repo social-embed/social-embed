@@ -7,11 +7,12 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start --port 8063",
-    "build": "npm run clear && yarn workspace @social-embed/lib build && yarn workspace @social-embed/wc build && yarn workspace @social-embed/wc analyze && npm run docs:oembed && npm run docs:api && npm run docs:gen && npm run docs:assets && yarn typedoc",
+    "build": "npm run clean && yarn workspace @social-embed/lib build && yarn workspace @social-embed/wc build && yarn workspace @social-embed/wc analyze && npm run docs:oembed && npm run docs:api && npm run docs:gen && npm run docs:assets && yarn typedoc",
     "docs:gen": "yarn docs:api && docusaurus build --out-dir dist",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clean": "docusaurus clear",
+    "clear": "docusaurus clear",
     "serve": "docusaurus serve --dir dist --port 8062",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
