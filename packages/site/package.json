@@ -16,15 +16,13 @@
     "serve": "docusaurus serve --dir dist --port 8062",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "docs:api": "yarn docs:api:fix; yarn typedoc",
+    "docs:api": "yarn typedoc",
     "docs:oembed": "rollup -c --file static/js/o-embed.bundled.js",
     "docs:assets": "cp ../../node_modules/prismjs/themes/prism-okaidia.css ./typedoc-style.css dist/",
     "lint": "echo 'NOOP'",
     "test": "echo 'NOOP'",
     "ncu": "ncu",
-    "update": "ncu",
-    "docs:api:fix": "",
-    "docs:api:fix__deprecate": "rm ../wc/node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.d.ts"
+    "update": "ncu"
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-alpha.72",
