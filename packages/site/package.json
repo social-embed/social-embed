@@ -20,8 +20,8 @@
     "docs:assets": "cp ../../node_modules/prismjs/themes/prism-okaidia.css ./typedoc-style.css dist/",
     "lint": "echo 'NOOP'",
     "test": "echo 'NOOP'",
-    "ncu": "yarn ncu",
-    "update": "yarn ncu",
+    "ncu": "ncu",
+    "update": "ncu",
     "docs:api:fix": "",
     "docs:api:fix__deprecate": "rm ../wc/node_modules/@open-wc/semantic-dom-diff/chai-dom-diff.d.ts"
   },
