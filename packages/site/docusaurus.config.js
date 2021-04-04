@@ -1,6 +1,4 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
-// const typegenOptions = require('./typedoc.js');
-// console.log({typegenOptions});
 const path = require('path');
 module.exports = {
   title: '@social-embed',
@@ -19,18 +17,43 @@ module.exports = {
     path.resolve(__dirname, 'plugins', 'more-mdx-paths'),
     '@docusaurus/theme-live-codeblock',
 
-    // [
-    //   'docusaurus-plugin-typedoc',
-    //
-    //   // Plugin / TypeDoc options
-    //   {
-    //     ...typegenOptions,
-    //     sidebar: {
-    //       sidebarFile: 'typedoc-sidebar.js',
-    //       fullNames: false,
-    //     },
-    //   },
-    // ],
+    [
+      'docusaurus-plugin-typedoc',
+
+      // Plugin / TypeDoc options
+      {
+        id: 'lib-api',
+        out: `lib/api`,
+        docsRoot: 'docs',
+        watch: process.env.TYPEDOC_WATCH,
+        entryPoints: [`../lib/src/index.ts`],
+        allReflectionsHaveOwnDocument: false,
+        readme: 'none',
+        tsconfig: require.resolve(`./tsconfig.json`),
+        sidebar: {
+          sidebarFile: 'typedoc-sidebar-lib.js',
+        },
+      },
+    ],
+    [
+      'docusaurus-plugin-typedoc',
+
+      // Plugin / TypeDoc options
+      {
+        id: 'wc-api',
+        out: `wc/api`,
+        docsRoot: 'docs',
+        readme: 'none',
+        tsconfig: require.resolve(`./tsconfig.json`),
+        watch: process.env.TYPEDOC_WATCH,
+        entryPoints: [`../wc/index.ts`],
+        excludeExternals: true,
+        allReflectionsHaveOwnDocument: false,
+        sidebar: {
+          sidebarFile: 'typedoc-sidebar-wc.js',
+        },
+      },
+    ],
   ],
   themeConfig: {
     navbar: {
@@ -65,17 +88,15 @@ module.exports = {
           ],
         },
         {
-          href: 'https://social-embed.git-pull.com/api/',
           label: 'API Reference',
           position: 'left',
-          to: 'https://social-embed.git-pull.com/api/',
           items: [
             {
-              href: 'https://social-embed.git-pull.com/api/modules/lib.html',
+              href: '/docs/lib/api',
               label: 'library (lib)',
             },
             {
-              href: 'https://social-embed.git-pull.com/api/modules/wc.html',
+              href: '/docs/wc/api',
               label: 'web component (wc)',
             },
           ],

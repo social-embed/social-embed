@@ -1,6 +1,6 @@
 {
   "extends": "@tsconfig/docusaurus/tsconfig.json",
-  "include": [ "../lib/src/index.ts", "../wc/src/OEmbedElement.ts"],
+  "include": [ "../lib/src/index.ts", "../lib/src/*/*.ts", "../wc/index.ts"],
   "exclude": [],
   "exclude2": ["../lib/test/*",  "../wc/src/test/*", "../wc/node_modules/@open-wc/semantic-dom-diff", "../wc/node_modules/@open-wc/semantic-dom-diff/*", "src/test/*", "."],
   "compilerOptions": {
