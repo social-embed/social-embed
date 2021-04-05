@@ -12,7 +12,6 @@ windows:
   - pane
   - pane
   - pane
-  - pane
 - window_name: lib
   layout: main-horizontal
   options:
@@ -20,7 +19,6 @@ windows:
   start_directory: ./packages/lib
   panes:
   - focus: true
-  - pane
   - pane
   - pane
   - pane
@@ -33,9 +31,7 @@ windows:
   - focus: true
   - pane
   - pane
-  - yarn test:watch
-  - yarn build:watch
-
+  - pane
 - window_name: docs
   layout: main-horizontal
   start_directory: ./packages/site
@@ -45,4 +41,4 @@ windows:
   - focus: true
   - pane
   - pane
-  - yarn start
+  - pane
