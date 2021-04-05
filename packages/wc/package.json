@@ -7,7 +7,7 @@
   "types": "./dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "prebuild": "yarn clean",
+    "prebuild": "yarn clean && yarn workspace @social-embed/lib build",
     "build": "tsc",
     "build:watch": "yarn build --watch",
     "clean": "rimraf dist/",
@@ -19,6 +19,7 @@
     "format": "prettier src/* --write",
     "analyze": "wca analyze \"src/**/*.ts\" --outFile ../site/custom-elements.json",
     "serve": "es-dev-server --node-resolve --watch",
+    "pretest": "yarn workspace @social-embed/lib build",
     "test": "wtr test/o-embed_test.ts --puppeteer --node-resolve",
     "test:watch": "yarn test --watch",
     "checksize": "rollup -c ; cat dist/o-embed.bundled.js | gzip -9 | wc -c ; rm dist/o-embed.bundled.js",
