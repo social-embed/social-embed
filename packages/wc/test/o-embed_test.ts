@@ -524,6 +524,144 @@ describe('o-embed', () => {
       );
     });
   });
+
+  describe('EdPuzzle', () => {
+    const src = 'https://edpuzzle.com/media/605e402a37f014429d0c87fe';
+    const embedSrc =
+      'https://edpuzzle.com/embed/media/605e402a37f014429d0c87fe';
+
+    it('renders with url', async () => {
+      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        width="470"
+        allowfullscreen="true"
+        frameborder="0"
+        height="404"
+        src=${embedSrc}
+      >
+      </iframe>
+      <slot></slot>
+    `
+      );
+    });
+
+    it('renders with with 100%', async () => {
+      const el = await fixture(
+        html`<o-embed url=${src} width="100%" height="100%"></o-embed>`
+      );
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        width="100%"
+        allowfullscreen="true"
+        frameborder="0"
+        height="100%"
+        src=${embedSrc}
+        width="470"
+      >
+      </iframe>
+      <slot></slot>
+      </div>
+    `
+      );
+    });
+  });
+
+  describe('Loom', () => {
+    const loomId = 'e883f70b219a49f6ba7fbeac71a72604';
+    const src = `https://www.loom.com/share/${loomId}`;
+    const embedSrc = `https://www.loom.com/embed/${loomId}`;
+
+    it('renders with url', async () => {
+      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        width="470"
+        allowfullscreen="true"
+        frameborder="0"
+        height="404"
+        src=${embedSrc}
+      >
+      </iframe>
+      <slot></slot>
+    `
+      );
+    });
+
+    it('renders with with 100%', async () => {
+      const el = await fixture(
+        html`<o-embed url=${src} width="100%" height="100%"></o-embed>`
+      );
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        width="100%"
+        allowfullscreen="true"
+        frameborder="0"
+        height="100%"
+        src=${embedSrc}
+        width="470"
+      >
+      </iframe>
+      <slot></slot>
+      </div>
+    `
+      );
+    });
+  });
+
+  describe('Wistia', () => {
+    const wistiaId = 'e883f70b219a49f6ba7fbeac71a72604';
+    const src = `https://support.wistia.com/medias/${wistiaId}`;
+    const embedSrc = `https://fast.wistia.net/embed/iframe/${wistiaId}`;
+
+    it('renders with url', async () => {
+      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        width="470"
+        allowfullscreen="true"
+        frameborder="0"
+        height="404"
+        src=${embedSrc}
+      >
+      </iframe>
+      <slot></slot>
+    `
+      );
+    });
+
+    it('renders with with 100%', async () => {
+      const el = await fixture(
+        html`<o-embed url=${src} width="100%" height="100%"></o-embed>`
+      );
+      assert.shadowDom.equal(
+        el,
+        `
+      <iframe
+        width="100%"
+        allowfullscreen="true"
+        frameborder="0"
+        height="100%"
+        src=${embedSrc}
+        width="470"
+      >
+      </iframe>
+      <slot></slot>
+      </div>
+    `
+      );
+    });
+  });
 });
 
 describe('convertUrlToEmbedUrl', () => {

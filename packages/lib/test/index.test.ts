@@ -2,8 +2,14 @@ import {
   convertUrlToEmbedUrl,
   getDailyMotionEmbedFromId,
   getDailyMotionIdFromUrl,
+  getEdPuzzleIdFromUrl,
+  getEdPuzzleEmbedUrlFromId,
+  getLoomIdFromUrl,
+  getLoomEmbedUrlFromId,
   getVimeoEmbedUrlFromId,
   getVimeoIdFromUrl,
+  getWistiaIdFromUrl,
+  getWistiaEmbedUrlFromId,
   getYouTubeEmbedUrlFromId,
   getYouTubeIdFromUrl,
 } from '../src';
@@ -85,5 +91,92 @@ describe('convertUrlToEmbedUrl', () => {
     expect(getYouTubeEmbedUrlFromId('FTQbiNvZqaY')).toEqual(
       'https://www.youtube.com/embed/FTQbiNvZqaY'
     );
+  });
+
+  it('loom', () => {
+    const loomId = 'e883f70b219a49f6ba7fbeac71a72604';
+    const expectedEmbeddableUrl = `https://www.loom.com/embed/${loomId}`;
+    expect(
+      convertUrlToEmbedUrl(
+        'https://www.loom.com/share/e883f70b219a49f6ba7fbeac71a72604'
+      )
+    ).toEqual(expectedEmbeddableUrl);
+
+    expect(
+      convertUrlToEmbedUrl(
+        'https://loom.com/share/e883f70b219a49f6ba7fbeac71a72604'
+      )
+    ).toEqual(expectedEmbeddableUrl);
+
+    expect(
+      convertUrlToEmbedUrl('loom.com/share/e883f70b219a49f6ba7fbeac71a72604')
+    ).toEqual(expectedEmbeddableUrl);
+
+    expect(
+      getLoomIdFromUrl('loom.com/share/e883f70b219a49f6ba7fbeac71a72604')
+    ).toEqual(loomId);
+
+    expect(getLoomEmbedUrlFromId(loomId)).toEqual(expectedEmbeddableUrl);
+  });
+
+  it('edpuzzle', () => {
+    const edPuzzleId = `606b413369971e424ec6021e`;
+    const expectedEmbeddableUrl = `https://edpuzzle.com/embed/media/${edPuzzleId}`;
+
+    expect(
+      convertUrlToEmbedUrl(
+        'https://edpuzzle.com/media/606b413369971e424ec6021e'
+      )
+    ).toEqual(expectedEmbeddableUrl);
+
+    expect(
+      convertUrlToEmbedUrl(
+        'https://www.edpuzzle.com/media/606b413369971e424ec6021e'
+      )
+    ).toEqual(expectedEmbeddableUrl);
+
+    expect(
+      convertUrlToEmbedUrl('edpuzzle.com/media/606b413369971e424ec6021e')
+    ).toEqual(expectedEmbeddableUrl);
+
+    expect(
+      getEdPuzzleIdFromUrl('edpuzzle.com/media/606b413369971e424ec6021e')
+    ).toEqual(edPuzzleId);
+
+    expect(getEdPuzzleEmbedUrlFromId(edPuzzleId)).toEqual(
+      expectedEmbeddableUrl
+    );
+  });
+
+  it('wistia', () => {
+    const wistiaId = `26sk4lmiix`;
+    const expectedEmbeddableUrl = `https://fast.wistia.net/embed/iframe/${wistiaId}`;
+
+    expect(
+      convertUrlToEmbedUrl('https://support.wistia.com/medias/26sk4lmiix')
+    ).toEqual(expectedEmbeddableUrl);
+
+    expect(
+      convertUrlToEmbedUrl('https://support.wistia.com/embed/26sk4lmiix')
+    ).toEqual(expectedEmbeddableUrl);
+
+    // wi.st isn't integration yet, but may be in the future (https://wistia.com/support/developers/construct-an-embed-code)
+    expect(
+      convertUrlToEmbedUrl('https://support.wi.st/medias/26sk4lmiix')
+    ).toEqual(expectedEmbeddableUrl);
+
+    expect(
+      convertUrlToEmbedUrl('https://support.wi.st/embed/26sk4lmiix')
+    ).toEqual(expectedEmbeddableUrl);
+
+    expect(getWistiaIdFromUrl('support.wistia.com/embed/26sk4lmiix')).toEqual(
+      wistiaId
+    );
+
+    expect(
+      getWistiaIdFromUrl('https://support.wi.st/medias/26sk4lmiix')
+    ).toEqual(wistiaId);
+
+    expect(getWistiaEmbedUrlFromId(wistiaId)).toEqual(expectedEmbeddableUrl);
   });
 });

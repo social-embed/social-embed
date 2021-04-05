@@ -2,12 +2,18 @@ import * as YouTube from './providers/youtube';
 import * as Spotify from './providers/spotify';
 import * as Vimeo from './providers/vimeo';
 import * as DailyMotion from './providers/dailymotion';
+import * as EdPuzzle from './providers/edpuzzle';
+import * as Loom from './providers/loom';
+import * as Wistia from './providers/wistia';
 
 export enum Provider {
   YouTube = 'YouTube',
   Spotify = 'Spotify',
   Vimeo = 'Vimeo',
   DailyMotion = 'DailyMotion',
+  EdPuzzle = 'EdPuzzle',
+  Loom = 'Loom',
+  Wistia = 'Wistia',
 }
 
 export const getProviderFromUrl = (url: string): Provider | undefined => {
@@ -26,6 +32,15 @@ export const getProviderFromUrl = (url: string): Provider | undefined => {
   if (url.match(/youtu\.?be/)) {
     return Provider.YouTube;
   }
+  if (url.match(/edpuzzle.com/)) {
+    return Provider.EdPuzzle;
+  }
+  if (Wistia.getWistiaIdFromUrl(url)) {
+    return Provider.Wistia;
+  }
+  if (Loom.getLoomIdFromUrl(url)) {
+    return Provider.Loom;
+  }
   return undefined;
 };
 
@@ -40,6 +55,9 @@ export const ProviderIdFunctionMap: {
   [Provider.Spotify]: Spotify.getSpotifyIdAndTypeFromUrl,
   [Provider.Vimeo]: Vimeo.getVimeoIdFromUrl,
   [Provider.YouTube]: YouTube.getYouTubeIdFromUrl,
+  [Provider.EdPuzzle]: EdPuzzle.getEdPuzzleIdFromUrl,
+  [Provider.Loom]: Loom.getLoomIdFromUrl,
+  [Provider.Wistia]: Wistia.getWistiaIdFromUrl,
 };
 
 export const ProviderIdUrlFunctionMap: {
@@ -49,6 +67,9 @@ export const ProviderIdUrlFunctionMap: {
   [Provider.Spotify]: Spotify.getSpotifyEmbedUrlFromIdAndType,
   [Provider.Vimeo]: Vimeo.getVimeoEmbedUrlFromId,
   [Provider.YouTube]: YouTube.getYouTubeEmbedUrlFromId,
+  [Provider.EdPuzzle]: EdPuzzle.getEdPuzzleEmbedUrlFromId,
+  [Provider.Loom]: Loom.getLoomEmbedUrlFromId,
+  [Provider.Wistia]: Wistia.getWistiaEmbedUrlFromId,
 };
 
 export const convertUrlToEmbedUrl = (url: string): string => {

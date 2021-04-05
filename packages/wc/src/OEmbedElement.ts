@@ -10,10 +10,16 @@ import {
   Provider,
   getDailyMotionEmbedFromId,
   getDailyMotionIdFromUrl,
+  getEdPuzzleIdFromUrl,
+  getEdPuzzleEmbedUrlFromId,
+  getLoomIdFromUrl,
+  getLoomEmbedUrlFromId,
   getSpotifyIdAndTypeFromUrl,
   getSpotifyEmbedUrlFromIdAndType,
   getVimeoIdFromUrl,
   getVimeoEmbedUrlFromId,
+  getWistiaIdFromUrl,
+  getWistiaEmbedUrlFromId,
   getYouTubeEmbedUrlFromId,
   getYouTubeIdFromUrl,
 } from '@social-embed/lib';
@@ -56,6 +62,11 @@ export class OEmbedElement extends LitElement {
 
   render(): TemplateResult {
     const provider = getProviderFromUrl(this.url);
+
+    if (!this.url || this.url == '') {
+      return html``;
+    }
+
     switch (provider) {
       case Provider.YouTube:
         return this.renderYouTube();
@@ -65,8 +76,14 @@ export class OEmbedElement extends LitElement {
         return this.renderVimeo();
       case Provider.DailyMotion:
         return this.renderDailyMotion();
+      case Provider.EdPuzzle:
+        return this.renderEdPuzzle();
+      case Provider.Wistia:
+        return this.renderWistia();
+      case Provider.Loom:
+        return this.renderLoom();
       default:
-        return this.renderYouTube();
+        return html`No provider found for ${this.url}`;
     }
   }
 
@@ -180,6 +197,111 @@ export class OEmbedElement extends LitElement {
         width="${this.width}"
         height="${this.height}"
         src="${youtubeUrl}"
+        frameborder=${ifDefined(
+          this.frameborder ? this.frameborder : undefined
+        )}
+        allowfullscreen=${ifDefined(
+          this.allowfullscreen === '' ||
+            this.allowfullscreen == 'true' ||
+            this.allowfullscreen === 'true' ||
+            this.allowfullscreen === true ||
+            this.allowfullscreen === '1'
+            ? true
+            : undefined
+        )}
+      ></iframe>
+      <slot></slot>
+    `;
+  }
+
+  public renderEdPuzzle(): TemplateResult {
+    if (!this.url) {
+      return html`No url found for embed`;
+    }
+    const embedId = getEdPuzzleIdFromUrl(this.url);
+
+    if (!embedId) {
+      return html`No ID found for ${this.url}`;
+    }
+    const embedUrl = getEdPuzzleEmbedUrlFromId(embedId);
+
+    const width = this.getAttribute('width') || '470';
+    const height = this.getAttribute('height') || '404';
+    return html`
+      <iframe
+        width="${width}"
+        height="${height}"
+        src="${embedUrl}"
+        frameborder=${ifDefined(
+          this.frameborder ? this.frameborder : undefined
+        )}
+        allowfullscreen=${ifDefined(
+          this.allowfullscreen === '' ||
+            this.allowfullscreen == 'true' ||
+            this.allowfullscreen === 'true' ||
+            this.allowfullscreen === true ||
+            this.allowfullscreen === '1'
+            ? true
+            : undefined
+        )}
+      ></iframe>
+      <slot></slot>
+    `;
+  }
+
+  public renderWistia(): TemplateResult {
+    if (!this.url) {
+      return html`No url found for embed`;
+    }
+    const embedId = getWistiaIdFromUrl(this.url);
+
+    if (!embedId) {
+      return html`No ID found for ${this.url}`;
+    }
+    const embedUrl = getWistiaEmbedUrlFromId(embedId);
+
+    const width = this.getAttribute('width') || '470';
+    const height = this.getAttribute('height') || '404';
+    return html`
+      <iframe
+        width="${width}"
+        height="${height}"
+        src="${embedUrl}"
+        frameborder=${ifDefined(
+          this.frameborder ? this.frameborder : undefined
+        )}
+        allowfullscreen=${ifDefined(
+          this.allowfullscreen === '' ||
+            this.allowfullscreen == 'true' ||
+            this.allowfullscreen === 'true' ||
+            this.allowfullscreen === true ||
+            this.allowfullscreen === '1'
+            ? true
+            : undefined
+        )}
+      ></iframe>
+      <slot></slot>
+    `;
+  }
+
+  public renderLoom(): TemplateResult {
+    if (!this.url) {
+      return html`No url found for embed`;
+    }
+    const embedId = getLoomIdFromUrl(this.url);
+
+    if (!embedId) {
+      return html`No ID found for ${this.url}`;
+    }
+    const embedUrl = getLoomEmbedUrlFromId(embedId);
+
+    const width = this.getAttribute('width') || '470';
+    const height = this.getAttribute('height') || '404';
+    return html`
+      <iframe
+        width="${width}"
+        height="${height}"
+        src="${embedUrl}"
         frameborder=${ifDefined(
           this.frameborder ? this.frameborder : undefined
         )}
