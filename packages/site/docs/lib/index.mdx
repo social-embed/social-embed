@@ -22,12 +22,18 @@ the full manifest of supported content. As of 2021-04-21, it includes at least:
 - Detecting if a URL is embeddable
   - Detecting subtle variations: `https://youtu.be/watch?v=Bd8_vO5zrjo`, `https://www.youtube.com/watch?v=Bd8_vO5zrjo`
 - Extracting IDs from embed-friendly sites, e.g. `Bd8_vO5zrjo` out of https://youtu.be/watch?v=Bd8_vO5zrjo
+
 - Creating embed friendly URLs: `https://youtu.be/watch?v=Bd8_vO5zrjo` -> `https://www.youtube.com/embed/Bd8_vO5zrjo`
+
+  To see this concept in action see [Wistia]'s [Construct a Wistia Embed Code] page.
+
 - Avoid the repetition. StackOverflow, Regex websites detecting embed URLs
 
   (google search: [youtube regex site:stackoverflow.com])
 
 [youtube regex site:stackoverflow.com]: https://www.google.com/search?q=youtube+regex+site%3Astackoverflow.com
+[Wistia]: https://wistia.com
+[Construct a Wistia Embed Code]: https://wistia.com/support/developers/construct-an-embed-code
 
 ## Usage
 
