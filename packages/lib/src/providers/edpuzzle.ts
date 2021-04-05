@@ -1,7 +1,7 @@
 /**
  * Detection and parsing for Edpuzzle URLs
  *
- * [Edpuzzle's officie embed docs](https://support.edpuzzle.com/hc/en-us/articles/360007260632-Can-I-embed-an-assignment-into-an-LMS-blog-or-website-)
+ * [Edpuzzle's official embed docs](https://support.edpuzzle.com/hc/en-us/articles/360007260632-Can-I-embed-an-assignment-into-an-LMS-blog-or-website-)
  *
  * @module providers/edpuzzle
  */
