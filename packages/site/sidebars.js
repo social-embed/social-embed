@@ -50,6 +50,9 @@ module.exports = {
                 'wc/providers/dailymotion',
                 'wc/providers/spotify',
                 'wc/providers/vimeo',
+                'wc/providers/wistia',
+                'wc/providers/loom',
+                'wc/providers/edpuzzle',
               ],
             },
             {
