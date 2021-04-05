@@ -12,3 +12,5 @@ title: Release notes
   runnner with esbuild. No need to wait for builds to `dist`/
 - Disable specRunner (runs before diff outputs on errors, making errosr harder
   to see. Also the `logger.log()` doesn't work from the earlier example.
+- [#30](https://github.com/social-embed/social-embed/pull/30): Add loom, wistia
+  and edpuzzle
