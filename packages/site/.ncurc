@@ -1,5 +1,0 @@
-{
-  "reject": [
-    "docusaurus-plugin-typedoc"
-  ]
-}
