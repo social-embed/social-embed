@@ -1,1 +1,1 @@
-export {OEmbedElement} from './src/OEmbedElement';
+export {OEmbedElement} from './src/OEmbedElement.js';
