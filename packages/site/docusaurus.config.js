@@ -204,6 +204,11 @@ module.exports = {
       ],
       copyright: `Copyright © ${new Date().getFullYear()} Tony Narlock. Built with Docusaurus.`,
     },
+    algolia: {
+      apiKey: '4139ba128ad8360b86a316425c20ff50',
+      indexName: 'social-embed',
+      contextualSearch: true,
+    },
   },
   presets: [
     [
