@@ -159,6 +159,9 @@ module.exports = {
         },
         {
           to: 'https://github.com/social-embed/social-embed',
+          className: 'header-github-link',
+          'aria-label': 'GitHub repository',
+          position: 'right',
           items: [
             {
               href:
@@ -171,8 +174,6 @@ module.exports = {
               label: '@social-embed/wc',
             },
           ],
-          label: 'GitHub',
-          position: 'right',
         },
       ],
     },
