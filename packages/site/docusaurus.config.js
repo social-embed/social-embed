@@ -208,7 +208,7 @@ module.exports = {
     algolia: {
       apiKey: '4139ba128ad8360b86a316425c20ff50',
       indexName: 'social-embed',
-      contextualSearch: true,
+      facetFilters: ['type:content', 'type:hierarchy'],
     },
     googleAnalytics: {
       trackingID: 'G-6LZEGR7SKM',
