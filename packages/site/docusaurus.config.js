@@ -143,8 +143,9 @@ module.exports = {
         },
 
         {
-          label: 'NPM',
           position: 'right',
+          className: 'header-npm-link',
+          'aria-label': 'NPM',
           items: [
             {
               href: 'https://www.npmjs.com/package/@social-embed/lib',
