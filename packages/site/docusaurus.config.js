@@ -16,7 +16,6 @@ module.exports = {
   plugins: [
     path.resolve(__dirname, 'plugins', 'more-mdx-paths'),
     '@docusaurus/theme-live-codeblock',
-    '@docusaurus/plugin-google-gtag',
     [
       'docusaurus-plugin-typedoc',
 
@@ -210,7 +209,9 @@ module.exports = {
       indexName: 'social-embed',
       contextualSearch: true,
     },
-    gtag: {trackingID: 'G-6LZEGR7SKM'},
+    googleAnalytics: {
+      trackingID: 'G-6LZEGR7SKM',
+    },
   },
   presets: [
     [
