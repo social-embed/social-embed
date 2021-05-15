@@ -14,22 +14,7 @@ module.exports = {
               type: 'category',
               label: 'API',
               collapsed: false,
-              items: require('./typedoc-sidebar-lib.js').map((item) => {
-                const prefix = `lib/`;
-                if (item.items) {
-                  item.items = item.items.map((i) => {
-                    if (i.includes(prefix)) {
-                      return i;
-                    }
-                    return `${prefix}${i}`;
-                  });
-                  return item;
-                }
-                if (item.includes(prefix)) {
-                  return item;
-                }
-                return `${prefix}${item}`;
-              }),
+              items: require('./typedoc-sidebar-lib.js'),
             },
             'lib/release-notes',
           ],
@@ -69,22 +54,7 @@ module.exports = {
               type: 'category',
               label: 'API',
               collapsed: false,
-              items: require('./typedoc-sidebar-wc.js').map((item) => {
-                const prefix = `wc/`;
-                if (item.items) {
-                  item.items = item.items.map((i) => {
-                    if (i.includes(prefix)) {
-                      return i;
-                    }
-                    return `${prefix}${i}`;
-                  });
-                  return item;
-                }
-                if (item.includes(prefix)) {
-                  return item;
-                }
-                return `${prefix}${item}`;
-              }),
+              items: require('./typedoc-sidebar-wc.js'),
             },
 
             'wc/release-notes',
