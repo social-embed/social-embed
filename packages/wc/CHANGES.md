@@ -2,6 +2,11 @@
 title: Release notes
 ---
 
+## 0.0.2 (2021-05-16)
+
+- lit-element 2.4.0 -> 2.5.1
+  ([changelog](https://github.com/lit/lit-element/blob/2b39872/CHANGELOG.md))
+
 ## current
 
 - Added API Documentation:
