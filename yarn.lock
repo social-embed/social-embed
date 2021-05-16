@@ -1988,7 +1988,7 @@
     lit-element "^2.2.1"
     lit-html "^1.0.0"
 
-"@open-wc/testing@^2.5.32":
+"@open-wc/testing@^2.5.33":
   version "2.5.33"
   resolved "https://registry.yarnpkg.com/@open-wc/testing/-/testing-2.5.33.tgz#909e676df02f3c020bfc99c31d9b09f39fa5555e"
   integrity sha512-+EJNs0i+VV4nE+BrG70l2DNGXOZTSrluruaaU06HUSk57ZlKa+kIxWmkLxCOLlbgnQgrPrQWxbs3lgB1tIx/YA==
