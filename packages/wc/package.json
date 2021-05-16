@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@social-embed/lib": "^0.0.1-next.11",
-    "lit-element": "^2.4.0"
+    "lit-element": "^2.5.1"
   },
   "devDependencies": {
     "@open-wc/testing": "^2.5.32",
