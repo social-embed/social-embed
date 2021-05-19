@@ -36,6 +36,10 @@ export class OEmbedElement extends LitElement {
       border: 0;
       padding: 0;
     }
+    iframe {
+      width: var(--social-embed-iframe-width);
+      height: var(--social-embed-iframe-height);
+    }
   `;
 
   /**
