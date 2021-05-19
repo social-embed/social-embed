@@ -32,13 +32,13 @@
     ]
   },
   "dependencies": {
-    "eslint": "^7.24.0"
+    "eslint": "^7.26.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^4.21.0",
-    "@typescript-eslint/parser": "^4.21.0",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
+    "@typescript-eslint/parser": "^4.24.0",
     "cross-env": "^7.0.3",
-    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-import": "^2.23.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-tsc": "^2.0.0"
