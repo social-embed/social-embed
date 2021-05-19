@@ -2,6 +2,15 @@
 title: Release notes
 ---
 
+## current
+
+- `<o-embed>` is now a block-level element
+- More dimension support, add examples to docs
+
+## 0.0.3-next.1 (2021-05-19)
+
+- Better support for handling dimensions
+
 ## 0.0.3-next.0 (2021-05-19)
 
 - Support passing `--social-embed-iframe-width` and

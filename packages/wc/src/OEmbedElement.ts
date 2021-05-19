@@ -2,7 +2,7 @@
  * @license See LICENSE, Copyright 2021- Tony Narlock, license MIT.
  */
 import type {TemplateResult} from 'lit-element';
-import {LitElement, html, customElement, property, css} from 'lit-element';
+import {LitElement, html, customElement, property} from 'lit-element';
 import {ifDefined} from 'lit-html/directives/if-defined.js';
 
 import {
@@ -24,6 +24,13 @@ import {
   getYouTubeIdFromUrl,
 } from '@social-embed/lib';
 
+interface Dimensions {
+  width: string;
+  height: string;
+  widthWithUnits?: string;
+  heightWithUnits?: string;
+}
+
 /**
  * Renders embeds from `<o-embed url="">` tags
  *
@@ -31,17 +38,6 @@ import {
  */
 @customElement('o-embed')
 export class OEmbedElement extends LitElement {
-  static styles = css`
-    :host {
-      border: 0;
-      padding: 0;
-    }
-    iframe {
-      width: var(--social-embed-iframe-width);
-      height: var(--social-embed-iframe-height);
-    }
-  `;
-
   /**
    * The URL or ID (if supported)
    */
@@ -64,31 +60,62 @@ export class OEmbedElement extends LitElement {
   @property({type: String}) allowfullscreen: string | boolean | undefined =
     'true';
 
+  provider: Provider | undefined;
+
+  instanceStyle(): TemplateResult {
+    const {widthWithUnits, heightWithUnits} = this.getDefaultDimensions(
+      this.provider
+    );
+    return html`
+      <style>
+        :host {
+          border: 0;
+          padding: 0;
+          display: block;
+        }
+        iframe {
+          width: var(--social-embed-iframe-width, ${widthWithUnits});
+          height: var(--social-embed-iframe-height, ${heightWithUnits});
+        }
+      </style>
+    `;
+  }
+
   render(): TemplateResult {
-    const provider = getProviderFromUrl(this.url);
+    this.provider = getProviderFromUrl(this.url);
 
     if (!this.url || this.url == '') {
       return html``;
     }
 
-    switch (provider) {
+    let embedResult;
+    switch (this.provider) {
       case Provider.YouTube:
-        return this.renderYouTube();
+        embedResult = this.renderYouTube();
+        break;
       case Provider.Spotify:
-        return this.renderSpotify();
+        embedResult = this.renderSpotify();
+        break;
       case Provider.Vimeo:
-        return this.renderVimeo();
+        embedResult = this.renderVimeo();
+        break;
       case Provider.DailyMotion:
-        return this.renderDailyMotion();
+        embedResult = this.renderDailyMotion();
+        break;
       case Provider.EdPuzzle:
-        return this.renderEdPuzzle();
+        embedResult = this.renderEdPuzzle();
+        break;
       case Provider.Wistia:
-        return this.renderWistia();
+        embedResult = this.renderWistia();
+        break;
       case Provider.Loom:
-        return this.renderLoom();
+        embedResult = this.renderLoom();
+        break;
       default:
-        return html`No provider found for ${this.url}`;
+        embedResult = html`No provider found for ${this.url}`;
     }
+
+    return html`${this.instanceStyle()}${embedResult}`;
   }
 
   public renderSpotify(): TemplateResult {
@@ -110,6 +137,47 @@ export class OEmbedElement extends LitElement {
     `;
   }
 
+  public getDefaultDimensions(provider?: Provider): Dimensions {
+    switch (provider) {
+      case Provider.Vimeo:
+        return this.calculateDefaultDimensions({
+          defaults: OEmbedElement.vimeoDefaultDimensions,
+        });
+      case Provider.DailyMotion:
+        return this.calculateDefaultDimensions();
+      case Provider.EdPuzzle:
+        return this.calculateDefaultDimensions({
+          defaults: OEmbedElement.edPuzzleDefaultDimensions,
+        });
+      case Provider.Wistia:
+        return this.calculateDefaultDimensions({
+          defaults: OEmbedElement.wistiaDefaultDimensions,
+        });
+      case Provider.Loom:
+        return this.calculateDefaultDimensions({
+          defaults: OEmbedElement.loomDefaultDimensions,
+        });
+      default:
+        return this.calculateDefaultDimensions();
+    }
+  }
+
+  public calculateDefaultDimensions(
+    {
+      defaults,
+    }: {
+      defaults?: Dimensions;
+    } = {defaults: undefined}
+  ): Dimensions {
+    const width = this.getAttribute('width') || defaults?.width || this.width;
+    const widthWithUnits = width.match(/(px|%)/) ? width : `${width}px`;
+    const height =
+      this.getAttribute('height') || defaults?.height || this.height;
+    const heightWithUnits = height.match(/(px|%)/) ? height : `${height}px`;
+
+    return {width, widthWithUnits, height, heightWithUnits};
+  }
+
   public renderDailyMotion(): TemplateResult {
     const dailyMotionId = getDailyMotionIdFromUrl(this.url);
     if (!dailyMotionId) {
@@ -117,14 +185,8 @@ export class OEmbedElement extends LitElement {
     }
     const url = getDailyMotionEmbedFromId(dailyMotionId);
 
-    const width = this.getAttribute('width') || this.width;
-    const widthWithUnits = this.width.match(/(px|%)/)
-      ? this.width
-      : `${this.width}px`;
-    const height = this.getAttribute('height') || this.height;
-    const heightWithUnits = this.height.match(/(px|%)/)
-      ? this.height
-      : `${this.height}px`;
+    const {width, widthWithUnits, height, heightWithUnits} =
+      this.getDefaultDimensions(this.provider);
 
     return html`
       <div
@@ -156,6 +218,13 @@ export class OEmbedElement extends LitElement {
     `;
   }
 
+  static vimeoDefaultDimensions: Dimensions = {
+    width: '640',
+    widthWithUnits: '640px',
+    height: '268',
+    heightWithUnits: '268',
+  };
+
   public renderVimeo(): TemplateResult {
     const vimeoId = getVimeoIdFromUrl(this.url);
     if (!vimeoId) {
@@ -163,8 +232,7 @@ export class OEmbedElement extends LitElement {
     }
     const url = getVimeoEmbedUrlFromId(vimeoId);
 
-    const width = this.getAttribute('width') || '640';
-    const height = this.getAttribute('height') || '268';
+    const {width, height} = this.getDefaultDimensions(this.provider);
 
     return html`
       <iframe
@@ -218,6 +286,13 @@ export class OEmbedElement extends LitElement {
     `;
   }
 
+  static edPuzzleDefaultDimensions: Dimensions = {
+    width: '470',
+    widthWithUnits: '470px',
+    height: '404',
+    heightWithUnits: '404px',
+  };
+
   public renderEdPuzzle(): TemplateResult {
     if (!this.url) {
       return html`No url found for embed`;
@@ -229,8 +304,8 @@ export class OEmbedElement extends LitElement {
     }
     const embedUrl = getEdPuzzleEmbedUrlFromId(embedId);
 
-    const width = this.getAttribute('width') || '470';
-    const height = this.getAttribute('height') || '404';
+    const {width, height} = this.getDefaultDimensions(this.provider);
+
     return html`
       <iframe
         width="${width}"
@@ -252,6 +327,13 @@ export class OEmbedElement extends LitElement {
       <slot></slot>
     `;
   }
+
+  static wistiaDefaultDimensions: Dimensions = {
+    width: '470',
+    widthWithUnits: '470px',
+    height: '404',
+    heightWithUnits: '404px',
+  };
 
   public renderWistia(): TemplateResult {
     if (!this.url) {
@@ -264,8 +346,8 @@ export class OEmbedElement extends LitElement {
     }
     const embedUrl = getWistiaEmbedUrlFromId(embedId);
 
-    const width = this.getAttribute('width') || '470';
-    const height = this.getAttribute('height') || '404';
+    const {width, height} = this.getDefaultDimensions(this.provider);
+
     return html`
       <iframe
         width="${width}"
@@ -288,6 +370,13 @@ export class OEmbedElement extends LitElement {
     `;
   }
 
+  static loomDefaultDimensions: Dimensions = {
+    width: '470',
+    widthWithUnits: '470px',
+    height: '404',
+    heightWithUnits: '404px',
+  };
+
   public renderLoom(): TemplateResult {
     if (!this.url) {
       return html`No url found for embed`;
@@ -299,8 +388,8 @@ export class OEmbedElement extends LitElement {
     }
     const embedUrl = getLoomEmbedUrlFromId(embedId);
 
-    const width = this.getAttribute('width') || '470';
-    const height = this.getAttribute('height') || '404';
+    const {width, height} = this.getDefaultDimensions(this.provider);
+
     return html`
       <iframe
         width="${width}"
