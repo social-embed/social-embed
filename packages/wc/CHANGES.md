@@ -2,6 +2,11 @@
 title: Release notes
 ---
 
+## 0.0.3-next.0 (2021-05-19)
+
+- Support passing `--social-embed-iframe-width` and
+  `--social-embed-iframe-height`
+
 ## 0.0.2 (2021-05-16)
 
 - lit-element 2.4.0 -> 2.5.1
