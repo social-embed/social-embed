@@ -7,7 +7,7 @@
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "TYPEDOC_WATCH=true docusaurus start --port 8063",
-    "prebuild": "npm run clean && yarn workspace @social-embed/lib build && yarn workspace @social-embed/wc build && yarn workspace @social-embed/wc analyze && npm run docs:oembed",
+    "prebuild": "npm run clean && yarn workspace @social-embed/lib build && npm run docs:oembed",
     "build": "TYPEDOC_WATCH=false docusaurus build --out-dir dist --no-minify",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
@@ -18,7 +18,7 @@
     "serve": "docusaurus serve --dir dist --port 8062",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "docs:oembed": "rollup -c --file static/js/o-embed.bundled.js",
+    "docs:oembed": "yarn workspace @social-embed/wc build && rollup -c --file static/js/o-embed.bundled.js",
     "lint": "echo 'NOOP'",
     "test": "echo 'NOOP'",
     "ncu": "ncu",
