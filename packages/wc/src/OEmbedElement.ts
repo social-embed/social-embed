@@ -293,10 +293,11 @@ export class OEmbedElement extends LitElement {
   }
 
   public renderIframe(): TemplateResult {
+    const {width, height} = this.getDefaultDimensions(this.provider);
     return html`
       <iframe
-        width="${this.width}"
-        height="${this.height}"
+        width="${width}"
+        height="${height}"
         src="${this.url}"
         frameborder=${ifDefined(
           this.frameborder ? this.frameborder : undefined
