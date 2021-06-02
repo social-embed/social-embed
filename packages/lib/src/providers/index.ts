@@ -1,3 +1,4 @@
+export * from './generic';
 export * from './youtube';
 export * from './dailymotion';
 export * from './spotify';

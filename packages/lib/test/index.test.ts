@@ -12,11 +12,34 @@ import {
   getWistiaEmbedUrlFromId,
   getYouTubeEmbedUrlFromId,
   getYouTubeIdFromUrl,
+  genericUrlRegex,
+  isValidUrl,
 } from '../src';
 
 describe('convertUrlToEmbedUrl', () => {
   it('is defined', () => {
     expect(convertUrlToEmbedUrl.name).toEqual('convertUrlToEmbedUrl');
+  });
+
+  it('generic', () => {
+    const urlPatterns = [
+      'https://apple.com',
+      'https://open.spotify.com',
+      'https://www.anotherdomainname.com?with=GETPARAMS#andAFragment',
+    ];
+
+    for (let i = 0; i < urlPatterns.length; i++) {
+      const url = urlPatterns[i];
+      expect(url).toMatch(genericUrlRegex);
+      expect(isValidUrl(url)).toBeTrue;
+    }
+
+    const urlIgnorePatterns = ['notaurl'];
+    for (let i = 0; i < urlIgnorePatterns.length; i++) {
+      const url = urlIgnorePatterns[i];
+      expect(url).not.toMatch(genericUrlRegex);
+      expect(isValidUrl(url)).not.toBeTrue;
+    }
   });
 
   it('spotify', () => {

@@ -72,6 +72,9 @@ export const ProviderIdUrlFunctionMap: {
   [Provider.Wistia]: Wistia.getWistiaEmbedUrlFromId,
 };
 
+/**
+ * Converts URL variations from sites to their "embed-friendly" URL.
+ */
 export const convertUrlToEmbedUrl = (url: string): string => {
   const provider = getProviderFromUrl(url);
 
@@ -91,3 +94,24 @@ export const convertUrlToEmbedUrl = (url: string): string => {
   }
   return getEmbedUrlFromId(id);
 };
+
+export const isString = (val: unknown): val is string => {
+  return typeof val === 'string';
+};
+
+export const isRegExp = (val: unknown): val is RegExp => {
+  return val instanceof RegExp;
+};
+
+/**
+ * Factory to create regex matchers
+ *
+ * @param regex Regular expression or string pattern to match
+ */
+export const matcher =
+  (regex: RegExp | string): ((value: string) => boolean) =>
+  (value: string) => {
+    return isString(value) && !isRegExp(regex)
+      ? value.includes(regex)
+      : new RegExp(regex).test(value);
+  };
