@@ -31,6 +31,7 @@ module.exports = {
               label: 'Providers',
               collapsed: false,
               items: [
+                'wc/providers/generic',
                 'wc/providers/youtube',
                 'wc/providers/dailymotion',
                 'wc/providers/spotify',
