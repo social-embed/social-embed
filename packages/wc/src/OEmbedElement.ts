@@ -112,7 +112,7 @@ export class OEmbedElement extends LitElement {
         embedResult = this.renderLoom();
         break;
       default:
-        embedResult = html`No provider found for ${this.url}`;
+        embedResult = this.renderIframe();
     }
 
     return html`${this.instanceStyle()}${embedResult}`;
@@ -280,6 +280,20 @@ export class OEmbedElement extends LitElement {
             this.allowfullscreen === '1'
             ? true
             : undefined
+        )}
+      ></iframe>
+      <slot></slot>
+    `;
+  }
+
+  public renderIframe(): TemplateResult {
+    return html`
+      <iframe
+        width="${this.width}"
+        height="${this.height}"
+        src="${this.url}"
+        frameborder=${ifDefined(
+          this.frameborder ? this.frameborder : undefined
         )}
       ></iframe>
       <slot></slot>
