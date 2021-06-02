@@ -2,7 +2,7 @@
 title: Release notes
 ---
 
-## current
+## 0.0.1-next.12 (2021-06-02)
 
 - Add `matcher` helper to generate regex matchers
 - Generic URL regular expression
