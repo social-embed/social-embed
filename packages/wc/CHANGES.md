@@ -4,6 +4,8 @@ title: Release notes
 
 ## 0.0.3-next.3 (2021-06-02)
 
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.3-next.2...@social-embed/wc@0.0.3-next.3)
+
 - Accept css variables in generic iframe embeds
 
 ## 0.0.3-next.2 (2021-06-02)
