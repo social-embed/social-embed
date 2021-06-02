@@ -22,6 +22,7 @@ import {
   getWistiaEmbedUrlFromId,
   getYouTubeEmbedUrlFromId,
   getYouTubeIdFromUrl,
+  isValidUrl,
 } from '@social-embed/lib';
 
 interface Dimensions {
@@ -112,7 +113,12 @@ export class OEmbedElement extends LitElement {
         embedResult = this.renderLoom();
         break;
       default:
-        embedResult = this.renderIframe();
+        if (isValidUrl(this.url)) {
+          embedResult = this.renderIframe();
+        } else {
+          embedResult = html`No provider found for ${this.url}`;
+        }
+        break;
     }
 
     return html`${this.instanceStyle()}${embedResult}`;
