@@ -2,9 +2,10 @@
 title: Release notes
 ---
 
-## current
+## 0.0.3-next.2 (2021-06-02)
 
 - Update TypeScript 4.2 -> 4.3
+- Fallback to iframes for valid URLs not supported in providers
 
 ## 0.0.3-next.1 (2021-05-19)
 
