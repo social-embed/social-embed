@@ -6,6 +6,7 @@ title: Release notes
 
 - `<o-embed>` is now a block-level element
 - More dimension support, add examples to docs
+- Update TypeScript 4.2 -> 4.3
 
 ## 0.0.3-next.0 (2021-05-19)
 
