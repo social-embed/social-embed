@@ -2,6 +2,10 @@
 title: Release notes
 ---
 
+## 0.0.3-next.3 (2021-06-02)
+
+- Accept css variables in generic iframe embeds
+
 ## 0.0.3-next.2 (2021-06-02)
 
 - Update TypeScript 4.2 -> 4.3
