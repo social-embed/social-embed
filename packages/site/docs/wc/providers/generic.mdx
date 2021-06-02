@@ -21,3 +21,20 @@ URL: https://ibm.com
 ```
 
 <o-embed url="https://ibm.com"></o-embed>
+
+
+## Styled
+
+```html
+<style>
+o-embed.full {
+  --social-embed-iframe-height: 100%;
+  --social-embed-iframe-width: 100%;
+  height: 450px;
+  width: 100%;
+}
+</style>
+<o-embed url="https://harvard.edu" class="full"></o-embed>
+```
+
+<o-embed url="https://www.harvard.edu" style={{height:'450px',width:'100%'}} class="full"></o-embed>
