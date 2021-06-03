@@ -2,6 +2,12 @@
 title: Release notes
 ---
 
+## 0.0.3-next.5 (2021-06-03)
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.3-next.4...@social-embed/wc@0.0.3-next.5)
+
+- DailyMotion: Fix dimension customization
+
 ## 0.0.3-next.4 (2021-06-03)
 
 See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.3-next.3...@social-embed/wc@0.0.3-next.4)
