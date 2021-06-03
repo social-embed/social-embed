@@ -191,36 +191,30 @@ export class OEmbedElement extends LitElement {
     }
     const url = getDailyMotionEmbedFromId(dailyMotionId);
 
-    const {width, widthWithUnits, height, heightWithUnits} =
-      this.getDefaultDimensions(this.provider);
+    const {width, height} = this.getDefaultDimensions(this.provider);
 
     return html`
-      <div
-        style="width:${widthWithUnits};height:${heightWithUnits};overflow:hidden;"
-      >
-        <iframe
-          allow="autoplay"
-          width="${width}"
-          height="${height}"
-          src="${url}"
-          frameborder=${ifDefined(
-            this.frameborder ? this.frameborder : undefined
-          )}
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen=${ifDefined(
-            this.allowfullscreen === '' ||
-              this.allowfullscreen == 'true' ||
-              this.allowfullscreen === 'true' ||
-              this.allowfullscreen === true ||
-              this.allowfullscreen === '1'
-              ? true
-              : undefined
-          )}
-          style="width:100%;height:100%;left:0px;top:0px;overflow:hidden"
-          type="text/html"
-        ></iframe>
-        <slot></slot>
-      </div>
+      <iframe
+        allow="autoplay"
+        width="${width}"
+        height="${height}"
+        src="${url}"
+        frameborder=${ifDefined(
+          this.frameborder ? this.frameborder : undefined
+        )}
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen=${ifDefined(
+          this.allowfullscreen === '' ||
+            this.allowfullscreen == 'true' ||
+            this.allowfullscreen === 'true' ||
+            this.allowfullscreen === true ||
+            this.allowfullscreen === '1'
+            ? true
+            : undefined
+        )}
+        type="text/html"
+      ></iframe>
+      <slot></slot>
     `;
   }
 
