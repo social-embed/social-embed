@@ -2,6 +2,14 @@
 title: Release notes
 ---
 
+## 0.0.3-next.4 (2021-06-03)
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.3-next.3...@social-embed/wc@0.0.3-next.4)
+
+- Update lib to @social-embed/lib to ^0.0.1-next.12 to assure
+  generic regexes provided.
+- Rollup: 2.50.5 -> 2.50.6
+
 ## 0.0.3-next.3 (2021-06-02)
 
 See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.3-next.2...@social-embed/wc@0.0.3-next.3)
