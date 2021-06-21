@@ -479,7 +479,6 @@ describe('o-embed', () => {
       assert.shadowDom.equal(
         el,
         `
-      <div style="width:560px;height:315px;overflow:hidden;">
       <iframe
         width="560"
         allow="autoplay"
@@ -487,13 +486,11 @@ describe('o-embed', () => {
         frameborder="0"
         height="315"
         src=${embedSrc}
-        style="width:100%;height:100%;left:0px;top:0px;overflow:hidden"
         type="text/html"
         width="560"
       >
       </iframe>
       <slot></slot>
-      </div>
     `
       );
     });
@@ -505,7 +502,6 @@ describe('o-embed', () => {
       assert.shadowDom.equal(
         el,
         `
-      <div style="width:100%;height:100%;overflow:hidden;">
       <iframe
         width="100%"
         allow="autoplay"
@@ -513,13 +509,11 @@ describe('o-embed', () => {
         frameborder="0"
         height="100%"
         src=${embedSrc}
-        style="width:100%;height:100%;left:0px;top:0px;overflow:hidden"
         type="text/html"
         width="560"
       >
       </iframe>
       <slot></slot>
-      </div>
     `
       );
     });
