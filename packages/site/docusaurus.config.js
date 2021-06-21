@@ -15,7 +15,7 @@ module.exports = {
 
   plugins: [
     path.resolve(__dirname, 'plugins', 'more-mdx-paths'),
-    '@docusaurus/theme-live-codeblock',
+    // '@docusaurus/theme-live-codeblock',
     [
       'docusaurus-plugin-typedoc',
 
@@ -54,6 +54,7 @@ module.exports = {
       },
     ],
   ],
+  themes: ['@docusaurus/theme-live-codeblock'],
   themeConfig: {
     navbar: {
       title: '@social-embed',
