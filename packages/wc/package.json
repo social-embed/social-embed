@@ -58,7 +58,7 @@
     "@web/test-runner-puppeteer": "^0.10.0",
     "chai": "^4.3.4",
     "deepmerge": "^4.2.2",
-    "eslint": "^7.27.0",
+    "eslint": "^7.29.0",
     "lit-analyzer": "^1.2.1",
     "prettier": "^2.3.0",
     "rimraf": "^3.0.2",
