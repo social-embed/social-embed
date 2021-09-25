@@ -35,16 +35,16 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@babel/plugin-transform-modules-commonjs": "^7.14.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.15.4",
     "@docusaurus/module-type-aliases": "2.0.0-beta.0",
-    "@tsconfig/docusaurus": "^1.0.2",
-    "@types/react": "^17.0.15",
+    "@tsconfig/docusaurus": "^1.0.4",
+    "@types/react": "^17.0.24",
     "@types/react-helmet": "^6.1.2",
-    "@types/react-router-dom": "^5.1.8",
+    "@types/react-router-dom": "^5.3.0",
     "rollup-plugin-node-resolve": "^5.2.0",
-    "typedoc": "^0.21.4",
+    "typedoc": "0.21.4",
     "typedoc-neo-theme": "^1.1.1",
-    "typedoc-plugin-markdown": "^3.10.4"
+    "typedoc-plugin-markdown": "3.10.4"
   },
   "browserslist": {
     "production": [
