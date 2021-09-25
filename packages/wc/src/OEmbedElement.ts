@@ -1,9 +1,10 @@
 /**
  * @license See LICENSE, Copyright 2021- Tony Narlock, license MIT.
  */
-import type {TemplateResult} from 'lit-element';
-import {LitElement, html, customElement, property} from 'lit-element';
-import {ifDefined} from 'lit-html/directives/if-defined.js';
+import type {TemplateResult} from 'lit';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import {ifDefined} from 'lit/directives/if-defined.js';
 
 import {
   getProviderFromUrl,

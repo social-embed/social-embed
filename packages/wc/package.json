@@ -29,6 +29,7 @@
     "web-component",
     "web-components",
     "lit-element",
+    "lit",
     "typescript",
     "oembed",
     "o-embed"
@@ -45,7 +46,7 @@
   },
   "dependencies": {
     "@social-embed/lib": "^0.0.1-next.12",
-    "lit-element": "^2.5.1"
+    "lit": "^2.0.0"
   },
   "devDependencies": {
     "@open-wc/testing": "^2.5.33",
