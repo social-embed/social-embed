@@ -2,7 +2,7 @@
   "reject": [
     "@docusaurus/*",
     "docusaurus*",
-    "typegen",
+    "typedoc",
     "typedoc-plugin-markdown"
   ]
 }
