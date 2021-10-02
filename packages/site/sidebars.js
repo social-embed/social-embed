@@ -10,12 +10,12 @@ module.exports = {
           items: [
             'lib/index',
             'lib/installation',
-            {
-              type: 'category',
-              label: 'API',
-              collapsed: false,
-              items: require('./typedoc-sidebar-lib.js'),
-            },
+            // {
+            //   type: 'category',
+            //   label: 'API',
+            //   collapsed: false,
+            //   items: require('./typedoc-sidebar-lib.js'),
+            // },
             'lib/release-notes',
           ],
         },
@@ -51,12 +51,12 @@ module.exports = {
                 'wc/configuration/url',
               ],
             },
-            {
-              type: 'category',
-              label: 'API',
-              collapsed: false,
-              items: require('./typedoc-sidebar-wc.js'),
-            },
+            // {
+            //   type: 'category',
+            //   label: 'API',
+            //   collapsed: false,
+            //   items: require('./typedoc-sidebar-wc.js'),
+            // },
 
             'wc/release-notes',
           ],
