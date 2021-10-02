@@ -1,7 +1,5 @@
 {
   "reject": [
-    "@docusaurus/*",
-    "docusaurus*",
     "typedoc",
     "typedoc-plugin-markdown"
   ]
