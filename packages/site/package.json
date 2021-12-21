@@ -25,18 +25,18 @@
     "update": "ncu"
   },
   "dependencies": {
-    "@docusaurus/core": "^0.0.0-4043",
-    "@docusaurus/preset-classic": "^0.0.0-4043",
-    "@docusaurus/theme-live-codeblock": "^0.0.0-4043",
+    "@docusaurus/core": "^2.0.0-beta.14",
+    "@docusaurus/preset-classic": "^2.0.0-beta.14",
+    "@docusaurus/theme-live-codeblock": "^2.0.0-beta.14",
     "@mdx-js/react": "^1.6.22",
     "clsx": "^1.1.1",
-    "docusaurus-plugin-typedoc": "^0.16.3",
+    "docusaurus-plugin-typedoc": "^0.16.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/plugin-transform-modules-commonjs": "^7.15.4",
-    "@docusaurus/module-type-aliases": "^0.0.0-4043",
+    "@docusaurus/module-type-aliases": "^2.0.0-beta.14",
     "@tsconfig/docusaurus": "^1.0.4",
     "@types/react": "^17.0.24",
     "@types/react-helmet": "^6.1.2",
