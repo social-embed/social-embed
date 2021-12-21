@@ -25,7 +25,8 @@
       "**/@types/chai",
       "**/@types/jest",
       "**/@types/jasmine",
-      "**/ts-loader"
+      "**/ts-loader",
+      "copy-text-to-clipboard"
     ],
     "packages": [
       "packages/*"
