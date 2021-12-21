@@ -26,7 +26,8 @@
       "**/@types/jest",
       "**/@types/jasmine",
       "**/ts-loader",
-      "copy-text-to-clipboard"
+      "**/copy-text-to-clipboard",
+      "**/@docusaurus/**"
     ],
     "packages": [
       "packages/*"
