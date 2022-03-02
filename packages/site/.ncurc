@@ -3,6 +3,7 @@
     "@docusaurus/*",
     "docusaurus*",
     "typedoc",
-    "typedoc-plugin-markdown"
+    "typedoc-plugin-markdown",
+    "@mdx-js/*"
   ]
 }
