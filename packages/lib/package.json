@@ -36,8 +36,8 @@
     "update": "ncu"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.2",
-    "prettier": "^2.4.1",
+    "@types/jest": "^27.4.1",
+    "prettier": "^2.5.1",
     "tsdx": "^0.14.1"
   }
 }
