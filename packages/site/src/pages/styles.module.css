@@ -14,7 +14,7 @@
 }
 
 html[data-theme='dark'] .heroBanner {
-  --ifm-hero-background-color:#2c5282;
+  --ifm-hero-background-color: #2c5282;
 }
 
 @media screen and (max-width: 966px) {

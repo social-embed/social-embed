@@ -164,13 +164,11 @@ module.exports = {
           position: 'right',
           items: [
             {
-              href:
-                'https://github.com/social-embed/social-embed/tree/master/packages/lib',
+              href: 'https://github.com/social-embed/social-embed/tree/master/packages/lib',
               label: '@social-embed/lib',
             },
             {
-              href:
-                'https://github.com/social-embed/social-embed/tree/master/packages/wc',
+              href: 'https://github.com/social-embed/social-embed/tree/master/packages/wc',
               label: '@social-embed/wc',
             },
           ],

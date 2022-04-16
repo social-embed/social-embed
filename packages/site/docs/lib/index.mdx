@@ -34,8 +34,8 @@ the full manifest of supported content. As of 2021-04-21, it includes at least:
 Similar projects: [js-video-url-parser]
 
 [youtube regex site:stackoverflow.com]: https://www.google.com/search?q=youtube+regex+site%3Astackoverflow.com
-[Wistia]: https://wistia.com
-[Construct a Wistia Embed Code]: https://wistia.com/support/developers/construct-an-embed-code
+[wistia]: https://wistia.com
+[construct a wistia embed code]: https://wistia.com/support/developers/construct-an-embed-code
 [js-video-url-parser]: https://www.npmjs.com/package/js-video-url-parser
 
 ## Usage
@@ -59,59 +59,41 @@ These naming conventions aren't stable yet and are subject to change
 ### Regular expressions
 
 ```typescript
-import {
-  getYouTubeIdFromUrl,
-  youTubeUrlRegex
-} from '@social-embed/lib';
-'https://youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex)
+import {getYouTubeIdFromUrl, youTubeUrlRegex} from '@social-embed/lib';
+'https://youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex);
 // ["https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
 ```
 
 ### Detect provider (e.g. YouTube) from URL
 
 ```typescript
-import {
-  getProviderFromUrl,
-} from '@social-embed/lib';
-const provider = getProviderFromUrl(
-  'https://youtu.be/watch?v=Bd8_vO5zrjo'
-)
+import {getProviderFromUrl} from '@social-embed/lib';
+const provider = getProviderFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo');
 // YouTube
 ```
 
 ### Get IDs from URLs
 
 ```typescript
-import {
-  getProviderFromUrl,
-  ProviderIdFunctionMap,
-} from '@social-embed/lib';
-const provider = getProviderFromUrl(
-  'https://youtu.be/watch?v=Bd8_vO5zrjo'
-)  // YouTube
+import {getProviderFromUrl, ProviderIdFunctionMap} from '@social-embed/lib';
+const provider = getProviderFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo'); // YouTube
 
 if (provider) {
-  const getId = ProviderIdFunctionMap[provider]
-  getId("https://youtu.be/watch?v=Bd8_vO5zrjo")
+  const getId = ProviderIdFunctionMap[provider];
+  getId('https://youtu.be/watch?v=Bd8_vO5zrjo');
   // "Bd8_vO5zrjo"
 }
 ```
 
 ### Get `iframe` friendly URL
 
-
 ```typescript
-import {
-  getYouTubeIdFromUrl,
-  getYouTubeEmbedUrlFromId,
-} from '@social-embed/lib';
-const embedId = getYouTubeIdFromUrl(
-  'https://youtu.be/watch?v=Bd8_vO5zrjo'
-)  // "Bd8_vO5zrjo"
+import {getYouTubeIdFromUrl, getYouTubeEmbedUrlFromId} from '@social-embed/lib';
+const embedId = getYouTubeIdFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo'); // "Bd8_vO5zrjo"
 
 const embedFriendlyUrl = getYouTubeEmbedUrlFromId(
   'https://youtu.be/watch?v=Bd8_vO5zrjo'
-)  // "https://www.youtube.com/embed/Bd8_vO5zrjo"
+); // "https://www.youtube.com/embed/Bd8_vO5zrjo"
 ```
 
 The above embed URL can fit right into an `<iframe>`:
@@ -133,13 +115,14 @@ This is what the [`<o-embed>` web component](../wc/index.mdx) uses under the hoo
 [codepen console]: https://codepen.io/attachment/pen/poRRpdp?editors=0010
 [jsfiddle]: https://jsfiddle.net/gitpull/pcLagbsm/
 
-## See also 
+## See also
 
 - [Installation](./installation.mdx)
 
   ```bash
   npm i @social-embed/lib
   ```
+
   ```bash
   yarn add @social-embed/lib
   ```

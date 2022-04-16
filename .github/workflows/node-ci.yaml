@@ -4,7 +4,6 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -12,40 +11,40 @@ jobs:
         node-version: [14.x]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Get yarn cache directory path
-      id: yarn-cache-dir-path
-      run: echo "::set-output name=dir::$(yarn cache dir)"
-    - name: Yarn cache
-      uses: actions/cache@v3
-      id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-      with:
-        path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-        key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-    - name: node_modules/ cache
-      uses: actions/cache@v3
-      id: node-modules-cache
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
-    - name: project - install
-      run: yarn
-    - name: lint
-      run: |
-        yarn lint
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Yarn cache
+        uses: actions/cache@v3
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+      - name: node_modules/ cache
+        uses: actions/cache@v3
+        id: node-modules-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-${{ hashFiles('yarn.lock') }}
+      - name: project - install
+        run: yarn
+      - name: lint
+        run: |
+          yarn lint
 
-    - name: build
-      run: |
-        yarn build
+      - name: build
+        run: |
+          yarn build
 
-    - name: test
-      run: |
-        yarn test
+      - name: test
+        run: |
+          yarn test

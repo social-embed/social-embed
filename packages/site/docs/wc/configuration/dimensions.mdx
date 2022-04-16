@@ -7,6 +7,7 @@ sidebar_label: Dimensions
 ## Outer container
 
 ### Height
+
 #### HTML
 
 ```html
@@ -15,7 +16,8 @@ sidebar_label: Dimensions
 
 <o-embed url="https://youtu.be/FTQbiNvZqaY" height="300"></o-embed>
 
-### Width 
+### Width
+
 #### HTML
 
 ```html
@@ -25,6 +27,7 @@ sidebar_label: Dimensions
 <o-embed url="https://youtu.be/FTQbiNvZqaY" width="300"></o-embed>
 
 ### Width and height
+
 #### HTML
 
 ```html
@@ -32,7 +35,6 @@ sidebar_label: Dimensions
 ```
 
 <o-embed url="https://youtu.be/FTQbiNvZqaY" width="300" height="300"></o-embed>
-
 
 ## Inner `<iframe>`
 
@@ -42,31 +44,34 @@ Optional, [Custom CSS Properties](https://developer.mozilla.org/en-US/docs/Web/C
 - `--social-embed-iframe-width`
 
 ### Height
+
 #### HTML
 
 ```html
 <style>
-o-embed.full {
-  --social-embed-iframe-height: 100%;
-  --social-embed-iframe-width: 100%;
-  height: 500px;
-}
+  o-embed.full {
+    --social-embed-iframe-height: 100%;
+    --social-embed-iframe-width: 100%;
+    height: 500px;
+  }
 </style>
 <o-embed url="https://youtu.be/FTQbiNvZqaY" class="full"></o-embed>
 ```
+
 <o-embed url="https://youtu.be/FTQbiNvZqaY" style={{height:"500px"}} class="full"></o-embed>
 
 ### Height + width
 
 ```html
 <style>
-o-embed.full {
-  --social-embed-iframe-height: 100%;
-  --social-embed-iframe-width: 100%;
-  height: 300px;
-  width: 500px;
-}
+  o-embed.full {
+    --social-embed-iframe-height: 100%;
+    --social-embed-iframe-width: 100%;
+    height: 300px;
+    width: 500px;
+  }
 </style>
 <o-embed url="https://youtu.be/FTQbiNvZqaY" class="full"></o-embed>
 ```
+
 <o-embed url="https://youtu.be/FTQbiNvZqaY" style={{height:'300px',width:'500px'}} class="full"></o-embed>
