@@ -8,7 +8,7 @@
     "docusaurus": "docusaurus",
     "start": "TYPEDOC_WATCH=true docusaurus start --port 8063",
     "prebuild": "npm run clean && yarn workspace @social-embed/lib build && npm run docs:oembed",
-    "build": "TYPEDOC_WATCH=false docusaurus build --out-dir dist 2>/dev/null",
+    "build": "TYPEDOC_WATCH=false docusaurus build --out-dir dist",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "clean:typegen": "rimraf -g './docs/**/api'",
