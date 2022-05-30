@@ -8,9 +8,7 @@ import {
   getYouTubeIdFromUrl,
 } from '@social-embed/lib';
 import {OEmbedElement} from '@social-embed/wc';
-import {fixture, html} from '@open-wc/testing';
-
-const assert = chai.assert;
+import {assert, fixture, html} from '@open-wc/testing';
 
 describe('o-embed', () => {
   it('is defined', () => {
