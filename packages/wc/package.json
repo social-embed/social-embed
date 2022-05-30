@@ -57,7 +57,7 @@
     "@web/dev-server-import-maps": "^0.0.6",
     "@web/test-runner": "^0.13.28",
     "@web/test-runner-puppeteer": "^0.10.5",
-    "chai": "^4.3.4",
+    "chai": "^4.3.6",
     "deepmerge": "^4.2.2",
     "eslint": "^8.16.0",
     "lit-analyzer": "^1.2.1",
