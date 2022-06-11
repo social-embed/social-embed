@@ -17,7 +17,8 @@
     "docs": "yarn workspaces run docs",
     "docs:gen:watch": "yarn workspaces run docs:gen:watch",
     "docs:serve": "yarn workspaces run docs:serve",
-    "serve": "yarn workspaces run serve"
+    "serve": "yarn workspaces run serve",
+    "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
   },
   "workspaces": {
     "nohoist": [
