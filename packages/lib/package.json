@@ -33,7 +33,9 @@
     "test": "tsdx test",
     "lint": "eslint src",
     "ncu": "ncu",
-    "update": "ncu"
+    "update": "ncu",
+    "prettier": "prettier",
+    "format": "yarn run prettier . --write"
   },
   "devDependencies": {
     "@types/jest": "^27.5.1",

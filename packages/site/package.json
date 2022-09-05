@@ -22,7 +22,9 @@
     "lint": "echo 'NOOP'",
     "test": "echo 'NOOP'",
     "ncu": "ncu",
-    "update": "ncu"
+    "update": "ncu",
+    "prettier": "prettier",
+    "format": "yarn run prettier . --write"
   },
   "dependencies": {
     "@docusaurus/core": "2.0.0-beta.0",
