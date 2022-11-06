@@ -2,7 +2,11 @@
 title: Release notes
 ---
 
-## Currernt
+## Upcoming release
+
+<!-- _Enter the most recent changes here_ -->
+
+## 0.0.5-next.0 (2022-11-06)
 
 - Move from `tsc` to `rollup` (#43)
 

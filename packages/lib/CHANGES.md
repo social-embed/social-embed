@@ -2,7 +2,11 @@
 title: Release notes
 ---
 
-## next release
+## Upcoming release
+
+<!-- _Enter the most recent changes here_ -->
+
+## 0.0.2-next.0 (2022-11-06)
 
 - Move from `tsdx` to `rollup` (#43)
 
