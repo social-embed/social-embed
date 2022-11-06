@@ -1,9 +1,9 @@
 {
   "name": "@social-embed/lib",
   "description": "Regexes, ID extraction, for embed providers (YouTube, other OEmbed compatible providers),",
-  "version": "0.0.1-next.12",
+  "version": "0.0.2-next.0",
   "main": "dist/index.js",
-  "module": "dist/lib.esm.js",
+  "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "license": "MIT",
   "keywords": [
@@ -26,11 +26,12 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "start": "tsdx start",
-    "build": "tsdx build",
-    "prepare": "tsdx build",
+    "rollup": "rollup",
+    "start": "rollup start",
+    "build": "rollup -c rollup.config.ts --configPlugin typescript",
+    "prepare": "yarn build",
     "bootstrap": "echo 'NOOP'",
-    "test": "tsdx test",
+    "test": "jest test",
     "lint": "eslint src",
     "ncu": "ncu",
     "update": "ncu",
@@ -38,8 +39,21 @@
     "format": "yarn run prettier . --write"
   },
   "devDependencies": {
-    "@types/jest": "^27.5.1",
+    "@babel/preset-typescript": "^7.18.6",
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-typescript": "^9.0.2",
+    "@types/jest": "^29.2.2",
     "prettier": "^2.7.1",
-    "tsdx": "^0.14.1"
+    "rollup": "^3.2.5",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-styles": "^4.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-visualizer": "^5.8.3",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "jest": "^29.2.2"
   }
 }

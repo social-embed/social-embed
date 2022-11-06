@@ -2,6 +2,10 @@
 title: Release notes
 ---
 
+## next release
+
+- Move from `tsdx` to `rollup` (#43)
+
 ## 0.0.1-next.12 (2021-06-02)
 
 - Add `matcher` helper to generate regex matchers

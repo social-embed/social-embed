@@ -18,7 +18,7 @@
     "serve": "docusaurus serve --dir dist --port 8062",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "docs:oembed": "yarn workspace @social-embed/wc build && rollup -c --file static/js/o-embed.bundled.js",
+    "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p static/js && cp ../wc/dist/OEmbedElement.umd.js static/js/o-embed.bundled.js",
     "lint": "echo 'NOOP'",
     "test": "echo 'NOOP'",
     "ncu": "ncu",
@@ -43,7 +43,6 @@
     "@types/react": "^17.0.24",
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "typedoc": "0.21.4",
     "typedoc-neo-theme": "^1.1.1",
     "typedoc-plugin-markdown": "3.10.4"

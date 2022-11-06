@@ -658,7 +658,7 @@ describe('o-embed', () => {
 
 describe('convertUrlToEmbedUrl', () => {
   it('is defined', () => {
-    assert.equal(convertUrlToEmbedUrl.name, 'convertUrlToEmbedUrl');
+    assert.exists(convertUrlToEmbedUrl);
   });
 
   it('spotify', () => {
