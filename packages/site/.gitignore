@@ -21,3 +21,6 @@ yarn-error.log*
 
 # Copied over bundle
 static/js/
+
+# docusaurus-plugin-typedoc-api
+docs/api/
