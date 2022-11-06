@@ -24,7 +24,8 @@
     "test": "wtr test/o-embed_test.ts --puppeteer --node-resolve",
     "test:watch": "yarn test --watch",
     "checksize": "rollup -c ; cat dist/o-embed.bundled.js | gzip -9 | wc -c ; rm dist/o-embed.bundled.js",
-    "wtr": "wtr"
+    "wtr": "wtr",
+    "rollup": "rollup"
   },
   "keywords": [
     "web-component",
@@ -68,7 +69,6 @@
     "rimraf": "^3.0.2",
     "rollup": "^3.4.0",
     "rollup-plugin-filesize": "^9.1.2",
-    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-summary": "^2.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "typescript": "^4.9.3",
