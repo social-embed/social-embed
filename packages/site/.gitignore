@@ -1,5 +1,4 @@
 node_modules/
-dist/
 build/
 static/js/o-embed.bundled.js
 custom-elements.json
