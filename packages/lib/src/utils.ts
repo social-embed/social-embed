@@ -61,7 +61,7 @@ export const ProviderIdFunctionMap: {
 };
 
 export const ProviderIdUrlFunctionMap: {
-  [P in ValueOfProvider]: (id: string, ...args: any) => string;
+  [P in ValueOfProvider]: (id: string, ...args: unknown) => string;
 } = {
   [Provider.DailyMotion]: DailyMotion.getDailyMotionEmbedFromId,
   [Provider.Spotify]: Spotify.getSpotifyEmbedUrlFromIdAndType,
