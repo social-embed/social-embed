@@ -28,7 +28,7 @@
     "clean": "rimraf dist",
     "rollup": "rollup",
     "start": "rollup start",
-    "build": "rollup -c rollup.config.mjs",
+    "build": "rollup -c rollup.config.ts --configPlugin typescript",
     "prepare": "yarn build",
     "bootstrap": "echo 'NOOP'",
     "test": "jest test",
