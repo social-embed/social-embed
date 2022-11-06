@@ -2,6 +2,15 @@
 title: Release notes
 ---
 
+## Currernt
+
+- Move from `tsc` to `rollup` (#43)
+
+  This handles legacy builds and UMD build (for documentation)
+
+  Before hand, `site/` had its own rollup configuration just for handling a UMD
+  build.
+
 ## 0.0.4-next.0 (2021-09-25)
 
 Update lit-element to lit
