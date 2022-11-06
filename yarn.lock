@@ -2309,6 +2309,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@social-embed/lib@^0.0.1-next.12":
+  version "0.0.1-next.12"
+  resolved "https://registry.yarnpkg.com/@social-embed/lib/-/lib-0.0.1-next.12.tgz#27677706e89ea3765108a0115e9a8ae541714e88"
+  integrity sha512-CUqgq2PTmdmWhNPzth9JN1cFoaFsIWhgiuDVD23hjD+9HJVD+xs3GlbZF+YWYMKVhRa3hib4A7Ev8rOjz2QBwQ==
+
 "@svgr/babel-plugin-add-jsx-attribute@^5.4.0":
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-5.4.0.tgz#81ef61947bb268eb9d50523446f9c638fb355906"
