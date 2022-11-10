@@ -6,7 +6,7 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
-## 0.0.5-next.1 (unreleased)
+## 0.0.5-next.1 (2022-11-10)
 
 - Bump `@social-embed/lib` from 0.0.1-next.12 -> 0.0.2-next.1
 
