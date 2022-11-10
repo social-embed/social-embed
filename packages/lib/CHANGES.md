@@ -6,6 +6,10 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.0.2-next.1 (unreleased)
+
+- Move `jest` to `devDependencies`
+
 ## 0.0.2-next.0 (2022-11-06)
 
 - Move from `tsdx` to `rollup` (#43)
