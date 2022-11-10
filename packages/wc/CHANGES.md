@@ -6,6 +6,10 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.0.5-next.1 (unreleased)
+
+- Bump `@social-embed/lib` from 0.0.1-next.12 -> 0.0.2-next.1
+
 ## 0.0.5-next.0 (2022-11-06)
 
 - Move from `tsc` to `rollup` (#43)
