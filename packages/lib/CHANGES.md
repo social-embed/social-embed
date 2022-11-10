@@ -6,7 +6,7 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
-## 0.0.2-next.1 (unreleased)
+## 0.0.2-next.1 (2022-11-10)
 
 - Move `jest` to `devDependencies`
 
