@@ -9,6 +9,10 @@ Here you can find project-wide changes. For more detailed changes:
 
 ## 0.0.2 (unreleased)
 
+- yarn 1.19.0 -> 1.22.19 (#2)
+
+  See also https://github.com/yarnpkg/yarn/blob/v1.22.19/CHANGELOG.md#master
+
 - Update dev dependencies: karma, eslint, rollup
 - Move to monorepo structure
 - Switch from karma to web-test-runner to get around import issues
