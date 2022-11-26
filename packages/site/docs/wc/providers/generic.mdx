@@ -1,0 +1,38 @@
+---
+id: generic
+title: Generic Embed
+sidebar_label: Generic
+---
+
+As a fallback, values satisfying `isValidUrl` in [`@social-embed/lib`] will render as [`<iframe>`]s.
+
+[`@social-embed/lib`]: ../../lib/index.mdx
+[`<iframe>`]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe
+
+## Basic
+
+### HTML
+
+URL: https://ibm.com
+
+```html
+<o-embed url="https://ibm.com"></o-embed>
+```
+
+<o-embed url="https://ibm.com"></o-embed>
+
+## Styled
+
+```html
+<style>
+  o-embed.full {
+    --social-embed-iframe-height: 100%;
+    --social-embed-iframe-width: 100%;
+    height: 450px;
+    width: 100%;
+  }
+</style>
+<o-embed url="https://harvard.edu" class="full"></o-embed>
+```
+
+<o-embed url="https://www.harvard.edu" style={{height:'450px',width:'100%'}} class="full"></o-embed>

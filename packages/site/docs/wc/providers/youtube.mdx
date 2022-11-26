@@ -1,0 +1,42 @@
+---
+id: youtube
+title: YouTube
+sidebar_label: YouTube
+---
+
+## Basic
+
+### HTML
+
+URL: https://youtu.be/FTQbiNvZqaY
+
+```html
+<o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
+```
+
+<o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
+
+## Optional: Inner / child content
+
+### CSS
+
+```css
+o-embed p {
+  border: solid 1px blue;
+  padding: 8px;
+}
+```
+
+### HTML
+
+```html
+<o-embed url="https://youtu.be/FTQbiNvZqaY">
+  <p>This is some content inside</p>
+</o-embed>
+```
+
+<o-embed url="https://youtu.be/FTQbiNvZqaY">
+  <p style={{border: 'solid 1px blue', padding: '8px'}}>
+    This is some content inside
+  </p>
+</o-embed>
