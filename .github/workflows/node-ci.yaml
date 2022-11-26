@@ -30,3 +30,7 @@ jobs:
       - name: test
         run: |
           yarn test
+
+      - name: build docs
+        run: |
+          yarn workspace @social-embed/site build
