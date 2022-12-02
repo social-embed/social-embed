@@ -69,8 +69,7 @@ getId("https://youtu.be/watch?v=Bd8_vO5zrjo")
         <Link href="https://codepen.io/attachment/pen/poRRpdp?editors=0010">
           console
         </Link>
-        ), <Link href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</Link>{' '}
-        also, <Link href="/docs/lib/api/">API Documentation</Link>
+        ), <Link href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</Link>
       </>
     ),
   },
