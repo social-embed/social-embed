@@ -1,12 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
-import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import Layout from '@theme/Layout';
+import Playground from '@theme/Playground';
 import CodeBlock from '@theme/CodeBlock';
-import Playground from '@docusaurus/theme-live-codeblock/src/theme/Playground';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
+import './index.module.css';
 import styles from './styles.module.css';
 
 const features = [
@@ -68,8 +69,7 @@ getId("https://youtu.be/watch?v=Bd8_vO5zrjo")
         <Link href="https://codepen.io/attachment/pen/poRRpdp?editors=0010">
           console
         </Link>
-        ), <Link href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</Link>{' '}
-        also, <Link href="/docs/lib/api/">API Documentation</Link>
+        ), <Link href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</Link>
       </>
     ),
   },

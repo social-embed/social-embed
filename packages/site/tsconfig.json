@@ -1,16 +1,7 @@
 {
+  // This file is not used in compilation. It is here just for a nice editor experience.
   "extends": "@tsconfig/docusaurus/tsconfig.json",
-  "include": ["../lib/src/index.ts", "../lib/src/*/*.ts", "../wc/index.ts"],
-  "exclude": [],
-  "exclude2": [
-    "../lib/test/*",
-    "../wc/src/test/*",
-    "../wc/node_modules/@open-wc/semantic-dom-diff",
-    "../wc/node_modules/@open-wc/semantic-dom-diff/*",
-    "src/test/*",
-    "."
-  ],
   "compilerOptions": {
-    "experimentalDecorators": true
+    "baseUrl": "."
   }
 }

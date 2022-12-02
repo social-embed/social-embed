@@ -1,9 +1,9 @@
-node_modules/
-build/
-static/js/o-embed.bundled.js
-custom-elements.json
+# Dependencies
+/node_modules
 
-## Begin: docusaurus
+# Production
+/build
+
 # Generated files
 .docusaurus
 .cache-loader
@@ -19,9 +19,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# https://www.npmjs.com/package/docusaurus-plugin-typedoc
-docs/api/
-docs/lib/api/
-docs/wc/api/
-typedoc-sidebar*.js
-## End: docusaurus
+# Copied over bundle
+static/js/

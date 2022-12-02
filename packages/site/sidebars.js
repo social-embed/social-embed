@@ -7,17 +7,7 @@ module.exports = {
           type: 'category',
           label: '⚙️ @social-embed/lib',
           collapsed: false,
-          items: [
-            'lib/index',
-            'lib/installation',
-            {
-              type: 'category',
-              label: 'API',
-              collapsed: false,
-              items: require('./typedoc-sidebar-lib.js'),
-            },
-            'lib/release-notes',
-          ],
+          items: ['lib/index', 'lib/installation', 'lib/release-notes'],
         },
         {
           type: 'category',
@@ -51,13 +41,6 @@ module.exports = {
                 'wc/configuration/url',
               ],
             },
-            {
-              type: 'category',
-              label: 'API',
-              collapsed: false,
-              items: require('./typedoc-sidebar-wc.js'),
-            },
-
             'wc/release-notes',
           ],
         },
