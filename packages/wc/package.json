@@ -65,7 +65,7 @@
     "deepmerge": "^4.2.2",
     "eslint": "^8.31.0",
     "lit-analyzer": "^1.2.1",
-    "prettier": "^2.8.1",
+    "prettier": "^2.8.2",
     "rimraf": "^3.0.2",
     "rollup": "^3.9.1",
     "rollup-plugin-filesize": "^9.1.2",
