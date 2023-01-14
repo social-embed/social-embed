@@ -45,7 +45,7 @@ export const getProviderFromUrl = (url: string): Provider | undefined => {
 };
 
 export type ProviderKey = keyof typeof Provider;
-export type ProviderType = typeof Provider[Provider];
+export type ProviderType = (typeof Provider)[Provider];
 type ValueOfProvider = `${Provider}`;
 
 export const ProviderIdFunctionMap: {
