@@ -67,7 +67,7 @@
     "lit-analyzer": "^1.2.1",
     "prettier": "^2.8.4",
     "rimraf": "^4.1.2",
-    "rollup": "^3.16.0",
+    "rollup": "^3.17.0",
     "rollup-plugin-filesize": "^9.1.2",
     "rollup-plugin-summary": "^2.0.0",
     "rollup-plugin-terser": "^7.0.2",
