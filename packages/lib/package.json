@@ -39,7 +39,7 @@
     "format": "yarn run prettier . --write"
   },
   "devDependencies": {
-    "@babel/preset-typescript": "^7.21.0",
+    "@babel/preset-typescript": "^7.21.4",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-typescript": "^11.0.0",
