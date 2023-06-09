@@ -51,7 +51,7 @@
     "lit": "^2.7.5"
   },
   "devDependencies": {
-    "@open-wc/testing": "^3.1.8",
+    "@open-wc/testing": "^3.2.0",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-replace": "^5.0.2",
