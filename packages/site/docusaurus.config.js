@@ -188,7 +188,7 @@ const config = {
       },
       algolia: {
         appId: 'BIATGF4K4K',
-        apiKey: '4139ba128ad8360b86a316425c20ff50',
+        apiKey: 'a59a27c90979939bd097dcb51d8f22e3',
         indexName: 'social-embed',
         facetFilters: ['type:content', 'type:hierarchy'],
       },
