@@ -6,7 +6,7 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
-## 0.1-next.0 (unreleased)
+## 0.1.0-next.0 (2023-06-12)
 
 - Move to `vite` (#8)
 
