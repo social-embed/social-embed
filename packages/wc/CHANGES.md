@@ -6,6 +6,12 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.1 (2023-06-12)
+
+- Bump lib dependency to v0.1.0-next.2 (adds typings)
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.1.0-next.0...@social-embed/wc@0.1.0-next.1)
+
 ## 0.1.0-next.0 (2023-06-12)
 
 - Move to `vite` (#8)
