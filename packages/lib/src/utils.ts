@@ -5,16 +5,8 @@ import * as DailyMotion from './providers/dailymotion';
 import * as EdPuzzle from './providers/edpuzzle';
 import * as Loom from './providers/loom';
 import * as Wistia from './providers/wistia';
-
-export enum Provider {
-  YouTube = 'YouTube',
-  Spotify = 'Spotify',
-  Vimeo = 'Vimeo',
-  DailyMotion = 'DailyMotion',
-  EdPuzzle = 'EdPuzzle',
-  Loom = 'Loom',
-  Wistia = 'Wistia',
-}
+import {Provider} from './constants';
+import type {ValueOfProvider} from './types';
 
 export const getProviderFromUrl = (url: string): Provider | undefined => {
   if (!url) {
@@ -43,10 +35,6 @@ export const getProviderFromUrl = (url: string): Provider | undefined => {
   }
   return undefined;
 };
-
-export type ProviderKey = keyof typeof Provider;
-export type ProviderType = (typeof Provider)[Provider];
-type ValueOfProvider = `${Provider}`;
 
 export const ProviderIdFunctionMap: {
   [P in ValueOfProvider]: (url: string) => string | string[];

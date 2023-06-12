@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test social-embed library functions</title>
+    <script type="module">
+    import { getYouTubeIdFromUrl, youTubeUrlRegex } from "/src/index.ts";
+    import { getVimeoIdFromUrl, getProviderFromUrl, ProviderIdFunctionMap, getYouTubeEmbedUrlFromId } from "/src/index.ts";
+
+    const outputGetYouTubeIdFromUrl = (url) => {
+      console.log(`getYouTubeIdFromUrl("${url}"): ${getYouTubeIdFromUrl(url)}`)
+    }
+
+    const outputGetVimeoIdFromUrl = (url) => {
+      console.log(`getVimeoIdFromUrl("${url}"): ${getVimeoIdFromUrl(url)}`)
+    }
+
+    outputGetYouTubeIdFromUrl('https://www.youtube.com/watch?v=Bd8_vO5zrjo')
+    outputGetYouTubeIdFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo')
+    outputGetVimeoIdFromUrl('https://vimeo.com/134668506')
+    console.log('https://youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex))
+
+    const provider = getProviderFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo')
+    console.log(`getProviderFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo): ${provider}`)
+
+    const getId = ProviderIdFunctionMap[provider]
+    console.log(`ProviderIdFunctionMap[${provider}] ${ProviderIdFunctionMap[provider]}`)
+
+    console.log(`getId('https://youtu.be/watch?v=Bd8_vO5zrjo'): ${getId("https://youtu.be/watch?v=Bd8_vO5zrjo")}`)
+
+    console.log(`getYouTubeEmbedUrlFromId('Bd8_vO5zrjo') ${getYouTubeEmbedUrlFromId('Bd8_vO5zrjo')}`)
+    </script>
+  </head>
+  <body>
+    <h2>See more</h2>
+
+    Open inspector and see <code>console.log</code>s.
+
+    <h2>Example in HTML</h2>
+
+    <h3>Code</h3>
+
+    <pre>
+    import { getYouTubeIdFromUrl } from "/src/index.ts";
+
+    const outputGetYouTubeIdFromUrl = (url) => `<code>getYouTubeIdFromUrl("${url}")</code>: ${getYouTubeIdFromUrl(url)}`
+
+    document.body.innerHTML = `
+    ${
+      outputGetYouTubeIdFromUrl('https://www.youtube.com/watch?v=Bd8_vO5zrjo')
+    }
+    <br />
+    ${
+      outputGetYouTubeIdFromUrl('https://www.youtu.be/watch?v=Bd8_vO5zrjo')
+    }
+    `
+    </pre>
+
+    <h3>Output</h3>
+
+    <script type="module">
+    import { getYouTubeIdFromUrl } from "/src/index.ts";
+
+    const outputGetYouTubeIdFromUrl = (url) => `<code>getYouTubeIdFromUrl("${url}")</code>: ${getYouTubeIdFromUrl(url)}`
+
+    document.body.innerHTML += `
+    ${
+      outputGetYouTubeIdFromUrl('https://www.youtube.com/watch?v=Bd8_vO5zrjo')
+    }
+    <br />
+    ${
+      outputGetYouTubeIdFromUrl('https://www.youtu.be/watch?v=Bd8_vO5zrjo')
+    }
+    `
+    </script>
+  </body>
+</html>
