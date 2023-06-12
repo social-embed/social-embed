@@ -6,6 +6,14 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.2 (2023-06-12)
+
+- Include typings
+
+  - Add [vite-plugin-dts](https://github.com/qmhc/vite-plugin-dts)
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/lib@0.1.0-next.1...@social-embed/lib@0.1.0-next.2)
+
 ## 0.1.0-next.1 (2023-06-12)
 
 - Fix for package.json
