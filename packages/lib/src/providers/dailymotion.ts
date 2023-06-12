@@ -4,6 +4,6 @@ export const dailyMotionUrlRegex =
 export const getDailyMotionIdFromUrl = (url: string): string => {
   return url.match(dailyMotionUrlRegex)?.[1] ?? '';
 };
-export const getDailyMotionEmbedFromId = (dailyMotionId: string): string => {
-  return `https://www.dailymotion.com/embed/video/${dailyMotionId}`; // ?autoplay=1
+export const getDailyMotionEmbedFromId = (id: string): string => {
+  return `https://www.dailymotion.com/embed/video/${id}`; // ?autoplay=1
 };

@@ -30,5 +30,5 @@ export const getEdPuzzleIdFromUrl = (url: string | undefined): string => {
  *
  * @param edPuzzleId ID of embed
  */
-export const getEdPuzzleEmbedUrlFromId = (edPuzzleId: string): string =>
-  `https://edpuzzle.com/embed/media/${edPuzzleId}`;
+export const getEdPuzzleEmbedUrlFromId = (id: string): string =>
+  `https://edpuzzle.com/embed/media/${id}`;

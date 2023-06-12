@@ -14,6 +14,6 @@ export const getSpotifyIdAndTypeFromUrl = (url: string): [string, string] => {
 };
 
 export const getSpotifyEmbedUrlFromIdAndType = (
-  spotifyId: string,
+  id: string,
   spotifyType: string
-): string => `https://open.spotify.com/embed/${spotifyType}/${spotifyId}`;
+): string => `https://open.spotify.com/embed/${spotifyType}/${id}`;

@@ -48,9 +48,12 @@ export const ProviderIdFunctionMap: {
   [Provider.Wistia]: Wistia.getWistiaIdFromUrl,
 };
 
-export const ProviderIdUrlFunctionMap: {
-  [P in ValueOfProvider]: (id: string, ...args: unknown) => string;
-} = {
+type ProviderIdFn = {
+  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
+  [P in ValueOfProvider]: (id: string, ...args: any[]) => string;
+};
+
+export const ProviderIdUrlFunctionMap: ProviderIdFn = {
   [Provider.DailyMotion]: DailyMotion.getDailyMotionEmbedFromId,
   [Provider.Spotify]: Spotify.getSpotifyEmbedUrlFromIdAndType,
   [Provider.Vimeo]: Vimeo.getVimeoEmbedUrlFromId,

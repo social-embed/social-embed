@@ -34,5 +34,5 @@ export const getLoomIdFromUrl = (url: string | undefined): string => {
  *
  * @param loomId ID of embed
  */
-export const getLoomEmbedUrlFromId = (loomId: string): string =>
-  `https://www.loom.com/embed/${loomId}`;
+export const getLoomEmbedUrlFromId = (id: string): string =>
+  `https://www.loom.com/embed/${id}`;

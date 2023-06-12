@@ -12,8 +12,6 @@ export const getYouTubeIdFromUrl = (url: string | undefined): string => {
   return '';
 };
 
-export const getYouTubeEmbedUrlFromId = (
-  youtubeID: string | undefined
-): string => {
-  return `https://www.youtube.com/embed/${youtubeID}`;
+export const getYouTubeEmbedUrlFromId = (id: string | undefined): string => {
+  return `https://www.youtube.com/embed/${id}`;
 };

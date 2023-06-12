@@ -5,5 +5,5 @@ export const vimeoUrlRegex =
 export const getVimeoIdFromUrl = (url: string): string =>
   url.match(vimeoUrlRegex)?.[1] ?? '';
 
-export const getVimeoEmbedUrlFromId = (vimeoId: string): string =>
-  `https://player.vimeo.com/video/${vimeoId}`;
+export const getVimeoEmbedUrlFromId = (id: string): string =>
+  `https://player.vimeo.com/video/${id}`;

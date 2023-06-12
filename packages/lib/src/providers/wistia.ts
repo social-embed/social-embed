@@ -43,5 +43,5 @@ export const getWistiaIdFromUrl = (url: string | undefined): string => {
  *
  * @param wistiaId ID of embed
  */
-export const getWistiaEmbedUrlFromId = (wistiaId: string): string =>
-  `https://fast.wistia.net/embed/iframe/${wistiaId}`;
+export const getWistiaEmbedUrlFromId = (id: string): string =>
+  `https://fast.wistia.net/embed/iframe/${id}`;
