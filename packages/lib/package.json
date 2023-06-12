@@ -1,9 +1,9 @@
 {
   "name": "@social-embed/lib",
   "description": "Regexes, ID extraction, for embed providers (YouTube, other OEmbed compatible providers),",
-  "version": "0.1.0-next.0",
-  "main": "dist/index.umd.cjs",
-  "module": "dist/index.js",
+  "version": "0.1.0-next.1",
+  "main": "dist/lib.umd.cjs",
+  "module": "dist/lib.js",
   "type": "module",
   "files": [
     "dist",

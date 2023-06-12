@@ -6,6 +6,12 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.1 (2023-06-12)
+
+- Fix for package.json
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/lib@0.1.0-next.0...@social-embed/lib@0.1.0-next.1)
+
 ## 0.1.0-next.0 (2023-06-12)
 
 - Move to `vite` (#8)

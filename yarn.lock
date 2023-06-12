@@ -2830,6 +2830,11 @@
     p-map "^4.0.0"
     webpack-sources "^3.2.2"
 
+"@social-embed/lib@^0.0.2-next.1":
+  version "0.0.2-next.1"
+  resolved "https://registry.yarnpkg.com/@social-embed/lib/-/lib-0.0.2-next.1.tgz#777bc25d97c64c353982cec6490e78e8bac06434"
+  integrity sha512-Ug3VCJL6GODPvYnWGjP5n+wWhc711MN4VnwhRoOYkP8h51rqJj7ttKM8EM7Mq2+KaD2JFb4x05JjMv6S33pf6g==
+
 "@svgr/babel-plugin-add-jsx-attribute@^6.5.1":
   version "6.5.1"
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-add-jsx-attribute/-/babel-plugin-add-jsx-attribute-6.5.1.tgz#74a5d648bd0347bda99d82409d87b8ca80b9a1ba"
