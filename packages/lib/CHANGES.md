@@ -6,6 +6,11 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+- Move from [jest] to [vitest]
+
+  [vitest]: https://vitest.dev/guide/
+  [jest]: https://jestjs.io/docs/cli
+
 ## 0.1.0-next.3 (2023-06-12)
 
 - package.json: Add `typings: 'dist/index.d.ts'`
