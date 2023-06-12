@@ -6,6 +6,12 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1-next.0 (unreleased)
+
+- Move to `vite` (#8)
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/lib@0.0.2-next.1...@social-embed/lib@0.1.0-next.0)
+
 ## 0.0.2-next.1 (2022-11-10)
 
 - Move `jest` to `devDependencies`

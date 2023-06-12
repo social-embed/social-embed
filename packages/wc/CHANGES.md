@@ -6,9 +6,17 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1-next.0 (unreleased)
+
+- Move to `vite` (#8)
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.5-next.1...@social-embed/wc@0.1.0-next.0)
+
 ## 0.0.5-next.1 (2022-11-10)
 
 - Bump `@social-embed/lib` from 0.0.1-next.12 -> 0.0.2-next.1
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.5-next.0...@social-embed/wc@0.0.5-next.1)
 
 ## 0.0.5-next.0 (2022-11-06)
 
@@ -18,6 +26,8 @@ title: Release notes
 
   Before hand, `site/` had its own rollup configuration just for handling a UMD
   build.
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.4-next.0...@social-embed/wc@0.0.5-next.0)
 
 ## 0.0.4-next.0 (2021-09-25)
 

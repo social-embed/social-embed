@@ -7,7 +7,24 @@ Here you can find project-wide changes. For more detailed changes:
 - [`@social-embed/lib`](https://social-embed.git-pull.com/docs/lib/release-notes)
 - [`@social-embed/wc`](https://social-embed.git-pull.com/docs/wc/release-notes)
 
-## 0.0.2 (unreleased)
+## 0.1 (unreleased)
+
+- Move to `vite` (#8)
+
+## 0.0.4
+
+Lit element to lit
+
+## 0.0.3
+
+### wc
+
+New CSS variables:
+
+- `--social-embed-iframe-width`
+- `--social-embed-iframe-height`
+
+## 0.0.2
 
 - yarn 1.19.0 -> 1.22.19 (#2)
 
