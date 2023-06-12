@@ -11,8 +11,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/my-lib.js",
-      "require": "./dist/my-lib.umd.cjs"
+      "import": "./dist/lib.js",
+      "require": "./dist/lib.umd.cjs"
     }
   },
   "license": "MIT",
@@ -37,7 +37,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "vite": "vite",
-    "start": "vite preview",
+    "start": "yarn vite",
+    "watch": "vite build --watch",
     "build": "vite build",
     "prepare": "yarn build",
     "bootstrap": "echo 'NOOP'",
