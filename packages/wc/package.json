@@ -28,7 +28,7 @@
     "analyze": "wca analyze \"src/**/*.ts\" --outFile ../site/custom-elements.json",
     "serve": "vite preview",
     "pretest": "yarn workspace @social-embed/lib build",
-    "test": "wtr test/o-embed_test.ts --puppeteer --node-resolve",
+    "test": "wtr test/o-embed_test.ts --node-resolve",
     "test:watch": "yarn test --watch",
     "wtr": "wtr"
   },
