@@ -6,9 +6,10 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
-## 0.1-next.0 (unreleased)
+## 0.1.0-next.0 (2023-06-12)
 
 - Move to `vite` (#8)
+- Bump lib dependency to v0.1.0-next.1
 
 See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.5-next.1...@social-embed/wc@0.1.0-next.0)
 
