@@ -6,6 +6,12 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.3 (2023-06-12)
+
+- package.json: Add `typings: 'dist/index.d.ts'`
+
+See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/lib@0.1.0-next.2...@social-embed/lib@0.1.0-next.3)
+
 ## 0.1.0-next.2 (2023-06-12)
 
 - Include typings
