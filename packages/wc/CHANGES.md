@@ -6,9 +6,12 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
-## 0.0.1-current
+## 0.0.1-next.3 (2023-08-26)
 
-- Prettier: Add css and JS import ordering
+- Prettier: Add css and JS import ordering (#9)
+- Bump lib to v0.0.1-next.4
+
+  Lib has improved prettier linting, including css rule and import ordering.
 
 ## 0.1.0-next.2 (2023-06-12)
 
