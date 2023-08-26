@@ -11,6 +11,10 @@ title: Release notes
   [vitest]: https://vitest.dev/guide/
   [jest]: https://jestjs.io/docs/cli
 
+## 0.0.1-current
+
+- Prettier: Add css and JS import ordering
+
 ## 0.1.0-next.3 (2023-06-12)
 
 - package.json: Add `typings: 'dist/index.d.ts'`

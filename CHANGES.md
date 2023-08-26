@@ -10,6 +10,10 @@ Here you can find project-wide changes. For more detailed changes:
 ## 0.1 (unreleased)
 
 - Move to `vite` (#8)
+- Run prettier across full codebase (#9)
+
+  - Add docs/ to formatting
+  - CSS and JS import ordering
 
 ## 0.0.4
 

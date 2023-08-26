@@ -6,6 +6,10 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.0.1-current
+
+- Prettier: Add css and JS import ordering
+
 ## 0.1.0-next.2 (2023-06-12)
 
 - Include typings
