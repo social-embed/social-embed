@@ -62,16 +62,16 @@ Vimeo, and Spotify.
 `<o-embed>` can be used with declarative rendering libraries like Angular, React, Vue, and lit-html
 
 ```js
-import {html, render} from 'lit-html';
+import { html, render } from "lit-html";
 
-const url = 'https://www.youtube.com/watch?v=XLOCQw5s9Uw';
+const url = "https://www.youtube.com/watch?v=XLOCQw5s9Uw";
 
 render(
   html`
     <h2>This is an &lt;o-embed&gt;</h2>
     <o-embed .url=${url}></o-embed>
   `,
-  document.body
+  document.body,
 );
 ```
 

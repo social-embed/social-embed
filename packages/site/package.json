@@ -19,6 +19,8 @@
     "prebuild": "yarn docs:oembed",
     "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p static/js && cp ../wc/dist/OEmbedElement.umd.cjs static/js/o-embed.bundled.js",
     "lint": "echo 'NOOP'",
+    "prettier": "prettier",
+    "format": "yarn run prettier . --write",
     "test": "echo 'NOOP'"
   },
   "dependencies": {

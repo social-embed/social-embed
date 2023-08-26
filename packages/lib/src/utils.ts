@@ -1,12 +1,12 @@
-import * as YouTube from './providers/youtube';
-import * as Spotify from './providers/spotify';
-import * as Vimeo from './providers/vimeo';
-import * as DailyMotion from './providers/dailymotion';
-import * as EdPuzzle from './providers/edpuzzle';
-import * as Loom from './providers/loom';
-import * as Wistia from './providers/wistia';
-import {Provider} from './constants';
-import type {ValueOfProvider} from './types';
+import { Provider } from "./constants";
+import * as DailyMotion from "./providers/dailymotion";
+import * as EdPuzzle from "./providers/edpuzzle";
+import * as Loom from "./providers/loom";
+import * as Spotify from "./providers/spotify";
+import * as Vimeo from "./providers/vimeo";
+import * as Wistia from "./providers/wistia";
+import * as YouTube from "./providers/youtube";
+import type { ValueOfProvider } from "./types";
 
 export const getProviderFromUrl = (url: string): Provider | undefined => {
   if (!url) {
@@ -69,7 +69,7 @@ export const ProviderIdUrlFunctionMap: ProviderIdFn = {
 export const convertUrlToEmbedUrl = (url: string): string => {
   const provider = getProviderFromUrl(url);
 
-  if (!provider) return '';
+  if (!provider) return "";
 
   const getId = ProviderIdFunctionMap[provider];
   const getEmbedUrlFromId = ProviderIdUrlFunctionMap[provider];
@@ -79,7 +79,7 @@ export const convertUrlToEmbedUrl = (url: string): string => {
   if (Array.isArray(id)) {
     const _id = id.shift();
     if (!_id) {
-      return '';
+      return "";
     }
     return getEmbedUrlFromId(_id, ...id);
   }
@@ -87,7 +87,7 @@ export const convertUrlToEmbedUrl = (url: string): string => {
 };
 
 export const isString = (val: unknown): val is string => {
-  return typeof val === 'string';
+  return typeof val === "string";
 };
 
 export const isRegExp = (val: unknown): val is RegExp => {

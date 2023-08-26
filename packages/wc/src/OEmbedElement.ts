@@ -1,30 +1,29 @@
 /**
  * @license See LICENSE, Copyright 2021- Tony Narlock, license MIT.
  */
-import type {TemplateResult} from 'lit';
-import {LitElement, html} from 'lit';
-import {customElement, property} from 'lit/decorators.js';
-import {ifDefined} from 'lit/directives/if-defined.js';
+import { html, LitElement, type TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
 import {
-  getProviderFromUrl,
-  Provider,
   getDailyMotionEmbedFromId,
   getDailyMotionIdFromUrl,
-  getEdPuzzleIdFromUrl,
   getEdPuzzleEmbedUrlFromId,
-  getLoomIdFromUrl,
+  getEdPuzzleIdFromUrl,
   getLoomEmbedUrlFromId,
-  getSpotifyIdAndTypeFromUrl,
+  getLoomIdFromUrl,
+  getProviderFromUrl,
   getSpotifyEmbedUrlFromIdAndType,
-  getVimeoIdFromUrl,
+  getSpotifyIdAndTypeFromUrl,
   getVimeoEmbedUrlFromId,
-  getWistiaIdFromUrl,
+  getVimeoIdFromUrl,
   getWistiaEmbedUrlFromId,
+  getWistiaIdFromUrl,
   getYouTubeEmbedUrlFromId,
   getYouTubeIdFromUrl,
   isValidUrl,
-} from '@social-embed/lib';
+  Provider,
+} from "@social-embed/lib";
 
 interface Dimensions {
   width: string;
@@ -38,42 +37,42 @@ interface Dimensions {
  *
  * @slot - Directly pass through child contents to bottom of embed, optional.
  */
-@customElement('o-embed')
+@customElement("o-embed")
 export class OEmbedElement extends LitElement {
   /**
    * The URL or ID (if supported)
    */
-  @property({type: String}) url!: string;
+  @property({ type: String }) url!: string;
   /**
    * Pass-through of width attribute
    */
-  @property({type: String}) width = '560';
+  @property({ type: String }) width = "560";
   /**
    * Pass-through of height attribute
    */
-  @property({type: String}) height = '315';
+  @property({ type: String }) height = "315";
   /**
    * Pass-through of frameborder attribute, only used in iframe embeds.
    */
-  @property({type: String}) frameborder = '0';
+  @property({ type: String }) frameborder = "0";
   /**
    * For YouTube only. Passing anything other than 1/true omits the tag.
    */
-  @property({type: String}) allowfullscreen: string | boolean | undefined =
-    'true';
+  @property({ type: String }) allowfullscreen: string | boolean | undefined =
+    "true";
 
   provider: Provider | undefined;
 
   instanceStyle(): TemplateResult {
-    const {widthWithUnits, heightWithUnits} = this.getDefaultDimensions(
-      this.provider
+    const { widthWithUnits, heightWithUnits } = this.getDefaultDimensions(
+      this.provider,
     );
     return html`
       <style>
         :host {
-          border: 0;
-          padding: 0;
           display: block;
+          padding: 0;
+          border: 0;
         }
         iframe {
           width: var(--social-embed-iframe-width, ${widthWithUnits});
@@ -86,7 +85,7 @@ export class OEmbedElement extends LitElement {
   render(): TemplateResult {
     this.provider = getProviderFromUrl(this.url);
 
-    if (!this.url || this.url == '') {
+    if (!this.url || this.url == "") {
       return html``;
     }
 
@@ -127,14 +126,14 @@ export class OEmbedElement extends LitElement {
 
   public renderSpotify(): TemplateResult {
     const url = getSpotifyEmbedUrlFromIdAndType(
-      ...getSpotifyIdAndTypeFromUrl(this.url)
+      ...getSpotifyIdAndTypeFromUrl(this.url),
     );
     return html`
       <iframe
         src="${url}"
         width="${this.width}"
         frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined
+          this.frameborder ? this.frameborder : undefined,
         )}
         height="${this.height}"
         allowtransparency="true"
@@ -174,15 +173,15 @@ export class OEmbedElement extends LitElement {
       defaults,
     }: {
       defaults?: Dimensions;
-    } = {defaults: undefined}
+    } = { defaults: undefined },
   ): Dimensions {
-    const width = this.getAttribute('width') || defaults?.width || this.width;
+    const width = this.getAttribute("width") || defaults?.width || this.width;
     const widthWithUnits = width.match(/(px|%)/) ? width : `${width}px`;
     const height =
-      this.getAttribute('height') || defaults?.height || this.height;
+      this.getAttribute("height") || defaults?.height || this.height;
     const heightWithUnits = height.match(/(px|%)/) ? height : `${height}px`;
 
-    return {width, widthWithUnits, height, heightWithUnits};
+    return { width, widthWithUnits, height, heightWithUnits };
   }
 
   public renderDailyMotion(): TemplateResult {
@@ -192,7 +191,7 @@ export class OEmbedElement extends LitElement {
     }
     const url = getDailyMotionEmbedFromId(dailyMotionId);
 
-    const {width, height} = this.getDefaultDimensions(this.provider);
+    const { width, height } = this.getDefaultDimensions(this.provider);
 
     return html`
       <iframe
@@ -201,17 +200,17 @@ export class OEmbedElement extends LitElement {
         height="${height}"
         src="${url}"
         frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined
+          this.frameborder ? this.frameborder : undefined,
         )}
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(
-          this.allowfullscreen === '' ||
-            this.allowfullscreen == 'true' ||
-            this.allowfullscreen === 'true' ||
+          this.allowfullscreen === "" ||
+            this.allowfullscreen == "true" ||
+            this.allowfullscreen === "true" ||
             this.allowfullscreen === true ||
-            this.allowfullscreen === '1'
+            this.allowfullscreen === "1"
             ? true
-            : undefined
+            : undefined,
         )}
         type="text/html"
       ></iframe>
@@ -220,10 +219,10 @@ export class OEmbedElement extends LitElement {
   }
 
   static vimeoDefaultDimensions: Dimensions = {
-    width: '640',
-    widthWithUnits: '640px',
-    height: '268',
-    heightWithUnits: '268',
+    width: "640",
+    widthWithUnits: "640px",
+    height: "268",
+    heightWithUnits: "268",
   };
 
   public renderVimeo(): TemplateResult {
@@ -233,7 +232,7 @@ export class OEmbedElement extends LitElement {
     }
     const url = getVimeoEmbedUrlFromId(vimeoId);
 
-    const {width, height} = this.getDefaultDimensions(this.provider);
+    const { width, height } = this.getDefaultDimensions(this.provider);
 
     return html`
       <iframe
@@ -241,17 +240,17 @@ export class OEmbedElement extends LitElement {
         height="${height}"
         src="${url}"
         frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined
+          this.frameborder ? this.frameborder : undefined,
         )}
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(
-          this.allowfullscreen === '' ||
-            this.allowfullscreen == 'true' ||
-            this.allowfullscreen === 'true' ||
+          this.allowfullscreen === "" ||
+            this.allowfullscreen == "true" ||
+            this.allowfullscreen === "true" ||
             this.allowfullscreen === true ||
-            this.allowfullscreen === '1'
+            this.allowfullscreen === "1"
             ? true
-            : undefined
+            : undefined,
         )}
       ></iframe>
       <slot></slot>
@@ -271,16 +270,16 @@ export class OEmbedElement extends LitElement {
         height="${this.height}"
         src="${youtubeUrl}"
         frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined
+          this.frameborder ? this.frameborder : undefined,
         )}
         allowfullscreen=${ifDefined(
-          this.allowfullscreen === '' ||
-            this.allowfullscreen == 'true' ||
-            this.allowfullscreen === 'true' ||
+          this.allowfullscreen === "" ||
+            this.allowfullscreen == "true" ||
+            this.allowfullscreen === "true" ||
             this.allowfullscreen === true ||
-            this.allowfullscreen === '1'
+            this.allowfullscreen === "1"
             ? true
-            : undefined
+            : undefined,
         )}
       ></iframe>
       <slot></slot>
@@ -288,14 +287,14 @@ export class OEmbedElement extends LitElement {
   }
 
   public renderIframe(): TemplateResult {
-    const {width, height} = this.getDefaultDimensions(this.provider);
+    const { width, height } = this.getDefaultDimensions(this.provider);
     return html`
       <iframe
         width="${width}"
         height="${height}"
         src="${this.url}"
         frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined
+          this.frameborder ? this.frameborder : undefined,
         )}
       ></iframe>
       <slot></slot>
@@ -303,10 +302,10 @@ export class OEmbedElement extends LitElement {
   }
 
   static edPuzzleDefaultDimensions: Dimensions = {
-    width: '470',
-    widthWithUnits: '470px',
-    height: '404',
-    heightWithUnits: '404px',
+    width: "470",
+    widthWithUnits: "470px",
+    height: "404",
+    heightWithUnits: "404px",
   };
 
   public renderEdPuzzle(): TemplateResult {
@@ -320,7 +319,7 @@ export class OEmbedElement extends LitElement {
     }
     const embedUrl = getEdPuzzleEmbedUrlFromId(embedId);
 
-    const {width, height} = this.getDefaultDimensions(this.provider);
+    const { width, height } = this.getDefaultDimensions(this.provider);
 
     return html`
       <iframe
@@ -328,16 +327,16 @@ export class OEmbedElement extends LitElement {
         height="${height}"
         src="${embedUrl}"
         frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined
+          this.frameborder ? this.frameborder : undefined,
         )}
         allowfullscreen=${ifDefined(
-          this.allowfullscreen === '' ||
-            this.allowfullscreen == 'true' ||
-            this.allowfullscreen === 'true' ||
+          this.allowfullscreen === "" ||
+            this.allowfullscreen == "true" ||
+            this.allowfullscreen === "true" ||
             this.allowfullscreen === true ||
-            this.allowfullscreen === '1'
+            this.allowfullscreen === "1"
             ? true
-            : undefined
+            : undefined,
         )}
       ></iframe>
       <slot></slot>
@@ -345,10 +344,10 @@ export class OEmbedElement extends LitElement {
   }
 
   static wistiaDefaultDimensions: Dimensions = {
-    width: '470',
-    widthWithUnits: '470px',
-    height: '404',
-    heightWithUnits: '404px',
+    width: "470",
+    widthWithUnits: "470px",
+    height: "404",
+    heightWithUnits: "404px",
   };
 
   public renderWistia(): TemplateResult {
@@ -362,7 +361,7 @@ export class OEmbedElement extends LitElement {
     }
     const embedUrl = getWistiaEmbedUrlFromId(embedId);
 
-    const {width, height} = this.getDefaultDimensions(this.provider);
+    const { width, height } = this.getDefaultDimensions(this.provider);
 
     return html`
       <iframe
@@ -370,16 +369,16 @@ export class OEmbedElement extends LitElement {
         height="${height}"
         src="${embedUrl}"
         frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined
+          this.frameborder ? this.frameborder : undefined,
         )}
         allowfullscreen=${ifDefined(
-          this.allowfullscreen === '' ||
-            this.allowfullscreen == 'true' ||
-            this.allowfullscreen === 'true' ||
+          this.allowfullscreen === "" ||
+            this.allowfullscreen == "true" ||
+            this.allowfullscreen === "true" ||
             this.allowfullscreen === true ||
-            this.allowfullscreen === '1'
+            this.allowfullscreen === "1"
             ? true
-            : undefined
+            : undefined,
         )}
       ></iframe>
       <slot></slot>
@@ -387,10 +386,10 @@ export class OEmbedElement extends LitElement {
   }
 
   static loomDefaultDimensions: Dimensions = {
-    width: '470',
-    widthWithUnits: '470px',
-    height: '404',
-    heightWithUnits: '404px',
+    width: "470",
+    widthWithUnits: "470px",
+    height: "404",
+    heightWithUnits: "404px",
   };
 
   public renderLoom(): TemplateResult {
@@ -404,7 +403,7 @@ export class OEmbedElement extends LitElement {
     }
     const embedUrl = getLoomEmbedUrlFromId(embedId);
 
-    const {width, height} = this.getDefaultDimensions(this.provider);
+    const { width, height } = this.getDefaultDimensions(this.provider);
 
     return html`
       <iframe
@@ -412,16 +411,16 @@ export class OEmbedElement extends LitElement {
         height="${height}"
         src="${embedUrl}"
         frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined
+          this.frameborder ? this.frameborder : undefined,
         )}
         allowfullscreen=${ifDefined(
-          this.allowfullscreen === '' ||
-            this.allowfullscreen == 'true' ||
-            this.allowfullscreen === 'true' ||
+          this.allowfullscreen === "" ||
+            this.allowfullscreen == "true" ||
+            this.allowfullscreen === "true" ||
             this.allowfullscreen === true ||
-            this.allowfullscreen === '1'
+            this.allowfullscreen === "1"
             ? true
-            : undefined
+            : undefined,
         )}
       ></iframe>
       <slot></slot>
@@ -431,13 +430,13 @@ export class OEmbedElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    'o-embed': OEmbedElement;
+    "o-embed": OEmbedElement;
   }
 
   // eslint-disable-next-line
   module JSX {
     interface IntrinsicElements {
-      'o-embed': Partial<OEmbedElement>;
+      "o-embed": Partial<OEmbedElement>;
     }
   }
 }
