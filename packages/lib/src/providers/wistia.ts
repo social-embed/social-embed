@@ -22,7 +22,7 @@
  * - https://support.wi.st/medias/26sk4lmiix
  */
 export const wistiaUrlRegex = new RegExp(
-  '^(?:(?:https?):)?(?://)?[^/]*(?:wistia.com|wi.st).*[=/](?:medias|embed)/([-\\w]+)'
+  "^(?:(?:https?):)?(?://)?[^/]*(?:wistia.com|wi.st).*[=/](?:medias|embed)/([-\\w]+)",
   // '^(?:(?:https?):)?(?://)?[^/]*wistia.com.*[=/]medias/([-\\w]+)'  // v1 (handcrafted by Tony)
 );
 
@@ -33,9 +33,9 @@ export const wistiaUrlRegex = new RegExp(
  */
 export const getWistiaIdFromUrl = (url: string | undefined): string => {
   if (url) {
-    return url.match(wistiaUrlRegex)?.[1] ?? '';
+    return url.match(wistiaUrlRegex)?.[1] ?? "";
   }
-  return '';
+  return "";
 };
 
 /**

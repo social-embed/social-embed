@@ -59,28 +59,31 @@ These naming conventions aren't stable yet and are subject to change
 ### Regular expressions
 
 ```typescript
-import {getYouTubeIdFromUrl, youTubeUrlRegex} from '@social-embed/lib';
-'https://youtu.be/watch?v=Bd8_vO5zrjo'.match(youTubeUrlRegex);
+import { getYouTubeIdFromUrl, youTubeUrlRegex } from "@social-embed/lib";
+
+"https://youtu.be/watch?v=Bd8_vO5zrjo".match(youTubeUrlRegex);
 // ["https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
 ```
 
 ### Detect provider (e.g. YouTube) from URL
 
 ```typescript
-import {getProviderFromUrl} from '@social-embed/lib';
-const provider = getProviderFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo');
+import { getProviderFromUrl } from "@social-embed/lib";
+
+const provider = getProviderFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
 // YouTube
 ```
 
 ### Get IDs from URLs
 
 ```typescript
-import {getProviderFromUrl, ProviderIdFunctionMap} from '@social-embed/lib';
-const provider = getProviderFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo'); // YouTube
+import { getProviderFromUrl, ProviderIdFunctionMap } from "@social-embed/lib";
+
+const provider = getProviderFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo"); // YouTube
 
 if (provider) {
   const getId = ProviderIdFunctionMap[provider];
-  getId('https://youtu.be/watch?v=Bd8_vO5zrjo');
+  getId("https://youtu.be/watch?v=Bd8_vO5zrjo");
   // "Bd8_vO5zrjo"
 }
 ```
@@ -88,11 +91,15 @@ if (provider) {
 ### Get `iframe` friendly URL
 
 ```typescript
-import {getYouTubeIdFromUrl, getYouTubeEmbedUrlFromId} from '@social-embed/lib';
-const embedId = getYouTubeIdFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo'); // "Bd8_vO5zrjo"
+import {
+  getYouTubeEmbedUrlFromId,
+  getYouTubeIdFromUrl,
+} from "@social-embed/lib";
+
+const embedId = getYouTubeIdFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo"); // "Bd8_vO5zrjo"
 
 const embedFriendlyUrl = getYouTubeEmbedUrlFromId(
-  'https://youtu.be/watch?v=Bd8_vO5zrjo'
+  "https://youtu.be/watch?v=Bd8_vO5zrjo",
 ); // "https://www.youtube.com/embed/Bd8_vO5zrjo"
 ```
 

@@ -3,7 +3,7 @@
 // This lets us resolve symlinks from outside (root-level repo, packages/*/CHANGES.md)
 module.exports = function (context, options) {
   return {
-    name: 'more-mdx-paths',
+    name: "more-mdx-paths",
     configureWebpack(config, isServer, utils) {
       return {
         resolve: {

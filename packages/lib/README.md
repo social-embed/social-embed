@@ -13,9 +13,9 @@ yarn add @social-embed/lib
 Then import and use as such:
 
 ```typescript
-import {getYouTubeIdFromUrl} from '@social-embed/lib';
+import { getYouTubeIdFromUrl } from "@social-embed/lib";
 
-console.log(getYouTubeIdFromUrl('https://www.youtube.com/watch?v=Bd8_vO5zrjo'));
+console.log(getYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"));
 // output: Bd8_vO5zrjo
 ```
 

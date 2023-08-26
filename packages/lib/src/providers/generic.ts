@@ -1,4 +1,5 @@
-import {matcher} from '../utils';
+import { matcher } from "../utils";
+
 // Credit: Angular src/ng/directive/input.js @ 0633d8f, accessed  2021-06-02, license MIT
 // See valid URLs in RFC3987 (http://tools.ietf.org/html/rfc3987)
 // Note: We are being more lenient, because browsers are too.

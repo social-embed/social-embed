@@ -14,7 +14,7 @@
  * Matches ID from URLs matching: https://www.loom.com/share/e883f70b219a49f6ba7fbeac71a72604
  */
 export const loomUrlRegex = new RegExp(
-  '^(?:(?:https?):)?(?://)?[^/]*loom.com.*[=/]share/([-\\w]+)'
+  "^(?:(?:https?):)?(?://)?[^/]*loom.com.*[=/]share/([-\\w]+)",
 );
 
 /**
@@ -24,9 +24,9 @@ export const loomUrlRegex = new RegExp(
  */
 export const getLoomIdFromUrl = (url: string | undefined): string => {
   if (url) {
-    return url.match(loomUrlRegex)?.[1] ?? '';
+    return url.match(loomUrlRegex)?.[1] ?? "";
   }
-  return '';
+  return "";
 };
 
 /**

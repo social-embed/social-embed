@@ -3,7 +3,7 @@ export const vimeoUrlRegex =
   /(?:(?:https?):)?(?:\/\/)?(?:www\.|player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)/;
 
 export const getVimeoIdFromUrl = (url: string): string =>
-  url.match(vimeoUrlRegex)?.[1] ?? '';
+  url.match(vimeoUrlRegex)?.[1] ?? "";
 
 export const getVimeoEmbedUrlFromId = (id: string): string =>
   `https://player.vimeo.com/video/${id}`;

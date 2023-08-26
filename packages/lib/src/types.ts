@@ -1,4 +1,4 @@
-import {Provider} from './constants';
+import { Provider } from "./constants";
 
 export type ProviderKey = keyof typeof Provider;
 export type ProviderType = (typeof Provider)[Provider];
