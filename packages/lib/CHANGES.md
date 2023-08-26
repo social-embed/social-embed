@@ -11,7 +11,7 @@ title: Release notes
   [vitest]: https://vitest.dev/guide/
   [jest]: https://jestjs.io/docs/cli
 
-## 0.0.1-current
+## 0.1.0-next.4 (2023-08-26)
 
 - Prettier: Add css and JS import ordering
 
