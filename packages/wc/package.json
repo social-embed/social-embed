@@ -66,11 +66,11 @@
     "@web/test-runner-puppeteer": "<0.14.0",
     "chai": "^4.3.10",
     "deepmerge": "^4.3.1",
-    "eslint": "^8.50.0",
+    "eslint": "^8.51.0",
     "lit-analyzer": "^1.2.1",
     "rimraf": "^5.0.5",
     "typescript": "^5.2.2",
-    "vite": "^4.4.10",
+    "vite": "^4.4.11",
     "vite-plugin-dts": "^3.6.0",
     "web-component-analyzer": "^1.1.7"
   }
