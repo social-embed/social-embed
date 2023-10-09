@@ -47,5 +47,8 @@
     "eslint-plugin-tsc": "^2.0.0",
     "prettier": "^3.0.3",
     "prettier-plugin-css-order": "^2.0.1"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
