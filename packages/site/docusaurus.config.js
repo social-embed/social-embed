@@ -63,14 +63,14 @@ const config = {
         },
         items: [
           {
-            docId: "lib/index",
+            docid: "lib/index",
 
             to: "/docs/lib",
             label: "Library (lib)",
             activeBaseRegex: "^/docs/lib",
           },
           {
-            docId: "wc/index",
+            docid: "wc/index",
 
             to: "/docs/wc",
             label: "Web Component (wc)",
@@ -84,12 +84,12 @@ const config = {
               {
                 href: "/docs/lib/release-notes",
                 label: "Library (lib)",
-                docId: "lib/release-notes",
+                docid: "lib/release-notes",
               },
               {
                 href: "/docs/wc/release-notes",
                 label: "Web Component (wc)",
-                docId: "wc/release-notes",
+                docid: "wc/release-notes",
               },
             ],
           },
