@@ -9,11 +9,15 @@ Here you can find project-wide changes. For more detailed changes:
 
 ## 0.1 (unreleased)
 
+### Breaking changes
+
 - Move to `vite` (#8)
 - Run prettier across full codebase (#9)
 
   - Add docs/ to formatting
   - CSS and JS import ordering
+
+- Minimum Node.js version to v18+ (#12)
 
 ## 0.0.4
 
@@ -72,9 +76,10 @@ This project was formerly one repository, named `@tony/oembed-component`
 `convertURLToEmbedURL` -> `convertUrlToEmbedUrl`
 
 ```typescript
-import {convertUrlToEmbedUrl} from '@tony/oembed-component';
-convertUrlToEmbedUrl('https://vimeo.com/134668506'); // https://player.vimeo.com/video/134668506
-convertUrlToEmbedUrl('https://youtu.be/FTQbiNvZqaY'); // https://www.youtube.com/embed/FTQbiNvZqaY
+import { convertUrlToEmbedUrl } from "@tony/oembed-component";
+
+convertUrlToEmbedUrl("https://vimeo.com/134668506"); // https://player.vimeo.com/video/134668506
+convertUrlToEmbedUrl("https://youtu.be/FTQbiNvZqaY"); // https://www.youtube.com/embed/FTQbiNvZqaY
 ```
 
 ## 0.0.1-next.23 (2020-03-24)
@@ -82,9 +87,10 @@ convertUrlToEmbedUrl('https://youtu.be/FTQbiNvZqaY'); // https://www.youtube.com
 New all-in-one function to URL to `<iframe>` friendly URL
 
 ```typescript
-import {convertURLToEmbedURL} from '@tony/oembed-component';
-convertURLToEmbedURL('https://vimeo.com/134668506'); // https://player.vimeo.com/video/134668506
-convertURLToEmbedURL('https://youtu.be/FTQbiNvZqaY'); // https://www.youtube.com/embed/FTQbiNvZqaY
+import { convertURLToEmbedURL } from "@tony/oembed-component";
+
+convertURLToEmbedURL("https://vimeo.com/134668506"); // https://player.vimeo.com/video/134668506
+convertURLToEmbedURL("https://youtu.be/FTQbiNvZqaY"); // https://www.youtube.com/embed/FTQbiNvZqaY
 ```
 
 ## 0.0.1-next.22 (2020-03-24)
@@ -105,7 +111,7 @@ declare global {
   // eslint-disable-next-line
   module JSX {
     interface IntrinsicElements {
-      'o-embed': Partial<OEmbedElement>;
+      "o-embed": Partial<OEmbedElement>;
     }
   }
 }
@@ -120,7 +126,7 @@ declare global {
   // eslint-disable-next-line
   declare module JSX {
     interface IntrinsicElements {
-      'o-embed': Partial<OEmbedElement>;
+      "o-embed": Partial<OEmbedElement>;
     }
   }
 }

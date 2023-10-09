@@ -6,6 +6,9 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+### Breaking changes
+
+- Minimum Node.js version to v18+ (#12)
 - Move from [jest] to [vitest]
 
   [vitest]: https://vitest.dev/guide/

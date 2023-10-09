@@ -6,6 +6,10 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+### Breaking changes
+
+- Minimum Node.js version to v18+ (#12)
+
 ## 0.0.1-next.3 (2023-08-26)
 
 - Prettier: Add css and JS import ordering (#9)
