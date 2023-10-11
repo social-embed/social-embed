@@ -9,6 +9,10 @@ title: Release notes
 ### Breaking changes
 
 - Minimum Node.js version to v18+ (#12)
+- Lit 3.0 (#13)
+
+  - https://lit.dev/blog/2023-10-10-lit-3.0/
+  - https://lit.dev/blog/2023-10-10-lit-3.0/#lit-3.0
 
 ## 0.0.1-next.3 (2023-08-26)
 
