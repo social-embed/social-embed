@@ -6,6 +6,8 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.5 (2023-10-15)
+
 ### Breaking changes
 
 - Minimum Node.js version to v18+ (#12)
