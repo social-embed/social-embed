@@ -14,6 +14,12 @@ title: Release notes
   - https://lit.dev/blog/2023-10-10-lit-3.0/
   - https://lit.dev/blog/2023-10-10-lit-3.0/#lit-3.0
 
+### Development
+
+- Bump lib to v0.0.1-next.5
+
+  Dev package updates
+
 ## 0.0.1-next.3 (2023-08-26)
 
 - Prettier: Add css and JS import ordering (#9)
