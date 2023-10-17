@@ -3210,25 +3210,49 @@
     picomatch "^2.2.2"
     ws "^7.4.2"
 
-"@web/dev-server-esbuild@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@web/dev-server-esbuild/-/dev-server-esbuild-0.4.1.tgz#db8d7d08d6641e79a1a7433b11c97fcc3570d068"
-  integrity sha512-oUrxo7ggxeaWuQafu5bgiAJFatA+YEeYhgkUMB2CHq/SVleKgyPgQCqx42eVBJ2uWMyI1YWSpKtNueCmocwQzw==
+"@web/dev-server-core@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@web/dev-server-core/-/dev-server-core-0.6.0.tgz#116e7076548927c0417f2062214f26ee6b820788"
+  integrity sha512-VBxJoE8S0jc5plZhE3Z3EHBzba7hu+YH3GZAA6LOfPxeoTtFdovkCrfG7mJ/pUl2Yhj1UsyerPQoSVnvIDRV+Q==
+  dependencies:
+    "@types/koa" "^2.11.6"
+    "@types/ws" "^7.4.0"
+    "@web/parse5-utils" "^2.0.0"
+    chokidar "^3.4.3"
+    clone "^2.1.2"
+    es-module-lexer "^1.0.0"
+    get-stream "^6.0.0"
+    is-stream "^2.0.0"
+    isbinaryfile "^5.0.0"
+    koa "^2.13.0"
+    koa-etag "^4.0.0"
+    koa-send "^5.0.1"
+    koa-static "^5.0.0"
+    lru-cache "^8.0.4"
+    mime-types "^2.1.27"
+    parse5 "^6.0.1"
+    picomatch "^2.2.2"
+    ws "^7.4.2"
+
+"@web/dev-server-esbuild@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@web/dev-server-esbuild/-/dev-server-esbuild-0.4.2.tgz#f9e7f27405e53d0d2408f4fddfdc2d51db5798ef"
+  integrity sha512-EdSiLIMG0FD13gkXG4GZAjL54i6JOIIDnnoCj9tecfRInWUeqFYyZgFAo5DId8jkFQC9leGlvOf5u2boWjPSig==
   dependencies:
     "@mdn/browser-compat-data" "^4.0.0"
-    "@web/dev-server-core" "^0.5.1"
+    "@web/dev-server-core" "^0.6.0"
     esbuild "^0.16 || ^0.17"
     parse5 "^6.0.1"
     ua-parser-js "^1.0.33"
 
-"@web/dev-server-import-maps@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@web/dev-server-import-maps/-/dev-server-import-maps-0.1.1.tgz#44c619117a025e3515198a129d662a0fb52f5c82"
-  integrity sha512-Et/uswWE2K9tFLM2xNArsvoDtFmBPyFrwJRm5O5ls5u0F3ZNE8vXk4kUONakillQ/041uSE30wIfesljl1ZKsg==
+"@web/dev-server-import-maps@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@web/dev-server-import-maps/-/dev-server-import-maps-0.1.2.tgz#f86ab9a38cd5a416609732c90aa5fc26cd856ef3"
+  integrity sha512-XArbrxg4MxRPubN2yDoX9eWljXlKNCCN2rLtNUyqjZxqEB4y34YokXfabnm1vsPIFCnsx8W1UaE4xzOw0qX9oQ==
   dependencies:
     "@import-maps/resolve" "^1.0.1"
     "@types/parse5" "^6.0.1"
-    "@web/dev-server-core" "^0.5.1"
+    "@web/dev-server-core" "^0.6.0"
     "@web/parse5-utils" "^2.0.0"
     parse5 "^6.0.1"
     picomatch "^2.2.2"
