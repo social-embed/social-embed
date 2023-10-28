@@ -10753,10 +10753,10 @@ vite-node@0.34.6:
     picocolors "^1.0.0"
     vite "^3.0.0 || ^4.0.0 || ^5.0.0-0"
 
-vite-plugin-dts@^3.6.1:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-3.6.1.tgz#62d8acb2bf5d8ac75bd4e2250c198b7308672ae1"
-  integrity sha512-Juy5qsDVxag9p0seSjkcdXnAkTfI9WtYcP9ccJbxZlavtK5nGY17ViqjuKpj0+qk+003PPcC6j/CIV/KIorlAg==
+vite-plugin-dts@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-3.6.2.tgz#8ee5216ed90a088c010591a8fd83e6dc0400acb6"
+  integrity sha512-P2o3IJtQLJZP1aSbiAzQM35QWOucrEH7ZQlfE9cWZYetTgP0apEgd/ZxaNQGPBCWEuTYNjWWHUW9MyIlweRiRQ==
   dependencies:
     "@microsoft/api-extractor" "^7.38.0"
     "@rollup/pluginutils" "^5.0.5"
