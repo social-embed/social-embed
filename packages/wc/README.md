@@ -13,10 +13,10 @@ Demo: [CodeSandbox], Examples: [YouTube], [Spotify], [Vimeo], [DailyMotion]
 [oembed]: https://oembed.com/
 [ckeditor5#2737]: https://github.com/ckeditor/ckeditor5/issues/2737
 [codesandbox]: https://codepen.io/attachment/pen/poRRwdy
-[youtube]: https://social-embed.git-pull.com/examples/
-[spotify]: https://social-embed.git-pull.com/examples/spotify/
-[dailymotion]: https://social-embed.git-pull.com/examples/dailymotion/
-[vimeo]: https://social-embed.git-pull.com/examples/vimeo/
+[youtube]: https://social-embed.git-pull.com/docs/wc/providers/youtube
+[spotify]: https://social-embed.git-pull.com/docs/wc/providers/spotify
+[dailymotion]: https://social-embed.git-pull.com/docs/wc/providers/dailymotion
+[vimeo]: https://social-embed.git-pull.com/docs/wc/providers/vimeo
 
 Compare to [thangman22/oembed-component](https://github.com/thangman22/oembed-component).
 
