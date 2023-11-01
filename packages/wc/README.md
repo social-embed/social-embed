@@ -47,16 +47,14 @@ This sample uses the TypeScript compiler to produce JavaScript that runs in mode
 To build the JavaScript version of your component:
 
 ```bash
-npm run build
+yarn build
 ```
 
 To watch files and rebuild when the files are modified, run the following command in a separate shell:
 
 ```bash
-npm run build:watch
+yarn build --watch
 ```
-
-Both the TypeScript compiler and lit-analyzer are configured to be very strict. You may want to change `tsconfig.json` to make them less strict.
 
 ### Testing
 
@@ -65,20 +63,25 @@ This sample uses web-test-runner and the open-wc test helpers for testing. See t
 Tests can be run with the `test` script:
 
 ```bash
-npm test
+yarn test
+```
+
+Note: On Ubuntu, you may need to download libraries:
+
+```bash
+sudo apt install libatk1.0-0 libatk-bridge2.0-0 libcups2 libxcomposite1
+libxdamage1
 ```
 
 ### Dev Server
 
-This sample uses open-wc's [es-dev-server](https://github.com/open-wc/open-wc/tree/master/packages/es-dev-server) for previewing the project without additional build steps. ES dev server handles resolving Node-style "bare" import specifiers, which aren't supported in browsers. It also automatically transpiles JavaScript and adds polyfills to support older browsers.
-
-To run the dev server and open the project in a new browser tab:
+via `vite preview`:
 
 ```bash
-npm run serve
+yarn serve
 ```
 
-There is a development HTML file located at `/dev/index.html` that you can view at http://localhost:8000/dev/index.html.
+There is a development HTML file located at `/index.html` that you can view at http://localhost:4173/index.html.
 
 ### Editing
 
@@ -103,45 +106,9 @@ The rules are mostly the recommended rules from each project, but some have been
 To lint the project run:
 
 ```bash
-npm run lint
+yarn lint
 ```
 
 ### Formatting
 
 [Prettier](https://prettier.io/) is used for code formatting. It has been pre-configured according to the Polymer Project's style. You can change this in `.prettierrc.json`.
-
-Prettier has not been configured to run when committing files, but this can be added with Husky and and `pretty-quick`. See the [prettier.io](https://prettier.io/) site for instructions.
-
-To build the site, run:
-
-```bash
-npm run docs
-```
-
-To serve the site locally, run:
-
-```bash
-npm run docs:serve
-```
-
-To watch the site files, and re-build automatically, run:
-
-```bash
-npm run docs:watch
-```
-
-The site will usually be served at http://localhost:8000.
-
-### Bundling and minification
-
-This starter project doesn't include any build-time optimizations like bundling or minification. We recommend publishing components as unoptimized JavaScript modules, and performing build-time optimizations at the application level. This gives build tools the best chance to deduplicate code, remove dead code, and so on.
-
-For information on building application projects that include LitElement components, see [Build for production](https://lit-element.polymer-project.org/guide/build) on the LitElement site.
-
-### More information
-
-See [Get started](https://lit-element.polymer-project.org/guide/start) on the LitElement site for more information.
-
-### Credit
-
-[lit-element-starter-ts](https://github.com/PolymerLabs/lit-element-starter-ts)
