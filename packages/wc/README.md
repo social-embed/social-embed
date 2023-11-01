@@ -35,7 +35,7 @@ yarn add @social-embed/wc
 ## Usage
 
 ```html
-<o-embed src="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
+<o-embed url="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
 ```
 
 ## Contributing
