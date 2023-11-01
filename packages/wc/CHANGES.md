@@ -6,6 +6,10 @@ title: Release notes
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.0.1-next.6 (2023-11-01)
+
+- Docs (README): Further README updates in relation to vite
+
 ## 0.0.1-next.5 (2023-11-01)
 
 - Docs (README): Fix links and example code
