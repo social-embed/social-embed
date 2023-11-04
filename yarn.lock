@@ -3466,10 +3466,10 @@
     picomatch "^2.2.2"
     ws "^7.4.2"
 
-"@web/dev-server-esbuild@^0.4.3":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@web/dev-server-esbuild/-/dev-server-esbuild-0.4.3.tgz#7fd163ca8693ec49fe83c30c06ad2ae6508ddf0e"
-  integrity sha512-uRqzE+oWHmeS+29r7yHqC9PSqf3Dte8NXr0XVrIF42Fzp3dlu4nudz/pRW0TxAnAi40+A6suJcaYUAJfw6rhCA==
+"@web/dev-server-esbuild@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@web/dev-server-esbuild/-/dev-server-esbuild-0.4.4.tgz#ebdf7ef31568e3465c7c29325f3034bf756bb9cb"
+  integrity sha512-gxXvj1mw0/b8HP2ARaXgQEmWH/nyPWvRuzSyEvybMm9oThe//z6K0ksj2qyffT/X7yblhEReKqWK7djCaB0M0Q==
   dependencies:
     "@mdn/browser-compat-data" "^4.0.0"
     "@web/dev-server-core" "^0.6.2"
