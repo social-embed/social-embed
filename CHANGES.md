@@ -19,6 +19,18 @@ Here you can find project-wide changes. For more detailed changes:
 
 - Minimum Node.js version to v18+ (#12)
 
+### Docs / Site
+
+- Docusaurus v2 -> v3 (#10)
+
+  - docusaurus 2 -> 3 ([release notes](https://docusaurus.io/blog/releases/3.0))
+  - mdx v2 -> v3 ([release notes](https://mdxjs.com/blog/v3/))
+  - react 17 -> 18 ([release notes](https://react.dev/blog/2022/03/29/react-v18))
+  - react-prism-renderer 1 -> 2 ([changelog](https://github.com/FormidableLabs/prism-react-renderer/blob/prism-react-renderer%402.0.0/packages/prism-react-renderer/CHANGELOG.md))
+  - Rewrite configuration docusaurus.config.js -> docusaurus.config.ts, use ESM imports and [`satisfies`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html#the-satisfies-operator)
+  - tsconfig: @tsconfig/docusarus -> @docusaurus/tsconfig
+  - Remove unused stub blog posts
+
 ## 0.0.4
 
 Lit element to lit
