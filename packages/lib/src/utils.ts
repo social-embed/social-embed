@@ -102,6 +102,9 @@ export const isRegExp = (val: unknown): val is RegExp => {
 export const matcher =
   (regex: RegExp | string): ((value: string) => boolean) =>
   (value: string) => {
+    if (value?.length > 1000) {
+      throw new Error("URL too long");
+    }
     return isString(value) && !isRegExp(regex)
       ? value.includes(regex)
       : new RegExp(regex).test(value);
