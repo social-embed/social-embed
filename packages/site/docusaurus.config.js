@@ -180,7 +180,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Tony Narlock. Built with Docusaurus.`,
+        copyright: `Copyright © 2021-${new Date().getFullYear()} Tony Narlock. Built with Docusaurus.`,
       },
 
       prism: {
