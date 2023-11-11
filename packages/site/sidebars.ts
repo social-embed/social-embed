@@ -7,12 +7,18 @@ const sidebars: SidebarsConfig = {
       type: "category",
       label: "⚙️ @social-embed/lib",
       collapsed: false,
+      link: {
+        type: "generated-index",
+      },
       items: ["lib/index", "lib/installation", "lib/release-notes"],
     },
     {
       type: "category",
       label: "▶️ @social-embed/wc",
       collapsed: false,
+      link: {
+        type: "generated-index",
+      },
       items: [
         "wc/index",
         "wc/installation",
