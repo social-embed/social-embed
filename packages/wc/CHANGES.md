@@ -19,7 +19,13 @@ description: Latest updates for the @social-embed web component.
 
 ### Development
 
-- wc: Update @web/dev-server-esbuild 0.4.4 -> 1.0.0 (#14)
+- Update @web/dev-server-esbuild `0.4.4` -> `1.0.0` ([release notes](https://github.com/modernweb-dev/web/blob/%40web/dev-server-esbuild%401.0.0/packages/dev-server-esbuild/CHANGELOG.md)) (#14)
+- Update @web/test-runner + @web/test-runner-puppeteer (#15)
+
+  - @web/test-runner `<0.17.0` -> `^0.18.0` ([release
+    notes](https://github.com/modernweb-dev/web/blob/%40web/test-runner%400.18.0/packages/test-runner/CHANGELOG.md))
+  - @web/test-runner-puppeteer `<0.14.0` -> `^0.15.0` ([release
+    notes](https://github.com/modernweb-dev/web/blob/%40web/test-runner-puppeteer%400.15.0/packages/test-runner-puppeteer/CHANGELOG.md))
 
 ## 0.0.1-next.6 (2023-11-01)
 
