@@ -9,8 +9,9 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       link: {
         type: "generated-index",
+        slug: "lib/",
       },
-      items: ["lib/index", "lib/installation", "lib/release-notes"],
+      items: ["lib/overview", "lib/installation", "lib/release-notes"],
     },
     {
       type: "category",
@@ -18,9 +19,10 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       link: {
         type: "generated-index",
+        slug: "wc/",
       },
       items: [
-        "wc/index",
+        "wc/overview",
         "wc/installation",
         {
           type: "category",
