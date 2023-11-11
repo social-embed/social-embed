@@ -9,9 +9,7 @@ Spotify, Vimeo, and so on.
 
 - No server or service required
 
-  URL patterns and ID extraction handled by a separate client-based, browser-friendly package - [@social-embed/lib] - which can even be used independently.
-
-[@social-embed/lib]: https://social-embed.git-pull.com/docs/lib/
+  URL patterns and ID extraction handled by a separate client-based, browser-friendly package - [`@social-embed/lib`] - which can even be used independently.
 
 ## Demo
 
@@ -48,7 +46,7 @@ Spotify, Vimeo, and so on.
 [`mediaembed`]: https://ckeditor.com/docs/ckeditor5/latest/features/media-embed.html
 [ckeditor#2737]: https://github.com/ckeditor/ckeditor5/issues/2737
 [ckeditor]: https://github.com/ckeditor/ckeditor5/issues/2737
-[`@social-embed/lib`]: ../lib/overview.mdx
+[`@social-embed/lib`]: https://social-embed.git-pull.com/docs/lib/overview
 
 ## Tech
 
