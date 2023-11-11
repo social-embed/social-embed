@@ -178,6 +178,14 @@ const config: Config = {
           ],
         },
       ],
+      logo: {
+        alt: "Team git-pull / Tony Narlock",
+        src: "/img/git-pull.svg",
+        href: "https://www.git-pull.com",
+        target: "_blank",
+        width: 160,
+        height: 160,
+      },
       copyright: `Copyright © 2021-${new Date().getFullYear()} <a href="https://www.git-pull.com" target="_blank" class="footer__link-item">Tony Narlock</a>. Built with Docusaurus.`,
     },
 
