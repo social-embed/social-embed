@@ -178,7 +178,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © 2021-${new Date().getFullYear()} Tony Narlock. Built with Docusaurus.`,
+      copyright: `Copyright © 2021-${new Date().getFullYear()} <a href="https://www.git-pull.com" target="_blank" class="footer__link-item">Tony Narlock</a>. Built with Docusaurus.`,
     },
 
     prism: {
