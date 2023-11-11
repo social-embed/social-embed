@@ -62,16 +62,16 @@ const config: Config = {
       },
       items: [
         {
-          docid: "lib/index",
+          docid: "lib/overview",
 
-          to: "/docs/lib",
+          to: "/docs/lib/overview",
           label: "Library (lib)",
           activeBaseRegex: "^/docs/lib",
         },
         {
-          docid: "wc/index",
+          docid: "wc/overview",
 
-          to: "/docs/wc",
+          to: "/docs/wc/overview",
           label: "Web Component (wc)",
           activeBaseRegex: "^/docs/wc",
         },
