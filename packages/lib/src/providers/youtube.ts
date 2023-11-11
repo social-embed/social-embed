@@ -2,7 +2,7 @@
  * Regex matcher for YouTube URLs
  */
 export const youTubeUrlRegex =
-  /^(?:(?:https?):)?(?:\/\/)?[^/]*(?:youtube(?:-nocookie)?.com|youtu.be).*[=/]([a-zA-Z0-9_-]{11})(?:\\?|=|&|$)/;
+  /^(?:(?:https?):)?(?:\/\/)?[^/]*(?:youtube(?:-nocookie)?.com|youtu.be)(?:\/watch\?v)?[=/]([a-zA-Z0-9_-]{11})(?:\\?|=|&|$)/;
 
 export const getYouTubeIdFromUrl = (url: string | undefined): string => {
   if (url) {
