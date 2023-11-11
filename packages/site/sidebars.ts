@@ -55,6 +55,7 @@ const sidebars: SidebarsConfig = {
             "wc/configuration/url",
           ],
         },
+        "wc/contributing",
         "wc/release-notes",
       ],
     },
