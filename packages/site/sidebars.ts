@@ -26,6 +26,9 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Providers",
           collapsed: false,
+          link: {
+            type: "generated-index",
+          },
           items: [
             "wc/providers/generic",
             "wc/providers/youtube",
@@ -41,6 +44,9 @@ const sidebars: SidebarsConfig = {
           type: "category",
           label: "Configuration",
           collapsed: false,
+          link: {
+            type: "generated-index",
+          },
           items: [
             "wc/configuration/dimensions",
             "wc/configuration/allowfullscreen",
