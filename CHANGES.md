@@ -21,7 +21,7 @@ Here you can find project-wide changes. For more detailed changes:
 
 ### Docs / Site
 
-- Docs: Refinement and polishing (#18)
+- Docs: Refinement and polishing (#18, #19)
 
   - Sidebar: Convert file from js -> ts
   - Add link back to homepage
