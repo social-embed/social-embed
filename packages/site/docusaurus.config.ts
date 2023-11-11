@@ -38,7 +38,7 @@ const config: Config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       {
         docs: {
-          sidebarPath: require.resolve("./sidebars.js"),
+          sidebarPath: require.resolve("./sidebars.ts"),
           sidebarCollapsed: false,
           editUrl:
             "https://github.com/social-embed/social-embed/edit/master/packages/site/",
