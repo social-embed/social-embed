@@ -1,3 +1,5 @@
+import { fileURLToPath, URL } from "url";
+
 import { esbuildPlugin } from "@web/dev-server-esbuild";
 import { importMapsPlugin } from "@web/dev-server-import-maps";
 import { defaultReporter } from "@web/test-runner";
@@ -10,7 +12,10 @@ export default {
     puppeteerLauncher({ concurrency: 1, launchOptions: { headless: "new" } }),
   ],
   plugins: [
-    esbuildPlugin({ ts: true }),
+    esbuildPlugin({
+      ts: true,
+      tsconfig: fileURLToPath(new URL("./tsconfig.json", import.meta.url)),
+    }),
     importMapsPlugin({
       inject: {
         importMap: {
