@@ -1,5 +1,6 @@
 ---
 title: Release notes
+description: Latest updates for the @social-embed URL parsing library.
 ---
 
 ## Upcoming release

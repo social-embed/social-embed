@@ -38,7 +38,7 @@ const config: Config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       {
         docs: {
-          sidebarPath: require.resolve("./sidebars.js"),
+          sidebarPath: require.resolve("./sidebars.ts"),
           sidebarCollapsed: false,
           editUrl:
             "https://github.com/social-embed/social-embed/edit/master/packages/site/",
@@ -178,7 +178,15 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © 2021-${new Date().getFullYear()} Tony Narlock. Built with Docusaurus.`,
+      logo: {
+        alt: "Team git-pull / Tony Narlock",
+        src: "/img/git-pull.svg",
+        href: "https://www.git-pull.com",
+        target: "_blank",
+        width: 160,
+        height: 160,
+      },
+      copyright: `Copyright © 2021-${new Date().getFullYear()} <a href="https://www.git-pull.com" target="_blank" class="footer__link-item">Tony Narlock</a>. Built with Docusaurus.`,
     },
 
     prism: {
