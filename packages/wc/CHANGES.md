@@ -7,6 +7,8 @@ description: Latest updates for the @social-embed web component.
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.0.1-next.7 (2023-11-11)
+
 ### Improvements
 
 - lit: 3.0.1 -> 3.0.2 (#16)
