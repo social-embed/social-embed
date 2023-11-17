@@ -13,9 +13,9 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true
-  },
-  "paths": {
-    "@social-embed/*": ["packages/*/src"]
+    "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@social-embed/*": ["./packages/*/src"]
+    }
   }
 }
