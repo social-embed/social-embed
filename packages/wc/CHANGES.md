@@ -7,6 +7,15 @@ description: Latest updates for the @social-embed web component.
 
 <!-- _Enter the most recent changes here_ -->
 
+### Improvements
+
+- lit: 3.0.2 -> 3.1.0 (#20)
+
+  See also:
+
+  - https://github.com/lit/lit/blob/lit%403.1.0/packages/lit/CHANGELOG.md
+  - https://github.com/lit/lit/blob/lit%403.1.0/packages/lit-html/CHANGELOG.md
+
 ## 0.0.1-next.7 (2023-11-11)
 
 ### Improvements
