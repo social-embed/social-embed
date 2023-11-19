@@ -40,12 +40,14 @@ Here you can find project-wide changes. For more detailed changes:
     Range (min … max):   429.6 ms … 455.4 ms    10 runs
   ```
 
+- Move from yarn classic to [yarn v4] (#22)
+
+  [yarn v4]: https://yarnpkg.com/blog/release/4.0
+
 - Run prettier across full codebase (#9)
 
   - Add docs/ to formatting
   - CSS and JS import ordering
-
-- Minimum Node.js version to v18+ (#12)
 
 ### Docs / Site
 

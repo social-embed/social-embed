@@ -28,6 +28,10 @@ description: Latest updates for the @social-embed web component.
 
 ### Development
 
+- Move from yarn classic to [yarn v4] (#22)
+
+  [yarn v4]: https://yarnpkg.com/blog/release/4.0
+
 - vite: 4.5.0 -> 5.0.0 (#21)
 
   See also:
