@@ -4,3 +4,9 @@
 /dist/
 /docs/
 yarn-error.log
+
+# yarn berry
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
