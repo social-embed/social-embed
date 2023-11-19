@@ -45,6 +45,12 @@ description: Latest updates for the @social-embed URL parsing library.
 - Regex patterns will be set to be removed in future releases in favor of
   a typed, URL matching object (interface is to be determined).
 
+### Development
+
+- Move from yarn classic to [yarn v4] (#22)
+
+  [yarn v4]: https://yarnpkg.com/blog/release/4.0
+
 ## 0.1.0-next.6 (2023-11-25)
 
 _Skipped directly to v0.1.0-next.7_ due to publishing error.
