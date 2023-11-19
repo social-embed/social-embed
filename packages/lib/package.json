@@ -6,7 +6,10 @@
   "module": "dist/lib.js",
   "typings": "dist/index.d.ts",
   "type": "module",
-  "files": ["dist", "types"],
+  "files": [
+    "dist",
+    "types"
+  ],
   "exports": {
     ".": {
       "import": "./dist/lib.js",
@@ -14,7 +17,12 @@
     }
   },
   "license": "MIT",
-  "keywords": ["embed", "typescript", "youtube", "dailymotion"],
+  "keywords": [
+    "embed",
+    "typescript",
+    "youtube",
+    "dailymotion"
+  ],
   "publishConfig": {
     "access": "public"
   },

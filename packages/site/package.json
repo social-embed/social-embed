@@ -43,7 +43,11 @@
     "typescript": "^5.5.4"
   },
   "browserslist": {
-    "production": [">0.5%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -52,5 +56,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
   }
 }
