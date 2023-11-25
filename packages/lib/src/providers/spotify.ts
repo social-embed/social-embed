@@ -1,7 +1,7 @@
 // regex: derived from https://gist.github.com/TrevorJTClarke/a14c37db3c11ee23a700
 // Thank you @TrevorJTClarke
 export const spotifyUrlRegex =
-  /^(?:(?:https?):)?(?:\/\/)?(?:embed\.|open\.)(?:spotify\.com\/)(?:(album|track|playlist)\/|\?uri=spotify:track:)([-\w]{22})$/;
+  /^(?:(?:https?):)?(?:\/\/)?(?:embed\.|open\.)(?:spotify\.com\/)(?:(album|track|playlist)\/|\?uri=spotify:track:)([-\w]{22})(?:\?si=[_-\w]{22})?$/;
 
 export const spotifySymbolRegex =
   /spotify:(?:(album|track|playlist):|\?uri=spotify:track:)([-\w]{22})/;
