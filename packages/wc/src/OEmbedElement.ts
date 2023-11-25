@@ -124,6 +124,11 @@ export class OEmbedElement extends LitElement {
     return html`${this.instanceStyle()}${embedResult}`;
   }
 
+  static spotifyDefaultDimensions: Dimensions = {
+    height: "352",
+    heightWithUnits: "352px",
+  };
+
   public renderSpotify(): TemplateResult {
     const url = getSpotifyEmbedUrlFromIdAndType(
       ...getSpotifyIdAndTypeFromUrl(this.url),
@@ -162,6 +167,10 @@ export class OEmbedElement extends LitElement {
       case Provider.Loom:
         return this.calculateDefaultDimensions({
           defaults: OEmbedElement.loomDefaultDimensions,
+        });
+      case Provider.Spotify:
+        return this.calculateDefaultDimensions({
+          defaults: OEmbedElement.spotifyDefaultDimensions,
         });
       default:
         return this.calculateDefaultDimensions();
