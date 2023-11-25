@@ -23,7 +23,6 @@
  */
 export const wistiaUrlRegex =
   /^(?:(?:https?):)?(?:\/\/)?(?:www|fast|support\.)?(?:wistia.com|wi.st)[=/](?:medias|embed)\/([-\w]+)/;
-// '^(?:(?:https?):)?(?://)?[^/]*wistia.com.*[=/]medias/([-\\w]+)'  // v1 (handcrafted by Tony)
 
 /**
  * Return ID from shared link.
