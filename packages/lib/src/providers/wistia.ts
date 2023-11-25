@@ -31,6 +31,10 @@ export const wistiaUrlRegex =
  */
 export const getWistiaIdFromUrl = (url: string | undefined): string => {
   if (url) {
+    if (url?.length > 1000) {
+      throw new Error("URL too long");
+    }
+
     return url.match(wistiaUrlRegex)?.[1] ?? "";
   }
   return "";
