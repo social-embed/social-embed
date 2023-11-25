@@ -10,7 +10,7 @@
  * Matches ID from URLs matching: https://edpuzzle.com/media/606b413369971e424ec6021e
  */
 export const edPuzzleUrlRegex =
-  /^(?:(?:https?):)?(?:\/\/)?[^/]*edpuzzle.com.*[=/]media\/([-\w]+)/;
+  /^(?:(?:https?):)?(?:\/\/)?(?:www\.)?edpuzzle.com[=/]media\/([-\w]+)/;
 
 /**
  * Return ID from shared link.
