@@ -7,6 +7,12 @@ description: Latest updates for the @social-embed URL parsing library.
 
 <!-- _Enter the most recent changes here_ -->
 
+### Breaking changes
+
+- Security: Fixes to mitigate polynomial regex expressions (#24)
+
+  - Limit URL lengths for Loom, EdPuzzle, and Wistia
+
 ## 0.1.0-next.7 (2023-11-25)
 
 ### Breaking changes

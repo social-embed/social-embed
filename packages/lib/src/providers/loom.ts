@@ -23,6 +23,10 @@ export const loomUrlRegex =
  */
 export const getLoomIdFromUrl = (url: string | undefined): string => {
   if (url) {
+    if (url?.length > 1000) {
+      throw new Error("URL too long");
+    }
+
     return url.match(loomUrlRegex)?.[1] ?? "";
   }
   return "";

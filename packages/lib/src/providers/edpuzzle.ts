@@ -19,6 +19,10 @@ export const edPuzzleUrlRegex =
  */
 export const getEdPuzzleIdFromUrl = (url: string | undefined): string => {
   if (url) {
+    if (url?.length > 1000) {
+      throw new Error("URL too long");
+    }
+
     return url.match(edPuzzleUrlRegex)?.[1] ?? "";
   }
   return "";
