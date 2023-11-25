@@ -21,10 +21,9 @@
  * - https://support.wi.st/embed/26sk4lmiix
  * - https://support.wi.st/medias/26sk4lmiix
  */
-export const wistiaUrlRegex = new RegExp(
-  "^(?:(?:https?):)?(?://)?[^/]*(?:wistia.com|wi.st).*[=/](?:medias|embed)/([-\\w]+)",
-  // '^(?:(?:https?):)?(?://)?[^/]*wistia.com.*[=/]medias/([-\\w]+)'  // v1 (handcrafted by Tony)
-);
+export const wistiaUrlRegex =
+  /^(?:(?:https?):)?(?:\/\/)?[^/]*(?:wistia.com|wi.st).*[=/](?:medias|embed)\/([-\w]+)/;
+// '^(?:(?:https?):)?(?://)?[^/]*wistia.com.*[=/]medias/([-\\w]+)'  // v1 (handcrafted by Tony)
 
 /**
  * Return ID from shared link.
