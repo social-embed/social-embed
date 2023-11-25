@@ -20,6 +20,10 @@ description: Latest updates for the @social-embed web component.
   - https://github.com/lit/lit/blob/lit%403.1.0/packages/lit/CHANGELOG.md
   - https://github.com/lit/lit/blob/lit%403.1.0/packages/lit-html/CHANGELOG.md
 
+- @social-embed/lib: From v0.0.1-next.5 to v0.0.1-next.7
+
+  - Regex improvements
+
 ### Development
 
 - vite: 4.5.0 -> 5.0.0 (#21)
