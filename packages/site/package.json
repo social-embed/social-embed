@@ -17,6 +17,7 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
     "prebuild": "yarn docs:oembed",
+    "prestart": "yarn docs:oembed",
     "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p static/js && cp ../wc/dist/OEmbedElement.umd.cjs static/js/o-embed.bundled.js",
     "lint": "echo 'NOOP'",
     "prettier": "prettier",
