@@ -1,6 +1,6 @@
 {
   "name": "@social-embed/wc",
-  "version": "0.1.0-next.7",
+  "version": "0.1.0-next.8",
   "description": "A drop-in component for <o-embed> tags",
   "main": "./dist/OEmbedElement.umd.cjs",
   "module": "./dist/OEmbedElement.js",

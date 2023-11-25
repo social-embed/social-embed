@@ -7,6 +7,8 @@ description: Latest updates for the @social-embed web component.
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.0.1-next.8 (2023-11-25)
+
 ### Improvements
 
 - Spotify: Set default height to `352px` (for default player size, #23)
