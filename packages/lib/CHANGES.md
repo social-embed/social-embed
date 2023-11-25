@@ -7,6 +7,29 @@ description: Latest updates for the @social-embed URL parsing library.
 
 <!-- _Enter the most recent changes here_ -->
 
+### Breaking changes
+
+- Security: Fixes to mitigate polynomial regex expressions (#17)
+
+  - Add plugins: [eslint-plugin-redos-detector] ([redos-detector])
+
+    [eslint-plugin-redos-detector]: https://github.com/tjenkinson/eslint-plugin-redos-detector
+    [redos-detector]: https://github.com/tjenkinson/redos-detector
+
+  - lib(matcher): Cap length to prevent some ReDoS vectors
+  - Simplify regexes for EdPuzzle, Loom, Spotify, Wistia, YouTube
+  - Remove generic URL regex: This regex is difficult to constrain
+
+    - `isValidUrl()`: in favor of using [`URL()`] constructor directly to
+      test URL validity.
+
+      [`URL()`]: https://developer.mozilla.org/en-US/docs/Web/API/URL/URL
+
+### Deprecation notice
+
+- Regex patterns will be set to be removed in future releases in favor of
+  a typed, URL matching object (interface is to be determined).
+
 ## 0.1.0-next.5 (2023-10-15)
 
 ### Breaking changes

@@ -9,9 +9,8 @@
 /**
  * Matches ID from URLs matching: https://edpuzzle.com/media/606b413369971e424ec6021e
  */
-export const edPuzzleUrlRegex = new RegExp(
-  "^(?:(?:https?):)?(?://)?[^/]*edpuzzle.com.*[=/]media/([-\\w]+)",
-);
+export const edPuzzleUrlRegex =
+  /^(?:(?:https?):)?(?:\/\/)?(?:www\.)?edpuzzle.com[=/]media\/([-\w]+)/;
 
 /**
  * Return ID from shared link.
