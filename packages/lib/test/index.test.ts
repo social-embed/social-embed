@@ -46,6 +46,9 @@ describe("convertUrlToEmbedUrl", () => {
       convertUrlToEmbedUrl("spotify:album:1DFixLWuPkv3KT3TnV35m3"),
     ).toEqual("https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3");
     expect(
+      convertUrlToEmbedUrl("spotify:track:1w4etUoKfql47wtTFq031f"),
+    ).toEqual("https://open.spotify.com/embed/track/1w4etUoKfql47wtTFq031f");
+    expect(
       convertUrlToEmbedUrl(
         "https://open.spotify.com/album/4RuzGKLG99XctuBMBkFFOC",
       ),
@@ -53,6 +56,11 @@ describe("convertUrlToEmbedUrl", () => {
     expect(
       convertUrlToEmbedUrl("open.spotify.com/album/4RuzGKLG99XctuBMBkFFOC"),
     ).toEqual("https://open.spotify.com/embed/album/4RuzGKLG99XctuBMBkFFOC");
+    expect(
+      convertUrlToEmbedUrl(
+        "https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs?si=_AayG1M6SkiRSomgoM_Vxg",
+      ),
+    ).toEqual("https://open.spotify.com/embed/track/7Ca8EuTCyU3pjJR4TNOXqs");
   });
 
   it("dailymotion", () => {
