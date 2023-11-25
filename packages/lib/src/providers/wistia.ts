@@ -22,7 +22,7 @@
  * - https://support.wi.st/medias/26sk4lmiix
  */
 export const wistiaUrlRegex =
-  /^(?:(?:https?):)?(?:\/\/)?[^/]*(?:wistia.com|wi.st).*[=/](?:medias|embed)\/([-\w]+)/;
+  /^(?:(?:https?):)?(?:\/\/)?(?:www|fast|support\.)?(?:wistia.com|wi.st)[=/](?:medias|embed)\/([-\w]+)/;
 // '^(?:(?:https?):)?(?://)?[^/]*wistia.com.*[=/]medias/([-\\w]+)'  // v1 (handcrafted by Tony)
 
 /**
