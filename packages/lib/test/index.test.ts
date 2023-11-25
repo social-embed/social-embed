@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 
 import {
   convertUrlToEmbedUrl,
-  genericUrlRegex,
   getDailyMotionEmbedFromId,
   getDailyMotionIdFromUrl,
   getEdPuzzleEmbedUrlFromId,
@@ -32,14 +31,12 @@ describe("convertUrlToEmbedUrl", () => {
 
     for (let i = 0; i < urlPatterns.length; i++) {
       const url = urlPatterns[i];
-      expect(url).toMatch(genericUrlRegex);
       expect(isValidUrl(url)).toEqual(true);
     }
 
     const urlIgnorePatterns = ["notaurl"];
     for (let i = 0; i < urlIgnorePatterns.length; i++) {
       const url = urlIgnorePatterns[i];
-      expect(url).not.toMatch(genericUrlRegex);
       expect(isValidUrl(url)).not.toEqual(true);
     }
   });
