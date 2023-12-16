@@ -20,7 +20,7 @@ jobs:
           cache: "yarn"
 
       - name: project - install
-        run: yarn --frozen-lockfile
+        run: yarn --immutable
 
       - name: yarn biome format .
         run: yarn biome format .
