@@ -12,6 +12,24 @@ Here you can find project-wide changes. For more detailed changes:
 ### Breaking changes
 
 - Move to `vite` (#8)
+- Move from `eslint` to `oxc` (#26)
+
+  With eslint:
+
+  ```
+  Benchmark 1: yarn lint
+    Time (mean ± σ):      7.734 s ±  0.119 s    [User: 10.668 s, System: 1.393 s]
+    Range (min … max):    7.559 s …  7.902 s    10 runs
+  ```
+
+  With oxc:
+
+  ```
+  Benchmark 1: yarn lint
+    Time (mean ± σ):      5.284 s ±  0.106 s    [User: 6.894 s, System: 1.065 s]
+    Range (min … max):    5.155 s …  5.476 s    10 runs
+  ```
+
 - Run prettier across full codebase (#9)
 
   - Add docs/ to formatting
