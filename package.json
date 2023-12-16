@@ -20,13 +20,6 @@
     "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
   },
   "workspaces": {
-    "nohoist": [
-      "**/@open-wc/**",
-      "**/@types/chai",
-      "**/@types/jest",
-      "**/@types/jasmine",
-      "**/ts-loader"
-    ],
     "packages": [
       "packages/*"
     ]
