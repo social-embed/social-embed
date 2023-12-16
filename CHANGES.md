@@ -12,6 +12,7 @@ Here you can find project-wide changes. For more detailed changes:
 ### Breaking changes
 
 - Move to `vite` (#8)
+- Minimum Node.js version to v18+ (#12)
 - Move from `eslint` to `oxc` (#26)
 
   With eslint:
