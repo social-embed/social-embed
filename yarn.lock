@@ -2171,6 +2171,36 @@
     "@types/sinon-chai" "^3.2.3"
     chai-a11y-axe "^1.5.0"
 
+"@oxlint/darwin-arm64@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@oxlint/darwin-arm64/-/darwin-arm64-0.0.20.tgz#9ac6d8a2c19907b21c772c404dcdb543dd2aeade"
+  integrity sha512-P21sToNCj6+iOZ56aS/tWBuvfW8/vXMqIS4+tZvKspSouj44ln0kw8kDex2ksdjzCa1rsNJChTxOywsymwlNqw==
+
+"@oxlint/darwin-x64@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@oxlint/darwin-x64/-/darwin-x64-0.0.20.tgz#1b6164cd82eb9552849a3a20f83c79b33a75940e"
+  integrity sha512-j9jVs+qrVyIg+RR1nN9KAbslAzHxSPM2lVt5tkg5foy7yM7+cjEFrGjR0gzwaxLkTdHEls+edErtnMoBxa7zXQ==
+
+"@oxlint/linux-arm64@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@oxlint/linux-arm64/-/linux-arm64-0.0.20.tgz#5c6bc0d9554f429cd29fd359b720e1a883cc41fa"
+  integrity sha512-F1/FiQdwxHHzD4oWLZasWoTqySpkn+7L+bDn+lZ0j72Nr7Ox1ETSvg65umUunyhsALPXBh0SwuLpSwmw+8SerA==
+
+"@oxlint/linux-x64@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@oxlint/linux-x64/-/linux-x64-0.0.20.tgz#425561ace5ea4a8724f284c10c769ce5b644fe5b"
+  integrity sha512-0HO7oMErbHiKiQqqaIWFmsc2cHrUw1Ob9JGUdjO6sW0aDx+HY03EZ4SCcV9g9/BvFZxDPJ7mhRMQ30imE0aTww==
+
+"@oxlint/win32-arm64@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@oxlint/win32-arm64/-/win32-arm64-0.0.20.tgz#bd18b47628614674ed2a38813691d6e579a0c017"
+  integrity sha512-1v+omDkVplcEVJ78fTJMHBCShygGxt6R3hJO4vPZRzDN4uNam+mudh+8rVzasGeZWa778lPkLfjUz5wKXouDgQ==
+
+"@oxlint/win32-x64@0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@oxlint/win32-x64/-/win32-x64-0.0.20.tgz#7b3f44f0c2e9a58f7177b011be27e673eaf111e7"
+  integrity sha512-FAC2veucFjl0gZXhl4rmK2aBe1M9J5QR5GI3e6dzQXm0xQQ2C0fGu2MF9lTXZO3nkXNLHJSwriGyAgM/Br43gQ==
+
 "@philpl/buble@^0.19.7":
   version "0.19.7"
   resolved "https://registry.yarnpkg.com/@philpl/buble/-/buble-0.19.7.tgz#27231e6391393793b64bc1c982fc7b593198b893"
@@ -8837,6 +8867,18 @@ os-homedir@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/os-homedir/-/os-homedir-1.0.2.tgz#ffbc4988336e0e833de0c168c7ef152121aa7fb3"
   integrity sha512-B5JU3cabzk8c67mRRd3ECmROafjYMXbuzlwtqdM8IbS8ktlTix8aFGb2bAGKrSRIlnfKwovGUUr72JUPyOb6kQ==
+
+oxlint@^0.0.20:
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/oxlint/-/oxlint-0.0.20.tgz#6e72934cbfce25597f2003cb3b1f6b1dca197417"
+  integrity sha512-z2A4vtRYemz/t6hKX6s2m/fq905uPeQxqZEWNbFglQIL2otzNsW0B9mh0pqzczlpmDPm36wUZaVJLauMOp/kIg==
+  optionalDependencies:
+    "@oxlint/darwin-arm64" "0.0.20"
+    "@oxlint/darwin-x64" "0.0.20"
+    "@oxlint/linux-arm64" "0.0.20"
+    "@oxlint/linux-x64" "0.0.20"
+    "@oxlint/win32-arm64" "0.0.20"
+    "@oxlint/win32-x64" "0.0.20"
 
 p-cancelable@^3.0.0:
   version "3.0.0"
