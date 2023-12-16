@@ -59,5 +59,8 @@
   },
   "installConfig": {
     "hoistingLimits": "workspaces"
+  },
+  "peerDependencies": {
+    "@types/react": "*"
   }
 }
