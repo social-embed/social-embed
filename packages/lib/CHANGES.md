@@ -13,6 +13,12 @@ description: Latest updates for the @social-embed URL parsing library.
 
   - Limit URL lengths for Loom, EdPuzzle, and Wistia
 
+### Development
+
+- Move from `eslint` to `oxc` (#26)
+
+  Faster linting, as it is rust-based.
+
 ## 0.1.0-next.7 (2023-11-25)
 
 ### Breaking changes
