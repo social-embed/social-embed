@@ -1759,13 +1759,13 @@ __metadata:
   linkType: hard
 
 "@babel/types@npm:^7.8.3":
-  version: 7.23.9
-  resolution: "@babel/types@npm:7.23.9"
+  version: 7.23.6
+  resolution: "@babel/types@npm:7.23.6"
   dependencies:
     "@babel/helper-string-parser": "npm:^7.23.4"
     "@babel/helper-validator-identifier": "npm:^7.22.20"
     to-fast-properties: "npm:^2.0.0"
-  checksum: edc7bb180ce7e4d2aea10c6972fb10474341ac39ba8fdc4a27ffb328368dfdfbf40fca18e441bbe7c483774500d5c05e222cec276c242e952853dcaf4eb884f7
+  checksum: 42cefce8a68bd09bb5828b4764aa5586c53c60128ac2ac012e23858e1c179347a4aac9c66fc577994fbf57595227611c5ec8270bf0cfc94ff033bbfac0550b70
   languageName: node
   linkType: hard
 
@@ -3240,15 +3240,15 @@ __metadata:
   linkType: hard
 
 "@npmcli/agent@npm:^2.0.0":
-  version: 2.2.1
-  resolution: "@npmcli/agent@npm:2.2.1"
+  version: 2.2.0
+  resolution: "@npmcli/agent@npm:2.2.0"
   dependencies:
     agent-base: "npm:^7.1.0"
     http-proxy-agent: "npm:^7.0.0"
     https-proxy-agent: "npm:^7.0.1"
     lru-cache: "npm:^10.0.1"
     socks-proxy-agent: "npm:^8.0.1"
-  checksum: 38ee5cbe8f3cde13be916e717bfc54fd1a7605c07af056369ff894e244c221e0b56b08ca5213457477f9bc15bca9e729d51a4788829b5c3cf296b3c996147f76
+  checksum: 7b89590598476dda88e79c473766b67c682aae6e0ab0213491daa6083dcc0c171f86b3868f5506f22c09aa5ea69ad7dfb78f4bf39a8dca375d89a42f408645b3
   languageName: node
   linkType: hard
 
@@ -4712,9 +4712,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/language-core@npm:1.8.26, @vue/language-core@npm:^1.8.26":
-  version: 1.8.26
-  resolution: "@vue/language-core@npm:1.8.26"
+"@vue/language-core@npm:1.8.27, @vue/language-core@npm:^1.8.26":
+  version: 1.8.27
+  resolution: "@vue/language-core@npm:1.8.27"
   dependencies:
     "@volar/language-core": "npm:~1.11.1"
     "@volar/source-map": "npm:~1.11.1"
@@ -4730,7 +4730,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: b0f783543a640443d605f97028584c2d76a041942116dbc259b7050c2d053fa2600a62b9c6f8217b036113ea2c119f19ed3278624971c158bfd5678715f1e41e
+  checksum: 2018214d8ce2643d19e8e84eddaeacddca28b2980984d7916d97f97556c3716be184cf9f8c4f506d072a11f265401e3bc0391117cf7cfcc1e4a25048f4432dc7
   languageName: node
   linkType: hard
 
@@ -5896,8 +5896,8 @@ __metadata:
   linkType: hard
 
 "cacache@npm:^18.0.0":
-  version: 18.0.2
-  resolution: "cacache@npm:18.0.2"
+  version: 18.0.1
+  resolution: "cacache@npm:18.0.1"
   dependencies:
     "@npmcli/fs": "npm:^3.1.0"
     fs-minipass: "npm:^3.0.0"
@@ -5911,7 +5911,7 @@ __metadata:
     ssri: "npm:^10.0.0"
     tar: "npm:^6.1.11"
     unique-filename: "npm:^3.0.0"
-  checksum: 7992665305cc251a984f4fdbab1449d50e88c635bc43bf2785530c61d239c61b349e5734461baa461caaee65f040ab14e2d58e694f479c0810cffd181ba5eabc
+  checksum: a31666805a80a8b16ad3f85faf66750275a9175a3480896f4f6d31b5d53ef190484fabd71bdb6d2ea5603c717fbef09f4af03d6a65b525c8ef0afaa44c361866
   languageName: node
   linkType: hard
 
@@ -9239,23 +9239,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"https-proxy-agent@npm:^7.0.1, https-proxy-agent@npm:^7.0.3":
-  version: 7.0.4
-  resolution: "https-proxy-agent@npm:7.0.4"
-  dependencies:
-    agent-base: "npm:^7.0.2"
-    debug: "npm:4"
-  checksum: bc4f7c38da32a5fc622450b6cb49a24ff596f9bd48dcedb52d2da3fa1c1a80e100fb506bd59b326c012f21c863c69b275c23de1a01d0b84db396822fdf25e52b
-  languageName: node
-  linkType: hard
-
-"https-proxy-agent@npm:^7.0.2":
+"https-proxy-agent@npm:^7.0.1, https-proxy-agent@npm:^7.0.2":
   version: 7.0.2
   resolution: "https-proxy-agent@npm:7.0.2"
   dependencies:
     agent-base: "npm:^7.0.2"
     debug: "npm:4"
   checksum: 7735eb90073db087e7e79312e3d97c8c04baf7ea7ca7b013382b6a45abbaa61b281041a98f4e13c8c80d88f843785bcc84ba189165b4b4087b1e3496ba656d77
+  languageName: node
+  linkType: hard
+
+"https-proxy-agent@npm:^7.0.3":
+  version: 7.0.4
+  resolution: "https-proxy-agent@npm:7.0.4"
+  dependencies:
+    agent-base: "npm:^7.0.2"
+    debug: "npm:4"
+  checksum: bc4f7c38da32a5fc622450b6cb49a24ff596f9bd48dcedb52d2da3fa1c1a80e100fb506bd59b326c012f21c863c69b275c23de1a01d0b84db396822fdf25e52b
   languageName: node
   linkType: hard
 
@@ -10457,10 +10457,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^10.0.1":
-  version: 10.2.0
-  resolution: "lru-cache@npm:10.2.0"
-  checksum: c9847612aa2daaef102d30542a8d6d9b2c2bb36581c1bf0dc3ebf5e5f3352c772a749e604afae2e46873b930a9e9523743faac4e5b937c576ab29196774712ee
+"lru-cache@npm:^10.0.1, lru-cache@npm:^9.1.1 || ^10.0.0":
+  version: 10.1.0
+  resolution: "lru-cache@npm:10.1.0"
+  checksum: 778bc8b2626daccd75f24c4b4d10632496e21ba064b126f526c626fbdbc5b28c472013fccd45d7646b9e1ef052444824854aed617b59cd570d01a8b7d651fc1e
   languageName: node
   linkType: hard
 
@@ -10493,13 +10493,6 @@ __metadata:
   version: 8.0.5
   resolution: "lru-cache@npm:8.0.5"
   checksum: cd95a9c38497611c5a6453de39a881f6eb5865851a2a01b5f14104ff3fee515362a7b1e7de28606028f423802910ba05bdb8ae1aa7b0d54eae70c92f0cec10b2
-  languageName: node
-  linkType: hard
-
-"lru-cache@npm:^9.1.1 || ^10.0.0":
-  version: 10.1.0
-  resolution: "lru-cache@npm:10.1.0"
-  checksum: 778bc8b2626daccd75f24c4b4d10632496e21ba064b126f526c626fbdbc5b28c472013fccd45d7646b9e1ef052444824854aed617b59cd570d01a8b7d651fc1e
   languageName: node
   linkType: hard
 
@@ -13071,9 +13064,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:22.4.0, puppeteer-core@npm:^22.0.0":
-  version: 22.4.0
-  resolution: "puppeteer-core@npm:22.4.0"
+"puppeteer-core@npm:22.4.1, puppeteer-core@npm:^22.0.0":
+  version: 22.4.1
+  resolution: "puppeteer-core@npm:22.4.1"
   dependencies:
     "@puppeteer/browsers": "npm:2.1.0"
     chromium-bidi: "npm:0.5.12"
@@ -13081,20 +13074,20 @@ __metadata:
     debug: "npm:4.3.4"
     devtools-protocol: "npm:0.0.1249869"
     ws: "npm:8.16.0"
-  checksum: 16666e296e35b826cfa97a6e1af498a073a3ee568ed9dc31d3829a42b3656835526e071731f9a766654c1910058a25dd5fcc4f7216c5d300818515db1d5b58ea
+  checksum: 128249f179d00fd50be97a21df872d202d5b23838e4f0194e908791098f345a64a184d1c49ea158c075c732dded6fe13cd6b322b1c5f9d422a27705198fce863
   languageName: node
   linkType: hard
 
 "puppeteer@npm:^22.0.0":
-  version: 22.4.0
-  resolution: "puppeteer@npm:22.4.0"
+  version: 22.4.1
+  resolution: "puppeteer@npm:22.4.1"
   dependencies:
     "@puppeteer/browsers": "npm:2.1.0"
     cosmiconfig: "npm:9.0.0"
-    puppeteer-core: "npm:22.4.0"
+    puppeteer-core: "npm:22.4.1"
   bin:
     puppeteer: lib/esm/puppeteer/node/cli.js
-  checksum: b1e2e12138ccd2d3362914251b1f4b600d28c0d437ef347c9b8edac12ff4125beb06909cc4dde97cbffe81723b0c7b567bf232370001e3f3b2b2e89974be5654
+  checksum: ea835d59cd37a6aa3b2ed6e5ca263f6bc3be1f105baf680489e5b812a8a8536d87bf37f5a3a8a92eb00e840a41e306b047c7a2be732316fa8fd42d444f1180cf
   languageName: node
   linkType: hard
 
@@ -15855,17 +15848,17 @@ __metadata:
   linkType: hard
 
 "vue-tsc@npm:^1.8.26":
-  version: 1.8.26
-  resolution: "vue-tsc@npm:1.8.26"
+  version: 1.8.27
+  resolution: "vue-tsc@npm:1.8.27"
   dependencies:
     "@volar/typescript": "npm:~1.11.1"
-    "@vue/language-core": "npm:1.8.26"
+    "@vue/language-core": "npm:1.8.27"
     semver: "npm:^7.5.4"
   peerDependencies:
     typescript: "*"
   bin:
     vue-tsc: bin/vue-tsc.js
-  checksum: 4f1f29da98ac2616fe85436d61015f89d79522cd15a8f060e9e01d972c265e542c6e1ffa600faf472e04b22bdfcd4c2fb516363f038e364746c875ce1cedd589
+  checksum: 6e6ba37eb7a0c8b9cc613225729c74edf8bd0632d265e62aca28b1969b5615b9dbe2de03aefb8aed2e26fdbd4b93f134785c8ab0095f92c2469192e2db5d09fd
   languageName: node
   linkType: hard
 
