@@ -65,7 +65,7 @@
     "chai": "^4.3.10",
     "deepmerge": "^4.3.1",
     "lit-analyzer": "^2.0.2",
-    "oxlint": "^0.0.20",
+    "oxlint": "^0.0.21",
     "rimraf": "^5.0.5",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
