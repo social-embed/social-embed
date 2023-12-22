@@ -5,7 +5,7 @@
     "build": "yarn workspace @social-embed/lib build && yarn workspace @social-embed/wc build",
     "clean": "yarn workspaces run clean",
     "distclean": "yarn workspaces run distclean",
-    "format": "yarn workspaces run format",
+    "format": "biome format .",
     "lint": "biome lint .",
     "build:watch": "yarn workspaces run build:watch",
     "test": "yarn workspaces run test",
