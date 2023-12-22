@@ -150,7 +150,7 @@ describe("convertUrlToEmbedUrl", () => {
   });
 
   it("edpuzzle", () => {
-    const edPuzzleId = `606b413369971e424ec6021e`;
+    const edPuzzleId = "606b413369971e424ec6021e";
     const expectedEmbeddableUrl = `https://edpuzzle.com/embed/media/${edPuzzleId}`;
 
     expect(
@@ -179,7 +179,7 @@ describe("convertUrlToEmbedUrl", () => {
   });
 
   it("wistia", () => {
-    const wistiaId = `26sk4lmiix`;
+    const wistiaId = "26sk4lmiix";
     const expectedEmbeddableUrl = `https://fast.wistia.net/embed/iframe/${wistiaId}`;
 
     expect(
