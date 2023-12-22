@@ -2,10 +2,13 @@
   "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
   "files": {
     "ignore": [
+      ".yarn",
       "node_modules",
       "dist",
       "packages/site/static",
-      "packages/site/.docusaurus"
+      "packages/site/.docusaurus",
+      "yarn-error.log",
+      "docs"
     ],
     "ignoreUnknown": true
   },
