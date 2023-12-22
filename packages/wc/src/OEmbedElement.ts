@@ -214,10 +214,10 @@ export class OEmbedElement extends LitElement {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -254,10 +254,10 @@ export class OEmbedElement extends LitElement {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -283,10 +283,10 @@ export class OEmbedElement extends LitElement {
         )}
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -340,10 +340,10 @@ export class OEmbedElement extends LitElement {
         )}
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -382,10 +382,10 @@ export class OEmbedElement extends LitElement {
         )}
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -424,10 +424,10 @@ export class OEmbedElement extends LitElement {
         )}
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
