@@ -49,8 +49,7 @@ export const ProviderIdFunctionMap: {
 };
 
 type ProviderIdFn = {
-  // eslint-disable-next-line  @typescript-eslint/no-explicit-any
-  [P in ValueOfProvider]: (id: string, ...args: any[]) => string;
+  [P in ValueOfProvider]: (id: string, ...args: unknown[]) => string;
 };
 
 export const ProviderIdUrlFunctionMap: ProviderIdFn = {

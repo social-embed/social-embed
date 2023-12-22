@@ -85,7 +85,7 @@ export class OEmbedElement extends LitElement {
   render(): TemplateResult {
     this.provider = getProviderFromUrl(this.url);
 
-    if (!this.url || this.url == "") {
+    if (!this.url || this.url === "") {
       return html``;
     }
 
@@ -214,10 +214,10 @@ export class OEmbedElement extends LitElement {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen == "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -254,10 +254,10 @@ export class OEmbedElement extends LitElement {
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen == "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -283,10 +283,10 @@ export class OEmbedElement extends LitElement {
         )}
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen == "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -340,10 +340,10 @@ export class OEmbedElement extends LitElement {
         )}
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen == "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -382,10 +382,10 @@ export class OEmbedElement extends LitElement {
         )}
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen == "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -424,10 +424,10 @@ export class OEmbedElement extends LitElement {
         )}
         allowfullscreen=${ifDefined(
           this.allowfullscreen === "" ||
-            this.allowfullscreen == "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === "true" ||
+          this.allowfullscreen === true ||
+          this.allowfullscreen === "1"
             ? true
             : undefined,
         )}
@@ -443,7 +443,7 @@ declare global {
   }
 
   // eslint-disable-next-line
-  module JSX {
+  namespace JSX {
     interface IntrinsicElements {
       "o-embed": Partial<OEmbedElement>;
     }

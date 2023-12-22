@@ -152,7 +152,9 @@ describe("o-embed", () => {
       const el = (await fixture(
         html`<o-embed url=${src}></o-embed>`,
       )) as OEmbedElement;
-      const iframe = el.shadowRoot!.querySelector("iframe")!;
+      const shadowRoot = el.shadowRoot;
+      assert.exists(shadowRoot);
+      const iframe = shadowRoot.querySelector("iframe");
       iframe.click();
       await el.updateComplete;
       assert.shadowDom.equal(
@@ -350,7 +352,9 @@ describe("o-embed", () => {
       const el = (await fixture(
         html`<o-embed url=${src}></o-embed>`,
       )) as OEmbedElement;
-      const iframe = el.shadowRoot!.querySelector("iframe")!;
+      const shadowRoot = el.shadowRoot;
+      assert.exists(shadowRoot);
+      const iframe = shadowRoot.querySelector("iframe");
       iframe.click();
       await el.updateComplete;
       assert.shadowDom.equal(

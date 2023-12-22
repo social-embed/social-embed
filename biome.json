@@ -1,0 +1,28 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+  "files": {
+    "ignore": [
+      ".yarn",
+      "node_modules",
+      "dist",
+      "packages/site/static",
+      "packages/site/.docusaurus",
+      "yarn-error.log",
+      "docs"
+    ],
+    "ignoreUnknown": true
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
+    }
+  }
+}

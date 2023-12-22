@@ -5,14 +5,13 @@
     "build": "yarn workspace @social-embed/lib build && yarn workspace @social-embed/wc build",
     "clean": "yarn workspaces run clean",
     "distclean": "yarn workspaces run distclean",
-    "format": "yarn workspaces run format",
-    "lint": "yarn workspaces run lint",
+    "format": "biome format .",
+    "lint": "biome lint .",
     "build:watch": "yarn workspaces run build:watch",
     "test": "yarn workspaces run test",
     "test:watch": "yarn workspaces run test:watch",
     "ncu": "yarn run ncu-local -u; yarn workspaces run ncu",
     "ncu-local": "ncu",
-    "prettier": "yarn workspaces run prettier",
     "update": "yarn workspaces run update",
     "docs": "yarn workspaces run docs",
     "docs:gen:watch": "yarn workspaces run docs:gen:watch",
@@ -36,11 +35,8 @@
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
-    "cross-env": "^7.0.3",
-    "oxlint": "^0.0.21",
-    "prettier": "^3.1.1",
-    "prettier-plugin-css-order": "^2.0.1"
+    "@biomejs/biome": "1.4.1",
+    "cross-env": "^7.0.3"
   },
   "engines": {
     "node": ">=18"

@@ -44,14 +44,14 @@
     "prepare": "yarn build",
     "bootstrap": "echo 'NOOP'",
     "test": "vitest",
-    "lint": "oxlint",
+    "lint": "biome lint",
     "ncu": "ncu",
     "update": "ncu",
-    "prettier": "prettier",
-    "format": "yarn run prettier . --write"
+    "biome": "biome",
+    "format": "yarn run biome format . --write"
   },
   "devDependencies": {
-    "oxlint": "^0.0.21",
+    "@biomejs/biome": "1.4.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
     "vite-plugin-dts": "^3.6.4",
