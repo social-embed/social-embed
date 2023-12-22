@@ -38,7 +38,6 @@
     "@docusaurus/module-type-aliases": "3.0.1",
     "@docusaurus/tsconfig": "^3.0.1",
     "@docusaurus/types": "3.0.1",
-    "oxlint": "^0.0.21",
     "typescript": "^5.3.3"
   },
   "browserslist": {
