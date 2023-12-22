@@ -13,7 +13,7 @@ Here you can find project-wide changes. For more detailed changes:
 
 - Move to `vite` (#8)
 - Minimum Node.js version to v18+ (#12)
-- Move from `eslint` to `oxc` (#26)
+- Move from `eslint` to ~`oxc` (#26)~ `biome` (#27)
 
   With eslint:
 
@@ -29,6 +29,14 @@ Here you can find project-wide changes. For more detailed changes:
   Benchmark 1: yarn lint
     Time (mean ± σ):      5.284 s ±  0.106 s    [User: 6.894 s, System: 1.065 s]
     Range (min … max):    5.155 s …  5.476 s    10 runs
+  ```
+
+  With biome:
+
+  ```
+  Benchmark 1: yarn lint
+    Time (mean ± σ):     436.9 ms ±   7.7 ms    [User: 390.9 ms, System: 137.9 ms]
+    Range (min … max):   429.6 ms … 455.4 ms    10 runs
   ```
 
 - Run prettier across full codebase (#9)

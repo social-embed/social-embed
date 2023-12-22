@@ -15,7 +15,7 @@ description: Latest updates for the @social-embed URL parsing library.
 
 ### Development
 
-- Move from `eslint` to `oxc` (#26)
+- Move from `eslint` to ~`oxc` (#26)~ `biome` (#27)
 
   Faster linting, as it is rust-based.
 
