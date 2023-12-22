@@ -13,6 +13,7 @@ Here you can find project-wide changes. For more detailed changes:
 
 - Move to `vite` (#8)
 - Minimum Node.js version to v18+ (#12)
+- Move from `prettier` to `biome` (#27)
 - Move from `eslint` to ~`oxc` (#26)~ `biome` (#27)
 
   With eslint:

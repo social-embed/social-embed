@@ -37,6 +37,7 @@ description: Latest updates for the @social-embed web component.
   - https://github.com/vitejs/vite/blob/v5.0.0/packages/vite/CHANGELOG.md
   - https://github.com/vitejs/vite/blob/531d3cb/packages/vite/CHANGELOG.md
 
+- Move from `prettier` to `biome` (#27)
 - Move from `eslint` to ~`oxlint` (#26)~ `biome` (#27)
 
   Faster linting, as it is rust-based.
