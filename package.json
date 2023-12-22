@@ -12,7 +12,6 @@
     "test:watch": "yarn workspaces run test:watch",
     "ncu": "yarn run ncu-local -u; yarn workspaces run ncu",
     "ncu-local": "ncu",
-    "prettier": "yarn workspaces run prettier",
     "update": "yarn workspaces run update",
     "docs": "yarn workspaces run docs",
     "docs:gen:watch": "yarn workspaces run docs:gen:watch",
