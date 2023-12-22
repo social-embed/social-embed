@@ -44,7 +44,7 @@
     "prepare": "yarn build",
     "bootstrap": "echo 'NOOP'",
     "test": "vitest",
-    "lint": "oxlint",
+    "lint": "biome lint",
     "ncu": "ncu",
     "update": "ncu",
     "prettier": "prettier",
