@@ -1,4 +1,4 @@
 {
-  "recommendations": ["runem.lit-plugin"],
+  "recommendations": ["runem.lit-plugin", "biomejs.biome"],
   "unwantedRecommendations": []
 }
