@@ -20,8 +20,8 @@
     "prestart": "yarn docs:oembed",
     "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p static/js && cp ../wc/dist/OEmbedElement.umd.cjs static/js/o-embed.bundled.js",
     "lint": "biome lint .",
-    "prettier": "prettier",
-    "format": "yarn run prettier . --write",
+    "biome": "biome",
+    "format": "yarn run biome format . --write",
     "test": "echo 'NOOP'"
   },
   "dependencies": {

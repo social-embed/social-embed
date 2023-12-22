@@ -47,8 +47,8 @@
     "lint": "biome lint",
     "ncu": "ncu",
     "update": "ncu",
-    "prettier": "prettier",
-    "format": "yarn run prettier . --write"
+    "biome": "biome",
+    "format": "yarn run biome format . --write"
   },
   "devDependencies": {
     "@biomejs/biome": "1.4.1",
