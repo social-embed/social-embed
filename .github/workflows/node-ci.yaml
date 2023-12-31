@@ -19,9 +19,15 @@ jobs:
           cache: "yarn"
       - name: project - install
         run: yarn --frozen-lockfile
-      - name: lint
-        run: |
-          yarn lint
+
+      - name: yarn biome format .
+        run: yarn biome format .
+
+      - name: yarn biome lint .
+        run: yarn biome lint .
+
+      - name: yarn biome check .
+        run: yarn biome check .
 
       - name: build
         run: |
