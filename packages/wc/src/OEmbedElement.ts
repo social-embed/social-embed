@@ -1,11 +1,12 @@
 /**
  * @license See LICENSE, Copyright 2021- Tony Narlock, license MIT.
  */
-import { html, LitElement, type TemplateResult } from "lit";
+import { LitElement, type TemplateResult, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import {
+  Provider,
   getDailyMotionEmbedFromId,
   getDailyMotionIdFromUrl,
   getEdPuzzleEmbedUrlFromId,
@@ -22,7 +23,6 @@ import {
   getYouTubeEmbedUrlFromId,
   getYouTubeIdFromUrl,
   isValidUrl,
-  Provider,
 } from "@social-embed/lib";
 
 interface Dimensions {
