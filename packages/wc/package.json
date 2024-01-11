@@ -54,10 +54,10 @@
   },
   "dependencies": {
     "@social-embed/lib": "^0.1.0-next.7",
-    "lit": "^3.1.0"
+    "lit": "^3.1.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.4.1",
+    "@biomejs/biome": "1.5.1",
     "@open-wc/testing": "^4.0.0",
     "@web/dev-server-esbuild": "^1.0.1",
     "@web/dev-server-import-maps": "^0.2.0",
@@ -65,7 +65,7 @@
     "@web/test-runner-puppeteer": "^0.15.0",
     "chai": "^5.0.0",
     "deepmerge": "^4.3.1",
-    "lit-analyzer": "^2.0.2",
+    "lit-analyzer": "^2.0.3",
     "rimraf": "^5.0.5",
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
