@@ -12,8 +12,14 @@ import "./index.module.css";
 
 import styles from "./styles.module.css";
 
-const features = [
+const features: {
+  id: string;
+  title: string;
+  imageUrl: string;
+  description: React.ReactNode;
+}[] = [
   {
+    id: "web-component-feature",
     title: "▶️ Web component: Drop-in. Native players.",
     imageUrl: "img/undraw_media_player_ylg8.svg",
     description: (
@@ -32,6 +38,7 @@ const features = [
     ),
   },
   {
+    id: "library-feature",
     title: "⚙️ Library only: Detect and parse embeddable URLs",
     imageUrl: "img/undraw_select_player_64ca.svg",
     description: (
@@ -131,8 +138,8 @@ export default function Home() {
           <section className={styles.features}>
             <div className="container">
               <div className="row">
-                {features.map((props, idx) => (
-                  <Feature key={`feature-${idx}`} {...props} />
+                {features.map((props) => (
+                  <Feature key={`feature-${props.id}`} {...props} />
                 ))}
               </div>
             </div>
