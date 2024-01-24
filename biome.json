@@ -5,8 +5,8 @@
       ".yarn",
       "node_modules",
       "dist",
-      "packages/site/static",
-      "packages/site/.docusaurus",
+      "static/",
+      ".docusaurus/",
       "yarn-error.log",
       "docs"
     ],
