@@ -2,7 +2,7 @@
 
 ## Start
 
-To use [the lib](https://oembed-components.git-pull.com/api/) you can do:
+To use [the lib](https://social-components.git-pull.com/api/) you can do:
 
 ```bash
 npm i @social-embed/lib
@@ -13,7 +13,10 @@ yarn add @social-embed/lib
 Then import and use as such:
 
 ```typescript
-import { getYouTubeIdFromUrl } from "@social-embed/lib";
+import { convertUrlToEmbedUrl, getYouTubeIdFromUrl } from "@social-embed/lib";
+
+console.log(convertUrlToEmbedUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"));
+// output: https://www.youtube.com/embed/Bd8_vO5zrjo
 
 console.log(getYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"));
 // output: Bd8_vO5zrjo
@@ -23,9 +26,9 @@ If you support ESM / Urls, you can also import via like this:
 
 ```typescript
 // unpkg
-import {getYouTubeIdFromUrl} from 'https://www.unpkg.com/@social-embed/lib?module';
+import { getYouTubeIdFromUrl } from 'https://www.unpkg.com/@social-embed/lib?module';
 // skypack
-import {getYouTubeIdFromUrl} from 'https://cdn.skypack.dev/@social-embed/lib';
+import { getYouTubeIdFromUrl } from 'https://cdn.skypack.dev/@social-embed/lib';
 ```
 
 ## API reference
