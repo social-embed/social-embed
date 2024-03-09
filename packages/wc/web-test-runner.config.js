@@ -1,4 +1,4 @@
-import { URL, fileURLToPath } from "url";
+import { URL, fileURLToPath } from "node:url";
 
 import { esbuildPlugin } from "@web/dev-server-esbuild";
 import { importMapsPlugin } from "@web/dev-server-import-maps";
