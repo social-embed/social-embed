@@ -8,7 +8,8 @@
       "static/",
       ".docusaurus/",
       "yarn-error.log",
-      "docs"
+      "docs",
+      "package.json"
     ],
     "ignoreUnknown": true
   },
