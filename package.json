@@ -32,7 +32,7 @@
     ]
   },
   "dependencies": {
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.3"
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.1",
