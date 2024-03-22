@@ -57,7 +57,7 @@
     "lit": "^3.1.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.6.1",
+    "@biomejs/biome": "1.6.2",
     "@open-wc/testing": "^4.0.0",
     "@web/dev-server-esbuild": "^1.0.2",
     "@web/dev-server-import-maps": "^0.2.0",
@@ -68,7 +68,7 @@
     "lit-analyzer": "^2.0.3",
     "rimraf": "^5.0.5",
     "typescript": "^5.4.3",
-    "vite": "^5.2.2",
+    "vite": "^5.2.3",
     "vite-plugin-dts": "^3.7.3",
     "web-component-analyzer": "^2.0.0"
   },
