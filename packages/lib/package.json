@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
-    "typescript": "^5.4.3",
+    "typescript": "^5.4.4",
     "vite": "^5.2.8",
     "vite-plugin-dts": "^3.8.1",
     "vitest": "^1.4.0"
