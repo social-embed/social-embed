@@ -43,11 +43,11 @@
     "format": "yarn run biome format . --write"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.0",
+    "@biomejs/biome": "1.7.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.10",
-    "vite-plugin-dts": "^3.8.3",
-    "vitest": "^1.5.0"
+    "vite-plugin-dts": "^3.9.0",
+    "vitest": "^1.5.1"
   },
   "engines": {
     "node": ">=18"

@@ -30,13 +30,13 @@
     "@docusaurus/theme-classic": "^3.2.1",
     "@docusaurus/theme-live-codeblock": "^3.2.1",
     "@mdx-js/react": "^3.0.1",
-    "clsx": "^2.1.0",
+    "clsx": "^2.1.1",
     "prism-react-renderer": "^2.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.0",
+    "@biomejs/biome": "1.7.1",
     "@docusaurus/module-type-aliases": "3.2.1",
     "@docusaurus/tsconfig": "^3.2.1",
     "@docusaurus/types": "3.2.1",
