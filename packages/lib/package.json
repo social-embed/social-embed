@@ -43,9 +43,9 @@
     "format": "yarn run biome format . --write"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.7.3",
+    "@biomejs/biome": "1.8.0",
     "typescript": "^5.4.5",
-    "vite": "^5.2.12",
+    "vite": "^5.2.13",
     "vite-plugin-dts": "^3.9.1",
     "vitest": "^1.6.0"
   },
