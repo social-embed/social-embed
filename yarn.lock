@@ -3533,10 +3533,10 @@
     "@web/test-runner-core" "^0.13.0"
     puppeteer "^22.0.0"
 
-"@web/test-runner@^0.18.2":
-  version "0.18.2"
-  resolved "https://registry.yarnpkg.com/@web/test-runner/-/test-runner-0.18.2.tgz#3c93f0f16c2969e9d0549f110a7d4227aeaac389"
-  integrity sha512-jA+957ic31aG/f1mr1b+HYzf/uTu4QsvFhyVgTKi2s5YQYGBbtfzx9PnYi47MVC9K9OHRbW8cq2Urds9qwSU3w==
+"@web/test-runner@^0.18.3":
+  version "0.18.3"
+  resolved "https://registry.yarnpkg.com/@web/test-runner/-/test-runner-0.18.3.tgz#72d245435c4c9b1a52fcd3a7c9e68db03ff21b8f"
+  integrity sha512-QkVK8Qguw3Zhyu8SYR7F4VdcjyXBeJNr8W8L++s4zO/Ok7DR/Wu7+rLswn3H7OH3xYoCHRmwteehcFejefz6ew==
   dependencies:
     "@web/browser-logs" "^0.4.0"
     "@web/config-loader" "^0.3.0"
@@ -11085,10 +11085,10 @@ vite-node@2.0.5:
     tinyrainbow "^1.2.0"
     vite "^5.0.0"
 
-vite-plugin-dts@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-4.0.1.tgz#4a4dedc373292930a737879a8a35cb83f73af071"
-  integrity sha512-JFbAKMjJdJbeXJVwQNoi8M26lP+5Ene4/ryv9w0Z7Ca5N0DdxYEak9V3C0tqwHO7WZ9JLbwMsuUZOqYIyBRwSQ==
+vite-plugin-dts@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/vite-plugin-dts/-/vite-plugin-dts-4.0.2.tgz#efe6367decbb2eb851e12ec0707d2459f6d5d0b8"
+  integrity sha512-Ni3EPG8yeLc5ivEzT4szreJ0rXpEQgvdYq3PaZ7OMoHc8uET4/HRUfzVPejJaUAojbxsKgaZbp6Zgm41sxb86Q==
   dependencies:
     "@microsoft/api-extractor" "7.47.4"
     "@rollup/pluginutils" "^5.1.0"
