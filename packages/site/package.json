@@ -18,7 +18,7 @@
     "typecheck": "tsc",
     "prebuild": "yarn docs:oembed",
     "prestart": "yarn docs:oembed",
-    "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p static/js && cp ../wc/dist/OEmbedElement.umd.cjs static/js/o-embed.bundled.js",
+    "docs:oembed": "yarn workspace @social-embed/lib build; yarn workspace @social-embed/wc build && mkdir -p static/js && cp ../wc/dist/OEmbedElement.umd.cjs static/js/o-embed.bundled.js",
     "lint": "biome lint .",
     "biome": "biome",
     "format": "yarn run biome format . --write",
