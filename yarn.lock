@@ -3593,6 +3593,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@social-embed/lib@link:../lib::locator=%40social-embed%2Fsite%40workspace%3Apackages%2Fsite":
+  version: 0.0.0-use.local
+  resolution: "@social-embed/lib@link:../lib::locator=%40social-embed%2Fsite%40workspace%3Apackages%2Fsite"
+  languageName: node
+  linkType: soft
+
 "@social-embed/lib@npm:^0.1.0-next.7, @social-embed/lib@workspace:packages/lib":
   version: 0.0.0-use.local
   resolution: "@social-embed/lib@workspace:packages/lib"
@@ -3618,6 +3624,8 @@ __metadata:
     "@docusaurus/tsconfig": "npm:^3.5.2"
     "@docusaurus/types": "npm:3.5.2"
     "@mdx-js/react": "npm:^3.0.1"
+    "@social-embed/lib": "link:../lib"
+    "@social-embed/wc": "link:../wc"
     clsx: "npm:^2.1.1"
     prism-react-renderer: "npm:^2.3.1"
     react: "npm:^18.3.1"
@@ -3626,6 +3634,12 @@ __metadata:
   peerDependencies:
     "@types/react": "*"
   languageName: unknown
+  linkType: soft
+
+"@social-embed/wc@link:../wc::locator=%40social-embed%2Fsite%40workspace%3Apackages%2Fsite":
+  version: 0.0.0-use.local
+  resolution: "@social-embed/wc@link:../wc::locator=%40social-embed%2Fsite%40workspace%3Apackages%2Fsite"
+  languageName: node
   linkType: soft
 
 "@social-embed/wc@workspace:packages/wc":
