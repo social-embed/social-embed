@@ -19,17 +19,8 @@
     "serve": "yarn workspaces run serve",
     "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
   },
-  "workspaces": {
-    "nohoist": [
-      "**/@open-wc/**",
-      "**/@types/chai",
-      "**/@types/jest",
-      "**/@types/jasmine",
-      "**/ts-loader"
-    ],
-    "packages": [
-      "packages/*"
-    ]
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
     "typescript": "^5.7.2"
@@ -37,8 +28,5 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "cross-env": "^7.0.3"
-  },
-  "engines": {
-    "node": ">=18"
   }
 }
