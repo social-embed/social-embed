@@ -1,6 +1,6 @@
 session_name: social-embed
 start_directory: ./ # load session relative to config location (project root).
-before_script: yarn
+before_script: pnpm install
 windows:
   - window_name: social-embed
     layout: main-horizontal
