@@ -12,10 +12,12 @@
     "test": "echo 'NOOP'",
     "ncu": "ncu",
     "update": "ncu",
-    "format": "yarn run biome format . --write",
-    "prebuild": "yarn docs:oembed",
-    "prestart": "yarn docs:oembed",
-    "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p public/js && cp ../wc/dist/OEmbedElement.umd.cjs public/js/o-embed.bundled.js"
+    "lint": "biome lint .",
+    "biome": "biome",
+    "format": "pnpm run biome format . --write",
+    "prebuild": "pnpm docs:oembed",
+    "prestart": "pnpm docs:oembed",
+    "docs:oembed": "pnpm --filter @social-embed/wc build && mkdir -p public/js && cp ../wc/dist/OEmbedElement.umd.cjs public/js/o-embed.bundled.js"
   },
   "dependencies": {
     "@astrojs/react": "^4.1.2",

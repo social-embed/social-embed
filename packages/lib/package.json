@@ -30,17 +30,17 @@
   "scripts": {
     "clean": "rimraf dist",
     "vite": "vite",
-    "start": "yarn vite",
+    "start": "pnpm vite",
     "watch": "vite start",
     "build": "vite build",
-    "prepare": "yarn build",
+    "prepare": "pnpm build",
     "bootstrap": "echo 'NOOP'",
     "test": "vitest",
     "lint": "biome lint",
     "ncu": "ncu",
     "update": "ncu",
     "biome": "biome",
-    "format": "yarn run biome format . --write"
+    "format": "pnpm run biome format . --write"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

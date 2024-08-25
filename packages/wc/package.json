@@ -13,11 +13,11 @@
     }
   },
   "scripts": {
-    "prebuild": "yarn clean && yarn workspace @social-embed/lib build",
+    "prebuild": "pnpm clean && pnpm --filter @social-embed/lib build",
     "build": "vite build",
-    "build:watch": "yarn build --watch",
+    "build:watch": "pnpm build --watch",
     "vite": "vite",
-    "start": "yarn vite",
+    "start": "pnpm vite",
     "clean": "rimraf dist/",
     "ncu": "ncu",
     "update": "ncu",
@@ -25,12 +25,12 @@
     "lint:biome": "biome lint .",
     "lint:lit-analyzer": "lit-analyzer -- --rules.no-boolean-in-attribute-binding off --rules.no-incompatible-type-binding off --rules.no-unknown-attribute off",
     "biome": "biome",
-    "format": "yarn run biome format . --write",
+    "format": "pnpm run biome format . --write",
     "analyze": "wca analyze \"src/**/*.ts\" --outFile ../site/custom-elements.json",
     "serve": "vite preview",
-    "pretest": "yarn workspace @social-embed/lib build",
+    "pretest": "pnpm --filter @social-embed/lib build",
     "test": "wtr test/o-embed_test.ts --node-resolve",
-    "test:watch": "yarn test --watch",
+    "test:watch": "pnpm test --watch",
     "wtr": "wtr"
   },
   "keywords": [
