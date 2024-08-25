@@ -13,26 +13,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "yarn"
+          cache: "pnpm"
 
       - name: project - install
-        run: yarn --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
-      - name: yarn biome format .
-        run: yarn biome format .
+      - name: pnpm biome format .
+        run: pnpm biome format .
 
-      - name: yarn biome lint .
-        run: yarn biome lint .
+      - name: pnpm biome lint .
+        run: pnpm biome lint .
 
-      - name: yarn biome check .
-        run: yarn biome check .
+      - name: pnpm biome check .
+        run: pnpm biome check .
 
       - name: build
-        run: yarn build
+        run: pnpm build
 
       - name: test
-        run: yarn test
+        run: pnpm test
