@@ -43,7 +43,7 @@
     "format": "yarn run biome format . --write"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.1",
+    "@biomejs/biome": "1.9.2",
     "typescript": "^5.6.2",
     "vite": "^5.4.6",
     "vite-plugin-dts": "^4.2.1",
