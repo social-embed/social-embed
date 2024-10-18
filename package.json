@@ -35,7 +35,7 @@
     "typescript": "^5.6.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.3",
+    "@biomejs/biome": "1.9.4",
     "cross-env": "^7.0.3"
   },
   "engines": {
