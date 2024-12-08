@@ -9,7 +9,8 @@
       ".docusaurus/",
       "yarn-error.log",
       "docs",
-      "package.json"
+      "package.json",
+      ".vscode"
     ],
     "ignoreUnknown": true
   },
