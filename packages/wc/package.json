@@ -68,7 +68,7 @@
     "lit-analyzer": "^2.0.3",
     "rimraf": "^5.0.7",
     "typescript": "^5.7.2",
-    "vite": "^6.0.4",
+    "vite": "^6.0.5",
     "vite-plugin-dts": "^4.4.0",
     "web-component-analyzer": "^2.0.0"
   },
