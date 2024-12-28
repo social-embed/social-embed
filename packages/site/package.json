@@ -8,7 +8,10 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "prebuild": "yarn docs:oembed",
+    "prestart": "yarn docs:oembed",
+    "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p public/js && cp ../wc/dist/OEmbedElement.umd.cjs public/js/o-embed.bundled.js"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.30.3",
