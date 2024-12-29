@@ -8,6 +8,7 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "social-embed",
+      favicon: "/favicon.ico",
       logo: {
         src: "./src/assets/img/logo.svg",
       },
