@@ -16,7 +16,7 @@
   "dependencies": {
     "@astrojs/starlight": "^0.30.3",
     "@social-embed/wc": "link:../wc",
-    "astro": "^5.0.2",
+    "astro": "^5.1.1",
     "sharp": "^0.32.5"
   }
 }
