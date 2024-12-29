@@ -1,0 +1,136 @@
+---
+id: overview
+title: Overview
+slug: overview
+description: About the @social-embed URL parsing library.
+---
+
+`@social-embed/lib` is a repository of patterns and parsers for embed-friendly websites. You can use
+it in your web apps and scripts. It also powers the project's [`<o-embed>` web component](../wc/overview.mdx).
+
+## Supported embeds
+
+See [`src/providers`](https://github.com/social-embed/social-embed/tree/master/packages/lib/src/providers) for
+the full manifest of supported content. As of 2021-04-21, it includes at least:
+
+- DailyMotion
+- Spotify
+- Vimeo
+- YouTube
+
+## Usecases
+
+- Detecting if a URL is embeddable
+  - Detecting subtle variations: `https://youtu.be/watch?v=Bd8_vO5zrjo`, `https://www.youtube.com/watch?v=Bd8_vO5zrjo`
+- Extracting IDs from embed-friendly sites, e.g. `Bd8_vO5zrjo` out of https://youtu.be/watch?v=Bd8_vO5zrjo
+
+- Creating embed friendly URLs: `https://youtu.be/watch?v=Bd8_vO5zrjo` -> `https://www.youtube.com/embed/Bd8_vO5zrjo`
+
+  To see this concept in action see [Wistia]'s [Construct a Wistia Embed Code] page.
+
+- Avoid the repetition. StackOverflow, Regex websites detecting embed URLs
+
+  (google search: [youtube regex site:stackoverflow.com])
+
+Similar projects: [js-video-url-parser]
+
+[youtube regex site:stackoverflow.com]: https://www.google.com/search?q=youtube+regex+site%3Astackoverflow.com
+[wistia]: https://wistia.com
+[construct a wistia embed code]: https://wistia.com/support/developers/construct-an-embed-code
+[js-video-url-parser]: https://www.npmjs.com/package/js-video-url-parser
+
+## Usage
+
+### Internal API naming
+
+:::warning
+
+These naming conventions aren't stable yet and are subject to change
+
+:::
+
+- `Provider`: [String enum](https://www.typescriptlang.org/docs/handbook/enums.html#string-enums) of supported embeds.
+- `${providerName}Regex`: Name for JS regular expressions
+- `get${providerName}IdFromUrl`: Extracts ID from URLs (various formats), e.g.
+  - `'https://youtu.be/watch?v=Bd8_vO5zrjo'` -> `'Bd8_vO5zrjo'`
+  - `'https://www.youtube.com/watch?v=Bd8_vO5zrjo'` -> `'Bd8_vO5zrjo'`
+- `get${providerName}EmbedUrlFromId`: Turns ID into embed-friendly URL, e.g.
+  - `'Bd8_vO5zrjo'` -> `"https://www.youtube.com/embed/Bd8_vO5zrjo"`
+
+### Regular expressions
+
+```typescript
+import { getYouTubeIdFromUrl, youTubeUrlRegex } from "@social-embed/lib";
+
+"https://youtu.be/watch?v=Bd8_vO5zrjo".match(youTubeUrlRegex);
+// ["https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
+```
+
+### Detect provider (e.g. YouTube) from URL
+
+```typescript
+import { getProviderFromUrl } from "@social-embed/lib";
+
+const provider = getProviderFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
+// YouTube
+```
+
+### Get IDs from URLs
+
+```typescript
+import { getProviderFromUrl, ProviderIdFunctionMap } from "@social-embed/lib";
+
+const provider = getProviderFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo"); // YouTube
+
+if (provider) {
+  const getId = ProviderIdFunctionMap[provider];
+  getId("https://youtu.be/watch?v=Bd8_vO5zrjo");
+  // "Bd8_vO5zrjo"
+}
+```
+
+### Get `iframe` friendly URL
+
+```typescript
+import {
+  getYouTubeEmbedUrlFromId,
+  getYouTubeIdFromUrl,
+} from "@social-embed/lib";
+
+const embedId = getYouTubeIdFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo"); // "Bd8_vO5zrjo"
+
+const embedFriendlyUrl = getYouTubeEmbedUrlFromId(
+  "https://youtu.be/watch?v=Bd8_vO5zrjo",
+); // "https://www.youtube.com/embed/Bd8_vO5zrjo"
+```
+
+The above embed URL can fit right into an `<iframe>`:
+
+```html
+<iframe src="https://www.youtube.com/embed/Bd8_vO5zrjo"></iframe>
+```
+
+<iframe src="https://www.youtube.com/embed/Bd8_vO5zrjo"></iframe>
+
+This is what the [`<o-embed>` web component](../wc/overview.mdx) uses under the hood to render embeds.
+
+## Try
+
+- [CodePen] ([console.log] variant)
+- [jsfiddle]
+
+[codepen]: https://codepen.io/attachment/pen/VwPPrNq
+[codepen console]: https://codepen.io/attachment/pen/poRRpdp?editors=0010
+[jsfiddle]: https://jsfiddle.net/gitpull/pcLagbsm/
+
+## See also
+
+- [Installation](./installation.mdx)
+
+  ```bash
+  npm i @social-embed/lib
+  ```
+
+  ```bash
+  yarn add @social-embed/lib
+  ```

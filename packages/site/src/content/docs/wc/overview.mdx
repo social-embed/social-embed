@@ -1,0 +1,40 @@
+---
+id: overview
+title: Overview
+slug: overview
+description: About the @social-embed web component.
+---
+
+import README from "../../../wc/README.md";
+
+<README />
+
+## Try it live
+
+`<o-embed>` can handle simple embeds with _open_ embedding, such as YouTube, DailyMotion,
+Vimeo, and Spotify.
+
+```jsx live
+<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
+```
+
+### Declarative rendering
+
+`<o-embed>` can be used with declarative rendering libraries like Angular, React, Vue, and lit-html
+
+```js
+import { html, render } from "lit-html";
+
+const url = "https://www.youtube.com/watch?v=XLOCQw5s9Uw";
+
+render(
+  html`
+    <h2>This is an &lt;o-embed&gt;</h2>
+    <o-embed .url=${url}></o-embed>
+  `,
+  document.body,
+);
+```
+
+<h2>This is an &lt;o-embed&gt;</h2>
+<o-embed url="https://www.youtube.com/watch?v=XLOCQw5s9Uw"></o-embed>
