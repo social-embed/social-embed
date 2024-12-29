@@ -24,6 +24,16 @@ export default defineConfig({
           autogenerate: { directory: "reference" },
         },
       ],
+      head: [
+        {
+          tag: "script",
+          attrs: {
+            src: "/js/o-embed.bundled.js",
+            type: "module",
+            client: "load",
+          },
+        },
+      ],
     }),
     react(),
   ],
