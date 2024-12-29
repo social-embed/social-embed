@@ -7,9 +7,12 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   integrations: [
     starlight({
-      title: "My Docs",
+      title: "social-embed",
+      logo: {
+        src: "./src/assets/img/logo.svg",
+      },
       social: {
-        github: "https://github.com/withastro/starlight",
+        github: "https://github.com/social-embed/social-embed",
       },
       sidebar: [
         {
