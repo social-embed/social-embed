@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="git-pull-logo" version="1.1" viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <metadata id="git-pull-logo--metadata">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g fill="#fff">
+    <rect id="git-pull-logo--dark--top-line" x="212.99" y="816.71" width="774.11" height="107.44"/>
+    <rect id="git-pull-logo--dark--middle-line" x="212.95" y="546.91" width="774.11" height="107.44"/>
+    <rect id="git-pull-logo--dark--bottom-line" x="212.9" y="275.85" width="774.11" height="107.44"/>
+  </g>
+  <g display="none">
+    <rect id="git-pull-logo--light--top-line" x="212.99" y="816.71" width="774.11" height="107.44"/>
+    <rect id="git-pull-logo--light--middle-line" x="212.95" y="546.91" width="774.11" height="107.44"/>
+    <rect id="git-pull-logo--light--bottom-line" x="212.9" y="275.85" width="774.11" height="107.44"/>
+  </g>
+</svg>
