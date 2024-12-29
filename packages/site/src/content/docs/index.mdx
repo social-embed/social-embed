@@ -10,6 +10,9 @@ hero:
     - text: Example Guide
       link: /guides/example/
       icon: right-arrow
+    - text: Live code
+      link: /guides/live-code/
+      icon: right-arrow
     - text: Read the Starlight docs
       link: https://starlight.astro.build
       icon: external
@@ -18,11 +21,13 @@ hero:
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-<script client:load src="/static/js/o-embed.bundled.js"></script>
+import ReactLive from '../../components/ReactLive';
 
-<o-embed
+<ReactLive initialCode={`<o-embed
   url="https://youtu.be/FTQbiNvZqaY"
+  width="100%"
 ></o-embed>
+`} client:only="react" />
 
 ## Next steps
 
