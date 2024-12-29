@@ -24,6 +24,7 @@ export default defineConfig({
           label: "wc",
           autogenerate: { directory: "wc" },
         },
+        "news",
       ],
       head: [
         {
