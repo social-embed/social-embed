@@ -17,25 +17,12 @@ export default defineConfig({
       },
       sidebar: [
         {
-          label: "Guides",
-          autogenerate: { directory: "guides" },
-          // items: [
-          //   // Each item here is one entry in the navigation menu.
-          //   { label: "Example Guide", slug: "guides/example" },
-          //   { label: "Live Code", slug: "guides/live-code" },
-          // ],
-        },
-        {
           label: "lib",
           autogenerate: { directory: "lib" },
         },
         {
           label: "wc",
           autogenerate: { directory: "wc" },
-        },
-        {
-          label: "Reference",
-          autogenerate: { directory: "reference" },
         },
       ],
       head: [
