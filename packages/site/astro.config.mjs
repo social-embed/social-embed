@@ -16,6 +16,7 @@ export default defineConfig({
         github: "https://github.com/social-embed/social-embed",
       },
       sidebar: [
+        "getting-started",
         {
           label: "lib",
           autogenerate: { directory: "lib" },
