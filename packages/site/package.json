@@ -19,6 +19,7 @@
     "astro": "^5.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-live": "^4.1.8",
     "sharp": "^0.33.5"
   },
   "devDependencies": {
