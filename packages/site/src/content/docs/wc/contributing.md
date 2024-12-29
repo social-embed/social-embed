@@ -1,7 +1,6 @@
 ---
 id: contributing
 title: Contributing
-slug: contribute
 description: Contribute to the @social-embed web component.
 ---
 
