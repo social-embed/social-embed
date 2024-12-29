@@ -9,39 +9,68 @@ hero:
   actions:
     - text: Web Component (<o-embed>)
       link: /wc/
-      icon: right-arrow
+      icon: seti:crystal_embedded
     - text: URL Tools (library)
       link: /lib/
-      icon: right-arrow
+      icon: seti:config
     - text: GitHub
       link: https://github.com/social-embed/social-embed/
       icon: external
       variant: minimal
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid } from "@astrojs/starlight/components";
+import { Code } from "@astrojs/starlight/components";
 
-import ReactLive from '../../components/ReactLive';
+import ReactLive from "../../components/ReactLive";
 
-<ReactLive initialCode={`<o-embed
-  url="https://youtu.be/FTQbiNvZqaY"
-  width="100%"
-></o-embed>
-`} client:only="react" />
+<CardGrid>
+  <Card title="Web component" icon="seti:crystal_embedded">
+    Try it live:
+    <ReactLive
+      initialCode={`<o-embed
+    url="https://youtu.be/FTQbiNvZqaY"
+    width="100%"
+></o-embed>`}
+      client:only="react"
+    />
 
-## Next steps
+    Examples / Fiddles: <a href="https://codepen.io/attachment/pen/poRRwdy">codepen.io</a>,{" "}
+    <a href="https://jsfiddle.net/gitpull/vc13Lhkz/">jsfiddle</a>
+  </Card>
+  <Card title="URL Tools (Library)" icon="seti:config">
+    <>
+      <div class="mb-1">
+        <p>
+          <a href="/lib"><code>@social-embed/lib</code></a> is a repository of embed friendly sites and typed library for scraping
+          IDs and converting IDs into an embed-friendly format.
+        </p>
+      </div>
+      <Code
+        lang="ts"
+        wrap
+        code={`import {
+    getProviderFromUrl,
+    ProviderIdFunctionMap,
+    getYouTubeIdFromUrl,
+    youTubeUrlRegex,
+} from "@social-embed/lib";
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
+"https://youtu.be/watch?v=Bd8_vO5zrjo".match(youTubeUrlRegex);
+// ["https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
+
+getYouTubeIdFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
+// "Bd8_vO5zrjo"
+const provider = getProviderFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
+// YouTube
+const getId = ProviderIdFunctionMap[provider];
+getId("https://youtu.be/watch?v=Bd8_vO5zrjo");
+// "Bd8_vO5zrjo"
+`}
+      />
+      Examples / Fiddles:
+      <a href="https://codepen.io/attachment/pen/VwPPrNq">codepen.io</a>{' '}
+      (<a href="https://codepen.io/attachment/pen/poRRpdp?editors=0010">console</a>), <a href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</a>
+    </>
+  </Card>
 </CardGrid>
