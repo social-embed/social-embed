@@ -9,6 +9,10 @@
     "build": "astro build --outDir build",
     "preview": "astro preview",
     "astro": "astro",
+    "test": "echo 'NOOP'",
+    "ncu": "ncu",
+    "update": "ncu",
+    "format": "yarn run biome format . --write",
     "prebuild": "yarn docs:oembed",
     "prestart": "yarn docs:oembed",
     "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p public/js && cp ../wc/dist/OEmbedElement.umd.cjs public/js/o-embed.bundled.js"
