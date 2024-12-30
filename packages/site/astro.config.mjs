@@ -18,6 +18,11 @@ export default defineConfig({
       customCss: [
         // Path to your Tailwind base styles:
         "./src/tailwind.css",
+        // Fontsource files for to regular and semi-bold font weights.
+        "@fontsource/ibm-plex-sans/400.css",
+        "@fontsource/ibm-plex-sans/600.css",
+        "@fontsource/ibm-plex-mono/400.css",
+        "@fontsource/ibm-plex-mono/600.css",
       ],
       social: {
         github: "https://github.com/social-embed/social-embed",
