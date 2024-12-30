@@ -21,6 +21,8 @@ export default defineConfig({
       ],
       social: {
         github: "https://github.com/social-embed/social-embed",
+        gitlab: "https://gitlab.com/social-embed/social-embed",
+        codeberg: "https://codeberg.org/social-embed/social-embed",
       },
       sidebar: [
         "getting-started",
