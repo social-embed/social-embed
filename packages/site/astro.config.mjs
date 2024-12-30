@@ -24,6 +24,10 @@ export default defineConfig({
         gitlab: "https://gitlab.com/social-embed/social-embed",
         codeberg: "https://codeberg.org/social-embed/social-embed",
       },
+      editLink: {
+        baseUrl:
+          "https://github.com/social-embed/social-embed/edit/master/packages/site/",
+      },
       sidebar: [
         "getting-started",
         {
