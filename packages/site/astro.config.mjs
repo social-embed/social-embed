@@ -1,5 +1,6 @@
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
+import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwind from "@astrojs/tailwind";
 // @ts-check
 import { defineConfig } from "astro/config";
@@ -47,6 +48,11 @@ export default defineConfig({
     tailwind({
       // Disable the default base styles:
       applyBaseStyles: false,
+    }),
+    starlightDocSearch({
+      appId: "BIATGF4K4K",
+      apiKey: "a59a27c90979939bd097dcb51d8f22e3",
+      indexName: "social-embed",
     }),
   ],
 });
