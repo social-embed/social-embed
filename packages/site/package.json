@@ -23,6 +23,8 @@
     "@astrojs/starlight-docsearch": "^0.4.0",
     "@astrojs/starlight-tailwind": "^3.0.0",
     "@astrojs/tailwind": "^5.1.4",
+    "@fontsource/ibm-plex-mono": "^5.1.1",
+    "@fontsource/ibm-plex-sans": "^5.1.1",
     "@social-embed/wc": "link:../wc",
     "astro": "^5.1.1",
     "react": "^19.0.0",
