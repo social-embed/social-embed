@@ -44,7 +44,7 @@ render(<Example />);
 
   return (
     <LiveProvider {...providerProps}>
-      <LiveEditor />
+      <LiveEditor className="font-mono" />
       <LiveError />
       <LivePreview
         style={{
