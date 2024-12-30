@@ -1,5 +1,6 @@
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
+import tailwind from "@astrojs/tailwind";
 // @ts-check
 import { defineConfig } from "astro/config";
 
@@ -12,6 +13,10 @@ export default defineConfig({
       logo: {
         src: "./src/assets/img/logo.svg",
       },
+      customCss: [
+        // Path to your Tailwind base styles:
+        "./src/tailwind.css",
+      ],
       social: {
         github: "https://github.com/social-embed/social-embed",
       },
@@ -39,5 +44,9 @@ export default defineConfig({
       ],
     }),
     react(),
+    tailwind({
+      // Disable the default base styles:
+      applyBaseStyles: false,
+    }),
   ],
 });
