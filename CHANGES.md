@@ -12,6 +12,7 @@ Here you can find project-wide changes. For more detailed changes:
 ### Breaking changes
 
 - Move to `vite` (#8)
+- Move from docusaurus to `starlight` (#32)
 - Minimum Node.js version to v18+ (#12)
 - Move from `prettier` to `biome` (#27)
 - Move from `eslint` to ~`oxc` (#26)~ `biome` (#27)
