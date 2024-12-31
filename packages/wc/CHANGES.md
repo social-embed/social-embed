@@ -7,7 +7,7 @@ description: Latest updates for the @social-embed web component.
 
 <!-- _Enter the most recent changes here_ -->
 
-## 0.0.1-next.8 (2023-11-25)
+## 0.1.0-next.8 (2023-11-25)
 
 ### Improvements
 
@@ -22,7 +22,7 @@ description: Latest updates for the @social-embed web component.
   - https://github.com/lit/lit/blob/lit%403.1.0/packages/lit/CHANGELOG.md
   - https://github.com/lit/lit/blob/lit%403.1.0/packages/lit-html/CHANGELOG.md
 
-- @social-embed/lib: From v0.0.1-next.5 to v0.0.1-next.7
+- @social-embed/lib: From v0.1.0-next.5 to v0.1.0-next.7
 
   - Regex improvements
 
@@ -42,7 +42,7 @@ description: Latest updates for the @social-embed web component.
 
   Faster linting, as it is rust-based.
 
-## 0.0.1-next.7 (2023-11-11)
+## 0.1.0-next.7 (2023-11-11)
 
 ### Improvements
 
@@ -64,15 +64,15 @@ description: Latest updates for the @social-embed web component.
   - @web/test-runner-puppeteer `<0.14.0` -> `^0.15.0` ([release
     notes](https://github.com/modernweb-dev/web/blob/%40web/test-runner-puppeteer%400.15.0/packages/test-runner-puppeteer/CHANGELOG.md))
 
-## 0.0.1-next.6 (2023-11-01)
+## 0.1.0-next.6 (2023-11-01)
 
 - Docs (README): Further README updates in relation to vite
 
-## 0.0.1-next.5 (2023-11-01)
+## 0.1.0-next.5 (2023-11-01)
 
 - Docs (README): Fix links and example code
 
-## 0.0.1-next.4 (2023-08-26)
+## 0.1.0-next.4 (2023-08-26)
 
 ### Breaking changes
 
@@ -84,14 +84,14 @@ description: Latest updates for the @social-embed web component.
 
 ### Development
 
-- Bump lib to v0.0.1-next.5
+- Bump lib to v0.1.0-next.5
 
   Dev package updates
 
-## 0.0.1-next.3 (2023-08-26)
+## 0.1.0-next.3 (2023-08-26)
 
 - Prettier: Add css and JS import ordering (#9)
-- Bump lib to v0.0.1-next.4
+- Bump lib to v0.1.0-next.4
 
   Lib has improved prettier linting, including css rule and import ordering.
 
@@ -121,7 +121,7 @@ See [commits](https://github.com/social-embed/social-embed/compare/@social-embed
 
 ## 0.0.5-next.1 (2022-11-10)
 
-- Bump `@social-embed/lib` from 0.0.1-next.12 -> 0.0.2-next.1
+- Bump `@social-embed/lib` from 0.1.0-next.12 -> 0.0.2-next.1
 
 See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.5-next.0...@social-embed/wc@0.0.5-next.1)
 
@@ -152,7 +152,7 @@ See [commits](https://github.com/social-embed/social-embed/compare/@social-embed
 
 See [commits](https://github.com/social-embed/social-embed/compare/@social-embed/wc@0.0.3-next.3...@social-embed/wc@0.0.3-next.4)
 
-- Update lib to @social-embed/lib to ^0.0.1-next.12 to assure
+- Update lib to @social-embed/lib to ^0.1.0-next.12 to assure
   generic regexes provided.
 - Rollup: 2.50.5 -> 2.50.6
 
