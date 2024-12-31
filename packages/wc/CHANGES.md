@@ -7,6 +7,14 @@ description: Latest updates for the @social-embed web component.
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.9 (2023-12-31)
+
+_Maintenance release only, no bug fixes or new features._
+
+### Development
+
+- @social-embed/lib: From v0.1.0-next.7 to v0.1.0-next.8
+
 ## 0.1.0-next.8 (2023-11-25)
 
 ### Improvements
