@@ -13,6 +13,7 @@
     "ncu": "pnpm run ncu-local -u; pnpm run -r ncu",
     "ncu-local": "ncu",
     "update": "pnpm run -r update",
+    "update:all": "ncu -u; pnpm -r --filter '@social-embed/*' run 'ncu' -u",
     "docs": "pnpm run -r docs",
     "docs:gen:watch": "pnpm run -r docs:gen:watch",
     "docs:serve": "pnpm run -r docs:serve",
