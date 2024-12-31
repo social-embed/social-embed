@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --sl-content-width: calc(100% - (var(--sl-content-pad-x) * 7));
+}
