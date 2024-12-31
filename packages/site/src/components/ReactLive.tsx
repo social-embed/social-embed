@@ -46,13 +46,7 @@ render(<Example />);
     <LiveProvider {...providerProps}>
       <LiveEditor className="font-mono" />
       <LiveError />
-      <LivePreview
-        style={{
-          marginTop: "1rem",
-          padding: "1rem",
-          border: "1px solid #ccc",
-        }}
-      />
+      <LivePreview />
     </LiveProvider>
   );
 };
