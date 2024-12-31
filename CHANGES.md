@@ -4,14 +4,15 @@ title: News
 
 Here you can find project-wide changes. For more detailed changes:
 
-- [`@social-embed/lib`](https://social-embed.git-pull.com/docs/lib/release-notes)
-- [`@social-embed/wc`](https://social-embed.git-pull.com/docs/wc/release-notes)
+- [`@social-embed/lib`](https://social-embed.git-pull.com/lib/release-notes)
+- [`@social-embed/wc`](https://social-embed.git-pull.com/wc/release-notes)
 
 ## 0.1 (unreleased)
 
 ### Breaking changes
 
 - Move to `vite` (#8)
+- Move from docusaurus to `starlight` (#32)
 - Minimum Node.js version to v18+ (#12)
 - Move from `prettier` to `biome` (#27)
 - Move from `eslint` to ~`oxc` (#26)~ `biome` (#27)

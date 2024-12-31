@@ -1,0 +1,76 @@
+---
+title: "social-embed"
+description: Embed YouTube, Spotify, etc with one simple tag
+template: splash
+hero:
+  tagline: Embed YouTube, Spotify, DailyMotion with one simple tag.
+  image:
+    file: ../../assets/img/logo.svg
+  actions:
+    - text: Web Component (<o-embed>)
+      link: /wc/
+      icon: seti:crystal_embedded
+    - text: URL Tools (library)
+      link: /lib/
+      icon: seti:config
+    - text: GitHub
+      link: https://github.com/social-embed/social-embed/
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+import { Code } from "@astrojs/starlight/components";
+
+import ReactLive from "../../components/ReactLive";
+
+<CardGrid>
+  <Card title="Web component" icon="seti:crystal_embedded">
+    Try it live:
+    <ReactLive
+      initialCode={`<o-embed
+    url="https://youtu.be/FTQbiNvZqaY"
+    width="100%"
+></o-embed>`}
+      client:only="react"
+    />
+
+    Examples / Fiddles: <a href="https://codepen.io/attachment/pen/poRRwdy">codepen.io</a>,{" "}
+    <a href="https://jsfiddle.net/gitpull/vc13Lhkz/">jsfiddle</a>
+  </Card>
+  <Card title="URL Tools (Library)" icon="seti:config">
+    <>
+      <div class="mb-1">
+        <p>
+          <a href="/lib"><code>@social-embed/lib</code></a> is a repository of embed friendly sites and typed library for scraping
+          IDs and converting IDs into an embed-friendly format.
+        </p>
+      </div>
+      <Code
+        lang="ts"
+        wrap
+        code={`import {
+    getProviderFromUrl,
+    ProviderIdFunctionMap,
+    getYouTubeIdFromUrl,
+    youTubeUrlRegex,
+} from "@social-embed/lib";
+
+"https://youtu.be/watch?v=Bd8_vO5zrjo".match(youTubeUrlRegex);
+// ["https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
+
+getYouTubeIdFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
+// "Bd8_vO5zrjo"
+const provider = getProviderFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
+// YouTube
+const getId = ProviderIdFunctionMap[provider];
+getId("https://youtu.be/watch?v=Bd8_vO5zrjo");
+// "Bd8_vO5zrjo"
+`}
+      />
+      Examples / Fiddles:
+      <a href="https://codepen.io/attachment/pen/VwPPrNq">codepen.io</a>{' '}
+      (<a href="https://codepen.io/attachment/pen/poRRpdp?editors=0010">console</a>), <a href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</a>
+    </>
+  </Card>
+</CardGrid>

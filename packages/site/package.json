@@ -1,56 +1,41 @@
 {
   "name": "@social-embed/site",
-  "version": "0.0.0",
+  "type": "module",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "docusaurus": "docusaurus",
-    "start": "docusaurus start",
-    "build": "docusaurus build",
-    "swizzle": "docusaurus swizzle",
-    "deploy": "docusaurus deploy",
-    "clear": "docusaurus clear",
-    "clean": "yarn clear",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build --outDir build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "echo 'NOOP'",
     "ncu": "ncu",
     "update": "ncu",
-    "serve": "docusaurus serve",
-    "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc",
+    "format": "yarn run biome format . --write",
     "prebuild": "yarn docs:oembed",
     "prestart": "yarn docs:oembed",
-    "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p static/js && cp ../wc/dist/OEmbedElement.umd.cjs static/js/o-embed.bundled.js",
-    "lint": "biome lint .",
-    "biome": "biome",
-    "format": "yarn run biome format . --write",
-    "test": "echo 'NOOP'"
+    "docs:oembed": "yarn workspace @social-embed/wc build && mkdir -p public/js && cp ../wc/dist/OEmbedElement.umd.cjs public/js/o-embed.bundled.js"
   },
   "dependencies": {
-    "@docusaurus/core": "3.6.3",
-    "@docusaurus/preset-classic": "3.6.3",
-    "@docusaurus/theme-classic": "^3.6.3",
-    "@docusaurus/theme-live-codeblock": "^3.6.3",
-    "@mdx-js/react": "^3.1.0",
-    "clsx": "^2.1.1",
-    "prism-react-renderer": "^2.4.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "@astrojs/react": "^4.1.2",
+    "@astrojs/starlight": "^0.30.3",
+    "@astrojs/starlight-docsearch": "^0.4.0",
+    "@astrojs/starlight-tailwind": "^3.0.0",
+    "@astrojs/tailwind": "^5.1.4",
+    "@fontsource/ibm-plex-mono": "^5.1.1",
+    "@fontsource/ibm-plex-sans": "^5.1.1",
+    "@social-embed/wc": "link:../wc",
+    "astro": "^5.1.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-live": "^4.1.8",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@docusaurus/module-type-aliases": "3.6.3",
-    "@docusaurus/tsconfig": "^3.6.3",
-    "@docusaurus/types": "3.6.3",
-    "typescript": "^5.7.2"
-  },
-  "browserslist": {
-    "production": [">0.5%", "not dead", "not op_mini all"],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "engines": {
-    "node": ">=18"
+    "@biomejs/biome": "^1.9.4",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2"
   }
 }
