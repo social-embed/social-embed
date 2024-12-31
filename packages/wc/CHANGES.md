@@ -9,6 +9,8 @@ description: Latest updates for the @social-embed web component.
 
 ## 0.1.0-next.9 (2023-12-31)
 
+**Yanked: Missing build artifacts.**
+
 _Maintenance release only, no bug fixes or new features._
 
 ### Development
