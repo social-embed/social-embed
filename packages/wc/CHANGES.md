@@ -7,6 +7,10 @@ description: Latest updates for the @social-embed web component.
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.10 (2023-12-31)
+
+Re-release of 0.1.0-next.9 with `dist/` artifacts included.
+
 ## 0.1.0-next.9 (2023-12-31)
 
 **Yanked: Missing build artifacts.**
