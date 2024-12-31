@@ -2,7 +2,7 @@
 
 ## Start
 
-To use [the lib](https://social-components.git-pull.com/api/) you can do:
+Install the package:
 
 ```bash
 npm i @social-embed/lib
