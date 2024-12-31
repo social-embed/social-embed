@@ -19,13 +19,29 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid } from "@astrojs/starlight/components";
 import { Code } from "@astrojs/starlight/components";
+import { Icon } from '@astrojs/starlight/components';
 
 import ReactLive from "../../components/ReactLive";
 
-<CardGrid>
-  <Card title="Web component" icon="seti:crystal_embedded">
+<div class="grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6">
+  <div class="p-px lg:col-span-3">
+    <h1 class="flex gap-2"><Icon name="seti:crystal_embedded" class="
+    block
+    max-w-full
+    w-[1em]
+    h-auto
+    text-[1.333em]
+    text-white
+    fill-current
+    border
+    border-[#eebc53]
+    bg-[#4e4022]
+    p-[0.2em]
+    rounded-[0.25rem]
+    rounded-[0.25rem]"
+    /> Web component</h1>
+
     Try it live:
     <ReactLive
       initialCode={`<o-embed
@@ -37,10 +53,24 @@ import ReactLive from "../../components/ReactLive";
 
     Examples / Fiddles: <a href="https://codepen.io/attachment/pen/poRRwdy">codepen.io</a>,{" "}
     <a href="https://jsfiddle.net/gitpull/vc13Lhkz/">jsfiddle</a>
-  </Card>
-  <Card title="URL Tools (Library)" icon="seti:config">
-    <>
-      <div class="mb-1">
+  </div>
+  <div class="p-px lg:col-span-3 !mt-0">
+    <h1 class="flex gap-2"><Icon name="seti:config" 
+    class="
+    block
+    max-w-full
+    w-[1em]
+    h-auto
+    text-[1.333em]
+    text-white
+    fill-current
+    border
+    border-[#bd53ee]
+    bg-[#40224e]
+    p-[0.2em]
+    rounded-[0.25rem]"
+    /> URL Tools (Library)</h1>
+      <div class="">
         <p>
           <a href="/lib"><code>@social-embed/lib</code></a> is a repository of embed friendly sites and typed library for scraping
           IDs and converting IDs into an embed-friendly format.
@@ -71,6 +101,5 @@ getId("https://youtu.be/watch?v=Bd8_vO5zrjo");
       Examples / Fiddles:
       <a href="https://codepen.io/attachment/pen/VwPPrNq">codepen.io</a>{' '}
       (<a href="https://codepen.io/attachment/pen/poRRpdp?editors=0010">console</a>), <a href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</a>
-    </>
-  </Card>
-</CardGrid>
+  </div>
+</div>
