@@ -24,6 +24,9 @@ export default defineConfig({
         "@fontsource/ibm-plex-mono/400.css",
         "@fontsource/ibm-plex-mono/600.css",
       ],
+      components: {
+        Search: "./src/components/Search.astro",
+      },
       social: {
         github: "https://github.com/social-embed/social-embed",
         gitlab: "https://gitlab.com/social-embed/social-embed",

@@ -1,0 +1,29 @@
+---
+import Default from "@astrojs/starlight/components/Search.astro";
+import Select from "@astrojs/starlight/components/Select.astro";
+---
+
+<div class="flex items-start max-h-[var(--sl-nav-height)] overflow-hidden align-center w-full gap-5 no-underline">
+  <div class="flex flex-col items-start">
+    <a href="/wc" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">
+      <strong><code>&lt;o-embed&gt;</code> component</strong>
+    </a>
+    <span class="text-xs text-gray-600 dark:text-gray-400 hidden lg:block">
+      (<a href="/wc/examples" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">Examples</a>,
+      <a href="https://www.npmjs.com/package/@social-embed/wc" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">NPM</a>)
+    </span>
+  </div>
+  <div class="flex flex-col items-start">
+    <a href="/lib" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">
+      <strong>Library</strong>
+    </a>
+    <span class="text-xs text-gray-600 dark:text-gray-400 hidden lg:block">
+      (<a href="/lib/examples" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">Examples</a>,
+      <a href="https://www.npmjs.com/package/@social-embed/lib" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">NPM</a>)
+    </span>
+  </div>
+</div>
+
+<div class="items-center w-full hidden lg:flex justify-end">
+  <Default {...Astro.props}><slot /></Default>
+</div>
