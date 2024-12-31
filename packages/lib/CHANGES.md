@@ -7,6 +7,8 @@ description: Latest updates for the @social-embed URL parsing library.
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.8 (2024-12-31)
+
 ### Breaking changes
 
 - Security: Fixes to mitigate polynomial regex expressions (#24)
