@@ -10,35 +10,38 @@ npm i @social-embed/lib
 yarn add @social-embed/lib
 ```
 
-Then import and use as such:
+Then import and use it like so:
 
 ```typescript
 import { convertUrlToEmbedUrl, getYouTubeIdFromUrl } from "@social-embed/lib";
 
-console.log(convertUrlToEmbedUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"));
+console.log(
+  convertUrlToEmbedUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"),
+);
 // output: https://www.youtube.com/embed/Bd8_vO5zrjo
 
 console.log(getYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"));
 // output: Bd8_vO5zrjo
 ```
 
-If you support ESM / Urls, you can also import via like this:
+If your environment supports ESM or direct URLs, you can also import the library like this:
 
 ```typescript
 // unpkg
-import { getYouTubeIdFromUrl } from 'https://www.unpkg.com/@social-embed/lib?module';
+import { getYouTubeIdFromUrl } from "https://www.unpkg.com/@social-embed/lib?module";
+
 // skypack
-import { getYouTubeIdFromUrl } from 'https://cdn.skypack.dev/@social-embed/lib';
+import { getYouTubeIdFromUrl } from "https://cdn.skypack.dev/@social-embed/lib";
 ```
 
-## API reference
+## API Reference
 
 [https://social-embed.git-pull.com/api/](https://social-embed.git-pull.com/api/)
 
 ## Try
 
-- [CodePen], [codepen console]
-- [jsfiddle]
+- [CodePen], [CodePen Console]
+- [JSFiddle]
 
 [codepen]: https://codepen.io/attachment/pen/VwPPrNq
 [codepen console]: https://codepen.io/attachment/pen/poRRpdp?editors=0010
