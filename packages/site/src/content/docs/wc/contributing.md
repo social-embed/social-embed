@@ -2,6 +2,8 @@
 id: contributing
 title: Contributing
 description: Contribute to the @social-embed web component.
+sidebar:
+  order: 90
 ---
 
 # Contributing to @social-embed/wc

@@ -1,6 +1,8 @@
 ---
 title: Release notes
 description: Latest updates for the @social-embed web component.
+sidebar:
+  order: 90
 ---
 
 ## Upcoming release
