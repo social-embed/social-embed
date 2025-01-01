@@ -9,6 +9,8 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+_Details on the next release will go here._
+
 ## 0.1.0-next.11 (2025-01-01)
 
 _Maintenance release only, no bug fixes or new features._
