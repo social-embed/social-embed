@@ -4,11 +4,29 @@ import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwind from "@astrojs/tailwind";
 // @ts-check
 import { defineConfig } from "astro/config";
+import { createStarlightTypeDocPlugin } from "starlight-typedoc";
+
+const [wcStarlightTypeDoc, wcTypeDocSidebarGroup] =
+  createStarlightTypeDocPlugin();
+const [libStarlightTypeDoc, libTypeDocSidebarGroup] =
+  createStarlightTypeDocPlugin();
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://social-embed.git-pull.com",
   integrations: [
+    // Generate the docs for @social-embed/lib
+    libStarlightTypeDoc({
+      entryPoints: ["../lib/src/index.ts"],
+      output: "src/lib/api/",
+      tsconfig: "../lib/tsconfig.json",
+    }),
+    // Generate the docs for @social-embed/wc
+    wcStarlightTypeDoc({
+      entryPoints: ["../wc/src/OEmbedElement.ts"],
+      output: "src/wc/api/",
+      tsconfig: "../wc/tsconfig.json",
+    }),
     starlight({
       title: "social-embed",
       favicon: "/favicon.ico",
