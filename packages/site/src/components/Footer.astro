@@ -6,53 +6,28 @@ import LastUpdated from "virtual:starlight/components/LastUpdated";
 import Pagination from "virtual:starlight/components/Pagination";
 import config from "virtual:starlight/user-config";
 import { Icon } from "@astrojs/starlight/components";
+import Default from "@astrojs/starlight/components/Footer.astro";
+import GitPullLogo from "./GitPullLogo.astro";
 ---
 
-<footer class="sl-flex">
-	<div class="meta sl-flex">
-		<EditLink {...Astro.props} />
-		<LastUpdated {...Astro.props} />
-	</div>
-	<Pagination {...Astro.props} />
+<Default {...Astro.props}><slot /></Default>
 
-	{
-		config.credits && (
-			<a class="kudos sl-flex" href="https://starlight.astro.build">
-				<Icon name={'starlight'} /> {Astro.locals.t('builtWithStarlight.label')}
-			</a>
-		)
-	}
+<footer class="sl-flex text-center items-center">
+  <div class="kudos sl-flex" href="https://www.git-pull.com">
+    Copyright © 2021- <a href="https://www.git-pull.com" target="_blank" class="footer__link-item">Tony Narlock</a>.
+  </div>
+  <GitPullLogo />
 </footer>
 
 <style>
 	footer {
 		flex-direction: column;
-		gap: 1.5rem;
 	}
-	.meta {
-		gap: 0.75rem 3rem;
-		justify-content: space-between;
-		flex-wrap: wrap;
-		margin-top: 3rem;
-		font-size: var(--sl-text-sm);
-		color: var(--sl-color-gray-3);
-	}
-	.meta > :global(p:only-child) {
-		margin-inline-start: auto;
-	}
-
 	.kudos {
 		align-items: center;
-		gap: 0.5em;
-		margin: 1.5rem auto;
+		margin: 0.5rem auto;
 		font-size: var(--sl-text-xs);
 		text-decoration: none;
 		color: var(--sl-color-gray-3);
-	}
-	.kudos :global(svg) {
-		color: var(--sl-color-orange);
-	}
-	.kudos:hover {
-		color: var(--sl-color-white);
 	}
 </style>
