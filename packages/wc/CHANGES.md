@@ -12,6 +12,7 @@ sidebar:
 ### Development
 
 - Package manager: [yarn classic] -> [pnpm] (#29)
+- @social-embed/lib: From v0.1.0-next.8 to v0.1.0-next.9
 
 [yarn classic]: https://classic.yarnpkg.com/
 [pnpm]: https://pnpm.io/
