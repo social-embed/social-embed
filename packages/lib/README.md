@@ -34,10 +34,6 @@ import { getYouTubeIdFromUrl } from "https://www.unpkg.com/@social-embed/lib?mod
 import { getYouTubeIdFromUrl } from "https://cdn.skypack.dev/@social-embed/lib";
 ```
 
-## API Reference
-
-[https://social-embed.git-pull.com/api/](https://social-embed.git-pull.com/api/)
-
 ## Try
 
 - [CodePen], [CodePen Console]

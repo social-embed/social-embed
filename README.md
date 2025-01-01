@@ -11,10 +11,10 @@
 
 ## Projects
 
-| Package     | Source            | Website                                                | Status          | Description                               |
-| ----------- | ----------------- | ------------------------------------------------------ | --------------- | ----------------------------------------- |
-| Library     | [packages/lib/][] | https://social-embed.git-pull.com/api/modules/lib.html | 🟡 API unstable | Constants, regexes, id scraper, url maker |
-| `<o-embed>` | [packages/wc/][]  | https://social-embed.git-pull.com                      | ✔️ Stable       | [custom element] / [web component]        |
+| Package     | Source          | Website                                                | Status          | Description                               |
+| ----------- | --------------- | ------------------------------------------------------ | --------------- | ----------------------------------------- |
+| Library     | [packages/lib/] | https://social-embed.git-pull.com/lib/                 | 🟡 API unstable | Constants, regexes, id scraper, url maker |
+| `<o-embed>` | [packages/wc/]  | https://social-embed.git-pull.com/wc/                  | ✔️ Stable       | [custom element] / [web component]        |
 
 [packages/wc/]: packages/wc/
 [packages/lib/]: packages/lib/
