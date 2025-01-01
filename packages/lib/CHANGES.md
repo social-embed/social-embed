@@ -9,6 +9,13 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+### Development
+
+- Package manager: [yarn classic] -> [pnpm] (#29)
+
+[yarn classic]: https://classic.yarnpkg.com/
+[pnpm]: https://pnpm.io/
+
 ## 0.1.0-next.8 (2024-12-31)
 
 ### Breaking changes
