@@ -50,12 +50,12 @@ Spotify, Vimeo, and so on.
 
 ## Tech
 
-Built with [LitElement] using [lit-html] + [TypeScript]. [View the source](https://github.com/social-embed/social-embed/tree/master/packages/wc) on GitHub.
+Built with [Lit] using [lit-html] + [TypeScript]. [View the source](https://github.com/social-embed/social-embed/tree/master/packages/wc) on GitHub.
 
 [web component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
 [oembed]: https://oembed.com/
-[litelement]: https://lit-element.polymer-project.org/
-[lit-html]: https://lit-html.polymer-project.org/
+[lit]: https://lit.dev/
+[lit-html]: https://lit.dev/docs/libraries/standalone-templates/
 [typescript]: https://www.typescriptlang.org/
 
 Compare to [thangman22/oembed-component](https://github.com/thangman22/oembed-component).
