@@ -9,6 +9,10 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.9 (2025-01-01)
+
+_Maintenance release only, no bug fixes or new features._
+
 ### Development
 
 - Package manager: [yarn classic] -> [pnpm] (#29)
