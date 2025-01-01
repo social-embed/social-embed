@@ -7,12 +7,9 @@ hero:
   image:
     file: ../../assets/img/logo.svg
   actions:
-    - text: Web Component (<o-embed>)
-      link: /wc/
-      icon: seti:crystal_embedded
-    - text: URL Tools (library)
-      link: /lib/
-      icon: seti:config
+    - text: Getting started
+      link: /getting-started/
+      icon: right-arrow
     - text: GitHub
       link: https://github.com/social-embed/social-embed/
       icon: external
@@ -21,6 +18,7 @@ hero:
 
 import { Code } from "@astrojs/starlight/components";
 import { Icon } from '@astrojs/starlight/components';
+import { LinkButton } from '@astrojs/starlight/components';
 
 import ReactLive from "../../components/ReactLive";
 
@@ -38,21 +36,27 @@ import ReactLive from "../../components/ReactLive";
     border-[#bd53ee]
     bg-[#40224e]
     p-[0.2em]
-    rounded-[0.25rem]
     rounded-[0.25rem]"
     /> Web component</h1>
 
-    Try it live:
-    <ReactLive
-      initialCode={`<o-embed
-    url="https://youtu.be/FTQbiNvZqaY"
-    width="100%"
-></o-embed>`}
-      client:only="react"
-    />
+    <div>
+      <LinkButton
+       href="/wc/"
+       icon="right-arrow"
+      >Get started</LinkButton>
 
-    Playground (Demos / Examples): <a href="https://codepen.io/attachment/pen/poRRwdy">codepen.io</a>,{" "}
-    <a href="https://jsfiddle.net/gitpull/vc13Lhkz/">jsfiddle</a>
+      Try it live:
+      <ReactLive
+        initialCode={`<o-embed
+      url="https://youtu.be/FTQbiNvZqaY"
+      width="100%"
+  ></o-embed>`}
+        client:only="react"
+      />
+
+      Playground (Demos / Examples): <a href="https://codepen.io/attachment/pen/poRRwdy">codepen.io</a>,{" "}
+      <a href="https://jsfiddle.net/gitpull/vc13Lhkz/">jsfiddle</a>
+    </div>
   </div>
   <div class="p-px lg:col-span-3 !mt-0">
     <h1 class="flex gap-2"><Icon name="seti:config" 
@@ -70,7 +74,11 @@ import ReactLive from "../../components/ReactLive";
     p-[0.2em]
     rounded-[0.25rem]"
     /> URL Tools (Library)</h1>
-      <div class="">
+      <div>
+        <LinkButton
+         href="/lib/"
+         icon="right-arrow"
+        >Get started</LinkButton>
         <p>
           <a href="/lib"><code>@social-embed/lib</code></a> is a repository of embed friendly sites and typed library for scraping
           IDs and converting IDs into an embed-friendly format.
