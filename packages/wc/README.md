@@ -64,13 +64,25 @@ Compare to [thangman22/oembed-component](https://github.com/thangman22/oembed-co
 
 Install dependencies:
 
-```bash
-npm i @social-embed/wc
-```
+NPM:
 
 ```bash
-yarn add @social-embed/wc
+npm i @social-embed/lib
 ```
+
+yarn:
+
+```bash
+yarn add @social-embed/lib
+```
+
+pnpm:
+
+```bash
+pnpm add @social-embed/lib
+```
+
+
 
 ## Usage
 

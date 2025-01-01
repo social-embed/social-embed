@@ -4,10 +4,22 @@
 
 Install the package:
 
+NPM:
+
 ```bash
 npm i @social-embed/lib
-# or
+```
+
+yarn:
+
+```bash
 yarn add @social-embed/lib
+```
+
+pnpm:
+
+```bash
+pnpm add @social-embed/lib
 ```
 
 Then import and use it like so:
