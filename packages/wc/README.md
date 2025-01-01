@@ -25,10 +25,10 @@ Spotify, Vimeo, and so on.
 
 [codesandbox]: https://codepen.io/attachment/pen/poRRwdy
 [jsfiddle]: https://jsfiddle.net/gitpull/vc13Lhkz/
-[youtube]: https://social-embed.git-pull.com/docs/wc/providers/youtube
-[spotify]: https://social-embed.git-pull.com/docs/wc/providers/spotify
-[dailymotion]: https://social-embed.git-pull.com/docs/wc/providers/dailymotion
-[vimeo]: https://social-embed.git-pull.com/docs/wc/providers/vimeo
+[youtube]: https://social-embed.git-pull.com/wc/providers/youtube
+[spotify]: https://social-embed.git-pull.com/wc/providers/spotify
+[dailymotion]: https://social-embed.git-pull.com/wc/providers/dailymotion
+[vimeo]: https://social-embed.git-pull.com/wc/providers/vimeo
 
 ## Use Cases
 
@@ -46,7 +46,7 @@ Spotify, Vimeo, and so on.
 [`mediaembed`]: https://ckeditor.com/docs/ckeditor5/latest/features/media-embed.html
 [ckeditor#2737]: https://github.com/ckeditor/ckeditor5/issues/2737
 [ckeditor]: https://github.com/ckeditor/ckeditor5/issues/2737
-[`@social-embed/lib`]: https://social-embed.git-pull.com/docs/lib/overview
+[`@social-embed/lib`]: https://social-embed.git-pull.com/lib/
 
 ## Tech
 

@@ -111,7 +111,7 @@ See [commits](https://github.com/social-embed/social-embed/compare/@social-embed
 - Added API Documentation:
   https://social-embed.git-pull.com/api/modules/lib.html
 - Added normal documentation:
-  https://social-embed.git-pull.com/docs/lib/
+  https://social-embed.git-pull.com/lib/
 - YouTube: Move back to single file
 - [#30](https://github.com/social-embed/social-embed/pull/30): Add loom, wistia
   and edpuzzle
