@@ -100,7 +100,6 @@ New CSS variables:
 - Switch from karma to web-test-runner to get around import issues
 - Decouple library regexes to `packages/lib/`
 - Decouple docs to `packages/site/`
-- Add [typedoc] documentation: https://social-embed.git-pull.com/api/
 - Move documentation to [docusaurus]
 
   Also redo docs from scratch in Docusaurus 2.0.0-beta.0 -> 2.2.0 (#1)

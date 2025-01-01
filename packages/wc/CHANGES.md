@@ -214,8 +214,6 @@ See [commits](https://github.com/social-embed/social-embed/compare/@social-embed
 
 ## current
 
-- Added API Documentation:
-  https://social-embed.git-pull.com/api/modules/wc.html
 - Added normal documentation:
   https://social-embed.git-pull.com/wc/
 - [#29](https://github.com/social-embed/social-embed/pull/29) - Simplify test

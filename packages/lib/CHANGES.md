@@ -121,8 +121,6 @@ See [commits](https://github.com/social-embed/social-embed/compare/@social-embed
 
 ## 0.0.1: next.0 - next.11
 
-- Added API Documentation:
-  https://social-embed.git-pull.com/api/modules/lib.html
 - Added normal documentation:
   https://social-embed.git-pull.com/lib/
 - YouTube: Move back to single file
