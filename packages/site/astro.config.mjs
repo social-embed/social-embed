@@ -39,12 +39,14 @@ export default defineConfig({
       sidebar: [
         "getting-started",
         {
-          label: "lib",
+          label: "Library",
           autogenerate: { directory: "lib" },
+          badge: { text: "lib", variant: "note" },
         },
         {
-          label: "wc",
+          label: "Web Component",
           autogenerate: { directory: "wc" },
+          badge: { text: "wc", variant: "tip" },
         },
         "news",
       ],
