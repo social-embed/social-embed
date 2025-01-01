@@ -6,44 +6,63 @@ sidebar:
   order: 2
 ---
 
-:::info
+import { Aside } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
+<Aside type="tip">
 Want the `<o-embed></o-embed>` library? See [@social-embed/wc](/wc/).
-
-:::
+</Aside>
 
 ## Quickstart
 
 ### Packages
 
-NPM:
+<Tabs syncKey="pkg">
+<TabItem label="npm">
 
 ```bash
 npm i @social-embed/lib
 ```
 
-yarn:
+</TabItem>
+
+<TabItem label="yarn">
 
 ```bash
 yarn add @social-embed/lib
 ```
 
-pnpm:
+</TabItem>
+
+<TabItem label="pnpm">
 
 ```bash
 pnpm add @social-embed/lib
 ```
 
+</TabItem>
+</Tabs>
+
 ### via CDNs
 
-If you support ESM / URLs (such as via code sandboxes and [streaming imports] in [snowpack], you can also import via like this:
+If you can support ESM via remote sources URLs (such as via code sandboxes or late [snowpack]'s [streaming imports]), you can also import like this:
+
+<Tabs syncKey="cdn">
+<TabItem label="unpkg">
 
 ```typescript
-// unpkg
-import {getYouTubeIdFromUrl} from 'https://www.unpkg.com/@social-embed/lib?module';
-// skypack
-import {getYouTubeIdFromUrl} from 'https://cdn.skypack.dev/@social-embed/lib';
+import { getYouTubeIdFromUrl } from 'https://www.unpkg.com/@social-embed/lib?module';
 ```
+
+</TabItem>
+<TabItem label="skypack">
+
+```typescript
+import { getYouTubeIdFromUrl } from 'https://cdn.skypack.dev/@social-embed/lib';
+```
+
+</TabItem>
+</Tabs>
 
 [streaming imports]: https://www.snowpack.dev/guides/streaming-imports
 [snowpack]: https://www.snowpack.dev

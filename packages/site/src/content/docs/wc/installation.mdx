@@ -7,11 +7,12 @@ sidebar:
   order: 2
 ---
 
-:::info
+import { Aside } from '@astrojs/starlight/components';
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
+<Aside type="tip">
 Just want the lib functions and patterns? See [@social-embed/lib](/lib/).
-
-:::
+</Aside>
 
 ## Install
 
@@ -19,23 +20,31 @@ Just want the lib functions and patterns? See [@social-embed/lib](/lib/).
 
 ### Local Installation
 
-NPM:
+<Tabs syncKey="pkg">
+<TabItem label="npm">
 
 ```bash
 npm i @social-embed/wc
 ```
 
-yarn:
+</TabItem>
+
+<TabItem label="yarn">
 
 ```bash
 yarn add @social-embed/wc
 ```
 
-pnpm:
+</TabItem>
+
+<TabItem label="pnpm">
 
 ```bash
 pnpm add @social-embed/wc
 ```
+
+</TabItem>
+</Tabs>
 
 ### CDN
 
