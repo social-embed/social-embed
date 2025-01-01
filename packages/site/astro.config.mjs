@@ -25,6 +25,7 @@ export default defineConfig({
         "@fontsource/ibm-plex-mono/600.css",
       ],
       components: {
+        Footer: "./src/components/Footer.astro",
         Search: "./src/components/Search.astro",
       },
       social: {
