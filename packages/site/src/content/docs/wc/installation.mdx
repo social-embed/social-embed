@@ -1,7 +1,7 @@
 ---
 id: installation
 title: Installation
-description: How to setup the @social-embed web component.
+description: How to set up the @social-embed web component
 slug: wc/installation
 sidebar:
   order: 2
@@ -11,12 +11,12 @@ import { Aside } from '@astrojs/starlight/components';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 <Aside type="tip">
-Just want the lib functions and patterns? See [@social-embed/lib](/lib/).
+Looking for just the library functions and patterns? See [@social-embed/lib](/lib/).
 </Aside>
 
 ## Install
 
-`<o-embed>` is distributed on npm, so you can install it locally or use it via npm CDNs like unpkg.com.
+`<o-embed>` is available on npm. You can install it locally or use a CDN like unpkg.com.
 
 ### Local Installation
 
@@ -28,7 +28,6 @@ npm i @social-embed/wc
 ```
 
 </TabItem>
-
 <TabItem label="yarn">
 
 ```bash
@@ -36,7 +35,6 @@ yarn add @social-embed/wc
 ```
 
 </TabItem>
-
 <TabItem label="pnpm">
 
 ```bash
@@ -48,9 +46,7 @@ pnpm add @social-embed/wc
 
 ### CDN
 
-npm CDNs like [unpkg.com](https://unpkg.com) can directly serve files that have been published to npm. This works great for standard JavaScript modules that the browser can load natively.
-
-For this element to work from unpkg.com specifically, you need to include the `?module` query parameter, which tells unpkg.com to rewrite "bare" module specificers to full URLs.
+Services like [unpkg.com](https://unpkg.com) can serve published npm packages directly as ES modules. For unpkg.com, you’ll need to append `?module` so that bare import specifiers are automatically rewritten.
 
 #### HTML
 
@@ -64,7 +60,7 @@ For this element to work from unpkg.com specifically, you need to include the `?
 ></o-embed>
 ```
 
-Try on [codepen](https://codepen.io/attachment/pen/poRRwdy), check "Playground" in the top menu for more!
+Try it on [CodePen](https://codepen.io/attachment/pen/poRRwdy), or check the **Playground** from the top menu for more demos.
 
 ### JavaScript
 
