@@ -1,7 +1,7 @@
 ---
 id: installation
 title: Installation
-description: Installing the @social-embed URL parsing library.
+description: Instructions for installing the @social-embed/lib URL parsing library.
 sidebar:
   order: 2
 ---
@@ -10,12 +10,12 @@ import { Aside } from '@astrojs/starlight/components';
 import { Tabs, TabItem } from '@astrojs/starlight/components';
 
 <Aside type="tip">
-Want the `<o-embed></o-embed>` library? See [@social-embed/wc](/wc/).
+Looking for the `<o-embed></o-embed>` Web Component library? Check out [@social-embed/wc](/wc/) for more details.
 </Aside>
 
-## Quickstart
+## Quick Start
 
-### Packages
+### Installing via Package Managers
 
 <Tabs syncKey="pkg">
 <TabItem label="npm">
@@ -43,30 +43,27 @@ pnpm add @social-embed/lib
 </TabItem>
 </Tabs>
 
-### via CDNs
+### Using a CDN
 
-If you can support ESM via remote sources URLs (such as via code sandboxes or late [snowpack]'s [streaming imports]), you can also import like this:
+For environments that support ES modules from remote sources (e.g., online sandbox environments), you can import the library directly:
 
 <Tabs syncKey="cdn">
 <TabItem label="unpkg">
 
 ```typescript
-import { getYouTubeIdFromUrl } from 'https://www.unpkg.com/@social-embed/lib?module';
+import { getYouTubeIdFromUrl } from "https://www.unpkg.com/@social-embed/lib?module";
 ```
 
 </TabItem>
 <TabItem label="skypack">
 
 ```typescript
-import { getYouTubeIdFromUrl } from 'https://cdn.skypack.dev/@social-embed/lib';
+import { getYouTubeIdFromUrl } from "https://cdn.skypack.dev/@social-embed/lib";
 ```
 
 </TabItem>
 </Tabs>
 
-[streaming imports]: https://www.snowpack.dev/guides/streaming-imports
-[snowpack]: https://www.snowpack.dev
+## Where to Next?
 
-## Where to next?
-
-- Click on the **Playground** menu for sandboxes / demos.
+- Head over to the **Playground** section to explore demos and examples.
