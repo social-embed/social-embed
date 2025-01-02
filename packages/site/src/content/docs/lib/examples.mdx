@@ -1,0 +1,268 @@
+---
+id: examples
+title: Examples
+description: How to parse and embed various media URLs with @social-embed/lib
+sidebar:
+  order: 20
+---
+
+The initial iteration of this library revolves around two major approaches to parsing embed URLs:
+
+1. **Universal** – using `convertUrlToEmbedUrl` to handle various providers automatically.
+2. **Per-Provider** – extracting IDs and building embed links manually via functions like `getYouTubeIdFromUrl`, `getYouTubeEmbedUrlFromId`, etc.
+
+### Core Functions
+
+| Function                                     | Description                                                                             |
+| -------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `convertUrlToEmbedUrl(url)`                  | Converts an arbitrary media URL into its corresponding embed URL.                       |
+| `isValidUrl(url)`                            | Checks if the given string is a syntactically valid URL.                                |
+| `getYouTubeIdFromUrl(url)`                   | Extracts the YouTube video ID from a given YouTube link.                                |
+| `getYouTubeEmbedUrlFromId(id)`               | Constructs an embeddable YouTube link from an ID.                                       |
+| `getSpotify…()` (via `convertUrlToEmbedUrl`) | Spotify is currently auto-handled by `convertUrlToEmbedUrl` (no separate getSpotifyId). |
+| `getDailyMotionIdFromUrl(url)`               | Extracts the DailyMotion ID from a given link.                                          |
+| `getDailyMotionEmbedFromId(id)`              | Constructs an embeddable DailyMotion link from an ID.                                   |
+| `getVimeoIdFromUrl(url)`                     | Extracts the Vimeo video ID from a given URL.                                           |
+| `getVimeoEmbedUrlFromId(id)`                 | Constructs an embeddable Vimeo link from an ID.                                         |
+| `getLoomIdFromUrl(url)`                      | Extracts the Loom video ID from a given URL.                                            |
+| `getLoomEmbedUrlFromId(id)`                  | Constructs an embeddable Loom link from an ID.                                          |
+| `getEdPuzzleIdFromUrl(url)`                  | Extracts the EdPuzzle ID from a given URL.                                              |
+| `getEdPuzzleEmbedUrlFromId(id)`              | Constructs an embeddable EdPuzzle link from an ID.                                      |
+| `getWistiaIdFromUrl(url)`                    | Extracts the Wistia video ID from a given URL.                                          |
+| `getWistiaEmbedUrlFromId(id)`                | Constructs an embeddable Wistia link from an ID.                                        |
+
+---
+
+## Universal Conversion
+
+### `convertUrlToEmbedUrl(url)`
+
+```typescript
+import { convertUrlToEmbedUrl } from "@social-embed/lib";
+
+const embedUrl = convertUrlToEmbedUrl("https://youtu.be/FTQbiNvZqaY");
+console.log(embedUrl);
+// "https://www.youtube.com/embed/FTQbiNvZqaY"
+```
+
+**What it does:**
+
+- Detects the provider (YouTube, Vimeo, Spotify, Loom, etc.)
+- Extracts the necessary ID
+- Returns a fully embeddable URL
+
+If a URL doesn’t match a known pattern, `convertUrlToEmbedUrl` simply returns its normalized form (if valid), or `""` (an empty string) if it can’t parse the URL at all.
+
+#### Example: Spotify
+
+```typescript
+// "spotify:track:..."
+import { convertUrlToEmbedUrl } from "@social-embed/lib";
+
+console.log(convertUrlToEmbedUrl("spotify:album:1DFixLWuPkv3KT3TnV35m3"));
+// "https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3"
+```
+
+#### Example: DailyMotion
+
+```typescript
+console.log(convertUrlToEmbedUrl("http://dailymotion.com/video/x7znrd0"));
+// "https://www.dailymotion.com/embed/video/x7znrd0"
+```
+
+#### Example: Vimeo
+
+```typescript
+console.log(convertUrlToEmbedUrl("vimeo.com/channels/staffpicks/134668506"));
+// "https://player.vimeo.com/video/134668506"
+```
+
+#### Example: EdPuzzle
+
+```typescript
+console.log(
+  convertUrlToEmbedUrl("edpuzzle.com/media/606b413369971e424ec6021e"),
+);
+// "https://edpuzzle.com/embed/media/606b413369971e424ec6021e"
+```
+
+---
+
+## URL Validation
+
+### `isValidUrl(url)`
+
+```typescript
+import { isValidUrl } from "@social-embed/lib";
+
+console.log(isValidUrl("https://apple.com"));
+// true
+
+console.log(isValidUrl("notaurl"));
+// false
+```
+
+**What it does:**
+
+- Returns a boolean indicating whether the string is a syntactically valid URL (regardless of which provider it might match).
+
+---
+
+## Provider-Specific Extraction
+
+### YouTube
+
+- **`getYouTubeIdFromUrl(url: string): string`**  
+  Extracts a video ID, e.g. `"FTQbiNvZqaY"` from various YouTube link formats.
+- **`getYouTubeEmbedUrlFromId(id: string): string`**  
+  Constructs a standard YouTube embed URL, e.g. `"https://www.youtube.com/embed/FTQbiNvZqaY"`.
+
+#### Example
+
+```typescript
+import {
+  getYouTubeIdFromUrl,
+  getYouTubeEmbedUrlFromId,
+} from "@social-embed/lib";
+
+const id = getYouTubeIdFromUrl("https://youtu.be/FTQbiNvZqaY");
+console.log(id);
+// "FTQbiNvZqaY"
+
+const embedUrl = getYouTubeEmbedUrlFromId(id);
+console.log(embedUrl);
+// "https://www.youtube.com/embed/FTQbiNvZqaY"
+```
+
+---
+
+### DailyMotion
+
+- **`getDailyMotionIdFromUrl(url: string): string`**  
+  Returns the last segment of a DailyMotion video (`"x7znrd0"`).
+- **`getDailyMotionEmbedFromId(id: string): string`**  
+  Produces `"https://www.dailymotion.com/embed/video/x7znrd0"`.
+
+#### Example
+
+```typescript
+import {
+  getDailyMotionIdFromUrl,
+  getDailyMotionEmbedFromId,
+} from "@social-embed/lib";
+
+const dmId = getDailyMotionIdFromUrl("dailymotion.com/video/x7znrd0");
+console.log(dmId);
+// "x7znrd0"
+
+console.log(getDailyMotionEmbedFromId(dmId));
+// "https://www.dailymotion.com/embed/video/x7znrd0"
+```
+
+---
+
+### Vimeo
+
+- **`getVimeoIdFromUrl(url: string): string`**  
+  Extracts the numeric Vimeo ID (e.g. `"134668506"`).
+- **`getVimeoEmbedUrlFromId(id: string): string`**  
+  Creates `"https://player.vimeo.com/video/134668506"`.
+
+#### Example
+
+```typescript
+import { getVimeoIdFromUrl, getVimeoEmbedUrlFromId } from "@social-embed/lib";
+
+const vimeoId = getVimeoIdFromUrl("vimeo.com/channels/staffpicks/134668506");
+console.log(vimeoId);
+// "134668506"
+
+console.log(getVimeoEmbedUrlFromId(vimeoId));
+// "https://player.vimeo.com/video/134668506"
+```
+
+---
+
+### Loom
+
+- **`getLoomIdFromUrl(url: string): string`**  
+  Grabs the Loom video hash/ID (e.g. `"e883f70b219a49f6ba7fbeac71a72604"`).
+- **`getLoomEmbedUrlFromId(id: string): string`**  
+  Forms `"https://www.loom.com/embed/e883f70b219a49f6ba7fbeac71a72604"`.
+
+#### Example
+
+```typescript
+import { getLoomIdFromUrl, getLoomEmbedUrlFromId } from "@social-embed/lib";
+
+const loomId = getLoomIdFromUrl(
+  "loom.com/share/e883f70b219a49f6ba7fbeac71a72604",
+);
+console.log(loomId);
+// "e883f70b219a49f6ba7fbeac71a72604"
+
+console.log(getLoomEmbedUrlFromId(loomId));
+// "https://www.loom.com/embed/e883f70b219a49f6ba7fbeac71a72604"
+```
+
+---
+
+### EdPuzzle
+
+- **`getEdPuzzleIdFromUrl(url: string): string`**  
+  Extracts the EdPuzzle media ID (e.g. `"606b413369971e424ec6021e"`).
+- **`getEdPuzzleEmbedUrlFromId(id: string): string`**  
+  Builds `"https://edpuzzle.com/embed/media/606b413369971e424ec6021e"`.
+
+#### Example
+
+```typescript
+import {
+  getEdPuzzleIdFromUrl,
+  getEdPuzzleEmbedUrlFromId,
+} from "@social-embed/lib";
+
+const edPuzzleId = getEdPuzzleIdFromUrl(
+  "edpuzzle.com/media/606b413369971e424ec6021e",
+);
+console.log(edPuzzleId);
+// "606b413369971e424ec6021e"
+
+console.log(getEdPuzzleEmbedUrlFromId(edPuzzleId));
+// "https://edpuzzle.com/embed/media/606b413369971e424ec6021e"
+```
+
+---
+
+### Wistia
+
+- **`getWistiaIdFromUrl(url: string): string`**  
+  Extracts the Wistia media ID (e.g. `"26sk4lmiix"`).
+- **`getWistiaEmbedUrlFromId(id: string): string`**  
+  Produces `"https://fast.wistia.net/embed/iframe/26sk4lmiix"`.
+
+#### Example
+
+```typescript
+import { getWistiaIdFromUrl, getWistiaEmbedUrlFromId } from "@social-embed/lib";
+
+const wistiaId = getWistiaIdFromUrl(
+  "https://support.wistia.com/medias/26sk4lmiix",
+);
+console.log(wistiaId);
+// "26sk4lmiix"
+
+console.log(getWistiaEmbedUrlFromId(wistiaId));
+// "https://fast.wistia.net/embed/iframe/26sk4lmiix"
+```
+
+---
+
+## Summary
+
+`@social-embed/lib` consolidates parsing and embedding for many popular media providers:
+
+- **For quick usage**, rely on `convertUrlToEmbedUrl`.
+- **For fine-grained control**, use provider-specific functions to parse or embed only what you need.
+
+For more details and examples, see the [repository’s tests](https://github.com/social-embed/social-embed/tree/master/packages/lib/test/) or check out our [Playground](/lib/playground/). Feel free to open an issue or submit a pull request for additional providers or improvements.
