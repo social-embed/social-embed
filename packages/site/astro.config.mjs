@@ -15,6 +15,7 @@ export default defineConfig({
       logo: {
         src: "./src/assets/img/logo.svg",
       },
+      credits: true,
       customCss: [
         // Path to your Tailwind base styles:
         "./src/tailwind.css",
