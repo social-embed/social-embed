@@ -1,9 +1,9 @@
 ---
 title: "social-embed"
-description: Embed YouTube, Spotify, etc with one simple tag
+description: Embed YouTube, Spotify, and more with one simple tag
 template: splash
 hero:
-  tagline: Embed YouTube, Spotify, DailyMotion with one simple tag.
+  tagline: Embed YouTube, Spotify, DailyMotion, Vimeo, and more with one simple tag.
   image:
     file: ../../assets/img/logo.svg
   actions:
@@ -19,95 +19,141 @@ hero:
 import { Code } from "@astrojs/starlight/components";
 import { Icon } from '@astrojs/starlight/components';
 import { LinkButton } from '@astrojs/starlight/components';
-
 import ReactLive from "../../components/ReactLive";
 
 <div class="grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6">
+
   <div class="p-px lg:col-span-3">
-    <h1 class="flex gap-2"><Icon name="seti:crystal_embedded" class="
-    block
-    max-w-full
-    w-[1em]
-    h-auto
-    text-[1.333em]
-    text-white
-    fill-current
-    border
-    border-[#bd53ee]
-    bg-[#40224e]
-    p-[0.2em]
-    rounded-[0.25rem]"
-    /> Web component</h1>
 
-    <div>
-      <LinkButton
-       href="/wc/"
-       icon="right-arrow"
-      >Get started</LinkButton>
+  <h1 class="flex gap-2">
+    <Icon
+      name="seti:crystal_embedded"
+      class="
+        block
+        max-w-full
+        w-[1em]
+        h-auto
+        text-[1.333em]
+        text-white
+        fill-current
+        border
+        border-[#bd53ee]
+        bg-[#40224e]
+        p-[0.2em]
+        rounded-[0.25rem]"
+    />
+    Web Component
+  </h1>
 
-      Try it live:
-      <ReactLive
-        initialCode={`<o-embed
-      url="https://youtu.be/FTQbiNvZqaY"
-      width="100%"
-  ></o-embed>`}
-        client:only="react"
-      />
+  <p>
+    Use the <code>&lt;o-embed&gt;</code> custom element anywhere HTML is supported. 
+    No extra services or servers required.
+  </p>
 
-      Playground (Demos / Examples): <a href="https://codepen.io/attachment/pen/poRRwdy">codepen.io</a>,{" "}
-      <a href="https://jsfiddle.net/gitpull/vc13Lhkz/">jsfiddle</a>
-    </div>
+  <p>The custom element in <a href="/wc"><code>@social-embed/wc</code></a>:</p>
+
+  <ul class="list-disc ml-5">
+    <li>Works seamlessly with popular editors and frameworks.</li>
+    <li>Instantly transforms YouTube, Vimeo, Spotify, and more into embeds.</li>
+    <li>Easy to set up: just import the script and place <code>&lt;o-embed&gt;</code>.</li>
+  </ul>
+
+  <p>Try it live:</p>
+  <ReactLive
+    initialCode={`<o-embed
+    url="https://youtu.be/FTQbiNvZqaY"
+    width="100%"
+/>`}
+    client:only="react"
+  />
+
+  <p>
+    <strong>Playground (Demos / Examples):</strong>
+    <a href="https://codepen.io/attachment/pen/poRRwdy">CodePen</a> ·
+    <a href="https://jsfiddle.net/gitpull/vc13Lhkz/">JSFiddle</a>
+  </p>
+
+<LinkButton href="/wc/" icon="right-arrow">Get started</LinkButton>
+
   </div>
+
   <div class="p-px lg:col-span-3 !mt-0">
-    <h1 class="flex gap-2"><Icon name="seti:config" 
-    class="
-    block
-    max-w-full
-    w-[1em]
-    h-auto
-    text-[1.333em]
-    text-white
-    fill-current
-    border
-    border-[#3347ff]
-    bg-[#171d4f]
-    p-[0.2em]
-    rounded-[0.25rem]"
-    /> URL Tools (Library)</h1>
-      <div>
-        <LinkButton
-         href="/lib/"
-         icon="right-arrow"
-        >Get started</LinkButton>
-        <p>
-          <a href="/lib"><code>@social-embed/lib</code></a> is a repository of embed friendly sites and typed library for scraping
-          IDs and converting IDs into an embed-friendly format.
-        </p>
-      </div>
-      <Code
-        lang="ts"
-        wrap
-        code={`import {
+
+    <h1 class="flex gap-2">
+      <Icon
+        name="seti:config"
+        class="
+          block
+          max-w-full
+          w-[1em]
+          h-auto
+          text-[1.333em]
+          text-white
+          fill-current
+          border
+          border-[#3347ff]
+          bg-[#171d4f]
+          p-[0.2em]
+          rounded-[0.25rem]"
+      />
+      URL Tools (Library)
+    </h1>
+
+    <p>
+      Prefer to handle IDs and embed URLs directly?
+    </p>
+
+    <p>
+      <a href="/lib"><code>@social-embed/lib</code></a> is a TypeScript library for:
+    </p>
+    <ul class="list-disc ml-5">
+      <li>Extracting IDs from any recognized provider URL (YouTube, DailyMotion, Loom, and more).</li>
+      <li>Converting those IDs into embeddable formats.</li>
+      <li>Normalizing or validating incoming URLs.</li>
+    </ul>
+
+    <Code
+      lang="ts"
+      wrap
+      code={`import {
     getProviderFromUrl,
     ProviderIdFunctionMap,
     getYouTubeIdFromUrl,
     youTubeUrlRegex,
 } from "@social-embed/lib";
 
-"https://youtu.be/watch?v=Bd8_vO5zrjo".match(youTubeUrlRegex);
-// ["https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"]
+"https://youtu.be/watch?v=Bd8_vO5zrjo".match(
+    youTubeUrlRegex
+);
+// => [
+//   "https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"
+// ]
 
-getYouTubeIdFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
-// "Bd8_vO5zrjo"
-const provider = getProviderFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
-// YouTube
+getYouTubeIdFromUrl(
+    "https://youtu.be/watch?v=Bd8_vO5zrjo"
+);
+// => "Bd8_vO5zrjo"
+
+const provider = getProviderFromUrl(
+    "https://youtu.be/watch?v=Bd8_vO5zrjo"
+);
+// => "YouTube"
+
 const getId = ProviderIdFunctionMap[provider];
 getId("https://youtu.be/watch?v=Bd8_vO5zrjo");
-// "Bd8_vO5zrjo"
+// => "Bd8_vO5zrjo"
 `}
-      />
-      Playground (Demos / Examples):
-      <a href="https://codepen.io/attachment/pen/VwPPrNq">codepen.io</a>{' '}
-      (<a href="https://codepen.io/attachment/pen/poRRpdp?editors=0010">console</a>), <a href="https://jsfiddle.net/gitpull/pcLagbsm/">jsfiddle</a>
+/>
+
+    <p>
+      <strong>Playground (Demos / Examples):</strong>
+      <a href="https://codepen.io/attachment/pen/VwPPrNq">CodePen</a>
+      (<a href="https://codepen.io/attachment/pen/poRRpdp?editors=0010">console</a>) ·
+      <a href="https://jsfiddle.net/gitpull/pcLagbsm/">JSFiddle</a>
+    </p>
+
+    <LinkButton href="/lib/" icon="right-arrow">Get started</LinkButton>
+
   </div>
+
 </div>
