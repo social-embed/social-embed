@@ -7,3 +7,9 @@ export {
   getProviderFromUrl,
   convertUrlToEmbedUrl,
 } from "./utils";
+import { YouTubeProvider } from "./providers/youtube";
+import { EmbedProviderRegistry } from "./registry";
+
+// Create an instance of the registry
+export const defaultRegistry = new EmbedProviderRegistry();
+defaultRegistry.register(YouTubeProvider);
