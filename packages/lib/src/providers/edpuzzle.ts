@@ -1,3 +1,5 @@
+import type { EmbedProvider } from "../provider";
+
 /**
  * Detection and parsing for Edpuzzle URLs
  *
@@ -35,3 +37,19 @@ export const getEdPuzzleIdFromUrl = (url: string | undefined): string => {
  */
 export const getEdPuzzleEmbedUrlFromId = (id: string): string =>
   `https://edpuzzle.com/embed/media/${id}`;
+
+export const EdPuzzleProvider: EmbedProvider = {
+  name: "EdPuzzle",
+
+  canParseUrl(url: string) {
+    return edPuzzleUrlRegex.test(url);
+  },
+
+  getIdFromUrl(url: string) {
+    return getEdPuzzleIdFromUrl(url);
+  },
+
+  getEmbedUrlFromId(id: string) {
+    return getEdPuzzleEmbedUrlFromId(id);
+  },
+};
