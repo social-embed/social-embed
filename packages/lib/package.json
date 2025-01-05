@@ -29,6 +29,7 @@
   },
   "scripts": {
     "clean": "rimraf dist",
+    "check": "tsc --noEmit",
     "vite": "vite",
     "start": "pnpm vite",
     "watch": "vite start",
