@@ -11,6 +11,7 @@ import { DailyMotionProvider } from "./providers/dailymotion";
 import { EdPuzzleProvider } from "./providers/edpuzzle";
 import { LoomProvider } from "./providers/loom";
 import { SpotifyProvider } from "./providers/spotify";
+import { VimeoProvider } from "./providers/vimeo";
 import { YouTubeProvider } from "./providers/youtube";
 import { EmbedProviderRegistry } from "./registry";
 
@@ -20,4 +21,5 @@ defaultRegistry.register(DailyMotionProvider);
 defaultRegistry.register(EdPuzzleProvider);
 defaultRegistry.register(LoomProvider);
 defaultRegistry.register(SpotifyProvider);
+defaultRegistry.register(VimeoProvider);
 defaultRegistry.register(YouTubeProvider);
