@@ -1,15 +1,18 @@
 ---
 id: spotify
 title: Spotify
-sidebar_label: Spotify
 description: Spotify widget support for <o-embed> component.
 ---
 
 import { Aside } from '@astrojs/starlight/components';
 
 <Aside type="caution">
-🔇 Turn your volume down a bit, the previews are loud!
+🔇 Turn your volume down a bit, the previews can be loud!
 </Aside>
+
+@social-embed/wc supports **tracks**, **albums**, **playlists**, **artists**, **shows**, and **episodes** from Spotify.
+
+<br />
 
 ## Tracks
 
@@ -27,8 +30,7 @@ URL: https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs?si=_AayG1M6SkiRSomgoM
 
 (Careful: Loud!)
 
-<o-embed
-url="https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs?si=_AayG1M6SkiRSomgoM_Vxg"></o-embed>
+<o-embed url="https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs?si=_AayG1M6SkiRSomgoM_Vxg"></o-embed>
 
 ### Spotify URI
 
@@ -39,6 +41,8 @@ url="https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs?si=_AayG1M6SkiRSomgoM
 ```
 
 <o-embed url="spotify:track:1w4etUoKfql47wtTFq031f"></o-embed>
+
+---
 
 ## Playlists
 
@@ -52,8 +56,7 @@ url="https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs?si=_AayG1M6SkiRSomgoM
 ></o-embed>
 ```
 
-<o-embed
-url="https://open.spotify.com/playlist/37i9dQZF1DZ06evO0AI4xi?si=xT2VzBnETMOrHPtlteDqMg"></o-embed>
+<o-embed url="https://open.spotify.com/playlist/37i9dQZF1DZ06evO0AI4xi?si=xT2VzBnETMOrHPtlteDqMg"></o-embed>
 
 ### Spotify URI
 
@@ -64,6 +67,8 @@ url="https://open.spotify.com/playlist/37i9dQZF1DZ06evO0AI4xi?si=xT2VzBnETMOrHPt
 ```
 
 <o-embed url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi"></o-embed>
+
+---
 
 ## Album
 
@@ -89,6 +94,86 @@ url="https://open.spotify.com/playlist/37i9dQZF1DZ06evO0AI4xi?si=xT2VzBnETMOrHPt
 
 <o-embed url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"></o-embed>
 
+---
+
+## Artist
+
+An artist embed displays the artist’s profile and top tracks.
+
+### URL style
+
+#### HTML
+
+```html
+<o-embed url="https://open.spotify.com/artist/16s0YTFcyjP4kgFwt7ktrY"></o-embed>
+```
+
+<o-embed url="https://open.spotify.com/artist/16s0YTFcyjP4kgFwt7ktrY"></o-embed>
+
+### Spotify URI
+
+#### HTML
+
+```html
+<o-embed url="spotify:artist:16s0YTFcyjP4kgFwt7ktrY"></o-embed>
+```
+
+<o-embed url="spotify:artist:16s0YTFcyjP4kgFwt7ktrY"></o-embed>
+
+---
+
+## Show (Podcast)
+
+A “show” is a podcast channel on Spotify.
+
+### URL style
+
+#### HTML
+
+```html
+<o-embed url="https://open.spotify.com/show/2MAi0BvDc6GTFvKFPXnkCL"></o-embed>
+```
+
+<o-embed url="https://open.spotify.com/show/2MAi0BvDc6GTFvKFPXnkCL"></o-embed>
+
+### Spotify URI
+
+#### HTML
+
+```html
+<o-embed url="spotify:show:2MAi0BvDc6GTFvKFPXnkCL"></o-embed>
+```
+
+<o-embed url="spotify:show:2MAi0BvDc6GTFvKFPXnkCL"></o-embed>
+
+---
+
+## Episode (Podcast Episode)
+
+An “episode” is a single podcast installment.
+
+### URL style
+
+#### HTML
+
+```html
+<o-embed url="https://open.spotify.com/episode/0Bx6gWK755bUoM238X2Ma1"></o-embed>
+```
+
+<o-embed url="https://open.spotify.com/episode/0Bx6gWK755bUoM238X2Ma1"></o-embed>
+
+### Spotify URI
+
+#### HTML
+
+```html
+<o-embed url="spotify:episode:0Bx6gWK755bUoM238X2Ma1"></o-embed>
+```
+
+<o-embed url="spotify:episode:0Bx6gWK755bUoM238X2Ma1"></o-embed>
+
+---
+
 ## Compact size
 
 ### HTML
@@ -100,3 +185,7 @@ For any of the above combinations, add `height="152"` to the `<o-embed>` tag. Ex
 ```
 
 <o-embed url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi" height="152"></o-embed>
+
+<br />
+
+This ensures a more compact player. You can also experiment with `width="300"` or other sizes to fit your site’s design.
