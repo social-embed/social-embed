@@ -3,82 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test social-embed library functions</title>
+    <title>Test @social-embed/lib Functions</title>
     <script type="module">
       import {
         getProviderFromUrl,
-        getVimeoIdFromUrl,
-        getYouTubeEmbedUrlFromId,
         getYouTubeIdFromUrl,
-        ProviderIdFunctionMap,
+        getYouTubeEmbedUrlFromId,
+        getVimeoIdFromUrl,
         youTubeUrlRegex,
+        isValidUrl,
       } from "/src/index.ts";
 
-      const outputGetYouTubeIdFromUrl = (url) => {
-        console.log(
-          `getYouTubeIdFromUrl("${url}"): ${getYouTubeIdFromUrl(url)}`,
-        );
-      };
+      // 1. Simple usage for direct YouTube or Vimeo extraction
+      // ------------------------------------------------------
 
-      const outputGetVimeoIdFromUrl = (url) => {
-        console.log(`getVimeoIdFromUrl("${url}"): ${getVimeoIdFromUrl(url)}`);
+      // YouTube examples
+      const outputGetYouTubeIdFromUrl = (url) => {
+        console.log(`getYouTubeIdFromUrl("${url}"):`, getYouTubeIdFromUrl(url));
       };
 
       outputGetYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo");
       outputGetYouTubeIdFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
+
+      // Vimeo example
+      const outputGetVimeoIdFromUrl = (url) => {
+        console.log(`getVimeoIdFromUrl("${url}"):`, getVimeoIdFromUrl(url));
+      };
       outputGetVimeoIdFromUrl("https://vimeo.com/134668506");
+
+      // Show how we can use a regex (youTubeUrlRegex) directly
+      const testYouTubeRegex = "https://youtu.be/watch?v=Bd8_vO5zrjo";
       console.log(
-        "https://youtu.be/watch?v=Bd8_vO5zrjo".match(youTubeUrlRegex),
+        `"${testYouTubeRegex}".match(youTubeUrlRegex):`,
+        testYouTubeRegex.match(youTubeUrlRegex),
       );
 
-      const provider = getProviderFromUrl(
-        "https://youtu.be/watch?v=Bd8_vO5zrjo",
-      );
-      console.log(
-        `getProviderFromUrl('https://youtu.be/watch?v=Bd8_vO5zrjo): ${provider}`,
-      );
+      // 2. Using getProviderFromUrl for any recognized service
+      // ------------------------------------------------------
+      const testUrl = "https://youtu.be/watch?v=Bd8_vO5zrjo";
+      const provider = getProviderFromUrl(testUrl);
+      console.log(`getProviderFromUrl("${testUrl}"):`, provider);
 
-      const getId = ProviderIdFunctionMap[provider];
-      console.log(
-        `ProviderIdFunctionMap[${provider}] ${ProviderIdFunctionMap[provider]}`,
-      );
+      if (provider) {
+        // Example: if the provider is YouTube, this will extract the 11-char ID
+        const extractedId = provider.getIdFromUrl(testUrl);
+        console.log(`provider.getIdFromUrl("${testUrl}"):`, extractedId);
 
-      console.log(
-        `getId('https://youtu.be/watch?v=Bd8_vO5zrjo'): ${getId(
-          "https://youtu.be/watch?v=Bd8_vO5zrjo",
-        )}`,
-      );
+        // Then build the embed URL from that ID
+        const embedUrl = provider.getEmbedUrlFromId(extractedId);
+        console.log(`provider.getEmbedUrlFromId("${extractedId}"):`, embedUrl);
+      } else {
+        console.log(`No recognized provider for "${testUrl}"`);
+      }
 
+      // 3. Checking a random URL for validity
+      // -------------------------------------
       console.log(
-        `getYouTubeEmbedUrlFromId('Bd8_vO5zrjo') ${getYouTubeEmbedUrlFromId(
-          "Bd8_vO5zrjo",
-        )}`,
+        `isValidUrl("https://apple.com"):`,
+        isValidUrl("https://apple.com"),
+      );
+      console.log(
+        `isValidUrl("notaurl"):`,
+        isValidUrl("notaurl"),
       );
     </script>
   </head>
   <body>
-    <h2>See more</h2>
+    <h2>@social-embed/lib Test Page</h2>
 
-    Open inspector and see <code>console.log</code>s.
+    <p>
+      Open your browser’s dev tools console (<code>console.log</code> output) to
+      see the library functions in action.
+    </p>
+
+    <hr />
 
     <h2>Example in HTML</h2>
 
-    <h3>Code</h3>
+    <h3>Code Snippet</h3>
 
     <pre>
-    import { getYouTubeIdFromUrl } from "/src/index.ts";
+// This script demonstrates basic usage:
+//   - Extracting a YouTube video ID from multiple link formats
+//   - Checking validity of a random URL
+//   - Using getProviderFromUrl() for a recognized service
 
-    const outputGetYouTubeIdFromUrl = (url) => `<code>getYouTubeIdFromUrl("${url}")</code>: ${getYouTubeIdFromUrl(url)}`
+import { getYouTubeIdFromUrl } from "/src/index.ts";
 
-    document.body.innerHTML = `
-    ${
-      outputGetYouTubeIdFromUrl('https://www.youtube.com/watch?v=Bd8_vO5zrjo')
-    }
-    <br />
-    ${
-      outputGetYouTubeIdFromUrl('https://www.youtu.be/watch?v=Bd8_vO5zrjo')
-    }
-    `
+const outputGetYouTubeIdFromUrl = (url) =>
+  \`<code>getYouTubeIdFromUrl("\${url}")</code>: \${getYouTubeIdFromUrl(url)}\`;
+
+document.body.innerHTML += \`
+  \${outputGetYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo")}
+  <br />
+  \${outputGetYouTubeIdFromUrl("https://www.youtu.be/watch?v=Bd8_vO5zrjo")}
+\`;
     </pre>
 
     <h3>Output</h3>
@@ -87,15 +106,18 @@
       import { getYouTubeIdFromUrl } from "/src/index.ts";
 
       const outputGetYouTubeIdFromUrl = (url) =>
-        `<code>getYouTubeIdFromUrl("${url}")</code>: ${getYouTubeIdFromUrl(
-          url,
-        )}`;
+        `<code>getYouTubeIdFromUrl("${url}")</code>: ${
+          getYouTubeIdFromUrl(url)
+        }`;
 
+      // We append this HTML after the <pre> block
       document.body.innerHTML += `
-    ${outputGetYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo")}
-    <br />
-    ${outputGetYouTubeIdFromUrl("https://www.youtu.be/watch?v=Bd8_vO5zrjo")}
-    `;
+        <p>
+          ${outputGetYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo")}
+          <br />
+          ${outputGetYouTubeIdFromUrl("https://www.youtu.be/watch?v=Bd8_vO5zrjo")}
+        </p>
+      `;
     </script>
   </body>
 </html>
