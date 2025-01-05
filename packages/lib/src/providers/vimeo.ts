@@ -1,3 +1,5 @@
+import type { EmbedProvider } from "../provider";
+
 // Credit: https://stackoverflow.com/a/50777192 (2021-03-14: modified / fixed to ignore unused groups)
 export const vimeoUrlRegex =
   /(?:(?:https?):)?(?:\/\/)?(?:www\.|player\.)?vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|video\/|)(\d+)(?:|\/\?)/;
@@ -7,3 +9,19 @@ export const getVimeoIdFromUrl = (url: string): string =>
 
 export const getVimeoEmbedUrlFromId = (id: string): string =>
   `https://player.vimeo.com/video/${id}`;
+
+export const VimeoProvider: EmbedProvider = {
+  name: "Vimeo",
+
+  canParseUrl(url: string) {
+    return vimeoUrlRegex.test(url);
+  },
+
+  getIdFromUrl(url: string) {
+    return getVimeoIdFromUrl(url);
+  },
+
+  getEmbedUrlFromId(id: string) {
+    return getVimeoEmbedUrlFromId(id);
+  },
+};
