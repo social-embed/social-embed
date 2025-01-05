@@ -1,3 +1,5 @@
+import type { EmbedProvider } from "../provider";
+
 /**
  * Detecting and parsing for Loom URLs.
  *
@@ -39,3 +41,19 @@ export const getLoomIdFromUrl = (url: string | undefined): string => {
  */
 export const getLoomEmbedUrlFromId = (id: string): string =>
   `https://www.loom.com/embed/${id}`;
+
+export const LoomProvider: EmbedProvider = {
+  name: "Loom",
+
+  canParseUrl(url: string) {
+    return loomUrlRegex.test(url);
+  },
+
+  getIdFromUrl(url: string) {
+    return getLoomIdFromUrl(url);
+  },
+
+  getEmbedUrlFromId(id: string) {
+    return getLoomEmbedUrlFromId(id);
+  },
+};

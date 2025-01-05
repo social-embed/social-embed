@@ -9,6 +9,7 @@ export {
 } from "./utils";
 import { DailyMotionProvider } from "./providers/dailymotion";
 import { EdPuzzleProvider } from "./providers/edpuzzle";
+import { LoomProvider } from "./providers/loom";
 import { YouTubeProvider } from "./providers/youtube";
 import { EmbedProviderRegistry } from "./registry";
 
@@ -16,4 +17,5 @@ import { EmbedProviderRegistry } from "./registry";
 export const defaultRegistry = new EmbedProviderRegistry();
 defaultRegistry.register(DailyMotionProvider);
 defaultRegistry.register(EdPuzzleProvider);
+defaultRegistry.register(LoomProvider);
 defaultRegistry.register(YouTubeProvider);
