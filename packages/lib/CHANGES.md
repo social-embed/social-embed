@@ -11,6 +11,8 @@ sidebar:
 
 _Details on the next release will go here._
 
+## 0.1.0-next.10 (2025-01-05)
+
 ### Breaking Changes
 
 - **Remove `Provider` enum** in favor of a **provider registry** or name-based detection.
