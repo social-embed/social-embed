@@ -1,3 +1,5 @@
+import type { EmbedProvider } from "../provider";
+
 // regex: derived from https://gist.github.com/TrevorJTClarke/a14c37db3c11ee23a700
 // Thank you @TrevorJTClarke
 export const spotifyUrlRegex =
@@ -19,4 +21,20 @@ export const getSpotifyEmbedUrlFromIdAndType = (
 ): string => {
   const spotifyType = typeof args[0] === "string" ? args[0] : "";
   return `https://open.spotify.com/embed/${spotifyType}/${id}`;
+};
+
+export const SpotifyProvider: EmbedProvider = {
+  name: "Spotify",
+
+  canParseUrl(url: string) {
+    return spotifyUrlRegex.test(url) || spotifySymbolRegex.test(url);
+  },
+
+  getIdFromUrl(url: string) {
+    return getSpotifyIdAndTypeFromUrl(url);
+  },
+
+  getEmbedUrlFromId(id: string) {
+    return getSpotifyEmbedUrlFromIdAndType(id);
+  },
 };
