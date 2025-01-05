@@ -1,21 +1,42 @@
 /**
  * A typed interface for each Provider.
  *
- * - `name`: A human-readable name or enum entry (e.g., "YouTube", "Vimeo").
- * - `canParseUrl(url)`: Should return `true` if the URL belongs to this provider.
- * - `getIdFromUrl(url)`: Extracts the relevant ID(s) from the URL.
- * - `getEmbedUrlFromId(id, ...args)`: Builds an iframe-friendly embed URL from the extracted ID.
+ * @remarks
+ * Implement this interface for each service you want to support — for instance,
+ * YouTube, Vimeo, or any custom embed provider.
+ *
+ * @public
  */
 export interface EmbedProvider {
-  /** Name or enum for the provider (e.g. "YouTube") */
+  /**
+   * A unique, descriptive name for the provider (e.g. "YouTube").
+   */
   readonly name: string;
 
-  /** Return true if the provider can handle the given URL */
+  /**
+   * Determines whether the provider can handle a particular URL string.
+   *
+   * @param url - The URL to analyze.
+   * @returns `true` if this provider recognizes the URL, else `false`.
+   */
   canParseUrl(url: string): boolean;
 
-  /** Extract ID(s) from the URL */
+  /**
+   * Extracts the relevant ID(s) from the URL.
+   *
+   * @param url - The URL to parse.
+   * @returns A string or array of strings representing IDs or parameters needed
+   *          to build the embed URL. For Spotify, for example, this might return
+   *          `[id, type]`.
+   */
   getIdFromUrl(url: string): string | string[];
 
-  /** Build the embed URL from the ID (and optionally other arguments) */
+  /**
+   * Builds the embed URL from an ID plus optional arguments.
+   *
+   * @param id - The primary ID or key.
+   * @param args - Optional extra arguments. For instance, Spotify may accept a `type` param (album, track, etc.).
+   * @returns An iframe-friendly URL for embedding.
+   */
   getEmbedUrlFromId(id: string, ...args: unknown[]): string;
 }
