@@ -1,3 +1,5 @@
+import type { EmbedProvider } from "../provider";
+
 // Credit: https://stackoverflow.com/a/50644701, (2021-03-14: Support ?playlist)
 export const dailyMotionUrlRegex =
   /^(?:(?:https?):)?(?:\/\/)?(?:www\.)?(?:(?:dailymotion\.com(?:\/embed)?\/video)|dai\.ly)\/([a-zA-Z0-9]+)(?:_[\w_-]+)?(?:\?playlist=[a-zA-Z0-9]+)?$/;
@@ -6,4 +8,20 @@ export const getDailyMotionIdFromUrl = (url: string): string => {
 };
 export const getDailyMotionEmbedFromId = (id: string): string => {
   return `https://www.dailymotion.com/embed/video/${id}`; // ?autoplay=1
+};
+
+export const DailyMotionProvider: EmbedProvider = {
+  name: "DailyMotion",
+
+  canParseUrl(url: string) {
+    return dailyMotionUrlRegex.test(url);
+  },
+
+  getIdFromUrl(url: string) {
+    return getDailyMotionIdFromUrl(url);
+  },
+
+  getEmbedUrlFromId(id: string) {
+    return getDailyMotionEmbedFromId(id);
+  },
 };
