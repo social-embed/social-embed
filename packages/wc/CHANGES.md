@@ -11,6 +11,26 @@ sidebar:
 
 _Details on the next release will go here._
 
+### Breaking Changes
+
+- **`OEmbedElement.ts`:** Removed usage of the `Provider` enum.
+  - Now checks `provider.name` (a string) from `getProviderFromUrl(...)`.
+  - Fallback logic for valid but unknown URLs creates a generic `<iframe>`, and invalid URLs produce a “No provider found” message.
+
+### Enhancements
+
+- **Refactored `<o-embed>`** to handle the new approach from `@social-embed/lib`:
+  - No direct enum references—just `.name` for recognized providers.
+  - Cleaned up dimension logic and error handling.
+  - Consolidated `allowfullscreen` checks into a single helper method (`shouldAllowFullscreen()`).
+
+### Tests
+
+- **Added fallback tests**:
+  - For unrecognized but valid URLs (renders a plain `<iframe>`).
+  - For invalid URLs (renders a “No provider found…” message).
+- **Existing YouTube, Vimeo, DailyMotion, EdPuzzle, Loom, Wistia tests** remain valid and updated to confirm the new approach.
+
 ## 0.1.0-next.11 (2025-01-01)
 
 _Maintenance release only, no bug fixes or new features._
