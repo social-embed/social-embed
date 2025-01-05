@@ -2,8 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Target small displays like phones */
 :root {
-  --sl-content-width: calc(100% - (var(--sl-content-pad-x) * 7));
+  --sl-content-width: 100%;
+}
+
+@media (min-width: 640px) {
+  /* Target small displays like tablets */
+  :root {
+    --sl-content-width: calc(100% - (var(--sl-content-pad-x) * 2)); /* Make it wider on small screens */
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Target larger displays like desktops */
+  :root {
+    --sl-content-width: calc(100% - (var(--sl-content-pad-x) * 7));
+  }
 }
 
 /** For code embeds on example pages **/
