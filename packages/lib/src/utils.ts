@@ -26,7 +26,13 @@ export const matcher =
   };
 
 /**
- * Finds the first provider (in the default registry) that can handle the given URL.
+ * Returns the first registered provider that can handle a given URL.
+ *
+ * @remarks
+ * Internally calls {@link EmbedProviderRegistry.findProviderByUrl}.
+ * Returns `undefined` if no known provider matches.
+ *
+ * @param url - The URL to check.
  */
 export function getProviderFromUrl(url: string): EmbedProvider | undefined {
   if (!url) return undefined;
@@ -34,7 +40,14 @@ export function getProviderFromUrl(url: string): EmbedProvider | undefined {
 }
 
 /**
- * Convert a recognized media URL into its iframe-friendly embed URL, or return an empty string if no match.
+ * Converts a recognized media URL to an embeddable iframe-friendly URL.
+ *
+ * @remarks
+ * - If the URL is recognized, calls the provider’s `getIdFromUrl()` and `getEmbedUrlFromId()`.
+ * - If no provider is found, returns an empty string.
+ *
+ * @param url - The user-supplied media URL (e.g., a YouTube link).
+ * @returns The embeddable URL string (e.g., `https://www.youtube.com/embed/...`) or an empty string.
  */
 export function convertUrlToEmbedUrl(url: string): string {
   const provider = getProviderFromUrl(url);
