@@ -11,6 +11,8 @@ sidebar:
 
 _Details on the next release will go here._
 
+## 0.1.0-next.12 (2025-01-05)
+
 ### Breaking Changes
 
 - **`OEmbedElement.ts`:** Removed usage of the `Provider` enum.
