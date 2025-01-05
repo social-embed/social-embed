@@ -7,6 +7,7 @@ export {
   getProviderFromUrl,
   convertUrlToEmbedUrl,
 } from "./utils";
+import type { EmbedProvider } from "./provider";
 import { DailyMotionProvider } from "./providers/dailymotion";
 import { EdPuzzleProvider } from "./providers/edpuzzle";
 import { LoomProvider } from "./providers/loom";
@@ -16,12 +17,20 @@ import { WistiaProvider } from "./providers/wistia";
 import { YouTubeProvider } from "./providers/youtube";
 import { EmbedProviderRegistry } from "./registry";
 
-// Create an instance of the registry
+export const defaultProviders: EmbedProvider[] = [
+  DailyMotionProvider,
+  EdPuzzleProvider,
+  LoomProvider,
+  SpotifyProvider,
+  VimeoProvider,
+  WistiaProvider,
+  YouTubeProvider,
+];
+
+/**
+ * Create a default registry and register all built-in providers.
+ */
 export const defaultRegistry = new EmbedProviderRegistry();
-defaultRegistry.register(DailyMotionProvider);
-defaultRegistry.register(EdPuzzleProvider);
-defaultRegistry.register(LoomProvider);
-defaultRegistry.register(SpotifyProvider);
-defaultRegistry.register(VimeoProvider);
-defaultRegistry.register(WistiaProvider);
-defaultRegistry.register(YouTubeProvider);
+for (const provider of defaultProviders) {
+  defaultRegistry.register(provider);
+}
