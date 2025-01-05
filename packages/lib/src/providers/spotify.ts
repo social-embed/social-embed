@@ -1,13 +1,16 @@
 import type { EmbedProvider } from "../provider";
 
 /**
- * Supported Spotify content types:
+ * A list of supported Spotify content types recognized by the library:
  * - track
  * - album
  * - playlist
  * - artist
  * - show (podcast)
  * - episode (podcast episode)
+ *
+ * @remarks
+ * These values are used to parse and build embeddable Spotify URLs for each specific content type.
  */
 export const SPOTIFY_TYPES = [
   "track",
@@ -17,53 +20,67 @@ export const SPOTIFY_TYPES = [
   "show",
   "episode",
 ] as const;
+
 type SpotifyType = (typeof SPOTIFY_TYPES)[number];
 
 /**
- * Regex to match open/embed Spotify URLs:
- * e.g.
- *   https://open.spotify.com/track/1w4etUoKfql47wtTFq031f
- *   https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3
- *   https://open.spotify.com/show/5YEXv3C5fnMA3lFzNim4Ya
- *   https://open.spotify.com/embed/episode/4XplJhQEj1Qp6QzrbA5sYk
+ * A regex that matches open or embed-style Spotify URLs.
+ *
+ * @example
+ * - `https://open.spotify.com/track/1w4etUoKfql47wtTFq031f`
+ * - `https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3`
+ * - `https://open.spotify.com/show/5YEXv3C5fnMA3lFzNim4Ya`
+ * - `https://open.spotify.com/embed/episode/4XplJhQEj1Qp6QzrbA5sYk`
  *
  * @remarks
- * regex: derived from https://gist.github.com/TrevorJTClarke/a14c37db3c11ee23a700
- * Thank you @TrevorJTClarke
+ * - Derived from [a gist by TrevorJTClarke](https://gist.github.com/TrevorJTClarke/a14c37db3c11ee23a700).
+ *   Thank you, **@TrevorJTClarke**!
+ *
+ * **Pattern Explanation**:
+ * 1. Optional protocol (`https?`)
+ * 2. Optional `embed.` or `open.` subdomain
+ * 3. Must have `"spotify.com/"`
+ * 4. Captures one of the recognized `SPOTIFY_TYPES`
+ * 5. Followed by a 22-character ID
+ * 6. Optionally captures a `?si=` param
  */
 export const spotifyUrlRegex = new RegExp(
-  // Explanation:
-  //  1. Optional protocol (https?), optional 'embed.' or 'open.'
-  //  2. Must have "spotify.com/"
-  //  3. Must capture one of SPOTIFY_TYPES
-  //  4. Followed by "/" and a 22-character ID
-  //  5. Optional ?si= param
   `^(?:(?:https?):)?(?:\\/\\/)?(?:embed\\.|open\\.)?spotify\\.com\\/(?:(${SPOTIFY_TYPES.join(
     "|",
   )})\\/)([-\\w]{22})(?:\\?si=[_\\-\\w]{22})?`,
 );
 
 /**
- * Regex to match Spotify URIs:
- * e.g.
- *   spotify:track:1w4etUoKfql47wtTFq031f
- *   spotify:album:1DFixLWuPkv3KT3TnV35m3
- *   spotify:artist:1Xyo4u8uXC1ZmMpatF05PJ
- *   spotify:show:5YEXv3C5fnMA3lFzNim4Ya
- *   spotify:episode:4XplJhQEj1Qp6QzrbA5sYk
+ * A regex that matches Spotify URIs, such as:
+ * - `spotify:track:1w4etUoKfql47wtTFq031f`
+ * - `spotify:album:1DFixLWuPkv3KT3TnV35m3`
+ * - `spotify:artist:1Xyo4u8uXC1ZmMpatF05PJ`
+ * - `spotify:show:5YEXv3C5fnMA3lFzNim4Ya`
+ * - `spotify:episode:4XplJhQEj1Qp6QzrbA5sYk`
+ *
+ * @remarks
+ * Captures both the content type and the 22-character ID.
  */
 export const spotifySymbolRegex = new RegExp(
   `^spotify:(?:(${SPOTIFY_TYPES.join("|")}):)([-\\w]{22})`,
 );
 
 /**
- * Extract [ID, type] from a Spotify URL or URI.
+ * Extracts the Spotify ID and type from a given Spotify URL or URI.
  *
- * Examples:
- *  - Input:  "https://open.spotify.com/track/1w4etUoKfql47wtTFq031f"
- *    Output: ["1w4etUoKfql47wtTFq031f", "track"]
- *  - Input:  "spotify:album:1DFixLWuPkv3KT3TnV35m3"
- *    Output: ["1DFixLWuPkv3KT3TnV35m3", "album"]
+ * @param url - A Spotify web URL or `spotify:` URI.
+ * @returns A tuple `[id, type]`, where `id` is the 22-char ID and `type` is one of `track`, `album`, `playlist`, `artist`, `show`, or `episode`.
+ * @example
+ * ```ts
+ * // For "https://open.spotify.com/track/1w4etUoKfql47wtTFq031f"
+ * // => ["1w4etUoKfql47wtTFq031f", "track"]
+ *
+ * // For "spotify:album:1DFixLWuPkv3KT3TnV35m3"
+ * // => ["1DFixLWuPkv3KT3TnV35m3", "album"]
+ * ```
+ *
+ * @remarks
+ * Returns `["", ""]` if there's no valid match.
  */
 export function getSpotifyIdAndTypeFromUrl(url: string): [string, string] {
   // Attempt to match both open URLs and spotify: URIs
@@ -81,8 +98,22 @@ export function getSpotifyIdAndTypeFromUrl(url: string): [string, string] {
 }
 
 /**
- * Build the Spotify embed URL from [id, type].
- * If no valid type is passed, defaults to "track" to avoid double slashes.
+ * Constructs an embeddable Spotify URL from an ID and optional content type.
+ *
+ * @param id - The 22-character Spotify ID (e.g. track/album/playlist ID).
+ * @param args - The first element in `args` may be the content type. If not provided or invalid, defaults to `"track"`.
+ * @returns A valid embed URL, e.g. `"https://open.spotify.com/embed/track/12345"`.
+ *
+ * @remarks
+ * - If a recognized `SpotifyType` isn't passed, defaults to `track`.
+ * - The function is often used inside the {@link SpotifyProvider}.
+ *
+ * @example
+ * ```ts
+ * // Normally you'd pass [id, type] as args:
+ * console.log(getSpotifyEmbedUrlFromIdAndType("7ouMYWpwJ422jRcDASZB7P", "track"));
+ * // => "https://open.spotify.com/embed/track/7ouMYWpwJ422jRcDASZB7P"
+ * ```
  */
 export function getSpotifyEmbedUrlFromIdAndType(
   id: string,
@@ -98,27 +129,47 @@ export function getSpotifyEmbedUrlFromIdAndType(
 }
 
 /**
- * Provider object implementing your common EmbedProvider interface.
- * - canParseUrl() checks both web URL and spotify: URIs.
- * - getIdFromUrl() returns [id, type].
- * - getEmbedUrlFromId() calls getSpotifyEmbedUrlFromIdAndType,
- *   but you may also pass "type" in your calling code if you wish.
+ * A provider object implementing the {@link EmbedProvider} interface for Spotify.
+ *
+ * @remarks
+ * - `canParseUrl()` checks both web and `spotify:` URIs.
+ * - `getIdFromUrl()` returns `[id, type]`.
+ * - `getEmbedUrlFromId()` calls {@link getSpotifyEmbedUrlFromIdAndType}.
+ *
+ * This provider allows handling any recognized Spotify media (tracks, albums, playlists, artists, shows, episodes).
  */
 export const SpotifyProvider: EmbedProvider = {
+  /** @inheritdoc */
   name: "Spotify",
 
-  canParseUrl(url: string) {
+  /**
+   * Determines if the given URL or URI matches a recognized Spotify pattern.
+   *
+   * @param url - A string that could point to a Spotify resource.
+   * @returns `true` if the pattern matches, otherwise `false`.
+   */
+  canParseUrl(url: string): boolean {
     return spotifyUrlRegex.test(url) || spotifySymbolRegex.test(url);
   },
 
+  /**
+   * Extracts the ID and type from a recognized Spotify URL or `spotify:` URI.
+   *
+   * @param url - The Spotify link.
+   * @returns `[id, type]` if matched, otherwise `["", ""]`.
+   */
   getIdFromUrl(url: string) {
-    // returns [id, type]
     return getSpotifyIdAndTypeFromUrl(url);
   },
 
+  /**
+   * Builds an embeddable Spotify URL from an ID plus optional arguments (e.g. type).
+   *
+   * @param id - The 22-char Spotify ID.
+   * @param args - The first arg may be the content type (`track`, `album`, `playlist`, etc.).
+   * @returns The final embed URL, e.g. `"https://open.spotify.com/embed/track/<id>"`.
+   */
   getEmbedUrlFromId(id: string, ...args: unknown[]) {
-    // If your code expects [id, type], pass them as .getEmbedUrlFromId(...myArray)
-    // e.g. getEmbedUrlFromId(id, type)
     return getSpotifyEmbedUrlFromIdAndType(id, ...args);
   },
 };
