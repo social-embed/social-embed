@@ -1,4 +1,3 @@
-import { Provider } from "./constants";
 import { defaultRegistry } from "./index"; // or import from "./registry"
 import type { EmbedProvider } from "./provider";
 

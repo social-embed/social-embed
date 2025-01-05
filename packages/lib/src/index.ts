@@ -1,7 +1,5 @@
 export * from "./providers";
 export {
-  ProviderIdFunctionMap,
-  ProviderIdUrlFunctionMap,
   getProviderFromUrl,
   convertUrlToEmbedUrl,
 } from "./utils";
