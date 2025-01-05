@@ -6,14 +6,13 @@ import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 import {
-  Provider,
   getDailyMotionEmbedFromId,
   getDailyMotionIdFromUrl,
   getEdPuzzleEmbedUrlFromId,
   getEdPuzzleIdFromUrl,
   getLoomEmbedUrlFromId,
   getLoomIdFromUrl,
-  getProviderFromUrl,
+  getProviderFromUrl, // returns an object with .name or undefined
   getSpotifyEmbedUrlFromIdAndType,
   getSpotifyIdAndTypeFromUrl,
   getVimeoEmbedUrlFromId,
@@ -25,6 +24,9 @@ import {
   isValidUrl,
 } from "@social-embed/lib";
 
+/**
+ * An interface for dimension properties in the embed.
+ */
 interface Dimensions {
   width: string;
   height: string;
@@ -43,26 +45,43 @@ export class OEmbedElement extends LitElement {
    * The URL or ID (if supported)
    */
   @property({ type: String }) url!: string;
+
   /**
    * Pass-through of width attribute
    */
   @property({ type: String }) width = "560";
+
   /**
    * Pass-through of height attribute
    */
   @property({ type: String }) height = "315";
+
   /**
    * Pass-through of frameborder attribute, only used in iframe embeds.
    */
   @property({ type: String }) frameborder = "0";
+
   /**
    * For YouTube only. Passing anything other than 1/true omits the tag.
    */
   @property({ type: String }) allowfullscreen: string | boolean | undefined =
     "true";
 
-  provider: Provider | undefined;
+  /**
+   * Holds the matched provider object returned by `getProviderFromUrl`.
+   * e.g. an object with `.name === "YouTube"`.
+   */
+  provider:
+    | {
+        /** e.g. "YouTube", "Vimeo", "Spotify", etc. */
+        name: string;
+      }
+    | undefined;
 
+  /**
+   * Returns a small `<style>` block for the default dimensions.
+   * We read them via `this.getDefaultDimensions()`.
+   */
   instanceStyle(): TemplateResult {
     const { widthWithUnits, heightWithUnits } = this.getDefaultDimensions(
       this.provider,
@@ -82,6 +101,11 @@ export class OEmbedElement extends LitElement {
     `;
   }
 
+  /**
+   * The main render logic.
+   * - Finds the provider from the URL.
+   * - Switches on provider.name if recognized, else fallback.
+   */
   render(): TemplateResult {
     this.provider = getProviderFromUrl(this.url);
 
@@ -90,49 +114,62 @@ export class OEmbedElement extends LitElement {
     }
 
     let embedResult: TemplateResult;
-    switch (this.provider) {
-      case Provider.YouTube:
-        embedResult = this.renderYouTube();
-        break;
-      case Provider.Spotify:
-        embedResult = this.renderSpotify();
-        break;
-      case Provider.Vimeo:
-        embedResult = this.renderVimeo();
-        break;
-      case Provider.DailyMotion:
-        embedResult = this.renderDailyMotion();
-        break;
-      case Provider.EdPuzzle:
-        embedResult = this.renderEdPuzzle();
-        break;
-      case Provider.Wistia:
-        embedResult = this.renderWistia();
-        break;
-      case Provider.Loom:
-        embedResult = this.renderLoom();
-        break;
-      default:
-        if (isValidUrl(this.url)) {
-          embedResult = this.renderIframe();
-        } else {
-          embedResult = html`No provider found for ${this.url}`;
-        }
-        break;
+
+    if (!this.provider) {
+      // If no recognized provider, fallback to an iframe if it’s a valid URL
+      embedResult = isValidUrl(this.url)
+        ? this.renderIframe()
+        : html`No provider found for ${this.url}`;
+    } else {
+      // Switch on provider.name (a string)
+      switch (this.provider.name) {
+        case "YouTube":
+          embedResult = this.renderYouTube();
+          break;
+        case "Spotify":
+          embedResult = this.renderSpotify();
+          break;
+        case "Vimeo":
+          embedResult = this.renderVimeo();
+          break;
+        case "DailyMotion":
+          embedResult = this.renderDailyMotion();
+          break;
+        case "EdPuzzle":
+          embedResult = this.renderEdPuzzle();
+          break;
+        case "Wistia":
+          embedResult = this.renderWistia();
+          break;
+        case "Loom":
+          embedResult = this.renderLoom();
+          break;
+        default:
+          embedResult = isValidUrl(this.url)
+            ? this.renderIframe()
+            : html`No provider found for ${this.url}`;
+          break;
+      }
     }
 
     return html`${this.instanceStyle()}${embedResult}`;
   }
 
+  /**
+   * Default dimension used by Spotify if not overridden by attributes.
+   */
   static spotifyDefaultDimensions: Dimensions = {
     height: "352",
     heightWithUnits: "352px",
   };
 
+  /**
+   * Renders a Spotify embed `<iframe>`.
+   */
   public renderSpotify(): TemplateResult {
-    const url = getSpotifyEmbedUrlFromIdAndType(
-      ...getSpotifyIdAndTypeFromUrl(this.url),
-    );
+    const [spotifyId, spotifyType] = getSpotifyIdAndTypeFromUrl(this.url);
+    const url = getSpotifyEmbedUrlFromIdAndType(spotifyId, spotifyType);
+
     return html`
       <iframe
         src="${url}"
@@ -148,27 +185,31 @@ export class OEmbedElement extends LitElement {
     `;
   }
 
-  public getDefaultDimensions(provider?: Provider): Dimensions {
-    switch (provider) {
-      case Provider.Vimeo:
+  /**
+   * Returns dimension info (width, height) depending on the recognized provider.
+   */
+  public getDefaultDimensions(providerObj?: { name?: string }): Dimensions {
+    const providerName = providerObj?.name;
+    switch (providerName) {
+      case "Vimeo":
         return this.calculateDefaultDimensions({
           defaults: OEmbedElement.vimeoDefaultDimensions,
         });
-      case Provider.DailyMotion:
+      case "DailyMotion":
         return this.calculateDefaultDimensions();
-      case Provider.EdPuzzle:
+      case "EdPuzzle":
         return this.calculateDefaultDimensions({
           defaults: OEmbedElement.edPuzzleDefaultDimensions,
         });
-      case Provider.Wistia:
+      case "Wistia":
         return this.calculateDefaultDimensions({
           defaults: OEmbedElement.wistiaDefaultDimensions,
         });
-      case Provider.Loom:
+      case "Loom":
         return this.calculateDefaultDimensions({
           defaults: OEmbedElement.loomDefaultDimensions,
         });
-      case Provider.Spotify:
+      case "Spotify":
         return this.calculateDefaultDimensions({
           defaults: OEmbedElement.spotifyDefaultDimensions,
         });
@@ -177,13 +218,12 @@ export class OEmbedElement extends LitElement {
     }
   }
 
-  public calculateDefaultDimensions(
-    {
-      defaults,
-    }: {
-      defaults?: Dimensions;
-    } = { defaults: undefined },
-  ): Dimensions {
+  /**
+   * Figures out the final width/height strings, adding 'px' if no unit present.
+   */
+  public calculateDefaultDimensions({
+    defaults,
+  }: { defaults?: Dimensions } = {}): Dimensions {
     const width = this.getAttribute("width") || defaults?.width || this.width;
     const widthWithUnits = width.match(/(px|%)/) ? width : `${width}px`;
     const height =
@@ -193,10 +233,13 @@ export class OEmbedElement extends LitElement {
     return { width, widthWithUnits, height, heightWithUnits };
   }
 
+  /**
+   * Renders a DailyMotion embed `<iframe>`.
+   */
   public renderDailyMotion(): TemplateResult {
     const dailyMotionId = getDailyMotionIdFromUrl(this.url);
     if (!dailyMotionId) {
-      return html`Could not find dailyMotionId in ${dailyMotionId}`;
+      return html`Could not find dailyMotionId in ${this.url}`;
     }
     const url = getDailyMotionEmbedFromId(dailyMotionId);
 
@@ -212,32 +255,30 @@ export class OEmbedElement extends LitElement {
           this.frameborder ? this.frameborder : undefined,
         )}
         allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen=${ifDefined(
-          this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
-            ? true
-            : undefined,
-        )}
+        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
         type="text/html"
       ></iframe>
       <slot></slot>
     `;
   }
 
+  /**
+   * Default dimensions for Vimeo
+   */
   static vimeoDefaultDimensions: Dimensions = {
     width: "640",
     widthWithUnits: "640px",
     height: "268",
-    heightWithUnits: "268",
+    heightWithUnits: "268px",
   };
 
+  /**
+   * Renders a Vimeo embed `<iframe>`.
+   */
   public renderVimeo(): TemplateResult {
     const vimeoId = getVimeoIdFromUrl(this.url);
     if (!vimeoId) {
-      return html`Could not find vimeoId in ${vimeoId}`;
+      return html`Could not find vimeoId in ${this.url}`;
     }
     const url = getVimeoEmbedUrlFromId(vimeoId);
 
@@ -252,27 +293,23 @@ export class OEmbedElement extends LitElement {
           this.frameborder ? this.frameborder : undefined,
         )}
         allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen=${ifDefined(
-          this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
-            ? true
-            : undefined,
-        )}
+        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
       <slot></slot>
     `;
   }
 
+  /**
+   * Renders a YouTube embed `<iframe>`.
+   */
   public renderYouTube(): TemplateResult {
     const youtubeId = getYouTubeIdFromUrl(this.url);
-    const youtubeUrl = getYouTubeEmbedUrlFromId(youtubeId);
-
     if (!youtubeId) {
       return html``;
     }
+
+    const youtubeUrl = getYouTubeEmbedUrlFromId(youtubeId);
+
     return html`
       <iframe
         width="${this.width}"
@@ -281,20 +318,15 @@ export class OEmbedElement extends LitElement {
         frameborder=${ifDefined(
           this.frameborder ? this.frameborder : undefined,
         )}
-        allowfullscreen=${ifDefined(
-          this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
-            ? true
-            : undefined,
-        )}
+        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
       <slot></slot>
     `;
   }
 
+  /**
+   * If provider is not recognized but the URL is valid, we fallback to a generic iframe.
+   */
   public renderIframe(): TemplateResult {
     const { width, height } = this.getDefaultDimensions(this.provider);
     return html`
@@ -310,6 +342,9 @@ export class OEmbedElement extends LitElement {
     `;
   }
 
+  /**
+   * Default dimension overrides for EdPuzzle
+   */
   static edPuzzleDefaultDimensions: Dimensions = {
     width: "470",
     widthWithUnits: "470px",
@@ -317,17 +352,19 @@ export class OEmbedElement extends LitElement {
     heightWithUnits: "404px",
   };
 
+  /**
+   * Renders an EdPuzzle `<iframe>`.
+   */
   public renderEdPuzzle(): TemplateResult {
     if (!this.url) {
       return html`No url found for embed`;
     }
     const embedId = getEdPuzzleIdFromUrl(this.url);
-
     if (!embedId) {
       return html`No ID found for ${this.url}`;
     }
-    const embedUrl = getEdPuzzleEmbedUrlFromId(embedId);
 
+    const embedUrl = getEdPuzzleEmbedUrlFromId(embedId);
     const { width, height } = this.getDefaultDimensions(this.provider);
 
     return html`
@@ -338,20 +375,15 @@ export class OEmbedElement extends LitElement {
         frameborder=${ifDefined(
           this.frameborder ? this.frameborder : undefined,
         )}
-        allowfullscreen=${ifDefined(
-          this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
-            ? true
-            : undefined,
-        )}
+        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
       <slot></slot>
     `;
   }
 
+  /**
+   * Default dimension overrides for Wistia
+   */
   static wistiaDefaultDimensions: Dimensions = {
     width: "470",
     widthWithUnits: "470px",
@@ -359,17 +391,19 @@ export class OEmbedElement extends LitElement {
     heightWithUnits: "404px",
   };
 
+  /**
+   * Renders a Wistia embed `<iframe>`.
+   */
   public renderWistia(): TemplateResult {
     if (!this.url) {
       return html`No url found for embed`;
     }
     const embedId = getWistiaIdFromUrl(this.url);
-
     if (!embedId) {
       return html`No ID found for ${this.url}`;
     }
-    const embedUrl = getWistiaEmbedUrlFromId(embedId);
 
+    const embedUrl = getWistiaEmbedUrlFromId(embedId);
     const { width, height } = this.getDefaultDimensions(this.provider);
 
     return html`
@@ -380,20 +414,15 @@ export class OEmbedElement extends LitElement {
         frameborder=${ifDefined(
           this.frameborder ? this.frameborder : undefined,
         )}
-        allowfullscreen=${ifDefined(
-          this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
-            ? true
-            : undefined,
-        )}
+        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
       <slot></slot>
     `;
   }
 
+  /**
+   * Default dimension overrides for Loom
+   */
   static loomDefaultDimensions: Dimensions = {
     width: "470",
     widthWithUnits: "470px",
@@ -401,17 +430,19 @@ export class OEmbedElement extends LitElement {
     heightWithUnits: "404px",
   };
 
+  /**
+   * Renders a Loom embed `<iframe>`.
+   */
   public renderLoom(): TemplateResult {
     if (!this.url) {
       return html`No url found for embed`;
     }
     const embedId = getLoomIdFromUrl(this.url);
-
     if (!embedId) {
       return html`No ID found for ${this.url}`;
     }
-    const embedUrl = getLoomEmbedUrlFromId(embedId);
 
+    const embedUrl = getLoomEmbedUrlFromId(embedId);
     const { width, height } = this.getDefaultDimensions(this.provider);
 
     return html`
@@ -422,18 +453,22 @@ export class OEmbedElement extends LitElement {
         frameborder=${ifDefined(
           this.frameborder ? this.frameborder : undefined,
         )}
-        allowfullscreen=${ifDefined(
-          this.allowfullscreen === "" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === "true" ||
-            this.allowfullscreen === true ||
-            this.allowfullscreen === "1"
-            ? true
-            : undefined,
-        )}
+        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
       <slot></slot>
     `;
+  }
+
+  /**
+   * Helper function to decide whether to include `allowfullscreen="true"`.
+   */
+  private shouldAllowFullscreen(): true | undefined {
+    return this.allowfullscreen === "" ||
+      this.allowfullscreen === "true" ||
+      this.allowfullscreen === true ||
+      this.allowfullscreen === "1"
+      ? true
+      : undefined;
   }
 }
 
@@ -442,7 +477,8 @@ declare global {
     "o-embed": OEmbedElement;
   }
 
-  // eslint-disable-next-line
+  // If you use JSX/TSX:
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       "o-embed": Partial<OEmbedElement>;
