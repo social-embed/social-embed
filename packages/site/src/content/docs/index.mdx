@@ -112,7 +112,6 @@ import ReactLive from "../../components/ReactLive";
       wrap
       code={`import {
     getProviderFromUrl,
-    ProviderIdFunctionMap,
     getYouTubeIdFromUrl,
     youTubeUrlRegex,
 } from "@social-embed/lib";
@@ -132,11 +131,20 @@ getYouTubeIdFromUrl(
 const provider = getProviderFromUrl(
     "https://youtu.be/watch?v=Bd8_vO5zrjo"
 );
-// => "YouTube"
+// => {
+//   name: "YouTube",
+//   canParseUrl: [Function],
+//   getIdFromUrl: [Function],
+//   getEmbedUrlFromId: [Function]
+// }
 
-const getId = ProviderIdFunctionMap[provider];
-getId("https://youtu.be/watch?v=Bd8_vO5zrjo");
+provider.getIdFromUrl(
+    "https://youtu.be/watch?v=Bd8_vO5zrjo"
+);
 // => "Bd8_vO5zrjo"
+
+provider.getEmbedUrlFromId("Bd8_vO5zrjo");
+// => "https://www.youtube.com/embed/Bd8_vO5zrjo"
 `}
 />
 
