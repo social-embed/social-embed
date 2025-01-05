@@ -1,9 +1,9 @@
 /**
- * @license See LICENSE, Copyright 2021- Tony Narlock, license MIT.
+ * @license
+ * See LICENSE. Copyright 2021- Tony Narlock, license MIT.
+ *
+ * This component is part of the @social-embed/wc package.
  */
-import { LitElement, type TemplateResult, html } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import { ifDefined } from "lit/directives/if-defined.js";
 
 import {
   getDailyMotionEmbedFromId,
@@ -12,7 +12,7 @@ import {
   getEdPuzzleIdFromUrl,
   getLoomEmbedUrlFromId,
   getLoomIdFromUrl,
-  getProviderFromUrl, // returns an object with .name or undefined
+  getProviderFromUrl, // returns an object with `.name` or undefined
   getSpotifyEmbedUrlFromIdAndType,
   getSpotifyIdAndTypeFromUrl,
   getVimeoEmbedUrlFromId,
@@ -23,66 +23,110 @@ import {
   getYouTubeIdFromUrl,
   isValidUrl,
 } from "@social-embed/lib";
+import { LitElement, type TemplateResult, html } from "lit";
+import { customElement, property } from "lit/decorators.js";
+import { ifDefined } from "lit/directives/if-defined.js";
 
 /**
- * An interface for dimension properties in the embed.
+ * Represents dimension properties (width, height) as well as their unit-infused variations.
  */
 interface Dimensions {
+  /**
+   * The raw width setting (e.g. "560" or "100%").
+   */
   width: string;
+
+  /**
+   * The raw height setting (e.g. "315" or "100%").
+   */
   height: string;
+
+  /**
+   * The width with explicit units (e.g. "560px"), if needed.
+   */
   widthWithUnits?: string;
+
+  /**
+   * The height with explicit units (e.g. "315px"), if needed.
+   */
   heightWithUnits?: string;
 }
 
 /**
- * Renders embeds from `<o-embed url="">` tags
+ * `<o-embed>` is a LitElement-based web component that automatically detects and
+ * renders embeddable `<iframe>`s for media URLs, including YouTube, Vimeo, Spotify, etc.
  *
- * @slot - Directly pass through child contents to bottom of embed, optional.
+ * @remarks
+ * - If the provided `url` is unrecognized, it falls back to a generic `<iframe>` if valid.
+ * - If the `url` is syntactically invalid, it displays a short message: "No provider found."
+ *
+ * @slot - Optional slot for passing child content (rendered after the iframe).
+ *
+ * @example
+ * ```html
+ * <o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
+ * ```
  */
 @customElement("o-embed")
 export class OEmbedElement extends LitElement {
   /**
-   * The URL or ID (if supported)
+   * The URL or ID (if supported) for the embedded media.
+   * Commonly points to a YouTube, Vimeo, or other recognized service link.
    */
-  @property({ type: String }) url!: string;
+  @property({ type: String })
+  public url!: string;
 
   /**
-   * Pass-through of width attribute
+   * A pass-through of the `width` attribute for the `<iframe>`.
+   *
+   * @defaultValue `"560"`
    */
-  @property({ type: String }) width = "560";
+  @property({ type: String })
+  public width = "560";
 
   /**
-   * Pass-through of height attribute
+   * A pass-through of the `height` attribute for the `<iframe>`.
+   *
+   * @defaultValue `"315"`
    */
-  @property({ type: String }) height = "315";
+  @property({ type: String })
+  public height = "315";
 
   /**
-   * Pass-through of frameborder attribute, only used in iframe embeds.
+   * A pass-through of the `frameborder` attribute, only used in certain embeds.
+   *
+   * @defaultValue `"0"`
    */
-  @property({ type: String }) frameborder = "0";
+  @property({ type: String })
+  public frameborder = "0";
 
   /**
-   * For YouTube only. Passing anything other than 1/true omits the tag.
+   * Controls the "allowfullscreen" attribute on certain iframes (e.g. YouTube).
+   * Passing anything other than `1`/`true` causes the attribute to be omitted.
+   *
+   * @defaultValue `"true"`
    */
-  @property({ type: String }) allowfullscreen: string | boolean | undefined =
-    "true";
+  @property({ type: String })
+  public allowfullscreen: string | boolean | undefined = "true";
 
   /**
-   * Holds the matched provider object returned by `getProviderFromUrl`.
-   * e.g. an object with `.name === "YouTube"`.
+   * The matched provider object, determined by calling `getProviderFromUrl(this.url)`.
+   * If the URL is recognized, `.name` will be a string like `"YouTube"`.
    */
-  provider:
+  public provider:
     | {
-        /** e.g. "YouTube", "Vimeo", "Spotify", etc. */
+        /** The recognized provider name (e.g., "YouTube", "Vimeo", "Spotify"). */
         name: string;
       }
     | undefined;
 
   /**
-   * Returns a small `<style>` block for the default dimensions.
-   * We read them via `this.getDefaultDimensions()`.
+   * Creates a `<style>` block that sets width and height for the iframe based on
+   * computed defaults. Called within the main `render()` logic.
+   *
+   * @returns The lit `<style>` template that sets up the container and iframe dimensions.
    */
-  instanceStyle(): TemplateResult {
+  public instanceStyle(): TemplateResult {
     const { widthWithUnits, heightWithUnits } = this.getDefaultDimensions(
       this.provider,
     );
@@ -102,26 +146,29 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * The main render logic.
-   * - Finds the provider from the URL.
-   * - Switches on provider.name if recognized, else fallback.
+   * Main LitElement render cycle method.
+   * 1. Determines `provider` via `getProviderFromUrl(this.url)`.
+   * 2. Chooses a specialized rendering function or fallback logic.
+   *
+   * @returns A lit template containing the correct `<iframe>` or an error message.
    */
-  render(): TemplateResult {
+  public render(): TemplateResult {
     this.provider = getProviderFromUrl(this.url);
 
+    // Return early if no URL was provided at all
     if (!this.url || this.url === "") {
       return html``;
     }
 
     let embedResult: TemplateResult;
 
+    // If no recognized provider, fallback to a generic iframe or error message
     if (!this.provider) {
-      // If no recognized provider, fallback to an iframe if it’s a valid URL
       embedResult = isValidUrl(this.url)
-        ? this.renderIframe()
+        ? this.renderIframe() // fallback if the URL is syntactically valid
         : html`No provider found for ${this.url}`;
     } else {
-      // Switch on provider.name (a string)
+      // Switch on provider.name to call the appropriate embed rendering method
       switch (this.provider.name) {
         case "YouTube":
           embedResult = this.renderYouTube();
@@ -156,15 +203,18 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * Default dimension used by Spotify if not overridden by attributes.
+   * Default dimension overrides for Spotify content.
+   * Will be used if the user hasn't supplied their own `width`/`height`.
    */
-  static spotifyDefaultDimensions: Dimensions = {
+  public static spotifyDefaultDimensions: Dimensions = {
     height: "352",
     heightWithUnits: "352px",
   };
 
   /**
-   * Renders a Spotify embed `<iframe>`.
+   * Renders the `<iframe>` for a Spotify resource (track, album, playlist, artist, show, or episode).
+   *
+   * @returns A lit template containing a Spotify `<iframe>` with the correct dimensions.
    */
   public renderSpotify(): TemplateResult {
     const [spotifyId, spotifyType] = getSpotifyIdAndTypeFromUrl(this.url);
@@ -186,7 +236,11 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * Returns dimension info (width, height) depending on the recognized provider.
+   * Computes dimension info for a recognized provider, possibly using specialized defaults
+   * (e.g. Vimeo default is 640x268, EdPuzzle 470x404, etc.).
+   *
+   * @param providerObj - The object with `.name` for the matched provider, if any.
+   * @returns A `Dimensions` object with `width`, `height`, and optional unit-converted fields.
    */
   public getDefaultDimensions(providerObj?: { name?: string }): Dimensions {
     const providerName = providerObj?.name;
@@ -219,7 +273,10 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * Figures out the final width/height strings, adding 'px' if no unit present.
+   * A helper that finalizes width & height, adding `px` if no unit is present.
+   *
+   * @param options - Optional `defaults` object specifying fallback width/height.
+   * @returns A new `Dimensions` object with `widthWithUnits` and `heightWithUnits`.
    */
   public calculateDefaultDimensions({
     defaults,
@@ -234,7 +291,10 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * Renders a DailyMotion embed `<iframe>`.
+   * Renders a DailyMotion `<iframe>` using the extracted ID from `getDailyMotionIdFromUrl`.
+   * Falls back with a short message if the ID can't be found in the URL.
+   *
+   * @returns A lit template containing the DailyMotion `<iframe>` or an error message.
    */
   public renderDailyMotion(): TemplateResult {
     const dailyMotionId = getDailyMotionIdFromUrl(this.url);
@@ -251,9 +311,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${url}"
-        frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined,
-        )}
+        frameborder=${ifDefined(this.frameborder)}
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
         type="text/html"
@@ -263,9 +321,9 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * Default dimensions for Vimeo
+   * Default dimension overrides for Vimeo content.
    */
-  static vimeoDefaultDimensions: Dimensions = {
+  public static vimeoDefaultDimensions: Dimensions = {
     width: "640",
     widthWithUnits: "640px",
     height: "268",
@@ -273,7 +331,9 @@ export class OEmbedElement extends LitElement {
   };
 
   /**
-   * Renders a Vimeo embed `<iframe>`.
+   * Renders a Vimeo `<iframe>` from a recognized Vimeo URL.
+   *
+   * @returns A lit template containing a Vimeo `<iframe>` or an error message if no ID found.
    */
   public renderVimeo(): TemplateResult {
     const vimeoId = getVimeoIdFromUrl(this.url);
@@ -289,9 +349,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${url}"
-        frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined,
-        )}
+        frameborder=${ifDefined(this.frameborder)}
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
@@ -300,14 +358,14 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * Renders a YouTube embed `<iframe>`.
+   * Renders a YouTube `<iframe>` from a recognized YouTube URL.
+   * Returns an empty template if no ID can be extracted.
    */
   public renderYouTube(): TemplateResult {
     const youtubeId = getYouTubeIdFromUrl(this.url);
     if (!youtubeId) {
       return html``;
     }
-
     const youtubeUrl = getYouTubeEmbedUrlFromId(youtubeId);
 
     return html`
@@ -315,9 +373,7 @@ export class OEmbedElement extends LitElement {
         width="${this.width}"
         height="${this.height}"
         src="${youtubeUrl}"
-        frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined,
-        )}
+        frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
       <slot></slot>
@@ -325,7 +381,8 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * If provider is not recognized but the URL is valid, we fallback to a generic iframe.
+   * Renders a generic `<iframe>` for valid but unrecognized URLs.
+   * If the URL is invalid, `render()` won’t call this method.
    */
   public renderIframe(): TemplateResult {
     const { width, height } = this.getDefaultDimensions(this.provider);
@@ -334,18 +391,16 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${this.url}"
-        frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined,
-        )}
+        frameborder=${ifDefined(this.frameborder)}
       ></iframe>
       <slot></slot>
     `;
   }
 
   /**
-   * Default dimension overrides for EdPuzzle
+   * Default dimension overrides for EdPuzzle content.
    */
-  static edPuzzleDefaultDimensions: Dimensions = {
+  public static edPuzzleDefaultDimensions: Dimensions = {
     width: "470",
     widthWithUnits: "470px",
     height: "404",
@@ -353,7 +408,8 @@ export class OEmbedElement extends LitElement {
   };
 
   /**
-   * Renders an EdPuzzle `<iframe>`.
+   * Renders an EdPuzzle `<iframe>` from a recognized EdPuzzle URL.
+   * Displays an error message if no ID can be extracted.
    */
   public renderEdPuzzle(): TemplateResult {
     if (!this.url) {
@@ -372,9 +428,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${embedUrl}"
-        frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined,
-        )}
+        frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
       <slot></slot>
@@ -382,9 +436,9 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * Default dimension overrides for Wistia
+   * Default dimension overrides for Wistia content.
    */
-  static wistiaDefaultDimensions: Dimensions = {
+  public static wistiaDefaultDimensions: Dimensions = {
     width: "470",
     widthWithUnits: "470px",
     height: "404",
@@ -392,7 +446,8 @@ export class OEmbedElement extends LitElement {
   };
 
   /**
-   * Renders a Wistia embed `<iframe>`.
+   * Renders a Wistia `<iframe>` from a recognized Wistia URL.
+   * Displays an error message if no ID can be extracted.
    */
   public renderWistia(): TemplateResult {
     if (!this.url) {
@@ -411,9 +466,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${embedUrl}"
-        frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined,
-        )}
+        frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
       <slot></slot>
@@ -421,9 +474,9 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * Default dimension overrides for Loom
+   * Default dimension overrides for Loom content.
    */
-  static loomDefaultDimensions: Dimensions = {
+  public static loomDefaultDimensions: Dimensions = {
     width: "470",
     widthWithUnits: "470px",
     height: "404",
@@ -431,7 +484,8 @@ export class OEmbedElement extends LitElement {
   };
 
   /**
-   * Renders a Loom embed `<iframe>`.
+   * Renders a Loom `<iframe>` from a recognized Loom URL.
+   * Displays an error message if no ID can be extracted.
    */
   public renderLoom(): TemplateResult {
     if (!this.url) {
@@ -450,9 +504,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${embedUrl}"
-        frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined,
-        )}
+        frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
       <slot></slot>
@@ -460,7 +512,10 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
-   * Helper function to decide whether to include `allowfullscreen="true"`.
+   * Helper function to decide if `allowfullscreen="true"` should be set.
+   *
+   * @returns `true` if the user supplied `allowfullscreen` as `""`, `"true"`, `true`, or `"1"`;
+   * otherwise `undefined`.
    */
   private shouldAllowFullscreen(): true | undefined {
     return this.allowfullscreen === "" ||
@@ -474,10 +529,11 @@ export class OEmbedElement extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
+    /** Provides recognition in TS for the <o-embed> element. */
     "o-embed": OEmbedElement;
   }
 
-  // If you use JSX/TSX:
+  // If you’re using JSX/TSX, include a declaration for the custom element:
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
