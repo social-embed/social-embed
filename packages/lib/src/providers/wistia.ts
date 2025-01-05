@@ -1,3 +1,5 @@
+import type { EmbedProvider } from "../provider";
+
 /**
  * Detecting and parsing for Wistia URLs.
  *
@@ -47,3 +49,19 @@ export const getWistiaIdFromUrl = (url: string | undefined): string => {
  */
 export const getWistiaEmbedUrlFromId = (id: string): string =>
   `https://fast.wistia.net/embed/iframe/${id}`;
+
+export const WistiaProvider: EmbedProvider = {
+  name: "Wistia",
+
+  canParseUrl(url: string) {
+    return wistiaUrlRegex.test(url);
+  },
+
+  getIdFromUrl(url: string) {
+    return getWistiaIdFromUrl(url);
+  },
+
+  getEmbedUrlFromId(id: string) {
+    return getWistiaEmbedUrlFromId(id);
+  },
+};
