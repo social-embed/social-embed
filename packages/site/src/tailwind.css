@@ -21,6 +21,32 @@
   }
 }
 
+/** <pre> Headers on READMEs **/
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) code {
+  font-size: 40%; /* Base font size for extra-small screens (default) */
+}
+
+@media (min-width: 480px) {
+  /* Target small displays like phones */
+  .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) code {
+    font-size: 50%;
+  }
+}
+
+@media (min-width: 640px) {
+  /* Target medium displays like tablets */
+  .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) code {
+    font-size: 70%;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Target larger displays like desktops */
+  .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) code {
+    font-size: inherit; /* Default or larger font size */
+  }
+}
+
 /** For code embeds on example pages **/
 .sl-markdown-content :is(video, iframe):not(:where(.not-content *)) {
   height: revert-layer;
