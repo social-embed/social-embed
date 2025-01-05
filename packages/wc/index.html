@@ -4,17 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Give &lt;o-embed&gt; a try!</title>
+    <!-- Import the <o-embed> component from our local source -->
     <script type="module" src="/src/OEmbedElement.ts"></script>
   </head>
   <body>
-    <h1>Give <code>&lt;o-embed&gt;&lt;/o-embed&gt;</code> a try!</h1>
+    <h1>Give <code>&lt;o-embed&gt;</code> a try!</h1>
 
+    <!-- Example 1: YouTube shortened URL -->
     <o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>
 
     <hr />
 
     <p>allowfullscreen="false":</p>
-
+    <!-- Example 2: YouTube watch URL, explicitly disabling fullscreen -->
     <o-embed
       url="https://www.youtube.com/watch?v=NB5hH3ksvKE"
       allowfullscreen="false"
@@ -22,16 +24,40 @@
 
     <hr />
 
+    <!-- Example 3: Spotify track URL -->
     <o-embed
       url="https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs?si=_AayG1M6SkiRSomgoM_Vxg"
     ></o-embed>
 
     <hr />
 
+    <!-- Example 4: Vimeo link -->
     <o-embed url="https://vimeo.com/134668506"></o-embed>
 
     <hr />
 
+    <!-- Example 5: DailyMotion link -->
     <o-embed url="https://www.dailymotion.com/video/x7znrd0"></o-embed>
+
+    <hr />
+
+    <h2>Fallback &amp; Error Handling</h2>
+
+    <!-- Example 6: Unrecognized but valid URL (will generate a generic iframe) -->
+    <p>
+      <code>https://example.com/video/xyz</code> is a valid URL but not recognized
+      by any known provider, so it will produce a fallback generic
+      <code>&lt;iframe&gt;</code>.
+    </p>
+    <o-embed url="https://example.com/video/xyz"></o-embed>
+
+    <hr />
+
+    <!-- Example 7: Invalid URL (will display "No provider found for..." message) -->
+    <p>
+      <code>notaurl</code> is invalid, so <code>o-embed</code> will show
+      <em>No provider found</em>.
+    </p>
+    <o-embed url="notaurl"></o-embed>
   </body>
 </html>
