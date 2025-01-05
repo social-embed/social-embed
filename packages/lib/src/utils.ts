@@ -1,89 +1,6 @@
 import { Provider } from "./constants";
-import * as DailyMotion from "./providers/dailymotion";
-import * as EdPuzzle from "./providers/edpuzzle";
-import * as Loom from "./providers/loom";
-import * as Spotify from "./providers/spotify";
-import * as Vimeo from "./providers/vimeo";
-import * as Wistia from "./providers/wistia";
-import * as YouTube from "./providers/youtube";
-import type { ValueOfProvider } from "./types";
-
-export const getProviderFromUrl = (url: string): Provider | undefined => {
-  if (!url) {
-    return undefined;
-  }
-  if (url.match(/dailymotion/)) {
-    return Provider.DailyMotion;
-  }
-  if (url.match(/spotify/)) {
-    return Provider.Spotify;
-  }
-  if (url.match(/vimeo/)) {
-    return Provider.Vimeo;
-  }
-  if (url.match(/youtu\.?be/)) {
-    return Provider.YouTube;
-  }
-  if (url.match(/edpuzzle.com/)) {
-    return Provider.EdPuzzle;
-  }
-  if (Wistia.getWistiaIdFromUrl(url)) {
-    return Provider.Wistia;
-  }
-  if (Loom.getLoomIdFromUrl(url)) {
-    return Provider.Loom;
-  }
-  return undefined;
-};
-
-export const ProviderIdFunctionMap: {
-  [P in ValueOfProvider]: (url: string) => string | string[];
-} = {
-  [Provider.DailyMotion]: DailyMotion.getDailyMotionIdFromUrl,
-  [Provider.Spotify]: Spotify.getSpotifyIdAndTypeFromUrl,
-  [Provider.Vimeo]: Vimeo.getVimeoIdFromUrl,
-  [Provider.YouTube]: YouTube.getYouTubeIdFromUrl,
-  [Provider.EdPuzzle]: EdPuzzle.getEdPuzzleIdFromUrl,
-  [Provider.Loom]: Loom.getLoomIdFromUrl,
-  [Provider.Wistia]: Wistia.getWistiaIdFromUrl,
-};
-
-type ProviderIdFn = {
-  [P in ValueOfProvider]: (id: string, ...args: unknown[]) => string;
-};
-
-export const ProviderIdUrlFunctionMap: ProviderIdFn = {
-  [Provider.DailyMotion]: DailyMotion.getDailyMotionEmbedFromId,
-  [Provider.Spotify]: Spotify.getSpotifyEmbedUrlFromIdAndType,
-  [Provider.Vimeo]: Vimeo.getVimeoEmbedUrlFromId,
-  [Provider.YouTube]: YouTube.getYouTubeEmbedUrlFromId,
-  [Provider.EdPuzzle]: EdPuzzle.getEdPuzzleEmbedUrlFromId,
-  [Provider.Loom]: Loom.getLoomEmbedUrlFromId,
-  [Provider.Wistia]: Wistia.getWistiaEmbedUrlFromId,
-};
-
-/**
- * Converts URL variations from sites to their "embed-friendly" URL.
- */
-export const convertUrlToEmbedUrl = (url: string): string => {
-  const provider = getProviderFromUrl(url);
-
-  if (!provider) return "";
-
-  const getId = ProviderIdFunctionMap[provider];
-  const getEmbedUrlFromId = ProviderIdUrlFunctionMap[provider];
-
-  const id = getId(url);
-
-  if (Array.isArray(id)) {
-    const _id = id.shift();
-    if (!_id) {
-      return "";
-    }
-    return getEmbedUrlFromId(_id, ...id);
-  }
-  return getEmbedUrlFromId(id);
-};
+import { defaultRegistry } from "./index"; // or import from "./registry"
+import type { EmbedProvider } from "./provider";
 
 export const isString = (val: unknown): val is string => {
   return typeof val === "string";
@@ -108,3 +25,29 @@ export const matcher =
       ? value.includes(regex)
       : new RegExp(regex).test(value);
   };
+
+/**
+ * Finds the first provider (in the default registry) that can handle the given URL.
+ */
+export function getProviderFromUrl(url: string): EmbedProvider | undefined {
+  if (!url) return undefined;
+  return defaultRegistry.findProviderByUrl(url);
+}
+
+/**
+ * Convert a recognized media URL into its iframe-friendly embed URL, or return an empty string if no match.
+ */
+export function convertUrlToEmbedUrl(url: string): string {
+  const provider = getProviderFromUrl(url);
+  if (!provider) return "";
+
+  const rawId = provider.getIdFromUrl(url);
+
+  if (Array.isArray(rawId)) {
+    // e.g., in Spotify’s case -> [id, type]
+    const [id, ...rest] = rawId;
+    if (!id) return "";
+    return provider.getEmbedUrlFromId(id, ...rest);
+  }
+  return provider.getEmbedUrlFromId(rawId);
+}
