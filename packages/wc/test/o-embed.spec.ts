@@ -8,16 +8,17 @@ import {
   getYouTubeEmbedUrlFromId,
   getYouTubeIdFromUrl,
 } from "@social-embed/lib";
-import { OEmbedElement } from "@social-embed/wc";
+import { describe, expect, it } from "vitest";
+import "../src/OEmbedElement.ts";
 
 describe("o-embed", () => {
   it("is defined", () => {
-    const el = document.createElement("o-embed");
-    assert.instanceOf(el, OEmbedElement);
+    const el = document.createElement("o-embed") as OEmbedElement;
+    expect(el).toBeInstanceOf(HTMLElement);
   });
 
   it("empty", async () => {
-    const el = await fixture(html`<o-embed></o-embed>`);
+    const el = await fixture<OEmbedElement>(html`<o-embed></o-embed>`);
     // no url => shadow DOM should be empty
     assert.shadowDom.equal(el, "");
   });
@@ -28,7 +29,9 @@ describe("o-embed", () => {
    */
   it("fallback to <iframe> for unrecognized but valid URL", async () => {
     const customUrl = "https://example.com/myembed/video1234";
-    const el = await fixture(html`<o-embed url=${customUrl}></o-embed>`);
+    const el = await fixture<OEmbedElement>(
+      html`<o-embed url=${customUrl}></o-embed>`,
+    );
 
     // Because it's a valid URL but an unrecognized service,
     // <o-embed> should produce a generic iframe with default 560x315
@@ -51,7 +54,9 @@ describe("o-embed", () => {
    */
   it("invalid URL => 'No provider found' message", async () => {
     const invalidUrl = "notaurl";
-    const el = await fixture(html`<o-embed url=${invalidUrl}></o-embed>`);
+    const el = await fixture<OEmbedElement>(
+      html`<o-embed url=${invalidUrl}></o-embed>`,
+    );
 
     // Because it's not a valid URL, the library can't even do a fallback iframe.
     // The OEmbedElement should produce "No provider found..."
@@ -68,7 +73,9 @@ describe("o-embed", () => {
     const embedSrc = getYouTubeEmbedUrlFromId(getYouTubeIdFromUrl(src));
 
     it("renders with default values and sets URL", async () => {
-      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      const el = await fixture<OEmbedElement>(
+        html`<o-embed url=${src}></o-embed>`,
+      );
       assert.shadowDom.equal(
         el,
         `
@@ -86,7 +93,7 @@ describe("o-embed", () => {
 
     it("renders with a width", async () => {
       const width = "500";
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} width=${width}></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -106,7 +113,7 @@ describe("o-embed", () => {
 
     it("renders with a width at 100%", async () => {
       const width = "100%";
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} width=${width}></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -126,7 +133,7 @@ describe("o-embed", () => {
 
     it("renders with a height", async () => {
       const height = "500";
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} height=${height}></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -147,7 +154,7 @@ describe("o-embed", () => {
 
     it("renders with a height at 100%", async () => {
       const height = "500";
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} height=${height}></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -167,7 +174,7 @@ describe("o-embed", () => {
     });
 
     it("renders with a height / width", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} height="500" width="500"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -186,17 +193,17 @@ describe("o-embed", () => {
     });
 
     it("handles a click", async () => {
-      const el = (await fixture(
+      const el = (await fixture<OEmbedElement>(
         html`<o-embed url=${src}></o-embed>`,
       )) as OEmbedElement;
+
       const shadowRoot = el.shadowRoot;
       assert.exists(shadowRoot);
 
-      const iframe = shadowRoot.querySelector("iframe");
+      const iframe = shadowRoot?.querySelector("iframe");
       assert.isNotNull(iframe, "Expected an <iframe> to be found");
-      iframe.click(); // or if using conditional checks:
-      if (!iframe) throw new Error("No iframe found");
-      iframe.click();
+      iframe?.click();
+      iframe?.click();
 
       await el.updateComplete;
       assert.shadowDom.equal(
@@ -215,7 +222,7 @@ describe("o-embed", () => {
     });
 
     it("renders with a set frameborder", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} frameborder="1"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -234,7 +241,7 @@ describe("o-embed", () => {
     });
 
     it("renders with a set allowfullscreen", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} allowfullscreen></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -253,7 +260,7 @@ describe("o-embed", () => {
     });
 
     it('renders with a set allowfullscreen="true"', async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} allowfullscreen="true"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -272,7 +279,7 @@ describe("o-embed", () => {
     });
 
     it('renders with a set allowfullscreen="false"', async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} allowfullscreen="false"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -290,7 +297,7 @@ describe("o-embed", () => {
     });
 
     it('renders with a set allowfullscreen="0"', async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} allowfullscreen="0"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -313,7 +320,9 @@ describe("o-embed", () => {
     const embedSrc = getVimeoEmbedUrlFromId(getVimeoIdFromUrl(src));
 
     it("renders with default values and sets URL", async () => {
-      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      const el = await fixture<OEmbedElement>(
+        html`<o-embed url=${src}></o-embed>`,
+      );
       assert.shadowDom.equal(
         el,
         `
@@ -331,7 +340,7 @@ describe("o-embed", () => {
     });
 
     it("renders with a width", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} width="500"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -351,7 +360,7 @@ describe("o-embed", () => {
     });
 
     it("renders with a height", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} height="500"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -371,7 +380,7 @@ describe("o-embed", () => {
     });
 
     it("renders with a height / width", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} height="500" width="500"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -391,17 +400,16 @@ describe("o-embed", () => {
     });
 
     it("handles a click", async () => {
-      const el = (await fixture(
+      const el = (await fixture<OEmbedElement>(
         html`<o-embed url=${src}></o-embed>`,
       )) as OEmbedElement;
       const shadowRoot = el.shadowRoot;
       assert.exists(shadowRoot);
 
-      const iframe = shadowRoot.querySelector("iframe");
+      const iframe = shadowRoot?.querySelector("iframe");
       assert.isNotNull(iframe, "Expected an <iframe> to be found");
-      iframe.click(); // or if using conditional checks:
-      if (!iframe) throw new Error("No iframe found");
-      iframe.click();
+      iframe?.click();
+      iframe?.click();
 
       await el.updateComplete;
       assert.shadowDom.equal(
@@ -421,7 +429,7 @@ describe("o-embed", () => {
     });
 
     it("renders with a set frameborder", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} frameborder="1"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -441,7 +449,7 @@ describe("o-embed", () => {
     });
 
     it("renders with a set allowfullscreen", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} allowfullscreen></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -461,7 +469,7 @@ describe("o-embed", () => {
     });
 
     it('renders with a set allowfullscreen="true"', async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} allowfullscreen="true"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -481,7 +489,7 @@ describe("o-embed", () => {
     });
 
     it('renders with a set allowfullscreen="false"', async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} allowfullscreen="false"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -500,7 +508,7 @@ describe("o-embed", () => {
     });
 
     it('renders with a set allowfullscreen="0"', async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} allowfullscreen="0"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -525,7 +533,9 @@ describe("o-embed", () => {
     const embedSrc = getDailyMotionEmbedFromId(getDailyMotionIdFromUrl(src));
 
     it("renders with url", async () => {
-      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      const el = await fixture<OEmbedElement>(
+        html`<o-embed url=${src}></o-embed>`,
+      );
       assert.shadowDom.equal(
         el,
         `
@@ -546,7 +556,7 @@ describe("o-embed", () => {
     });
 
     it("renders with 100%", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} width="100%" height="100%"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -575,7 +585,9 @@ describe("o-embed", () => {
       "https://edpuzzle.com/embed/media/605e402a37f014429d0c87fe";
 
     it("renders with url", async () => {
-      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      const el = await fixture<OEmbedElement>(
+        html`<o-embed url=${src}></o-embed>`,
+      );
       assert.shadowDom.equal(
         el,
         `
@@ -593,7 +605,7 @@ describe("o-embed", () => {
     });
 
     it("renders with 100%", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} width="100%" height="100%"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -621,7 +633,9 @@ describe("o-embed", () => {
     const embedSrc = `https://www.loom.com/embed/${loomId}`;
 
     it("renders with url", async () => {
-      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      const el = await fixture<OEmbedElement>(
+        html`<o-embed url=${src}></o-embed>`,
+      );
       assert.shadowDom.equal(
         el,
         `
@@ -639,7 +653,7 @@ describe("o-embed", () => {
     });
 
     it("renders with 100%", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} width="100%" height="100%"></o-embed>`,
       );
       assert.shadowDom.equal(
@@ -667,7 +681,9 @@ describe("o-embed", () => {
     const embedSrc = `https://fast.wistia.net/embed/iframe/${wistiaId}`;
 
     it("renders with url", async () => {
-      const el = await fixture(html`<o-embed url=${src}></o-embed>`);
+      const el = await fixture<OEmbedElement>(
+        html`<o-embed url=${src}></o-embed>`,
+      );
       assert.shadowDom.equal(
         el,
         `
@@ -685,7 +701,7 @@ describe("o-embed", () => {
     });
 
     it("renders with 100%", async () => {
-      const el = await fixture(
+      const el = await fixture<OEmbedElement>(
         html`<o-embed url=${src} width="100%" height="100%"></o-embed>`,
       );
       assert.shadowDom.equal(

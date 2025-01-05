@@ -31,7 +31,7 @@
     "analyze": "wca analyze \"src/**/*.ts\" --outFile ../site/custom-elements.json",
     "serve": "vite preview",
     "pretest": "pnpm --filter @social-embed/lib build",
-    "test": "echo 'noop';",
+    "test": "vitest run",
     "test:watch": "pnpm test --watch"
   },
   "keywords": [
