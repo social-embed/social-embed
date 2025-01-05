@@ -11,6 +11,26 @@ sidebar:
 
 _Details on the next release will go here._
 
+### Breaking Changes
+
+- **Remove `Provider` enum** in favor of a **provider registry** or name-based detection.
+  - All references to `Provider.*` are removed.
+  - `getProviderFromUrl(url)` now returns an **object** with a `.name` field (e.g. `"YouTube"`) instead of an enum entry.
+  - `ProviderIdFunctionMap` and `ProviderIdUrlFunctionMap` no longer needed. Each provider is handled in its own module or by calling `convertUrlToEmbedUrl(url)`.
+
+### Enhancements
+
+- **Flexible provider approach**:
+  - Each provider has a consistent shape (`name`, `getIdFromUrl`, `getEmbedUrlFromId`).
+  - A new or custom provider can be added to a registry or used independently without updating an enum.
+- **Spotify**: Extended detection/embedding beyond just `track`, `album`, `playlist` to **also support** `artist`, `show`, and `episode` links.
+- **Improved TSDoc**: Various files now include richer doc comments for Typedoc/TypeDoc generation.
+
+### Tests
+
+- **Refactored unit tests** to remove references to the old `Provider` enum.
+- **New tests** confirm that URL detection works with the new registry approach or direct function calls.
+
 ## 0.1.0-next.9 (2025-01-01)
 
 _Maintenance release only, no bug fixes or new features._
