@@ -1,5 +1,4 @@
 import { assert, fixture, html } from "@open-wc/testing";
-
 import {
   convertUrlToEmbedUrl,
   getDailyMotionEmbedFromId,
@@ -19,9 +18,47 @@ describe("o-embed", () => {
 
   it("empty", async () => {
     const el = await fixture(html`<o-embed></o-embed>`);
+    // no url => shadow DOM should be empty
+    assert.shadowDom.equal(el, "");
+  });
+
+  /**
+   * Extra: Fallback test for a valid URL from an unrecognized provider
+   * (e.g. https://example.com/mystream). We expect a plain <iframe>.
+   */
+  it("fallback to <iframe> for unrecognized but valid URL", async () => {
+    const customUrl = "https://example.com/myembed/video1234";
+    const el = await fixture(html`<o-embed url=${customUrl}></o-embed>`);
+
+    // Because it's a valid URL but an unrecognized service,
+    // <o-embed> should produce a generic iframe with default 560x315
     assert.shadowDom.equal(
       el,
       `
+      <iframe
+        width="560"
+        height="315"
+        src="${customUrl}"
+        frameborder="0"
+      ></iframe>
+      <slot></slot>
+    `,
+    );
+  });
+
+  /**
+   * Extra: If the URL is invalid, we expect a "No provider found" message.
+   */
+  it("invalid URL => 'No provider found' message", async () => {
+    const invalidUrl = "notaurl";
+    const el = await fixture(html`<o-embed url=${invalidUrl}></o-embed>`);
+
+    // Because it's not a valid URL, the library can't even do a fallback iframe.
+    // The OEmbedElement should produce "No provider found..."
+    assert.shadowDom.equal(
+      el,
+      `
+      No provider found for ${invalidUrl}
     `,
     );
   });
@@ -154,8 +191,13 @@ describe("o-embed", () => {
       )) as OEmbedElement;
       const shadowRoot = el.shadowRoot;
       assert.exists(shadowRoot);
+
       const iframe = shadowRoot.querySelector("iframe");
+      assert.isNotNull(iframe, "Expected an <iframe> to be found");
+      iframe.click(); // or if using conditional checks:
+      if (!iframe) throw new Error("No iframe found");
       iframe.click();
+
       await el.updateComplete;
       assert.shadowDom.equal(
         el,
@@ -354,8 +396,13 @@ describe("o-embed", () => {
       )) as OEmbedElement;
       const shadowRoot = el.shadowRoot;
       assert.exists(shadowRoot);
+
       const iframe = shadowRoot.querySelector("iframe");
+      assert.isNotNull(iframe, "Expected an <iframe> to be found");
+      iframe.click(); // or if using conditional checks:
+      if (!iframe) throw new Error("No iframe found");
       iframe.click();
+
       await el.updateComplete;
       assert.shadowDom.equal(
         el,
@@ -498,7 +545,7 @@ describe("o-embed", () => {
       );
     });
 
-    it("renders with with 100%", async () => {
+    it("renders with 100%", async () => {
       const el = await fixture(
         html`<o-embed url=${src} width="100%" height="100%"></o-embed>`,
       );
@@ -545,7 +592,7 @@ describe("o-embed", () => {
       );
     });
 
-    it("renders with with 100%", async () => {
+    it("renders with 100%", async () => {
       const el = await fixture(
         html`<o-embed url=${src} width="100%" height="100%"></o-embed>`,
       );
@@ -591,7 +638,7 @@ describe("o-embed", () => {
       );
     });
 
-    it("renders with with 100%", async () => {
+    it("renders with 100%", async () => {
       const el = await fixture(
         html`<o-embed url=${src} width="100%" height="100%"></o-embed>`,
       );
@@ -637,7 +684,7 @@ describe("o-embed", () => {
       );
     });
 
-    it("renders with with 100%", async () => {
+    it("renders with 100%", async () => {
       const el = await fixture(
         html`<o-embed url=${src} width="100%" height="100%"></o-embed>`,
       );
@@ -718,12 +765,10 @@ describe("convertUrlToEmbedUrl", () => {
       convertUrlToEmbedUrl("https://www.youtube.com/watch?v=FTQbiNvZqaY"),
       "https://www.youtube.com/embed/FTQbiNvZqaY",
     );
-
     assert.equal(
       convertUrlToEmbedUrl("https://youtu.be/FTQbiNvZqaY"),
       "https://www.youtube.com/embed/FTQbiNvZqaY",
     );
-
     assert.equal(
       convertUrlToEmbedUrl("youtu.be/FTQbiNvZqaY"),
       "https://www.youtube.com/embed/FTQbiNvZqaY",
