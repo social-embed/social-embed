@@ -38,11 +38,11 @@ console.log(embedUrl);
 - **What it does**  
   - Detects the provider (YouTube, Vimeo, Spotify, Loom, etc.) by testing known URL patterns  
   - Extracts the necessary ID(s)  
-  - Returns a fully embeddable URL (e.g. `https://www.youtube.com/embed/FTQbiNvZqaY`)  
+  - Returns a fully embeddable URL (e.g. `https://www.youtube.com/embed/FTQbiNvZqaY`)
 
 - **Invalid or Unrecognized**  
   - If the URL is **valid** but from an unknown service, `convertUrlToEmbedUrl` returns the **normalized** URL or `""` depending on the version of the library.  
-  - If the string is not a valid URL at all, it returns `""`.  
+  - If the string is not a valid URL at all, it returns `""`.
 
 #### Example: Spotify
 
@@ -199,7 +199,43 @@ const embedUrl = getWistiaEmbedUrlFromId(wistiaId);
 
 ---
 
-## 4. Adding a New Provider
+## 4. `getProviderFromUrl(url)`
+
+If you’d like to detect the provider without immediately converting the URL, call **`getProviderFromUrl(url)`**. It returns an **object** with `.name`, `.getIdFromUrl()`, and `.getEmbedUrlFromId()` methods:
+
+````ts
+import { getProviderFromUrl } from "@social-embed/lib";
+
+const provider = getProviderFromUrl("https://youtu.be/FTQbiNvZqaY");
+/*
+{
+  name: "YouTube",
+  canParseUrl: [Function],
+  getIdFromUrl: [Function],
+  getEmbedUrlFromId: [Function]
+}
+*/
+
+if (provider) {
+  // Extract the video ID or IDs
+  const extractedId = provider.getIdFromUrl("https://youtu.be/FTQbiNvZqaY");
+  // => "FTQbiNvZqaY"
+
+  // Build the final embed URL
+  const embedUrl = provider.getEmbedUrlFromId(extractedId);
+  // => "https://www.youtube.com/embed/FTQbiNvZqaY"
+
+  console.log(`Embed URL: ${embedUrl}`);
+} else {
+  console.log("No recognized provider!");
+}
+````
+
+- **If** `getProviderFromUrl(url)` returns `undefined`, it means no known provider was detected.
+
+---
+
+## 5. Adding a New Provider
 
 If you have a custom service (e.g. **MyCustom**), you can implement your own detection and embed logic.
 
@@ -245,6 +281,6 @@ If you have a custom service (e.g. **MyCustom**), you can implement your own det
 - **Manual** approach: provider-specific ID extraction + embed link building.  
 - **Custom providers**: add them via the registry or use your own logic.  
 
-If you run into any issues or want to extend coverage (e.g., new services like `Bandcamp`, `SoundCloud`), feel free to open a PR or an issue.  
+If you run into any issues or want to extend coverage (e.g., new services like `Bandcamp`, `SoundCloud`), feel free to open a PR or an issue.
 
 Check out the [tests on GitHub](https://github.com/social-embed/social-embed) or the [Playground](/lib/playground/) for more real-world usage.
