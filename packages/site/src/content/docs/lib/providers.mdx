@@ -1,0 +1,157 @@
+---
+id: providers
+title: Providers
+description: Extending providers
+sidebar:
+  order: 20
+---
+
+A **Provider** is an object that tells the library how to detect and embed a specific media service (e.g., YouTube, Vimeo, Spotify, or your own custom platform). Each Provider has a common interface with methods to:
+
+1. **Check** if a URL can be parsed (e.g., `canParseUrl(url)`).
+2. **Extract** relevant identifiers from that URL (e.g., `getIdFromUrl(url)`).
+3. **Generate** an “embed-ready” URL from those identifiers (e.g., `getEmbedUrlFromId(id, ...args)`).
+
+## What Is a Provider?
+
+In code terms, each provider implements an interface that might look like:
+
+```ts
+/**
+ * A typed interface for each Provider.
+ */
+export interface EmbedProvider {
+  /**
+   * A unique, descriptive name for the provider (e.g., "YouTube").
+   */
+  readonly name: string;
+
+  /**
+   * Return `true` if this provider can handle the given URL (usually by regex matching).
+   */
+  canParseUrl(url: string): boolean;
+
+  /**
+   * Extract ID(s) or any relevant metadata from the URL. 
+   * For example, YouTube extracts the 11-character video ID.
+   */
+  getIdFromUrl(url: string): string | string[];
+
+  /**
+   * Generate the final iframe-friendly embed URL from an ID and possibly extra arguments.
+   */
+  getEmbedUrlFromId(id: string, ...args: unknown[]): string;
+}
+```
+
+- **`name`:** A simple string label (e.g. `"YouTube"`, `"DailyMotion"`, `"MyCustom"`)  
+- **`canParseUrl(url)`:** Usually uses a regex or other logic to detect if the URL belongs to this provider.  
+- **`getIdFromUrl(url)`:** Extracts the part(s) needed to build an embed link. Sometimes it’s just one string (like a video ID), sometimes it can be multiple (like `[id, type]` for Spotify).  
+- **`getEmbedUrlFromId(id, ...args)`:** Builds the actual “iframe-friendly” embed URL that your site or user can place in a `<iframe src="...">`.
+
+## Built-in Providers
+
+@social-embed/lib ships with built-in providers for:
+- **YouTube**
+- **Vimeo**
+- **Spotify**
+- **Loom**
+- **Wistia**
+- **EdPuzzle**
+- **DailyMotion**
+  
+For each, the library has a default implementation that can detect (regex) and parse typical URL forms. This is how `convertUrlToEmbedUrl(url)` automatically recognizes, for instance, a YouTube or Vimeo link.
+
+## Adding a Custom Provider
+
+If you want to support a media service that @social-embed/lib doesn’t cover out-of-the-box, you can implement a custom provider object.
+
+### 1. Write Your Provider
+
+Here’s a minimal example for a hypothetical “MyCustom” service:
+
+```ts
+import type { EmbedProvider } from "@social-embed/lib";
+
+export const MyCustomProvider: EmbedProvider = {
+  name: "MyCustom",
+  
+  // Return true if URL matches your domain/format
+  canParseUrl(url: string) {
+    // e.g. "https://mycustom.example.com/video/<id>"
+    return /mycustom\.example\.com\/video\//.test(url);
+  },
+
+  // Extract the ID from the URL. In this example, we assume the last path segment is the ID.
+  getIdFromUrl(url: string) {
+    const segments = url.split("/");
+    return segments.pop() ?? "";
+  },
+
+  // Construct the final embed URL from the ID plus any optional arguments
+  getEmbedUrlFromId(id: string, ...args: unknown[]) {
+    // For example, "https://mycustom.example.com/embed/<id>"
+    return `https://mycustom.example.com/embed/${id}`;
+  },
+};
+```
+
+### 2. Register It in the Default Registry
+
+**If** you want your custom provider to work with `convertUrlToEmbedUrl(url)` or other “automatic” detection calls, you can register it in the **default registry**:
+
+```ts
+import { defaultRegistry } from "@social-embed/lib";
+import { MyCustomProvider } from "./MyCustomProvider";
+
+// Register your new provider
+defaultRegistry.register(MyCustomProvider);
+
+// Now `convertUrlToEmbedUrl()` should handle MyCustom links
+import { convertUrlToEmbedUrl } from "@social-embed/lib";
+
+console.log(
+  convertUrlToEmbedUrl("https://mycustom.example.com/video/xyz123"),
+);
+// "https://mycustom.example.com/embed/xyz123"
+```
+
+### 3. Or Use a Separate Registry (Optional)
+
+If you don’t want to modify the default registry, you can create your own `EmbedProviderRegistry` instance:
+
+```ts
+import { EmbedProviderRegistry } from "@social-embed/lib";
+import { MyCustomProvider } from "./MyCustomProvider";
+
+const myRegistry = new EmbedProviderRegistry();
+myRegistry.register(MyCustomProvider);
+
+// Then do something like:
+const provider = myRegistry.findProviderByUrl("https://mycustom.example.com/video/xyz123");
+if (provider) {
+  const id = provider.getIdFromUrl("https://mycustom.example.com/video/xyz123");
+  // ...
+}
+```
+
+This approach can be useful if you’re building a specialized environment or want to keep built-in providers separate from your custom ones.
+
+## Typical Workflow
+
+1. **`canParseUrl(url) => boolean`**  
+   - The library checks each registered provider in turn until one returns `true`.  
+2. **`getIdFromUrl(url) => string|string[]`**  
+   - Once we know which provider matches, we call this to extract the crucial bits (e.g. `["id", "type"]`).  
+3. **`getEmbedUrlFromId(id, ...args) => string`**  
+   - Finally, we build the actual `iframe` link from the ID and any optional arguments.
+
+## Further Reading
+
+- [Examples](/lib/examples): Real code samples for built-in providers  
+- [Registry Tests](https://github.com/social-embed/social-embed/tree/master/packages/lib/test): Where you can see how we test provider detection and embed URL generation  
+- [@social-embed/wc](https://social-embed.git-pull.com/wc/): A web component (`<o-embed>`) that uses these providers under the hood
+
+---
+
+**In short:** A **Provider** is basically a “plugin” that knows how to detect a certain service’s URLs and generate embed-friendly links. You can rely on built-in providers for mainstream services or create your own for any custom media flow!
