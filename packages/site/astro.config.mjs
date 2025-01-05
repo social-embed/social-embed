@@ -50,6 +50,7 @@ export default defineConfig({
           autogenerate: { directory: "wc" },
           badge: { text: "wc", variant: "tip" },
         },
+        "migration",
         "news",
       ],
       head: [
