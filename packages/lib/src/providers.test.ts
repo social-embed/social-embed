@@ -89,11 +89,10 @@ describe("SpotifyProvider", () => {
     expect(provider).toBeDefined();
     expect(provider?.name).toBe("Spotify");
 
-    // getIdFromUrl can return an array: [id, type] or similar
     const ids = provider?.getIdFromUrl(url);
     expect(Array.isArray(ids)).toBe(true);
     if (Array.isArray(ids)) {
-      // Example: [ "1w4etUoKfql47wtTFq031f", "track" ]
+      // Expect [id, type] => ["1w4etUoKfql47wtTFq031f", "track"]
       expect(ids[0]).toBe("1w4etUoKfql47wtTFq031f");
       expect(ids[1]).toBe("track");
 
@@ -124,6 +123,127 @@ describe("SpotifyProvider", () => {
       expect(embedUrl).toBe(
         "https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3",
       );
+    }
+  });
+
+  it("should detect and parse Spotify playlist URLs", () => {
+    const registry = new EmbedProviderRegistry();
+    registry.register(SpotifyProvider);
+
+    const url = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M";
+    const provider = registry.findProviderByUrl(url);
+
+    expect(provider).toBeDefined();
+    expect(provider?.name).toBe("Spotify");
+
+    const ids = provider?.getIdFromUrl(url);
+    expect(Array.isArray(ids)).toBe(true);
+    if (Array.isArray(ids)) {
+      expect(ids[0]).toBe("37i9dQZF1DXcBWIGoYBM5M");
+      expect(ids[1]).toBe("playlist");
+
+      const embedUrl = provider?.getEmbedUrlFromId(ids[0], ids[1]);
+      expect(embedUrl).toBe(
+        "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M",
+      );
+    }
+  });
+
+  it("should detect and parse Spotify artist URLs", () => {
+    const registry = new EmbedProviderRegistry();
+    registry.register(SpotifyProvider);
+
+    const url = "https://open.spotify.com/artist/1Xyo4u8uXC1ZmMpatF05PJ";
+    const provider = registry.findProviderByUrl(url);
+
+    expect(provider).toBeDefined();
+    expect(provider?.name).toBe("Spotify");
+
+    const ids = provider?.getIdFromUrl(url);
+    expect(Array.isArray(ids)).toBe(true);
+    if (Array.isArray(ids)) {
+      expect(ids[0]).toBe("1Xyo4u8uXC1ZmMpatF05PJ");
+      expect(ids[1]).toBe("artist");
+
+      const embedUrl = provider?.getEmbedUrlFromId(ids[0], ids[1]);
+      expect(embedUrl).toBe(
+        "https://open.spotify.com/embed/artist/1Xyo4u8uXC1ZmMpatF05PJ",
+      );
+    }
+  });
+
+  it("should detect and parse Spotify show URLs", () => {
+    const registry = new EmbedProviderRegistry();
+    registry.register(SpotifyProvider);
+
+    const url = "https://open.spotify.com/show/5YEXv3C5fnMA3lFzNim4Ya";
+    const provider = registry.findProviderByUrl(url);
+
+    expect(provider).toBeDefined();
+    expect(provider?.name).toBe("Spotify");
+
+    const ids = provider?.getIdFromUrl(url);
+    expect(Array.isArray(ids)).toBe(true);
+    if (Array.isArray(ids)) {
+      expect(ids[0]).toBe("5YEXv3C5fnMA3lFzNim4Ya");
+      expect(ids[1]).toBe("show");
+
+      const embedUrl = provider?.getEmbedUrlFromId(ids[0], ids[1]);
+      expect(embedUrl).toBe(
+        "https://open.spotify.com/embed/show/5YEXv3C5fnMA3lFzNim4Ya",
+      );
+    }
+  });
+
+  it("should detect and parse Spotify episode URLs", () => {
+    const registry = new EmbedProviderRegistry();
+    registry.register(SpotifyProvider);
+
+    const url = "https://open.spotify.com/episode/4XplJhQEj1Qp6QzrbA5sYk";
+    const provider = registry.findProviderByUrl(url);
+
+    expect(provider).toBeDefined();
+    expect(provider?.name).toBe("Spotify");
+
+    const ids = provider?.getIdFromUrl(url);
+    expect(Array.isArray(ids)).toBe(true);
+    if (Array.isArray(ids)) {
+      expect(ids[0]).toBe("4XplJhQEj1Qp6QzrbA5sYk");
+      expect(ids[1]).toBe("episode");
+
+      const embedUrl = provider?.getEmbedUrlFromId(ids[0], ids[1]);
+      expect(embedUrl).toBe(
+        "https://open.spotify.com/embed/episode/4XplJhQEj1Qp6QzrbA5sYk",
+      );
+    }
+  });
+
+  it("should support custom query parameters for a track URL", () => {
+    // Example of passing them in the embed (though typically you'd append them to the generated URL)
+    const registry = new EmbedProviderRegistry();
+    registry.register(SpotifyProvider);
+
+    const trackUrl = "https://open.spotify.com/track/7ouMYWpwJ422jRcDASZB7P";
+    const provider = registry.findProviderByUrl(trackUrl);
+
+    expect(provider).toBeDefined();
+    expect(provider?.name).toBe("Spotify");
+
+    const ids = provider?.getIdFromUrl(trackUrl);
+    expect(Array.isArray(ids)).toBe(true);
+    if (Array.isArray(ids)) {
+      expect(ids[0]).toBe("7ouMYWpwJ422jRcDASZB7P");
+      expect(ids[1]).toBe("track");
+
+      // Suppose you supply custom query params. Typically you'd do:
+      // `embedUrl + "?theme=0&width=300&height=380"`.
+      // Here, we'll just confirm the base embed is correct:
+      const embedUrl = provider?.getEmbedUrlFromId(ids[0], ids[1]);
+      expect(embedUrl).toBe(
+        "https://open.spotify.com/embed/track/7ouMYWpwJ422jRcDASZB7P",
+      );
+      // Then you'd manually append "?theme=0&width=300&height=380"
+      // in your code if desired.
     }
   });
 
