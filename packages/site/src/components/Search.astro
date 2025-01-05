@@ -2,23 +2,29 @@
 import Default from "@astrojs/starlight/components/Search.astro";
 ---
 
-<div class="flex items-start max-h-[var(--sl-nav-height)] overflow-hidden align-center w-full gap-5 no-underline">
+<div class="flex flex-wrap items-start flex-start w-full gap-1 md:gap-3 lg:gap-5 p-3 lg:p-0">
+  <!-- Web Component -->
   <div class="flex flex-col items-start">
-    <a href="/wc" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">
-      <strong><code>&lt;o-embed&gt;</code> component</strong>
+    <a href="/wc" class="text-blue-600 hover:text-blue-500 dark:text-gray-100 dark:hover:text-blue-300 font-bold">
+      <span class="block md:hidden">wc</span>
+      <span class="hidden md:block lg:hidden">web component</span>
+      <span class="hidden lg:block"><code>&lt;o-embed&gt;</code> component</span>
     </a>
-    <span class="text-xs text-gray-600 dark:text-gray-400 hidden lg:block">
-      (<a href="/wc/playground" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">Playground</a>,
-      <a href="https://www.npmjs.com/package/@social-embed/wc" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">NPM</a>)
+    <span class="text-xs text-gray-600 dark:text-gray-400 hidden md:block">
+      (<a href="/wc/playground" class="text-blue-600 hover:text-blue-500 dark:text-gray-100 dark:hover:text-blue-300">Playground</a>,
+      <a href="https://www.npmjs.com/package/@social-embed/wc" class="text-blue-600 hover:text-blue-500 dark:text-gray-100 dark:hover:text-blue-300">NPM</a>)
     </span>
   </div>
+
+  <!-- Library -->
   <div class="flex flex-col items-start">
-    <a href="/lib" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">
-      <strong>Library</strong>
+    <a href="/lib" class="text-blue-600 hover:text-blue-500 dark:text-gray-100 dark:hover:text-blue-300 font-bold">
+      <span class="block lg:hidden">lib</span>
+      <span class="hidden lg:block">Library</span>
     </a>
-    <span class="text-xs text-gray-600 dark:text-gray-400 hidden lg:block">
-      (<a href="/lib/playground" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">Playground</a>,
-      <a href="https://www.npmjs.com/package/@social-embed/lib" class="no-underline text-blue-600 hover:text-blue-500 dark:text-[var(--sl-color-gray-1)] dark:hover:text-blue-300">NPM</a>)
+    <span class="text-xs text-gray-600 dark:text-gray-400 hidden md:block">
+      (<a href="/lib/playground" class="text-blue-600 hover:text-blue-500 dark:text-gray-100 dark:hover:text-blue-300">Playground</a>,
+      <a href="https://www.npmjs.com/package/@social-embed/lib" class="text-blue-600 hover:text-blue-500 dark:text-gray-100 dark:hover:text-blue-300">NPM</a>)
     </span>
   </div>
 </div>
