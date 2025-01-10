@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.1.2",
-    "@astrojs/starlight": "^0.30.5",
+    "@astrojs/starlight": "^0.30.6",
     "@astrojs/starlight-docsearch": "^0.4.0",
     "@astrojs/starlight-tailwind": "^3.0.0",
     "@astrojs/tailwind": "^5.1.4",
@@ -30,7 +30,7 @@
     "@fontsource/ibm-plex-sans": "^5.1.1",
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
-    "astro": "^5.1.4",
+    "astro": "^5.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-live": "^4.1.8",
