@@ -11,6 +11,11 @@ jobs:
         node-version: [18.x, "20.x"]
 
     steps:
+      - name: Disable AppArmor
+        # Disable AppArmor's restricted user namespaces on Ubuntu 23.10+ so chrome sandboxes work
+        # https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md
+        run: echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+        shell: bash
       - uses: actions/checkout@v4
 
       - name: Install pnpm
