@@ -1,3 +1,7 @@
 {
-  "reject": "/.*react.*/"
+  "reject": [
+    "/.*react.*/",
+    "/.*tailwind*/",
+    "/.*astro*/",
+  ]
 }
