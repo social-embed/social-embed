@@ -31,7 +31,9 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: "puppeteer: Install browsers"
-        run: pnpm dlx puppeteer browsers install
+        run: pnpm node node_modules/puppeteer/install.mjs
+        # https://github.com/puppeteer/puppeteer/issues/10729
+        # run: pnpm dlx puppeteer browsers install
 
       - name: pnpm biome format .
         run: pnpm biome format .
