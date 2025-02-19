@@ -61,7 +61,7 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@open-wc/testing": "^4.0.0",
-    "@web/dev-server-esbuild": "^1.0.3",
+    "@web/dev-server-esbuild": "^1.0.4",
     "@web/dev-server-import-maps": "^0.2.1",
     "@web/test-runner": "^0.20.0",
     "@web/test-runner-puppeteer": "^0.18.0",
