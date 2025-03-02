@@ -162,7 +162,7 @@ provider.getEmbedUrlFromId("Bd8_vO5zrjo");
 </div>
 
 <div class="mt-16 mb-12">
-  <h2 class="text-2xl font-bold mb-6 text-center">Supported Platforms</h2>
+  <h2 class="text-2xl font-bold mb-6 text-center">Platforms You Can Embed</h2>
   
   <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-center max-w-4xl mx-auto">
     <a href="/wc/providers/youtube/" class="bg-slate-800/50 p-4 rounded-lg hover:bg-slate-700/50 transition-colors">
@@ -195,15 +195,16 @@ provider.getEmbedUrlFromId("Bd8_vO5zrjo");
   </div>
 </div>
 
-<div class="py-8 px-4 bg-slate-800/30 rounded-lg max-w-6xl mx-auto mb-16">
-  <h2 class="text-2xl font-bold mb-6 text-center">Quick Start</h2>
+<div class="py-8 px-4 bg-slate-800/30 rounded-lg max-w-4xl mx-auto mb-16">
+  <h2 class="text-2xl font-bold mb-6 text-center">Start Embedding in Minutes</h2>
+  <p class="text-center mb-8 max-w-4xl mx-auto">Choose your preferred approach: a ready-to-use Web Component or a flexible TypeScript library.</p>
   
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
     <div>
-      <h3 class="text-xl font-semibold mb-4">Web Component</h3>
+      <h3 class="text-xl font-semibold mb-4">Web Component: Ready to Use</h3>
       
       <div class="mb-4">
-        <div class="text-sm text-slate-400 mb-2">Install the package:</div>
+        <div class="text-sm text-slate-400 mb-2">Add to your project:</div>
         <Code
           lang="bash"
           wrap
@@ -222,7 +223,7 @@ provider.getEmbedUrlFromId("Bd8_vO5zrjo");
       </div>
       
       <div class="mb-4">
-        <div class="text-sm text-slate-400 mb-2">Import the component:</div>
+        <div class="text-sm text-slate-400 mb-2">Connect the component:</div>
         <Code
           lang="ts"
           wrap
@@ -231,22 +232,20 @@ provider.getEmbedUrlFromId("Bd8_vO5zrjo");
       </div>
       
       <div>
-        <div class="text-sm text-slate-400 mb-2">Use it in your HTML:</div>
+        <div class="text-sm text-slate-400 mb-2">Transform URLs into players:</div>
         <Code
           lang="html"
           wrap
-          code={`
-  <o-embed url="https://youtu.be/FTQbiNvZqaY" />
-`}
+          code={`<o-embed url="https://youtu.be/FTQbiNvZqaY" />`}
         />
       </div>
     </div>
     
     <div class="!mt-0">
-      <h3 class="text-xl font-semibold mb-4">URL Tools Library</h3>
+      <h3 class="text-xl font-semibold mb-4">Library: Full Control</h3>
       
       <div class="mb-4">
-        <div class="text-sm text-slate-400 mb-2">Install the package:</div>
+        <div class="text-sm text-slate-400 mb-2">Add to your project:</div>
         <Code
           lang="bash"
           wrap
@@ -265,7 +264,7 @@ provider.getEmbedUrlFromId("Bd8_vO5zrjo");
       </div>
       
       <div class="mb-4">
-        <div class="text-sm text-slate-400 mb-2">Import functions:</div>
+        <div class="text-sm text-slate-400 mb-2">Import what you need:</div>
         <Code
           lang="ts"
           wrap
@@ -277,7 +276,7 @@ provider.getEmbedUrlFromId("Bd8_vO5zrjo");
       </div>
       
       <div>
-        <div class="text-sm text-slate-400 mb-2">Extract video ID:</div>
+        <div class="text-sm text-slate-400 mb-2">Parse and transform media URLs:</div>
         <Code
           lang="ts"
           wrap
@@ -293,6 +292,6 @@ const embedUrl = provider.getEmbedUrlFromId(videoId);`}
   </div>
   
   <div class="text-center mt-8">
-    <LinkButton href="/getting-started/" icon="rocket" class="w-full sm:w-auto">Complete Installation Guide</LinkButton>
+    <LinkButton href="/getting-started/" icon="rocket" class="w-full sm:w-auto">View Complete Guide</LinkButton>
   </div>
 </div>
