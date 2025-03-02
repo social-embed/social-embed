@@ -9,7 +9,15 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
-_Details on the next release will go here._
+### Documentation
+
+- **README overhaul**: Enhanced documentation with:
+  - Better explanation of utility functions and their usage
+  - Improved installation instructions for different package managers
+  - More comprehensive examples for each supported platform
+  - Clearer structure and formatting
+
+_Additional details on the next release will go here._
 
 ## 0.1.0-next.10 (2025-01-05)
 

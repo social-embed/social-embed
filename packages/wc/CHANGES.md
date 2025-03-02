@@ -9,7 +9,15 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
-_Details on the next release will go here._
+### Documentation
+
+- **README overhaul**: Completely revitalized documentation with:
+  - Clearer introduction and value proposition
+  - Improved installation and usage instructions
+  - Enhanced code examples
+  - Better formatting and structure
+
+_Additional details on the next release will go here._
 
 ## 0.1.0-next.12 (2025-01-05)
 
@@ -17,7 +25,7 @@ _Details on the next release will go here._
 
 - **`OEmbedElement.ts`:** Removed usage of the `Provider` enum.
   - Now checks `provider.name` (a string) from `getProviderFromUrl(...)`.
-  - Fallback logic for valid but unknown URLs creates a generic `<iframe>`, and invalid URLs produce a “No provider found” message.
+  - Fallback logic for valid but unknown URLs creates a generic `<iframe>`, and invalid URLs produce a "No provider found" message.
 
 ### Enhancements
 
@@ -30,7 +38,7 @@ _Details on the next release will go here._
 
 - **Added fallback tests**:
   - For unrecognized but valid URLs (renders a plain `<iframe>`).
-  - For invalid URLs (renders a “No provider found…” message).
+  - For invalid URLs (renders a "No provider found..." message).
 - **Existing YouTube, Vimeo, DailyMotion, EdPuzzle, Loom, Wistia tests** remain valid and updated to confirm the new approach.
 
 ## 0.1.0-next.11 (2025-01-01)
