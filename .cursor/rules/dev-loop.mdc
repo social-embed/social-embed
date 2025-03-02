@@ -1,0 +1,224 @@
+---
+description: Lint and format, run tests
+globs: *.ts, *.tsx, package.json, tsconfig.json, vite*.ts
+---
+# Dev Loop Configuration (Monorepo)
+
+## Tech Stack
+- **Package Manager**: pnpm
+- **Language**: TypeScript
+- **Web Components**: Lit
+- **Documentation**: Astro + Starlight
+- **Documentation Styling**: Tailwind CSS 3 (only in packages/site)
+
+## PRIORITY ORDER - CRITICAL
+1. **Tests MUST Pass** - This is the highest priority
+   - Never modify critical implementations sheerly for the sake of linting or type checking
+   - Always prioritize making tests pass over addressing linting or type checking issues
+   - Prompt or communicate before making substantial implementation changes
+   - Add `// biome-ignore` or `// @ts-ignore` comments for linting/typing issues rather than changing core functionality
+
+2. **Core Functionality** - Ensure the code works correctly
+   - Focus on correctness of implementation first
+   - Code behavior and test-passing is more important than style or typing
+
+3. **Type Safety and Linting** - Only after tests pass
+   - Handle type checking and linting in follow-up commits AFTER tests pass
+   - Never let linting rules dictate core implementation details
+
+## Package Structure
+- `packages/lib/`: Core TypeScript library (@social-embed/lib)
+- `packages/wc/`: Web Component implementation (@social-embed/wc)
+- `packages/site/`: Documentation site built with Astro and Starlight
+
+## Before Making Changes
+
+1. **Verify Current Directory**
+   ```sh
+   pwd  # Should be /home/d/work/typescript/social-embed
+   ```
+   - If not in root directory, `cd` to it first
+
+2. **Identify Target Package**
+   - Determine which package you're modifying
+   - Use `pnpm --filter <package>` for package-specific commands
+   - Package names map to directories: `packages/<package>`
+
+## During Development
+
+1. **Navigate to Package Directory**
+   ```sh
+   cd packages/<package>
+   pwd  # Verify correct directory
+   ```
+   - **STOP** if `pwd` doesn't match expected package path
+   - Example: `cd packages/lib` for core library package
+
+2. **Run Tests First** (if package has tests):
+   ```sh
+   # For @social-embed/lib
+   pnpm --filter @social-embed/lib test --no-watch
+
+   # For @social-embed/wc
+   pnpm --filter @social-embed/wc test --no-watch
+
+   # For site package (if applicable)
+   pnpm --filter packages/site test --no-watch
+   ```
+   - Fix any test failures before proceeding
+   - Test fixes should be in separate commits from other changes
+   - NEVER mix test fixes with any other type of change
+   - **Tests passing is the highest priority** - even if it means ignoring linting/typing issues temporarily
+
+3. **Format For Readability** (only after tests pass):
+   ```sh
+   pnpm biome format . --write && \
+   pnpm biome check . --write
+   ```
+   - Run formatting and checking to maintain code readability
+   - If formatting would break tests, skip this step and add a note in your commit
+
+4. **Make and Commit Feature Changes**:
+   - Make necessary feature/functionality changes
+   - Ensure the site works as expected
+   - Commit with detailed commit message (see Committing Changes section)
+
+5. **Post-Commit Type Checking** (only after tests pass and features are committed):
+   ```sh
+   pnpm tsc --noEmit
+   ```
+   - Address any type errors in separate follow-up commits
+   - If fixing a type error would break functionality or tests, use `// @ts-ignore` with an explanation
+
+6. **Post-Commit Linting** (lowest priority, only after tests pass):
+   ```sh
+   pnpm biome lint . --write --max-diagnostics=5
+   ```
+   - Address any lint issues in separate follow-up commits 
+   - If a linting fix would break functionality or tests, use `// biome-ignore` comments
+   - **NEVER change core functionality just to satisfy a linter**
+
+## Package-Specific Context
+
+### Library (@social-embed/lib)
+- **Technology**: Pure TypeScript
+- **Purpose**: URL parsing and transformation
+- **Key Features**:
+  - Zero dependencies
+  - Browser and Node.js compatible
+  - Platform detection for media URLs
+  - Export of utility functions
+  - Tree-shakable exports
+
+### Web Component (@social-embed/wc)
+- **Technology**: TypeScript + Lit
+- **Purpose**: Custom HTML element for embedding media
+- **Key Features**:
+  - Shadow DOM for style encapsulation 
+  - Reactive properties
+  - Framework-agnostic design
+  - Responsive embedding
+
+### Documentation Site (packages/site)
+- **Technology**: Astro + Starlight + Tailwind CSS 3
+- **Purpose**: Documentation and examples
+- **Structure**:
+  - `src/content/docs/`: Documentation pages (Markdown/MDX)
+  - `src/components/`: Custom Astro components
+  - `src/assets/`: Images and other assets
+
+## ATOMIC CHANGES - CRITICAL RULES
+
+1. **One Topic Per Change**:
+   - Each change MUST address exactly ONE topic
+   - NEVER mix different types of changes
+   - If you find multiple issues, create separate commits for each
+
+2. **Types of Changes - NEVER Mix These**:
+   - Test fixes
+   - Type fixes
+   - Lint fixes
+   - Feature changes
+   - Documentation updates
+   - Dependency updates
+   - Configuration changes
+
+3. **If Multiple Issues Found**:
+   1. STOP current work
+   2. List all issues found
+   3. Address each issue in a separate, focused pass
+   4. Create atomic commits for each fix
+
+4. **No Exceptions**:
+   - There are NO exceptions to these rules
+   - If you think you need an exception, you're doing it wrong
+   - STOP and break down the changes into atomic units
+
+## Function Parameters
+
+### Always Use Typed Object Parameters
+
+1. **Prefer Object Params Over Positional Params**
+   - Always use typed object parameters over positional parameters
+   - Makes parameter purpose explicit at call site
+   - Makes function calls more self-documenting
+
+2. **Preferred Pattern**:
+   ```typescript
+   // ✅ GOOD: Object params with explicit typing
+   function convertToEmbedUrl({ url, options }: { 
+     url: string; 
+     options?: EmbedOptions 
+   }) {
+     // Implementation
+   }
+
+   // Usage
+   convertToEmbedUrl({ 
+     url: 'https://youtu.be/12345',
+     options: { width: 640 }
+   });
+   ```
+
+3. **Avoid Positional Params**:
+   ```typescript
+   // ❌ BAD: Positional params
+   function convertToEmbedUrl(url: string, options?: EmbedOptions) {
+     // Implementation
+   }
+
+   // Usage
+   convertToEmbedUrl('https://youtu.be/12345', { width: 640 });
+   ```
+
+4. **Benefits**:
+   - Improves readability by making parameter purpose explicit at call site
+   - Makes parameters order-independent
+   - Allows easier extension without breaking API
+   - Better TypeScript auto-completion
+   - Simplifies optional parameters
+
+5. **Exception Cases**:
+   - Simple utility functions with 1-2 parameters where the meaning is obvious
+   - Performance-critical code where object allocation might be an issue
+   - Required to match external API signatures
+
+## Development Loop Summary
+
+1. Navigate to correct package
+2. Run tests and fix failures
+3. Format and check code with biome (if it doesn't break tests)
+4. Make feature changes and commit
+5. Run type checks and fix in follow-up commits if needed (if fixes don't break tests)
+6. Run linting and fix in follow-up commits if needed (if fixes don't break tests)
+7. Start over for next topic
+
+## IMPORTANT REMINDER
+
+ATOMIC CHANGES are NOT optional. Each change MUST:
+- Address exactly ONE topic
+- Be committed separately
+- Not mix different types of changes
+
+If you find yourself mixing different types of changes, STOP immediately and break them into separate, atomic changes.
+NO exceptions to this rule are allowed.
