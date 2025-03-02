@@ -1,93 +1,143 @@
-# `<o-embed>` &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/@social-embed/wc.svg?style=flat)](https://www.npmjs.com/package/@social-embed/wc)
+# &lt;o-embed&gt; Web Component
 
-A [Web Component] that transforms URLs from various media platforms (YouTube, Spotify, Vimeo, etc.) into embeddable frames. Because it’s a standard browser component, `<o-embed>` works in any HTML environment without requiring a custom server or third-party API.
+> Transform media URLs into beautiful embeds with a single HTML tag.
 
-## Highlights
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) 
+[![npm version](https://img.shields.io/npm/v/@social-embed/wc.svg?style=flat)](https://www.npmjs.com/package/@social-embed/wc)
+[![Bundle size](https://img.shields.io/bundlephobia/minzip/@social-embed/wc)](https://bundlephobia.com/package/@social-embed/wc)
 
-- **Browser-friendly.** Built on modern Web Components.
-- **No extra services.** Client-side parsing from [`@social-embed/lib`].
-- **Drop-in usage.** Insert `<o-embed>` in your HTML, or load it via ES modules.
+A [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components) that turns URLs from popular media platforms (YouTube, Spotify, Vimeo, etc.) into fully functional embedded players. Just add a single tag to your HTML:
 
-_Just want the parsing logic without the web component? See [@social-embed/lib](https://social-embed.git-pull.com/lib/)._
+```html
+<!-- Before: Raw link your users can't interact with -->
+https://www.youtube.com/watch?v=G_QhTdzWBJk
 
-## Demo
+<!-- After: Interactive embedded player -->
+<o-embed url="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
+```
 
-- [CodeSandbox][codesandbox]
-- [JSFiddle][jsfiddle]
+## Demo & Examples
 
-### Example Embeds
+See it in action:
+- [Try on CodeSandbox](https://codepen.io/attachment/pen/poRRwdy)
+- [Try on JSFiddle](https://jsfiddle.net/gitpull/vc13Lhkz/)
 
-- [YouTube][youtube]
-- [Spotify][spotify]
-- [Vimeo][vimeo]
-- [DailyMotion][dailymotion]
+### Live Examples by Platform
 
----
+- [YouTube](https://social-embed.git-pull.com/wc/providers/youtube)
+- [Spotify](https://social-embed.git-pull.com/wc/providers/spotify)
+- [Vimeo](https://social-embed.git-pull.com/wc/providers/vimeo)
+- [DailyMotion](https://social-embed.git-pull.com/wc/providers/dailymotion)
 
-## Use Cases
+## Key Features
 
-- **Dynamic content backends** where users enter a media URL (e.g., YouTube links).
-- **WYSIWYG or HTML editors** such as [CKEditor] with its [`MediaEmbed`] module ([ckeditor#2737]).
-- **Embed detection**: checking if a URL is embeddable. If you only need to detect and parse, consider using [`@social-embed/lib`] directly.
+- **Zero configuration** - Just drop in the tag with a URL
+- **No server** - Everything processes in the browser
+- **Framework-agnostic** - Works with any web technology
+- **Standards-based** - Uses native Web Components
+- **Responsive** - Adapts to container width
+- **Lightweight** - Minimal impact on page load
+- **Automatic platform detection** - Supports multiple content providers
 
-## Tech Stack
+## Quick Start
 
-- **[Lit]** – used for building components.
-- **[lit-html]** – templating.
-- **[TypeScript]** – typed development.
+### 1. Install
 
-## Setup
-
-Below are typical installation commands for each package manager.
-
-NPM:
-
+**NPM:**
 ```bash
 npm i @social-embed/wc
 ```
 
-Yarn:
-
+**Yarn:**
 ```bash
 yarn add @social-embed/wc
 ```
 
-pnpm:
-
+**PNPM:**
 ```bash
 pnpm add @social-embed/wc
 ```
 
-## Usage
+### 2. Add to your project
 
-Include the component and place an `<o-embed>` element in your HTML. For example:
-
+**Option A: Via Script Tag**
 ```html
 <script type="module" src="https://unpkg.com/@social-embed/wc?module"></script>
 
 <o-embed url="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
 ```
 
-Alternatively, import it into your JavaScript or TypeScript file:
-
+**Option B: Via Import**
 ```js
-import "https://unpkg.com/@social-embed/wc?module";
+// In your JavaScript/TypeScript file
+import "@social-embed/wc";
 
+// Then in your HTML
 document.body.innerHTML = `
   <o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
 `;
 ```
 
----
+## Supported Media Platforms
 
-## Similar Tools
+| Platform | Example URL |
+|----------|-------------|
+| YouTube | youtube.com/watch?v=ID, youtu.be/ID |
+| Spotify | open.spotify.com/track/ID, spotify:album:ID |
+| Vimeo | vimeo.com/ID, vimeo.com/channels/name/ID |
+| DailyMotion | dailymotion.com/video/ID |
+| Loom | loom.com/share/ID |
+| EdPuzzle | edpuzzle.com/media/ID |
+| Wistia | support.wistia.com/medias/ID |
 
-- [embed.ly] / [iframely] – scripts that find and replace URLs in the DOM.
-- [plyr] – a customizable video/audio player that can accept URLs.
-- `<oembed>` components – e.g., [Angular OEmbed component][angular-oembed].
-- `<o-embed>` components – e.g., [thangman22/oembed-component][thangman22].
+## Common Use Cases
 
----
+- **CMS Systems** - Enable media embeds in user-generated content
+- **Markdown/WYSIWYG Editors** - Automatically transform URLs into embeds
+- **Blogs & Documentation** - Easily add media examples
+- **Social Platforms** - Turn shared links into rich interactive content
+- **Educational Sites** - Embed instructional videos with minimal effort
+
+## Advanced Usage
+
+### Attributes
+
+```html
+<!-- Set custom dimensions -->
+<o-embed url="https://youtu.be/Bd8_vO5zrjo" width="640" height="360"></o-embed>
+
+<!-- Enable fullscreen button -->
+<o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
+
+<!-- Add loading spinner with message -->
+<o-embed url="https://youtu.be/Bd8_vO5zrjo" loading="Loading video..."></o-embed>
+```
+
+### Error Handling
+
+```html
+<!-- Custom error message -->
+<o-embed url="invalid-url" error-message="Sorry, this URL isn't supported"></o-embed>
+```
+
+## Technical Details
+
+Built with:
+- [**Lit**](https://lit.dev/) - Lightweight web component framework
+- [**TypeScript**](https://www.typescriptlang.org/) - Type-safe JavaScript
+- [**@social-embed/lib**](https://social-embed.git-pull.com/lib/) - URL parsing engine
+
+## Alternative Solutions
+
+- [embed.ly](https://embed.ly/) / [iframely](https://iframely.com/) - Commercial embed services
+- [plyr](https://plyr.io/) - Custom video/audio player
+- Other web components - [Angular](https://github.com/ckeditor/ckeditor5/issues/2737#issuecomment-471326090), [thangman22](https://github.com/thangman22/oembed-component)
+
+_Want just the URL parsing without the component? Check out [@social-embed/lib](https://social-embed.git-pull.com/lib/)._
+
+## License
+
+MIT
 
 [codesandbox]: https://codepen.io/attachment/pen/poRRwdy
 [jsfiddle]: https://jsfiddle.net/gitpull/vc13Lhkz/
@@ -95,16 +145,3 @@ document.body.innerHTML = `
 [spotify]: https://social-embed.git-pull.com/wc/providers/spotify
 [dailymotion]: https://social-embed.git-pull.com/wc/providers/dailymotion
 [vimeo]: https://social-embed.git-pull.com/wc/providers/vimeo
-[ckeditor]: https://github.com/ckeditor/ckeditor5/issues/2737
-[`MediaEmbed`]: https://ckeditor.com/docs/ckeditor5/latest/features/media-embed.html
-[ckeditor#2737]: https://github.com/ckeditor/ckeditor5/issues/2737
-[`@social-embed/lib`]: https://social-embed.git-pull.com/lib/
-[Web Component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
-[Lit]: https://lit.dev/
-[lit-html]: https://lit.dev/docs/libraries/standalone-templates/
-[TypeScript]: https://www.typescriptlang.org/
-[embed.ly]: https://embed.ly/
-[iframely]: https://iframely.com/
-[plyr]: https://plyr.io/
-[angular-oembed]: https://github.com/ckeditor/ckeditor5/issues/2737#issuecomment-471326090
-[thangman22]: https://github.com/thangman22/oembed-component
