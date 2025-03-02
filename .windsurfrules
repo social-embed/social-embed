@@ -1,0 +1,216 @@
+<tech-stack>
+  pnpm TypeScript Lit Astro Starlight
+</tech-stack>
+
+<dev-loop globs="*.ts,*.tsx,*.js,package.json,tsconfig.json,astro.config.*">
+  <priority>
+    <1>Tests MUST Pass - Never modify critical implementations for linting/typing, prioritize tests, communicate before major changes, use ignore comments instead of changing core functionality</1>
+    <2>Core Functionality - Focus on implementation correctness, behavior over style</2>
+    <3>Type Safety and Linting - Handle AFTER tests pass, never let them dictate core implementation</3>
+  </priority>
+  
+  <packages>
+    <lib>Core TypeScript library for URL parsing and transformation (@social-embed/lib)</lib>
+    <wc>Web Component implementation using Lit (@social-embed/wc)</wc>
+    <site>Documentation site built with Astro and Starlight</site>
+  </packages>
+  
+  <package-context>
+    <lib globs="packages/lib/**/*.ts">
+      <tech>TypeScript</tech>
+      <purpose>Pure utility library for URL parsing and embed generation</purpose>
+      <features>
+        <feature>Zero dependencies</feature>
+        <feature>Tree-shakable exports</feature>
+        <feature>Browser and Node.js compatibility</feature>
+      </features>
+    </lib>
+    
+    <wc globs="packages/wc/**/*.ts">
+      <tech>TypeScript + Lit (Web Components)</tech>
+      <purpose>Custom HTML element for embedding media</purpose>
+      <features>
+        <feature>Shadow DOM encapsulation</feature>
+        <feature>Reactive properties</feature>
+        <feature>Framework-agnostic design</feature>
+      </features>
+      <dependencies>
+        <dependency>@social-embed/lib</dependency>
+        <dependency>lit</dependency>
+      </dependencies>
+    </wc>
+    
+    <site globs="packages/site/**/*">
+      <tech>Astro + Starlight + Tailwind CSS 3</tech>
+      <purpose>Documentation website with examples and API references</purpose>
+      <features>
+        <feature>Static site generation</feature>
+        <feature>Markdown/MDX content</feature>
+        <feature>Live examples of both packages</feature>
+      </features>
+    </site>
+  </package-context>
+  
+  <workflow>
+    <verify>Check which package you're working with (lib, wc, or site)</verify>
+    <tests>Run appropriate tests for the package</tests>
+  </workflow>
+  
+  <testing>
+    <structure>Mirror source files, one test per source file, logical grouping</structure>
+    <naming>Descriptive: `describe('Component', () => { it('does X when Y', () => {}) })`</naming>
+    <coverage>85%+ on new code, focus on code paths not just lines</coverage>
+  </testing>
+  
+  <function-params>
+    <rule>Always use typed object parameters over positional parameters</rule>
+    <prefer>
+      function doSomething({ id, name, options }: { id: string; name: string; options?: Options }) {...}
+      doSomething({ id: '123', name: 'test' });
+    </prefer>
+    <avoid>
+      function doSomething(id: string, name: string, options?: Options) {...}
+      doSomething('123', 'test');
+    </avoid>
+    <why>
+      <reason>Improves readability by making parameter purpose explicit at call site</reason>
+      <reason>Makes parameters order-independent</reason>
+      <reason>Allows easier extension without breaking API</reason>
+      <reason>Better TypeScript auto-completion for parameter objects</reason>
+    </why>
+  </function-params>
+</dev-loop>
+
+<git-commit globs="*.git/*,.gitignore,.github/*,CHANGELOG.md,CHANGES.md">
+  <format>
+    Component/File(type[Subcomponent]): Concise description
+    
+    why: Explanation of necessity or impact.
+    what:
+    - Specific technical changes made
+    - Focused on single topic
+    
+    refs: #issue-number, breaking changes, or links
+  </format>
+  
+  <types>
+    feat: New feature (MINOR in SemVer)
+    fix: Bug fix (PATCH in SemVer)
+    docs: Documentation only
+    style: Style changes (no logic changes)
+    refactor: Code changes (no bugs/features)
+    perf: Performance improvements
+    test: Test changes only
+    chore: Build process, dependencies, etc.
+  </types>
+  
+  <rules>
+    <message>Present tense, imperative mood, no period at end, wrap at 72-80 chars</message>
+    <commits>One commit per change type, NEVER combine different types, separate multiple issues</commits>
+    <breaking>Mark as "BREAKING CHANGE:" in title, detail migration path in body</breaking>
+  </rules>
+  
+  <patterns>
+    <lib>lib(type[module]): Description</lib>
+    <wc>wc(type[component]): Description</wc>
+    <site>site(type[page]): Description</site>
+    <docs>docs(section[topic]): Description</docs>
+  </patterns>
+</git-commit>
+
+<no-index-exports globs="index.ts">
+  <rule>Don't use index.ts for barrel exports. Always import from specific files.</rule>
+  
+  <avoid>
+    export * from './utils';
+    export { default as Button } from './Button';
+    export default stuff;
+    export const utils = { formatDate, parseNumber };
+  </avoid>
+  
+  <correct>
+    import { convertUrlToEmbedUrl } from './urlUtils';
+    import { OEmbed } from './components/OEmbed';
+  </correct>
+  
+  <exceptions>
+    <lib>For component libraries: flat exports in main entry file (not index.ts)</lib>
+    <tests>For tests: use test-utils.ts, not index.ts</tests>
+  </exceptions>
+</no-index-exports>
+
+<vitest-error-handling globs="*.test.ts,*.test.tsx">
+  <use>
+    <sync>expect(() => { throw new Error("message"); }).toThrowError("message");</sync>
+    <async>await expect(async () => { throw new Error("message"); }).rejects.toThrowError("message");</async>
+  </use>
+  
+  <avoid>No custom error utilities like `expectToThrow` or `expectToThrowAsync`</avoid>
+  <why>Built-in assertions are robust, simplify code, ensure consistency</why>
+</vitest-error-handling>
+
+<debug-loops globs="*.ts,*.tsx,*.js,*.jsx">
+  <detection>
+    <sign>Multiple unsuccessful attempts to fix the same issue</sign>
+    <sign>Increasingly complex code to address errors</sign>
+    <sign>Each fix creates new errors in a cascading pattern</sign>
+    <sign>Uncertainty about root cause after 2-3 iterations</sign>
+  </detection>
+  
+  <action-plan>
+    <step>
+      <title>Pause and acknowledge the loop</title>
+      <detail>Explicitly state that you are in a potential debug loop</detail>
+      <detail>Review what approaches have been tried and failed</detail>
+    </step>
+    
+    <step>
+      <title>Minimize to MVP</title>
+      <detail>Remove all debugging cruft and experimental code</detail>
+      <detail>Revert to the simplest version that demonstrates the issue</detail>
+      <detail>Focus on isolating the core problem without added complexity</detail>
+    </step>
+    
+    <step>
+      <title>Comprehensive Documentation</title>
+      <detail>Provide a clear summary of the issue</detail>
+      <detail>Include minimal but complete code examples that reproduce the problem</detail>
+      <detail>Document exact error messages and unexpected behaviors</detail>
+      <detail>Explain your current understanding of potential causes</detail>
+    </step>
+    
+    <step>
+      <title>Format for Portability</title>
+      <detail>Present the problem in quadruple backticks for easy copying</detail>
+      <format>
+```
+# Problem Summary
+[Concise explanation of the issue]
+
+## Minimal Reproduction Code
+```python
+# Minimal code example that reproduces the issue
+```
+
+## Error/Unexpected Output
+```
+[Exact error messages or unexpected output]
+```
+
+## Failed Approaches
+[Brief summary of approaches already tried]
+
+## Suspected Cause
+[Your current hypothesis about what might be causing the issue]
+```
+      </format>
+    </step>
+  </action-plan>
+  
+  <why>
+    <reason>Breaks the cycle of unproductive debugging</reason>
+    <reason>Forces focus on the core issue without distractions</reason>
+    <reason>Creates portable problem statements for fresh perspectives</reason>
+    <reason>Ensures all critical information is documented</reason>
+  </why>
+</debug-loops>

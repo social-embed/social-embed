@@ -1,0 +1,99 @@
+---
+description: Don't create index.ts, a.k.a. Barrel files, they create indirection and confusion.
+globs: index.ts
+---
+# No Index Exports Rule
+
+## Overview
+
+This rule enforces the convention of **not using index.ts files for barrel exports**. Instead, imports should always be explicit, referencing the specific file that contains the implementation.
+
+## Why This Matters
+
+Using explicit imports instead of barrel exports through index.ts files has several benefits:
+
+1. **Improved Build Performance**: Explicit imports reduce the chance of circular dependencies and can lead to better tree-shaking.
+2. **Better Traceability**: Developers can immediately see where code is coming from without having to check index files.
+3. **Reduced Bundle Size**: Prevents accidentally importing unused code that happens to be exported by an index file.
+4. **Prevents Import Errors**: Avoids subtle bugs when barrel files are not properly maintained.
+
+## Rules for All index.ts Files
+
+1. **ALL index.ts files must be placeholder files with warnings**
+2. **NEVER export anything from index.ts files**
+3. **ALWAYS import directly from specific files**
+4. **Placeholder warning must explicitly show correct import patterns**
+
+## Placeholder Template
+
+Every index.ts file should use this placeholder template:
+
+```typescript
+/**
+ * DO NOT USE THIS FILE FOR EXPORTS
+ *
+ * NEVER EXPORT HERE, ALWAYS IMPORT EXPLICITLY.
+ *
+ * Example:
+ * // BAD:
+ * import { ComponentName } from '@package/directory';
+ *
+ * // GOOD:
+ * import { ComponentName } from '@package/directory/component-name';
+ */
+
+// This file intentionally left without exports
+```
+
+## Examples
+
+### ❌ BAD: Using index.ts for exports
+
+```typescript
+// src/components/index.ts
+export { Button } from './Button';
+export { Card } from './Card';
+export { Input } from './Input';
+
+// src/pages/HomePage.tsx
+import { Button, Card } from '../components'; // BAD
+```
+
+### ✅ GOOD: Direct imports from specific files
+
+```typescript
+// src/components/index.ts should be a placeholder with warning
+
+// src/pages/HomePage.tsx
+import { Button } from '../components/Button'; // GOOD
+import { Card } from '../components/Card'; // GOOD
+```
+
+## Fixing Existing Code
+
+When encountering code that uses barrel imports:
+
+1. Replace each imported symbol with a direct import from its source file
+2. Convert any index.ts file to the placeholder template above
+3. Run tests to ensure nothing broke
+4. Update any module documentation to reflect the direct import pattern
+
+## Quick Notes on Module Structure
+
+- One export per file is ideal
+- Each file should have a clear, single responsibility
+- File names should match their primary export
+- Use kebab-case for file names and PascalCase for component/class exports
+
+## How to Check Compliance
+
+To check if your imports comply with this rule:
+
+```bash
+# Find all imports from index files
+grep -r "from '[^']*'" --include="*.ts" --include="*.tsx" . | grep -v "from '.*/.*/[^/]*'"
+```
+
+## Remember
+
+**NEVER use barrel exports through index.ts files. ALWAYS import directly from the specific file.**
