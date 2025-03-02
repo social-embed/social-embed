@@ -54,6 +54,13 @@ Here you can find project-wide changes. For more detailed changes:
 
 ### Docs / Site
 
+- Documentation overhaul: Comprehensive README improvements across the project (#x)
+  
+  - Root, packages/lib, packages/wc, and packages/site README files completely revitalized
+  - Enhanced project descriptions, installation guides, and usage examples
+  - Added clear value propositions and proper formatting
+  - Restructured content for better readability and user experience
+
 - Docs: Refinement and polishing (#18, #19)
 
   - Sidebar: Convert file from js -> ts

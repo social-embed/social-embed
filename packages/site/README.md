@@ -1,54 +1,107 @@
-# Starlight Starter Kit: Basics
+# Social Embed Documentation Site
 
+> The official documentation site for the Social Embed project, available at [social-embed.git-pull.com](https://social-embed.git-pull.com)
+
+[![Built with Astro](https://img.shields.io/badge/Built%20with-Astro-FF5D01.svg?style=flat-square)](https://astro.build)
 [![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
 
+This site documents the Social Embed project and its packages:
+- [@social-embed/lib](https://social-embed.git-pull.com/lib/) - Core URL parsing library
+- [@social-embed/wc](https://social-embed.git-pull.com/wc/) - Web Component implementation
+
+## Development
+
+This site is built with [Astro](https://astro.build) and [Starlight](https://starlight.astro.build), Astro's documentation theme.
+
+### Prerequisites
+
+- Node.js 18 or higher
+- pnpm (recommended) or npm/yarn
+
+### Setup
+
+```bash
+# Install dependencies from the repository root
+pnpm install
+
+# Or if in the site directory
+pnpm install
 ```
-npm create astro@latest -- --template starlight
+
+### Local Development
+
+```bash
+# Start the development server
+pnpm dev
+
+# The site will be available at http://localhost:4321
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/starlight/tree/main/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/starlight/tree/main/examples/basics)
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/withastro/starlight&create_from_path=examples/basics)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fwithastro%2Fstarlight%2Ftree%2Fmain%2Fexamples%2Fbasics&project-name=my-starlight-docs&repository-name=my-starlight-docs)
+### Building for Production
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+```bash
+# Build the production site
+pnpm build
 
-## 🚀 Project Structure
+# Preview the production build
+pnpm preview
+```
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+## Project Structure
 
 ```
-.
-├── public/
+packages/site/
+├── public/              # Static assets (images, favicons, etc.)
+│   └── js/              # Bundled JavaScript files
 ├── src/
-│   ├── assets/
-│   ├── content/
-│   │   ├── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+│   ├── assets/          # Images and other assets referenced in content
+│   ├── components/      # Custom Astro/React components
+│   ├── content/         # Markdown/MDX documentation content
+│   │   ├── docs/        # Main documentation pages
+│   │   └── config.ts    # Content collection configuration
+│   └── pages/           # Custom pages outside the docs
+├── astro.config.mjs     # Astro configuration
+├── tailwind.config.js   # Tailwind CSS configuration
+└── tsconfig.json        # TypeScript configuration
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+## Adding Content
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+Documentation pages are written in Markdown or MDX and stored in `src/content/docs/`. Each file becomes a route based on its path.
 
-Static assets, like favicons, can be placed in the `public/` directory.
+### Example Page Structure
 
-## 🧞 Commands
+````markdown
+---
+title: My Page Title
+description: A brief description of this page for SEO
+---
 
-All commands are run from the root of the project, from a terminal:
+# My Page Title
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Content goes here...
 
-## 👀 Want to learn more?
+## Code Examples
 
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+```js
+// Example code
+```
+
+## Live Demo
+
+<YourCustomComponent />
+````
+
+## Customizing the Site
+
+- **Theme configuration**: Edit `astro.config.mjs` to change navigation, sidebar, and other Starlight settings
+- **Styling**: Modify Tailwind CSS styles in `src/styles/` or component styles
+- **Components**: Add custom components in `src/components/`
+
+## Deployment
+
+The site is automatically deployed via GitHub Actions when changes are pushed to the main branch.
+
+## License
+
+MIT
