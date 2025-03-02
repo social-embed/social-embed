@@ -160,3 +160,139 @@ provider.getEmbedUrlFromId("Bd8_vO5zrjo");
   </div>
 
 </div>
+
+<div class="mt-16 mb-12">
+  <h2 class="text-2xl font-bold mb-6 text-center">Supported Platforms</h2>
+  
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 text-center max-w-4xl mx-auto">
+    <a href="/wc/providers/youtube/" class="bg-slate-800/50 p-4 rounded-lg hover:bg-slate-700/50 transition-colors">
+      <div>YouTube</div>
+    </a>
+    
+    <a href="/wc/providers/spotify/" class="bg-slate-800/50 p-4 rounded-lg hover:bg-slate-700/50 transition-colors">
+      <div>Spotify</div>
+    </a>
+    
+    <a href="/wc/providers/vimeo/" class="bg-slate-800/50 p-4 rounded-lg hover:bg-slate-700/50 transition-colors">
+      <div>Vimeo</div>
+    </a>
+    
+    <a href="/wc/providers/dailymotion/" class="bg-slate-800/50 p-4 rounded-lg hover:bg-slate-700/50 transition-colors">
+      <div>DailyMotion</div>
+    </a>
+    
+    <a href="/wc/providers/loom/" class="bg-slate-800/50 p-4 rounded-lg hover:bg-slate-700/50 transition-colors">
+      <div>Loom</div>
+    </a>
+    
+    <a href="/wc/providers/wistia/" class="bg-slate-800/50 p-4 rounded-lg hover:bg-slate-700/50 transition-colors">
+      <div>Wistia</div>
+    </a>
+    
+    <a href="/wc/providers/edpuzzle/" class="bg-slate-800/50 p-4 rounded-lg hover:bg-slate-700/50 transition-colors">
+      <div>EdPuzzle</div>
+    </a>
+  </div>
+</div>
+
+<div class="py-8 px-4 bg-slate-800/30 rounded-lg max-w-6xl mx-auto mb-16">
+  <h2 class="text-2xl font-bold mb-6 text-center">Quick Start</h2>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+    <div>
+      <h3 class="text-xl font-semibold mb-4">Web Component</h3>
+      
+      <div class="mb-4">
+        <div class="text-sm text-slate-400 mb-2">Install the package:</div>
+        <Code
+          lang="bash"
+          wrap
+          code={`npm install @social-embed/wc`}
+        />
+        <Code
+          lang="bash"
+          wrap
+          code={`yarn add @social-embed/wc`}
+        />
+        <Code
+          lang="bash"
+          wrap
+          code={`pnpm add @social-embed/wc`}
+        />
+      </div>
+      
+      <div class="mb-4">
+        <div class="text-sm text-slate-400 mb-2">Import the component:</div>
+        <Code
+          lang="ts"
+          wrap
+          code={`import '@social-embed/wc';`}
+        />
+      </div>
+      
+      <div>
+        <div class="text-sm text-slate-400 mb-2">Use it in your HTML:</div>
+        <Code
+          lang="html"
+          wrap
+          code={`
+  <o-embed url="https://youtu.be/FTQbiNvZqaY" />
+`}
+        />
+      </div>
+    </div>
+    
+    <div class="!mt-0">
+      <h3 class="text-xl font-semibold mb-4">URL Tools Library</h3>
+      
+      <div class="mb-4">
+        <div class="text-sm text-slate-400 mb-2">Install the package:</div>
+        <Code
+          lang="bash"
+          wrap
+          code={`npm install @social-embed/lib`}
+        />
+        <Code
+          lang="bash"
+          wrap
+          code={`yarn add @social-embed/lib`}
+        />
+        <Code
+          lang="bash"
+          wrap
+          code={`pnpm add @social-embed/lib`}
+        />
+      </div>
+      
+      <div class="mb-4">
+        <div class="text-sm text-slate-400 mb-2">Import functions:</div>
+        <Code
+          lang="ts"
+          wrap
+          code={`import { 
+    getProviderFromUrl, 
+    getYouTubeIdFromUrl 
+} from '@social-embed/lib';`}
+        />
+      </div>
+      
+      <div>
+        <div class="text-sm text-slate-400 mb-2">Extract video ID:</div>
+        <Code
+          lang="ts"
+          wrap
+          code={`// Get YouTube ID from URL
+const videoId = getYouTubeIdFromUrl('https://youtu.be/FTQbiNvZqaY');
+
+// Get provider and convert to embed URL
+const provider = getProviderFromUrl('https://youtu.be/FTQbiNvZqaY');
+const embedUrl = provider.getEmbedUrlFromId(videoId);`}
+        />
+      </div>
+    </div>
+  </div>
+  
+  <div class="text-center mt-8">
+    <LinkButton href="/getting-started/" icon="rocket" class="w-full sm:w-auto">Complete Installation Guide</LinkButton>
+  </div>
+</div>
