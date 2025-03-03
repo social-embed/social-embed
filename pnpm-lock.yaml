@@ -35,7 +35,7 @@ importers:
         version: 4.5.1(@types/node@22.10.2)(rollup@4.34.4)(typescript@5.8.2)(vite@6.2.0(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
       vitest:
         specifier: ^3.0.7
-        version: 3.0.7(@types/debug@4.1.12)(@types/node@22.10.2)(@vitest/browser@3.0.7)(jiti@1.21.7)(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(yaml@2.7.0)
+        version: 3.0.7(@types/debug@4.1.12)(@types/node@22.10.2)(@vitest/browser@3.0.7)(@vitest/ui@3.0.7)(jiti@1.21.7)(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(yaml@2.7.0)
 
   packages/site:
     dependencies:
@@ -113,6 +113,9 @@ importers:
       '@vitest/browser':
         specifier: ^3.0.7
         version: 3.0.7(@types/node@22.10.2)(typescript@5.8.2)(vite@6.2.0(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))(vitest@3.0.7)
+      '@vitest/ui':
+        specifier: ^3.0.7
+        version: 3.0.7(vitest@3.0.7)
       '@web/dev-server-esbuild':
         specifier: ^1.0.4
         version: 1.0.4
@@ -148,7 +151,7 @@ importers:
         version: 4.5.1(@types/node@22.10.2)(rollup@4.34.4)(typescript@5.8.2)(vite@6.2.0(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
       vitest:
         specifier: ^3.0.7
-        version: 3.0.7(@types/debug@4.1.12)(@types/node@22.10.2)(@vitest/browser@3.0.7)(jiti@1.21.7)(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(yaml@2.7.0)
+        version: 3.0.7(@types/debug@4.1.12)(@types/node@22.10.2)(@vitest/browser@3.0.7)(@vitest/ui@3.0.7)(jiti@1.21.7)(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(yaml@2.7.0)
       web-component-analyzer:
         specifier: ^2.0.0
         version: 2.0.0
@@ -1495,6 +1498,11 @@ packages:
   '@vitest/spy@3.0.7':
     resolution: {integrity: sha512-4T4WcsibB0B6hrKdAZTM37ekuyFZt2cGbEGd2+L0P8ov15J1/HUsUaqkXEQPNAWr4BtPPe1gI+FYfMHhEKfR8w==}
 
+  '@vitest/ui@3.0.7':
+    resolution: {integrity: sha512-bogkkSaVdSTRj02TfypjrqrLCeEc/tA5V4gAVM843Rp5JtIub3xaij+qjsSnS6CseLQJUSdDCFaFqPMmymRJKQ==}
+    peerDependencies:
+      vitest: 3.0.7
+
   '@vitest/utils@3.0.7':
     resolution: {integrity: sha512-xePVpCRfooFX3rANQjwoditoXgWb1MaFbzmGuPP59MK6i13mrnDw/yEIyJudLeW6/38mCNcwCiJIGmpDPibAIg==}
 
@@ -2386,6 +2394,17 @@ packages:
   fd-slicer@1.1.0:
     resolution: {integrity: sha512-cE1qsB/VwyQozZ+q1dGxR8LBYNZeofhEdUNGSMbQD3Gw2lAzX9Zb3uIU6Ebc/Fmyjo9AWWfnn0AUCHqtevs/8g==}
 
+  fdir@6.4.3:
+    resolution: {integrity: sha512-PMXmW2y1hDDfTSRc9gaXIuCCRpuoz3Kaz8cUelp3smouvfT632ozg2vrT6lJsHKKOF59YLbOGfAWGUcKEfRMQw==}
+    peerDependencies:
+      picomatch: ^3 || ^4
+    peerDependenciesMeta:
+      picomatch:
+        optional: true
+
+  fflate@0.8.2:
+    resolution: {integrity: sha512-cPJU47OaAoCbg0pBvzsgpTPhmhqI5eJjh/JIu8tPj5q+T7iLvW/JAYUqmE7KOB4R1ZyEhzBaIQpQpardBF5z8A==}
+
   fill-range@7.1.1:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
@@ -2404,6 +2423,9 @@ packages:
 
   find-yarn-workspace-root2@1.2.16:
     resolution: {integrity: sha512-hr6hb1w8ePMpPVUK39S4RlwJzi+xPLuVuG8XlwXU3KD5Yn3qgBWVfy3AzNlDhWvE1EORCE65/Qm26rFQt3VLVA==}
+
+  flatted@3.3.3:
+    resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
 
   flattie@1.1.1:
     resolution: {integrity: sha512-9UbaD6XdAL97+k/n+N7JwX46K/M6Zc6KcFYskrYL8wbBV/Uyk0CTAMY0VT+qiK5PM7AIc9aTWYtq65U7T+aCNQ==}
@@ -4018,6 +4040,10 @@ packages:
 
   tinyexec@0.3.2:
     resolution: {integrity: sha512-KQQR9yN7R5+OSwaK0XQoj22pwHoTlgYqmUscPYoknOoWCWfj/5/ABTMRi69FrKU5ffPVh5QcFikpWJI/P1ocHA==}
+
+  tinyglobby@0.2.12:
+    resolution: {integrity: sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww==}
+    engines: {node: '>=12.0.0'}
 
   tinypool@1.0.2:
     resolution: {integrity: sha512-al6n+QEANGFOMf/dmUMsuS5/r9B06uwlyNjZZql/zv8J7ybHCgoihBNORZCY2mzUuAnomQa2JdhyHKzZxPCrFA==}
@@ -5962,7 +5988,7 @@ snapshots:
       msw: 2.7.3(@types/node@22.10.2)(typescript@5.8.2)
       sirv: 3.0.1
       tinyrainbow: 2.0.0
-      vitest: 3.0.7(@types/debug@4.1.12)(@types/node@22.10.2)(@vitest/browser@3.0.7)(jiti@1.21.7)(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(yaml@2.7.0)
+      vitest: 3.0.7(@types/debug@4.1.12)(@types/node@22.10.2)(@vitest/browser@3.0.7)(@vitest/ui@3.0.7)(jiti@1.21.7)(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(yaml@2.7.0)
       ws: 8.18.1
     transitivePeerDependencies:
       - '@types/node'
@@ -6005,6 +6031,17 @@ snapshots:
   '@vitest/spy@3.0.7':
     dependencies:
       tinyspy: 3.0.2
+
+  '@vitest/ui@3.0.7(vitest@3.0.7)':
+    dependencies:
+      '@vitest/utils': 3.0.7
+      fflate: 0.8.2
+      flatted: 3.3.3
+      pathe: 2.0.3
+      sirv: 3.0.1
+      tinyglobby: 0.2.12
+      tinyrainbow: 2.0.0
+      vitest: 3.0.7(@types/debug@4.1.12)(@types/node@22.10.2)(@vitest/browser@3.0.7)(@vitest/ui@3.0.7)(jiti@1.21.7)(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(yaml@2.7.0)
 
   '@vitest/utils@3.0.7':
     dependencies:
@@ -7141,6 +7178,12 @@ snapshots:
     dependencies:
       pend: 1.2.0
 
+  fdir@6.4.3(picomatch@4.0.2):
+    optionalDependencies:
+      picomatch: 4.0.2
+
+  fflate@0.8.2: {}
+
   fill-range@7.1.1:
     dependencies:
       to-regex-range: 5.0.1
@@ -7160,6 +7203,8 @@ snapshots:
     dependencies:
       micromatch: 4.0.8
       pkg-dir: 4.2.0
+
+  flatted@3.3.3: {}
 
   flattie@1.1.1: {}
 
@@ -9392,6 +9437,11 @@ snapshots:
 
   tinyexec@0.3.2: {}
 
+  tinyglobby@0.2.12:
+    dependencies:
+      fdir: 6.4.3(picomatch@4.0.2)
+      picomatch: 4.0.2
+
   tinypool@1.0.2: {}
 
   tinyrainbow@2.0.0: {}
@@ -9644,7 +9694,7 @@ snapshots:
     optionalDependencies:
       vite: 6.2.0(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0)
 
-  vitest@3.0.7(@types/debug@4.1.12)(@types/node@22.10.2)(@vitest/browser@3.0.7)(jiti@1.21.7)(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(yaml@2.7.0):
+  vitest@3.0.7(@types/debug@4.1.12)(@types/node@22.10.2)(@vitest/browser@3.0.7)(@vitest/ui@3.0.7)(jiti@1.21.7)(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(yaml@2.7.0):
     dependencies:
       '@vitest/expect': 3.0.7
       '@vitest/mocker': 3.0.7(msw@2.7.3(@types/node@22.10.2)(typescript@5.8.2))(vite@6.2.0(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))
@@ -9670,6 +9720,7 @@ snapshots:
       '@types/debug': 4.1.12
       '@types/node': 22.10.2
       '@vitest/browser': 3.0.7(@types/node@22.10.2)(typescript@5.8.2)(vite@6.2.0(@types/node@22.10.2)(jiti@1.21.7)(yaml@2.7.0))(vitest@3.0.7)
+      '@vitest/ui': 3.0.7(vitest@3.0.7)
     transitivePeerDependencies:
       - jiti
       - less
