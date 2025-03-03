@@ -31,8 +31,12 @@
     "analyze": "wca analyze \"src/**/*.ts\" --outFile ../site/custom-elements.json",
     "serve": "vite preview",
     "pretest": "pnpm --filter @social-embed/lib build",
-    "test": "wtr test/o-embed_test.ts --node-resolve",
-    "test:watch": "pnpm test --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:wtr": "wtr test/o-embed_test.ts --node-resolve",
+    "test:watch:wtr": "pnpm test:wtr --watch",
+    "test:ui": "vitest --ui",
     "wtr": "wtr"
   },
   "keywords": [
