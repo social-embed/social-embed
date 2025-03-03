@@ -34,10 +34,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:wtr": "wtr test/o-embed_test.ts --node-resolve",
-    "test:watch:wtr": "pnpm test:wtr --watch",
-    "test:ui": "vitest --ui",
-    "wtr": "wtr"
+    "test:ui": "vitest --ui"
   },
   "keywords": [
     "web-component",
@@ -64,13 +61,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@open-wc/testing": "^4.0.0",
     "@vitest/browser": "^3.0.7",
     "@vitest/ui": "^3.0.7",
-    "@web/dev-server-esbuild": "^1.0.4",
-    "@web/dev-server-import-maps": "^0.2.1",
-    "@web/test-runner": "^0.20.0",
-    "@web/test-runner-puppeteer": "^0.18.0",
     "chai": "^5.2.0",
     "deepmerge": "^4.3.1",
     "lit-analyzer": "^2.0.3",
