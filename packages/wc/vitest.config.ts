@@ -20,11 +20,11 @@ export default defineConfig({
     setupFiles: ["./test/browser-setup.ts"],
     globals: true, // Access test APIs like describe, it without imports
     environment: "node", // Use node environment first
-    // Equivalent to WTR's import maps
+    // Dependencies to inline in the browser
     deps: {
       inline: ["@social-embed/lib"],
     },
-    // Equivalent to WTR's import maps
+    // Module resolution aliases
     resolve: {
       alias: {
         "@social-embed/wc": "./src/OEmbedElement.ts",
