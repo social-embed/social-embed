@@ -86,12 +86,28 @@ export function expectShadowDomToEqual(element: Element, expected: string) {
  */
 export async function expectShadowDomEventually(
   element: Element,
-  expected: string,
+  expectedOrCallback: string | ((shadowRoot: ShadowRoot) => boolean),
   timeout = 2000,
 ) {
   if (!element.shadowRoot) {
     throw new Error("Element does not have a shadow root");
   }
+
+  // If a callback was provided, use it directly for polling
+  if (typeof expectedOrCallback === "function") {
+    await vitestExpect
+      .poll(
+        () => {
+          return expectedOrCallback(element.shadowRoot!);
+        },
+        { timeout },
+      )
+      .toBe(true);
+    return;
+  }
+
+  // Otherwise, proceed with the string comparison approach
+  const expected = expectedOrCallback;
 
   // Get specific elements from the shadow DOM for comparison
   const getElementsToCompare = (shadowRoot: ShadowRoot) => {
