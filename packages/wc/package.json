@@ -72,6 +72,7 @@
     "typescript": "^5.8.2",
     "vite": "^6.2.0",
     "vite-plugin-dts": "^4.5.1",
+    "vitest": "^3.0.7",
     "web-component-analyzer": "^2.0.0"
   },
   "engines": {
