@@ -41,7 +41,7 @@
     "ncu": "ncu",
     "update": "ncu",
     "biome": "biome",
-    "format": "pnpm run biome format . --write"
+    "format": "pnpm run biome check . --write; pnpm run biome format . --write"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

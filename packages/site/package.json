@@ -14,7 +14,7 @@
     "update": "ncu",
     "lint": "biome lint .",
     "biome": "biome",
-    "format": "pnpm run biome format . --write",
+    "format": "pnpm run biome check . --write; pnpm run biome format . --write",
     "prebuild": "pnpm docs:oembed",
     "prestart": "pnpm docs:oembed",
     "prepare": "pnpm --filter @social-embed/wc build; mkdir -p public/js && cp ../wc/dist/OEmbedElement.umd.cjs public/js/o-embed.bundled.js",
