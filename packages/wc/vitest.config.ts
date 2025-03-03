@@ -5,6 +5,12 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [dts()],
+  // Module resolution aliases for both Vite and Vitest
+  resolve: {
+    alias: {
+      "@social-embed/wc": "./src/OEmbedElement.ts",
+    },
+  },
   test: {
     browser: {
       enabled: true,
@@ -20,14 +26,12 @@ export default defineConfig({
     setupFiles: ["./test/browser-setup.ts"],
     globals: true, // Access test APIs like describe, it without imports
     environment: "node", // Use node environment first
-    // Dependencies to inline in the browser
+    // Dependencies to inline in the browser (using recommended approach)
     deps: {
-      inline: ["@social-embed/lib"],
-    },
-    // Module resolution aliases
-    resolve: {
-      alias: {
-        "@social-embed/wc": "./src/OEmbedElement.ts",
+      optimizer: {
+        ssr: {
+          include: ["@social-embed/lib"],
+        },
       },
     },
     // Default: tests run only if changed/affected
