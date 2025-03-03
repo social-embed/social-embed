@@ -70,6 +70,7 @@
     "chai": "^5.2.0",
     "deepmerge": "^4.3.1",
     "lit-analyzer": "^2.0.3",
+    "playwright": "^1.50.1",
     "rimraf": "^5.0.7",
     "typescript": "^5.8.2",
     "vite": "^6.2.0",
