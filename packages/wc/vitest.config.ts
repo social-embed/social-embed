@@ -1,4 +1,3 @@
-import { URL, fileURLToPath } from "node:url";
 import dts from "vite-plugin-dts";
 /// <reference types="@vitest/browser/providers/playwright" />
 import { defineConfig } from "vitest/config";
@@ -38,6 +37,7 @@ export default defineConfig({
     watch: false,
     // Include test files in coverage
     coverage: {
+      provider: "istanbul",
       include: ["src/**/*.ts", "test/**/*.ts"],
       reporter: ["text", "html", "lcov"],
     },
