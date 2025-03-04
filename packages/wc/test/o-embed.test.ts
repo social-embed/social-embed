@@ -2,6 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { expectShadowDomEventually, fixture, html } from "./utils";
 import "../src/OEmbedElement";
+import type { OEmbedElement } from "../src/OEmbedElement";
 
 describe("o-embed", () => {
   it("is defined as a custom element", () => {
@@ -49,7 +50,7 @@ describe("o-embed", () => {
 
     // Wait for component to render
     await expectShadowDomEventually(el, (shadow) => {
-      return shadow.textContent?.includes("No provider found for");
+      return shadow.textContent?.includes("No provider found for") || false;
     });
 
     // Check error message content
@@ -59,7 +60,7 @@ describe("o-embed", () => {
     // The invalidUrl should appear in the error message
     // We need to check if it's part of the error message, removing any styling content
     const textWithoutStyles = errorText
-      ?.replace(/:\s*host\s*\{[^}]*\}|iframe\s*\{[^}]*\}/gs, "")
+      ?.replace(/:\s*host\s*\{[^}]*\}|iframe\s*\{[^}]*\}/g, "")
       .trim();
     expect(textWithoutStyles).toContain(invalidUrl);
 
