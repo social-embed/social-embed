@@ -9,6 +9,13 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+### Development
+
+- **Testing Infrastructure**: Migrated from Web Test Runner to Vitest with Browser testing:
+  - Removed Web Test Runner dependencies and configuration
+  - Removed old test file (`o-embed_test.ts`)
+  - All tests now use Vitest browser testing with Playwright
+
 ### Documentation
 
 - **README overhaul**: Completely revitalized documentation with:
@@ -16,6 +23,8 @@ sidebar:
   - Improved installation and usage instructions
   - Enhanced code examples
   - Better formatting and structure
+
+- **Migration Notes**: Added detailed documentation on the migration from Web Test Runner to Vitest, including completed tasks and remaining items.
 
 _Additional details on the next release will go here._
 
