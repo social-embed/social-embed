@@ -1,5 +1,5 @@
 import { page } from "@vitest/browser/context";
-import { type Locator, Page, expect as vitestExpect } from "vitest";
+import { expect as vitestExpect } from "vitest";
 
 /**
  * Creates a fixture with the given template
@@ -21,6 +21,7 @@ export async function fixture<T extends Element>(template: string): Promise<T> {
  * Template literal for creating HTML snippets
  * Similar to @open-wc/testing html utility
  */
+// biome-ignore lint/suspicious/noExplicitAny: This matches the open-wc/testing API which uses any[] for values
 export function html(strings: TemplateStringsArray, ...values: any[]): string {
   return String.raw({ raw: strings }, ...values);
 }
@@ -98,6 +99,7 @@ export async function expectShadowDomEventually(
     await vitestExpect
       .poll(
         () => {
+          // biome-ignore lint/style/noNonNullAssertion: We've already checked for shadowRoot presence above
           return expectedOrCallback(element.shadowRoot!);
         },
         { timeout },
@@ -126,6 +128,7 @@ export async function expectShadowDomEventually(
   await vitestExpect
     .poll(
       () => {
+        // biome-ignore lint/style/noNonNullAssertion: We've already checked for shadowRoot presence above
         const actualElements = getElementsToCompare(element.shadowRoot!);
 
         if (actualElements.length !== expectedElements.length) {
@@ -167,6 +170,8 @@ export async function expectShadowDomEventually(
  * Creates a locator from an element
  * Useful for testing element interactions
  */
-export function locator(element: Element): Locator {
+export function locator(
+  element: Element,
+): ReturnType<typeof page.elementLocator> {
   return page.elementLocator(element);
 }
