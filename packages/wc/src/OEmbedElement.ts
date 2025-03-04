@@ -207,6 +207,8 @@ export class OEmbedElement extends LitElement {
    * Will be used if the user hasn't supplied their own `width`/`height`.
    */
   public static spotifyDefaultDimensions: Dimensions = {
+    width: "100%",
+    widthWithUnits: "100%",
     height: "352",
     heightWithUnits: "352px",
   };
@@ -382,7 +384,7 @@ export class OEmbedElement extends LitElement {
 
   /**
    * Renders a generic `<iframe>` for valid but unrecognized URLs.
-   * If the URL is invalid, `render()` won’t call this method.
+   * If the URL is invalid, `render()` won't call this method.
    */
   public renderIframe(): TemplateResult {
     const { width, height } = this.getDefaultDimensions(this.provider);
@@ -533,7 +535,7 @@ declare global {
     "o-embed": OEmbedElement;
   }
 
-  // If you’re using JSX/TSX, include a declaration for the custom element:
+  // If you're using JSX/TSX, include a declaration for the custom element:
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
