@@ -34,7 +34,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "test:headed": "vitest run --browser.headless=false",
+    "test:browser-ui": "vitest --ui --browser.headless=false"
   },
   "keywords": [
     "web-component",

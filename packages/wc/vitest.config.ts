@@ -14,17 +14,23 @@ export default defineConfig({
     browser: {
       enabled: true,
       provider: "playwright",
+      headless: true, // Always use headless mode by default
       instances: [
         {
           browser: "chromium",
-          headless: true,
+          // Playwright-specific options for this browser instance
+          launch: {
+            // Any additional Playwright launch options can go here
+          },
+          context: {
+            // Playwright context options (per test file)
+          },
         },
       ],
     },
     // Setup files run before tests
     setupFiles: ["./test/browser-setup.ts"],
     globals: true, // Access test APIs like describe, it without imports
-    environment: "node", // Use node environment first
     // Dependencies to inline in the browser (using recommended approach)
     deps: {
       optimizer: {
