@@ -41,11 +41,21 @@ export default defineConfig({
     },
     // Default: tests run only if changed/affected
     watch: false,
+    // Include all test files
+    include: ["**/*.{test,spec}.?(c|m)[jt]s?(x)", "**/*.test-d.ts"],
     // Include test files in coverage
     coverage: {
       provider: "istanbul",
       include: ["src/**/*.ts", "test/**/*.ts"],
       reporter: ["text", "html", "lcov"],
+    },
+    // Typecheck configuration - enable by default for all test runs
+    typecheck: {
+      enabled: true,
+      include: ["**/*.test-d.ts"],
+      ignoreSourceErrors: true,
+      tsconfigSearchPath: __dirname,
+      isolatedPackages: true,
     },
   },
   build: {
