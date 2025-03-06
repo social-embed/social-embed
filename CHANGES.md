@@ -9,6 +9,13 @@ Here you can find project-wide changes. For more detailed changes:
 
 ## 0.1 (unreleased)
 
+### Features and Improvements
+
+- Testing: Add type checking support to test suites (#42)
+  - Enables automatic type checking during test runs
+  - Ensures type safety across the codebase without separate type-check steps
+  - Improved developer experience with fewer manual steps
+
 ### Breaking changes
 
 - Build system: Move to `vite` (#8)

@@ -15,6 +15,11 @@ sidebar:
   - Removed Web Test Runner dependencies and configuration
   - Removed old test file (`o-embed_test.ts`)
   - All tests now use Vitest browser testing with Playwright
+  
+- **Type Safety**: Enhanced test suite with type checking (#42)
+  - Added TypeScript type checking to Vitest configuration
+  - Support for `.test-d.ts` type tests that validate component types
+  - Isolated type checking within the package to prevent cross-package type issues
 
 ### Documentation
 

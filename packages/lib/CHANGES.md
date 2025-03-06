@@ -9,6 +9,13 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+### Development
+
+- **Type Safety**: Improved test suite with built-in type checking (#42)
+  - Added dedicated Vitest configuration with type checking enabled
+  - Support for declarative type tests using `.test-d.ts` files
+  - Isolated package type checking to prevent cross-package type leakage
+
 ### Documentation
 
 - **README overhaul**: Enhanced documentation with:
