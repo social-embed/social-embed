@@ -71,7 +71,7 @@
     "playwright": "^1.51.0",
     "rimraf": "^5.0.7",
     "typescript": "^5.8.2",
-    "vite": "^6.2.1",
+    "vite": "^6.2.2",
     "vite-plugin-dts": "^4.5.3",
     "vitest": "^3.0.8",
     "web-component-analyzer": "^2.0.0"
