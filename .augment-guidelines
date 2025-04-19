@@ -1,0 +1,422 @@
+# Development Guidelines
+
+## Dev Loop Configuration (Monorepo)
+
+### Tech Stack
+- **Package Manager**: pnpm
+- **Language**: TypeScript
+- **Web Components**: Lit
+- **Documentation**: Astro + Starlight
+- **Documentation Styling**: Tailwind CSS 3 (only in packages/site)
+
+### Priority Order
+1. **Tests MUST Pass** - This is the highest priority
+   - Never modify critical implementations sheerly for the sake of linting or type checking
+   - Always prioritize making tests pass over addressing linting or type checking issues
+   - Prompt or communicate before making substantial implementation changes
+   - Add `// biome-ignore` or `// @ts-ignore` comments for linting/typing issues rather than changing core functionality
+
+2. **Core Functionality** - Ensure the code works correctly
+   - Focus on correctness of implementation first
+   - Code behavior and test-passing is more important than style or typing
+
+3. **Type Safety and Linting** - Only after tests pass
+   - Handle type checking and linting in follow-up commits AFTER tests pass
+   - Never let linting rules dictate core implementation details
+
+### Package Structure
+- `packages/lib/`: Core TypeScript library (@social-embed/lib)
+- `packages/wc/`: Web Component implementation (@social-embed/wc)
+- `packages/site/`: Documentation site built with Astro and Starlight
+
+### Development Workflow
+
+1. **Verify Current Directory**
+   ```sh
+   pwd  # Should be /home/d/work/typescript/social-embed
+   ```
+   - If not in root directory, `cd` to it first
+
+2. **Identify Target Package**
+   - Determine which package you're modifying
+   - Use `pnpm --filter <package>` for package-specific commands
+   - Package names map to directories: `packages/<package>`
+
+3. **Navigate to Package Directory**
+   ```sh
+   cd packages/<package>
+   pwd  # Verify correct directory
+   ```
+   - **STOP** if `pwd` doesn't match expected package path
+   - Example: `cd packages/lib` for core library package
+
+4. **Run Tests First** (if package has tests):
+   ```sh
+   # For @social-embed/lib
+   pnpm --filter @social-embed/lib test --no-watch
+
+   # For @social-embed/wc
+   pnpm --filter @social-embed/wc test --no-watch
+
+   # For site package (if applicable)
+   pnpm --filter packages/site test --no-watch
+   ```
+   - Fix any test failures before proceeding
+   - Test fixes should be in separate commits from other changes
+   - NEVER mix test fixes with any other type of change
+   - **Tests passing is the highest priority** - even if it means ignoring linting/typing issues temporarily
+
+5. **Format For Readability** (only after tests pass):
+   ```sh
+   pnpm biome format . --write && \
+   pnpm biome check . --write
+   ```
+   - Run formatting and checking to maintain code readability
+   - If formatting would break tests, skip this step and add a note in your commit
+
+6. **Make and Commit Feature Changes**:
+   - Make necessary feature/functionality changes
+   - Ensure the site works as expected
+   - Commit with detailed commit message (see Git Commit Standards section)
+
+7. **Post-Commit Type Checking** (only after tests pass and features are committed):
+   ```sh
+   pnpm tsc --noEmit
+   ```
+   - Address any type errors in separate follow-up commits
+   - If fixing a type error would break functionality or tests, use `// @ts-ignore` with an explanation
+
+8. **Post-Commit Linting** (lowest priority, only after tests pass):
+   ```sh
+   pnpm biome lint . --write --max-diagnostics=5
+   ```
+   - Address any lint issues in separate follow-up commits 
+   - If a linting fix would break functionality or tests, use `// biome-ignore` comments
+   - **NEVER change core functionality just to satisfy a linter**
+
+### Package-Specific Context
+
+#### Library (@social-embed/lib)
+- **Technology**: Pure TypeScript
+- **Purpose**: URL parsing and transformation
+- **Key Features**:
+  - Zero dependencies
+  - Browser and Node.js compatible
+  - Platform detection for media URLs
+  - Export of utility functions
+  - Tree-shakable exports
+
+#### Web Component (@social-embed/wc)
+- **Technology**: TypeScript + Lit
+- **Purpose**: Custom HTML element for embedding media
+- **Key Features**:
+  - Shadow DOM for style encapsulation 
+  - Reactive properties
+  - Framework-agnostic design
+  - Responsive embedding
+
+#### Documentation Site (packages/site)
+- **Technology**: Astro + Starlight + Tailwind CSS 3
+- **Purpose**: Documentation and examples
+- **Structure**:
+  - `src/content/docs/`: Documentation pages (Markdown/MDX)
+  - `src/components/`: Custom Astro components
+  - `src/assets/`: Images and other assets
+
+### ATOMIC CHANGES - CRITICAL RULES
+
+1. **One Topic Per Change**:
+   - Each change MUST address exactly ONE topic
+   - NEVER mix different types of changes
+   - If you find multiple issues, create separate commits for each
+
+2. **Types of Changes - NEVER Mix These**:
+   - Test fixes
+   - Type fixes
+   - Lint fixes
+   - Feature changes
+   - Documentation updates
+   - Dependency updates
+   - Configuration changes
+
+3. **If Multiple Issues Found**:
+   1. STOP current work
+   2. List all issues found
+   3. Address each issue in a separate, focused pass
+   4. Create atomic commits for each fix
+
+4. **No Exceptions**:
+   - There are NO exceptions to these rules
+   - If you think you need an exception, you're doing it wrong
+   - STOP and break down the changes into atomic units
+
+### Function Parameters
+
+#### Always Use Typed Object Parameters
+
+1. **Prefer Object Params Over Positional Params**
+   - Always use typed object parameters over positional parameters
+   - Makes parameter purpose explicit at call site
+   - Makes function calls more self-documenting
+
+2. **Preferred Pattern**:
+   ```typescript
+   // ✅ GOOD: Object params with explicit typing
+   function convertToEmbedUrl({ url, options }: { 
+     url: string; 
+     options?: EmbedOptions 
+   }) {
+     // Implementation
+   }
+
+   // Usage
+   convertToEmbedUrl({ 
+     url: 'https://youtu.be/12345',
+     options: { width: 640 }
+   });
+   ```
+
+3. **Avoid Positional Params**:
+   ```typescript
+   // ❌ BAD: Positional params
+   function convertToEmbedUrl(url: string, options?: EmbedOptions) {
+     // Implementation
+   }
+
+   // Usage
+   convertToEmbedUrl('https://youtu.be/12345', { width: 640 });
+   ```
+
+4. **Benefits**:
+   - Improves readability by making parameter purpose explicit at call site
+   - Makes parameters order-independent
+   - Allows easier extension without breaking API
+   - Better TypeScript auto-completion
+   - Simplifies optional parameters
+
+5. **Exception Cases**:
+   - Simple utility functions with 1-2 parameters where the meaning is obvious
+   - Performance-critical code where object allocation might be an issue
+   - Required to match external API signatures
+
+## Git Commit Standards
+
+### Commit Message Format
+```
+Component/File(commit-type[Subcomponent/method]): Concise description
+
+why: Explanation of necessity or impact.
+what:
+- Specific technical changes made
+- Focused on a single topic
+
+refs: #issue-number, breaking changes, or relevant links
+```
+
+### Component Patterns
+#### General Code Changes
+```
+Component/File(feat[method]): Add feature
+Component/File(fix[method]): Fix bug
+Component/File(refactor[method]): Code restructure
+```
+
+#### Packages and Dependencies
+| Language   | Standard Packages                  | Dev Packages                  | Extras / Sub-packages                          |
+|------------|------------------------------------|-------------------------------|-----------------------------------------------|
+| General    | `lang(deps):`                      | `lang(deps[dev]):`            |                                               |
+| JavaScript | `js(deps):`                        | `js(deps[dev]):`              | `js(deps[subpackage]):`, `js(deps[dev{subpackage}]):` |
+
+#### Examples
+- `js(deps[dev]): Update ESLint to v8.1`
+- `js(deps[ui-components]): Upgrade Button component package`
+- `js(deps[dev{linting}]): Add ESLint plugin`
+
+#### Documentation Changes
+Prefix with `docs:`
+```
+docs(Component/File[Subcomponent/method]): Update API usage guide
+```
+
+#### Test Changes
+Prefix with `tests:`
+```
+tests(Component/File[Subcomponent/method]): Add edge case tests
+```
+
+### Commit Types Summary
+- **feat**: New features or enhancements
+- **fix**: Bug fixes
+- **refactor**: Code restructuring without functional change
+- **docs**: Documentation updates
+- **chore**: Maintenance (dependencies, tooling, config)
+- **test**: Test-related updates
+- **style**: Code style and formatting
+
+### General Guidelines
+- Subject line: Maximum 50 characters
+- Body lines: Word wrap at 72-80 characters (non-words like URLs can extend beyond)
+- Use imperative mood (e.g., "Add", "Fix", not "Added", "Fixed")
+- Limit to one topic per commit
+- Separate subject from body with a blank line
+- Mark breaking changes clearly: `BREAKING:`
+- Use `See also:` to provide external references
+
+### Project-Specific Patterns
+- **lib**: `lib(type[module]): Description`
+- **wc**: `wc(type[component]): Description`
+- **site**: `site(type[page]): Description`
+- **docs**: `docs(section[topic]): Description`
+
+### Good Commit Example
+```
+Pane(feat[capture_pane]): Add screenshot capture support
+
+why: Provide visual debugging capability
+what:
+- Implement capturePane method with image export
+- Integrate with existing Pane component logic
+- Document usage in Pane README
+
+refs: #485
+See also: https://example.com/docs/pane-capture
+```
+
+## No Index Exports Rule
+
+### Overview
+
+This rule enforces the convention of **not using index.ts files for barrel exports**. Instead, imports should always be explicit, referencing the specific file that contains the implementation.
+
+### Why This Matters
+
+Using explicit imports instead of barrel exports through index.ts files has several benefits:
+
+1. **Improved Build Performance**: Explicit imports reduce the chance of circular dependencies and can lead to better tree-shaking.
+2. **Better Traceability**: Developers can immediately see where code is coming from without having to check index files.
+3. **Reduced Bundle Size**: Prevents accidentally importing unused code that happens to be exported by an index file.
+4. **Prevents Import Errors**: Avoids subtle bugs when barrel files are not properly maintained.
+
+### Rules for All index.ts Files
+
+1. **ALL index.ts files must be placeholder files with warnings**
+2. **NEVER export anything from index.ts files**
+3. **ALWAYS import directly from specific files**
+4. **Placeholder warning must explicitly show correct import patterns**
+
+### Placeholder Template
+
+Every index.ts file should use this placeholder template:
+
+```typescript
+/**
+ * DO NOT USE THIS FILE FOR EXPORTS
+ *
+ * NEVER EXPORT HERE, ALWAYS IMPORT EXPLICITLY.
+ *
+ * Example:
+ * // BAD:
+ * import { ComponentName } from '@package/directory';
+ *
+ * // GOOD:
+ * import { ComponentName } from '@package/directory/component-name';
+ */
+
+// This file intentionally left without exports
+```
+
+### Examples
+
+#### ❌ BAD: Using index.ts for exports
+
+```typescript
+// src/components/index.ts
+export { Button } from './Button';
+export { Card } from './Card';
+export { Input } from './Input';
+
+// src/pages/HomePage.tsx
+import { Button, Card } from '../components'; // BAD
+```
+
+#### ✅ GOOD: Direct imports from specific files
+
+```typescript
+// src/components/index.ts should be a placeholder with warning
+
+// src/pages/HomePage.tsx
+import { Button } from '../components/Button'; // GOOD
+import { Card } from '../components/Card'; // GOOD
+```
+
+### Fixing Existing Code
+
+When encountering code that uses barrel imports:
+
+1. Replace each imported symbol with a direct import from its source file
+2. Convert any index.ts file to the placeholder template above
+3. Run tests to ensure nothing broke
+4. Update any module documentation to reflect the direct import pattern
+
+### Quick Notes on Module Structure
+
+- One export per file is ideal
+- Each file should have a clear, single responsibility
+- File names should match their primary export
+- Use kebab-case for file names and PascalCase for component/class exports
+
+## Debug Loop Detection and Resolution
+
+### Detection Signs
+- Multiple unsuccessful attempts to fix the same issue
+- Increasingly complex code to address errors
+- Each fix creates new errors in a cascading pattern
+- Uncertainty about root cause after 2-3 iterations
+
+### Action Plan
+
+1. **Pause and acknowledge the loop**
+   - Explicitly state that you are in a potential debug loop
+   - Review what approaches have been tried and failed
+
+2. **Minimize to MVP**
+   - Remove all debugging cruft and experimental code
+   - Revert to the simplest version that demonstrates the issue
+   - Focus on isolating the core problem without added complexity
+
+3. **Comprehensive Documentation**
+   - Provide a clear summary of the issue
+   - Include minimal but complete code examples that reproduce the problem
+   - Document exact error messages and unexpected behaviors
+   - Explain your current understanding of potential causes
+
+4. **Format for Portability**
+   - Present the problem in quadruple backticks for easy copying
+   - Use this format:
+
+```
+# Problem Summary
+[Concise explanation of the issue]
+
+## Minimal Reproduction Code
+```python
+# Minimal code example that reproduces the issue
+```
+
+## Error/Unexpected Output
+```
+[Exact error messages or unexpected output]
+```
+
+## Failed Approaches
+[Brief summary of approaches already tried]
+
+## Suspected Cause
+[Your current hypothesis about what might be causing the issue]
+```
+
+### Why This Matters
+- Breaks the cycle of unproductive debugging
+- Forces focus on the core issue without distractions
+- Creates portable problem statements for fresh perspectives
+- Ensures all critical information is documented
