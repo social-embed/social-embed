@@ -1,5 +1,8 @@
-import { defaultRegistry } from "./index"; // or import from "./registry"
 import type { EmbedProvider } from "./provider";
+import { EmbedProviderRegistry } from "./registry";
+
+// Create a default registry for internal use
+export const internalRegistry = new EmbedProviderRegistry();
 
 export const isString = (val: unknown): val is string => {
   return typeof val === "string";
@@ -36,7 +39,7 @@ export const matcher =
  */
 export function getProviderFromUrl(url: string): EmbedProvider | undefined {
   if (!url) return undefined;
-  return defaultRegistry.findProviderByUrl(url);
+  return internalRegistry.findProviderByUrl(url);
 }
 
 /**
