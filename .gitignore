@@ -13,3 +13,6 @@ yarn-error.log
 
 # biome
 biome-logs/
+
+# vitest screenshots
+__screenshots__/
