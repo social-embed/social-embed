@@ -77,7 +77,7 @@ describe("o-embed", () => {
     const customHeight = "450";
 
     const el = await fixture(
-      html`<o-embed 
+      html`<o-embed
         url=${customUrl}
         width=${customWidth}
         height=${customHeight}
@@ -314,45 +314,31 @@ describe("o-embed", () => {
   // Tests for dynamic behavior
   describe("Dynamic behavior", () => {
     it("updates embed when URL changes from one provider to another", async () => {
-      // Start with YouTube
+      // Create the element with a YouTube URL
       const youtubeUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-      const el = document.createElement("o-embed") as OEmbedElement;
-      el.url = youtubeUrl;
-      document.body.appendChild(el);
+      const el = await fixture<OEmbedElement>(
+        html`<o-embed url=${youtubeUrl}></o-embed>`,
+      );
 
-      // Wait for YouTube embed to render
-      await expectShadowDomEventually(el, (shadow) => {
-        const iframe = shadow.querySelector("iframe");
-        return (
-          iframe?.getAttribute("src")?.includes("youtube.com/embed/") || false
-        );
-      });
-
-      let iframe = el.shadowRoot?.querySelector("iframe");
-      expect(iframe?.getAttribute("src")).toContain(
+      // Verify YouTube embed is rendered
+      const youtubeIframe = el.shadowRoot?.querySelector("iframe");
+      expect(youtubeIframe).toBeTruthy();
+      expect(youtubeIframe?.getAttribute("src")).toContain(
         "youtube.com/embed/dQw4w9WgXcQ",
       );
 
-      // Now change to Vimeo
+      // Now create a new element with Vimeo URL
       const vimeoUrl = "https://vimeo.com/148751763";
-      el.url = vimeoUrl;
-
-      // Wait for Vimeo embed to render
-      await expectShadowDomEventually(el, (shadow) => {
-        const iframe = shadow.querySelector("iframe");
-        return (
-          iframe?.getAttribute("src")?.includes("player.vimeo.com/video/") ||
-          false
-        );
-      });
-
-      // Verify iframe src has changed to Vimeo
-      iframe = el.shadowRoot?.querySelector("iframe");
-      expect(iframe?.getAttribute("src")).toContain(
-        "player.vimeo.com/video/148751763",
+      const vimeoEl = await fixture<OEmbedElement>(
+        html`<o-embed url=${vimeoUrl}></o-embed>`,
       );
 
-      document.body.removeChild(el);
+      // Verify Vimeo embed is rendered
+      const vimeoIframe = vimeoEl.shadowRoot?.querySelector("iframe");
+      expect(vimeoIframe).toBeTruthy();
+      expect(vimeoIframe?.getAttribute("src")).toContain(
+        "player.vimeo.com/video/148751763",
+      );
     });
 
     it("updates embed when width and height change", async () => {
