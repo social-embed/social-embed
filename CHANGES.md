@@ -11,6 +11,13 @@ Here you can find project-wide changes. For more detailed changes:
 
 ### Features and Improvements
 
+- Custom Providers: Add support for user-defined embed providers (#123)
+  - Enhance EmbedProvider interface with defaultDimensions and iframeAttributes
+  - Allow users to create and register custom providers
+  - Support custom dimensions and iframe attributes
+  - Enable extending the library without modifying source code
+  - Add comprehensive documentation and examples
+
 - Testing: Add type checking support to test suites (#42)
   - Enables automatic type checking during test runs
   - Ensures type safety across the codebase without separate type-check steps
@@ -62,7 +69,7 @@ Here you can find project-wide changes. For more detailed changes:
 ### Docs / Site
 
 - Documentation overhaul: Comprehensive README improvements across the project (#x)
-  
+
   - Root, packages/lib, packages/wc, and packages/site README files completely revitalized
   - Enhanced project descriptions, installation guides, and usage examples
   - Added clear value propositions and proper formatting
