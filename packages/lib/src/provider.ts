@@ -39,4 +39,25 @@ export interface EmbedProvider {
    * @returns An iframe-friendly URL for embedding.
    */
   getEmbedUrlFromId(id: string, ...args: unknown[]): string;
+
+  /**
+   * Optional default dimensions for the provider's embed.
+   * If not provided, the web component will use its default dimensions.
+   *
+   * @remarks
+   * This is used by the web component to set appropriate dimensions for the iframe.
+   */
+  defaultDimensions?: {
+    width: string;
+    height: string;
+  };
+
+  /**
+   * Optional additional iframe attributes for the provider's embed.
+   *
+   * @remarks
+   * This is used by the web component to set additional attributes on the iframe.
+   * For example, Spotify embeds need `allowtransparency="true" allow="encrypted-media"`.
+   */
+  iframeAttributes?: Record<string, string>;
 }

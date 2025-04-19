@@ -70,4 +70,29 @@ export class EmbedProviderRegistry {
     }
     return undefined;
   }
+
+  /**
+   * Registers multiple providers at once.
+   *
+   * @remarks
+   * If a provider with the same name is already present, it will be overwritten.
+   *
+   * @param providers - An array of {@link EmbedProvider} instances to register.
+   */
+  registerAll(providers: EmbedProvider[]) {
+    for (const provider of providers) {
+      this.register(provider);
+    }
+  }
+
+  /**
+   * Creates a new registry with the same providers as this one.
+   *
+   * @returns A new {@link EmbedProviderRegistry} with the same providers.
+   */
+  clone(): EmbedProviderRegistry {
+    const newRegistry = new EmbedProviderRegistry();
+    newRegistry.registerAll(this.listProviders());
+    return newRegistry;
+  }
 }
