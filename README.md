@@ -30,6 +30,23 @@ The URL is the canonical data. Everything else — provider detection, embed URL
 
 [Try it on CodePen](https://codepen.io/attachment/pen/poRRwdy) | [Live Examples](https://social-embed.org/wc/)
 
+```html
+<!-- Before: Raw URL that users need to manually process -->
+https://www.youtube.com/watch?v=Bd8_vO5zrjo
+
+<!-- After: Simply wrap in o-embed tags -->
+<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
+```
+
+## Key Features
+
+- **Zero dependencies** - Client-side parsing with no backend requirements
+- **Multi-platform support** - YouTube, Spotify, Vimeo, DailyMotion, and more
+- **Extensible** - Create and register custom providers for any platform
+- **Lightweight** - Small footprint for fast page loads
+- **Framework-agnostic** - Works with any frontend technology
+- **Simple API** - Easy to integrate with straightforward methods
+
 ## Quick Start
 
 ### Web Component (most users)
