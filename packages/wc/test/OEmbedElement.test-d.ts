@@ -5,6 +5,7 @@
  * They are executed during compilation to ensure proper type constraints.
  */
 
+import type { EmbedProvider } from "@social-embed/lib";
 import type { LitElement, TemplateResult } from "lit";
 import { describe, expectTypeOf, test } from "vitest";
 import type { OEmbedElement } from "../src/OEmbedElement";
@@ -76,7 +77,7 @@ describe("OEmbedElement Type Tests", () => {
 
     // The provider property should be of the correct type
     expectTypeOf<OEmbedElement["provider"]>().toEqualTypeOf<
-      { name: string } | undefined
+      EmbedProvider | undefined
     >();
   });
 });
