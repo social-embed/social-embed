@@ -1,0 +1,190 @@
+---
+id: extending-providers
+title: Extending Providers
+description: How to create and register custom embed providers
+sidebar:
+  order: 25
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+# Extending Providers
+
+One of the key features of `@social-embed/lib` is its extensibility. You can create custom providers to support any media service that isn't included in the built-in providers.
+
+## Creating a Custom Provider
+
+To create a custom provider, you need to implement the `EmbedProvider` interface:
+
+```ts
+import { type EmbedProvider } from "@social-embed/lib";
+
+const MyCustomProvider: EmbedProvider = {
+  // A unique name for your provider
+  name: "MyCustom",
+  
+  // A function that returns true if the URL belongs to your provider
+  canParseUrl(url: string): boolean {
+    return /mycustom\.example\.com/.test(url);
+  },
+  
+  // A function that extracts the ID from the URL
+  getIdFromUrl(url: string): string {
+    // Extract the ID from the URL (e.g., the last path segment)
+    return url.split("/").pop() || "";
+  },
+  
+  // A function that builds the embed URL from the ID
+  getEmbedUrlFromId(id: string): string {
+    return `https://mycustom.example.com/embed/${id}`;
+  },
+  
+  // Optional: Default dimensions for the embed
+  defaultDimensions: {
+    width: "640",
+    height: "360"
+  },
+  
+  // Optional: Additional iframe attributes
+  iframeAttributes: {
+    allowtransparency: "true",
+    allow: "encrypted-media"
+  }
+};
+```
+
+## Registering Your Custom Provider
+
+Once you've created your custom provider, you need to register it with the library. There are two ways to do this:
+
+<Tabs>
+  <TabItem label="Using createRegistry">
+    ```ts
+    import { createRegistry, type EmbedProvider } from "@social-embed/lib";
+    import { MyCustomProvider } from "./MyCustomProvider";
+
+    // Create a custom registry with all built-in providers
+    const myRegistry = createRegistry();
+    
+    // Register your custom provider
+    myRegistry.register(MyCustomProvider);
+    
+    // Use your custom registry
+    const provider = myRegistry.findProviderByUrl("https://mycustom.example.com/video/xyz123");
+    if (provider) {
+      const embedUrl = provider.getEmbedUrlFromId(provider.getIdFromUrl("https://mycustom.example.com/video/xyz123"));
+      console.log(embedUrl); // "https://mycustom.example.com/embed/xyz123"
+    }
+    ```
+  </TabItem>
+  <TabItem label="Using getProviderFromUrl">
+    ```ts
+    import { getProviderFromUrl, getDefaultRegistry, type EmbedProvider } from "@social-embed/lib";
+    import { MyCustomProvider } from "./MyCustomProvider";
+
+    // Register your custom provider with the default registry
+    getDefaultRegistry().register(MyCustomProvider);
+    
+    // Now getProviderFromUrl will recognize your custom provider
+    const provider = getProviderFromUrl("https://mycustom.example.com/video/xyz123");
+    if (provider) {
+      console.log(provider.name); // "MyCustom"
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Using Custom Providers with the Web Component
+
+If you're using the `<o-embed>` web component, it will automatically recognize your custom providers if you register them before using the component:
+
+```ts
+import { getDefaultRegistry } from "@social-embed/lib";
+import { MyCustomProvider } from "./MyCustomProvider";
+
+// Register your custom provider
+getDefaultRegistry().register(MyCustomProvider);
+```
+
+Then you can use the web component with your custom provider:
+
+```html
+<o-embed url="https://mycustom.example.com/video/xyz123"></o-embed>
+```
+
+The web component will automatically detect your custom provider and render the embed correctly.
+
+## Advanced: Customizing the Embed Rendering
+
+The `<o-embed>` web component uses the `defaultDimensions` and `iframeAttributes` properties of your provider to customize the rendering of the embed. You can use these properties to control the appearance and behavior of the embed:
+
+```ts
+const MyCustomProvider: EmbedProvider = {
+  name: "MyCustom",
+  canParseUrl(url: string): boolean { /* ... */ },
+  getIdFromUrl(url: string): string { /* ... */ },
+  getEmbedUrlFromId(id: string): string { /* ... */ },
+  
+  // Custom dimensions for the embed
+  defaultDimensions: {
+    width: "800",
+    height: "450"
+  },
+  
+  // Additional iframe attributes
+  iframeAttributes: {
+    allowtransparency: "true",
+    allow: "encrypted-media; autoplay; fullscreen",
+    loading: "lazy"
+  }
+};
+```
+
+## Example: Creating a Provider for Twitch
+
+Here's a complete example of creating a custom provider for Twitch:
+
+```ts
+import { type EmbedProvider, getDefaultRegistry } from "@social-embed/lib";
+
+const TwitchProvider: EmbedProvider = {
+  name: "Twitch",
+  
+  canParseUrl(url: string): boolean {
+    return /twitch\.tv/.test(url);
+  },
+  
+  getIdFromUrl(url: string): string {
+    // Extract the channel name from the URL
+    const match = url.match(/twitch\.tv\/([^/?]+)/);
+    return match ? match[1] : "";
+  },
+  
+  getEmbedUrlFromId(id: string): string {
+    return `https://player.twitch.tv/?channel=${id}&parent=${window.location.hostname}`;
+  },
+  
+  defaultDimensions: {
+    width: "720",
+    height: "480"
+  },
+  
+  iframeAttributes: {
+    allowfullscreen: "true",
+    allow: "autoplay; fullscreen"
+  }
+};
+
+// Register the Twitch provider
+getDefaultRegistry().register(TwitchProvider);
+```
+
+Now you can use the Twitch provider with the web component:
+
+```html
+<o-embed url="https://twitch.tv/example"></o-embed>
+```
+
+## Summary
+
+By creating and registering custom providers, you can extend the library to support any media service. The web component will automatically recognize your custom providers and render the embeds correctly.
