@@ -63,9 +63,12 @@ describe("o-embed with custom provider", () => {
 
     // Set the provider directly
     el.provider = CustomProvider;
+    await el.updateComplete;
+    el.url = "https://customtest.example.com/video/123";
+    await el.updateComplete;
 
     // Verify the provider was set
-    expect(el.provider).toBe(CustomProvider);
+    expect(el.provider).toStrictEqual(CustomProvider);
     expect(el.provider?.name).toBe("CustomTest");
 
     // Verify the provider's properties are accessible
@@ -75,5 +78,23 @@ describe("o-embed with custom provider", () => {
     expect(el.provider?.iframeAttributes?.allow).toBe(
       "autoplay; encrypted-media",
     );
+    // Verify rendering of iframe for custom provider
+    const shadow = el.shadowRoot;
+    // Debug output
+    // eslint-disable-next-line no-console
+    console.log('provider:', el.provider);
+    // eslint-disable-next-line no-console
+    console.log('url:', el.url);
+    // eslint-disable-next-line no-console
+    console.log('shadowRoot.innerHTML:', shadow?.innerHTML);
+    expect(shadow).toBeTruthy();
+    const iframe = shadow?.querySelector("iframe");
+    expect(iframe).toBeTruthy();
+    if (!iframe) throw new Error("iframe not found in shadowRoot");
+    expect(iframe.src).toBe("https://customtest.example.com/embed/123");
+    expect(iframe.getAttribute("width")).toBe("720");
+    expect(iframe.getAttribute("height")).toBe("480");
+    expect(iframe.hasAttribute("allowtransparency")).toBe(true);
+    expect(iframe.getAttribute("allow")).toBe("autoplay; encrypted-media");
   });
 });
