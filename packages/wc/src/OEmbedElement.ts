@@ -127,10 +127,10 @@ export class OEmbedElement extends LitElement {
       const old = this._provider;
       // Always use a new object reference for reactivity/immutability
       this._provider = val ? { ...val } : undefined;
-      this.requestUpdate('provider', old);
+      this.requestUpdate("provider", old);
       // Force Lit to also treat url as changed if set, to trigger full update
       if (this.url) {
-        this.requestUpdate('url', this.url);
+        this.requestUpdate("url", this.url);
       }
     }
   }
@@ -143,7 +143,9 @@ export class OEmbedElement extends LitElement {
    * @returns The lit `<style>` template that sets up the container and iframe dimensions.
    */
   public instanceStyle(): TemplateResult {
-    const { widthWithUnits, heightWithUnits } = this.getDefaultDimensions(this.provider);
+    const { widthWithUnits, heightWithUnits } = this.getDefaultDimensions(
+      this.provider,
+    );
     return html`
       <style>
         :host {
@@ -181,19 +183,19 @@ export class OEmbedElement extends LitElement {
    * Only update/render when both provider and url are set.
    */
   /**
- * Only update/render when url is set. The _changedProperties parameter is required by Lit,
- * but is not used in this implementation.
- *
- * Note: For custom providers, ensure that both provider and url are set before expecting
- * a rendered iframe.
- *
- * Custom Provider Signature Requirement:
- * - getIdFromUrl(url) MUST return a string (not string[]). If multiple matches are possible, return the first.
- * - getEmbedUrlFromId(id) MUST accept a string id as its argument.
- */
-protected shouldUpdate(_changedProperties: Map<string, unknown>): boolean {
+   * Only update/render when url is set. The _changedProperties parameter is required by Lit,
+   * but is not used in this implementation.
+   *
+   * Note: For custom providers, ensure that both provider and url are set before expecting
+   * a rendered iframe.
+   *
+   * Custom Provider Signature Requirement:
+   * - getIdFromUrl(url) MUST return a string (not string[]). If multiple matches are possible, return the first.
+   * - getEmbedUrlFromId(id) MUST accept a string id as its argument.
+   */
+  protected shouldUpdate(_changedProperties: Map<string, unknown>): boolean {
     // Always allow the first update to resolve provider from url
-    if (typeof this.provider === 'undefined' && this.url) {
+    if (typeof this.provider === "undefined" && this.url) {
       this.provider = getProviderFromUrl(this.url);
     }
     // Render whenever url is present (non-empty)
@@ -206,13 +208,12 @@ protected shouldUpdate(_changedProperties: Map<string, unknown>): boolean {
    */
   protected willUpdate(changedProperties: Map<string, unknown>): void {
     // If url changes and provider is not set, resolve provider
-    if (changedProperties.has('url') && typeof this.provider === 'undefined') {
+    if (changedProperties.has("url") && typeof this.provider === "undefined") {
       this.provider = getProviderFromUrl(this.url);
     }
     // If provider changes and url is present, you could precompute embedUrl, etc.
     // (For this component, embedUrl is computed in renderProvider)
   }
-
 
   /**
    * Default dimension overrides for Spotify content.
@@ -577,7 +578,10 @@ protected shouldUpdate(_changedProperties: Map<string, unknown>): boolean {
       let id = this.provider.getIdFromUrl(this.url);
       // If a provider returns a string[], use the first element and warn
       if (Array.isArray(id)) {
-        console.warn("Custom provider getIdFromUrl returned an array; using the first element.", id);
+        console.warn(
+          "Custom provider getIdFromUrl returned an array; using the first element.",
+          id,
+        );
         id = id[0];
       }
       if (!id) {
