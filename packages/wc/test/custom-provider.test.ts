@@ -82,11 +82,11 @@ describe("o-embed with custom provider", () => {
     const shadow = el.shadowRoot;
     // Debug output
     // eslint-disable-next-line no-console
-    console.log('provider:', el.provider);
+    console.log("provider:", el.provider);
     // eslint-disable-next-line no-console
-    console.log('url:', el.url);
+    console.log("url:", el.url);
     // eslint-disable-next-line no-console
-    console.log('shadowRoot.innerHTML:', shadow?.innerHTML);
+    console.log("shadowRoot.innerHTML:", shadow?.innerHTML);
     expect(shadow).toBeTruthy();
     const iframe = shadow?.querySelector("iframe");
     expect(iframe).toBeTruthy();
