@@ -4,17 +4,17 @@
 
 <dev-loop globs="*.ts,*.tsx,*.js,package.json,tsconfig.json,astro.config.*">
   <priority>
-    <1>Tests MUST Pass - Never modify critical implementations for linting/typing, prioritize tests, communicate before major changes, use ignore comments instead of changing core functionality</1>
-    <2>Core Functionality - Focus on implementation correctness, behavior over style</2>
-    <3>Type Safety and Linting - Handle AFTER tests pass, never let them dictate core implementation</3>
+    Tests MUST Pass - Never modify critical implementations for linting/typing, prioritize tests, communicate before major changes, use ignore comments instead of changing core functionality
+    Core Functionality - Focus on implementation correctness, behavior over style
+    Type Safety and Linting - Handle AFTER tests pass, never let them dictate core implementation
   </priority>
-  
+
   <packages>
     <lib>Core TypeScript library for URL parsing and transformation (@social-embed/lib)</lib>
     <wc>Web Component implementation using Lit (@social-embed/wc)</wc>
     <site>Documentation site built with Astro and Starlight</site>
   </packages>
-  
+
   <package-context>
     <lib globs="packages/lib/**/*.ts">
       <tech>TypeScript</tech>
@@ -25,7 +25,7 @@
         <feature>Browser and Node.js compatibility</feature>
       </features>
     </lib>
-    
+
     <wc globs="packages/wc/**/*.ts">
       <tech>TypeScript + Lit (Web Components)</tech>
       <purpose>Custom HTML element for embedding media</purpose>
@@ -39,7 +39,7 @@
         <dependency>lit</dependency>
       </dependencies>
     </wc>
-    
+
     <site globs="packages/site/**/*">
       <tech>Astro + Starlight + Tailwind CSS 3</tech>
       <purpose>Documentation website with examples and API references</purpose>
@@ -50,18 +50,28 @@
       </features>
     </site>
   </package-context>
-  
+
   <workflow>
     <verify>Check which package you're working with (lib, wc, or site)</verify>
     <tests>Run appropriate tests for the package</tests>
   </workflow>
-  
+
+  <commands>
+    <note>Common commands like 'pnpm test', 'pnpm lint', 'pnpm build' are executed using pnpm.</note>
+    <note>If commands fail due to missing executables or environment issues (e.g., if not using direnv/mise shell integration), prefix the command with 'mise exec --'.</note>
+    <example>pnpm test  # Standard execution</example>
+    <example>mise exec -- pnpm test # Execution via mise</example>
+    <example>pnpm lint</example>
+    <example>mise exec -- pnpm lint</example>
+    <context>These commands can typically be run from the project root directory, or within the specific package directories ('packages/lib', 'packages/wc').</context>
+  </commands>
+
   <testing>
     <structure>Mirror source files, one test per source file, logical grouping</structure>
     <naming>Descriptive: `describe('Component', () => { it('does X when Y', () => {}) })`</naming>
     <coverage>85%+ on new code, focus on code paths not just lines</coverage>
   </testing>
-  
+
   <function-params>
     <rule>Always use typed object parameters over positional parameters</rule>
     <prefer>
@@ -84,15 +94,15 @@
 <git-commit globs="*.git/*,.gitignore,.github/*,CHANGELOG.md,CHANGES.md">
   <format>
     Component/File(type[Subcomponent]): Concise description
-    
+
     why: Explanation of necessity or impact.
     what:
     - Specific technical changes made
     - Focused on single topic
-    
+
     refs: #issue-number, breaking changes, or links
   </format>
-  
+
   <types>
     feat: New feature (MINOR in SemVer)
     fix: Bug fix (PATCH in SemVer)
@@ -103,13 +113,13 @@
     test: Test changes only
     chore: Build process, dependencies, etc.
   </types>
-  
+
   <rules>
     <message>Present tense, imperative mood, no period at end, wrap at 72-80 chars</message>
     <commits>One commit per change type, NEVER combine different types, separate multiple issues</commits>
     <breaking>Mark as "BREAKING CHANGE:" in title, detail migration path in body</breaking>
   </rules>
-  
+
   <patterns>
     <lib>lib(type[module]): Description</lib>
     <wc>wc(type[component]): Description</wc>
@@ -120,19 +130,19 @@
 
 <no-index-exports globs="index.ts">
   <rule>Don't use index.ts for barrel exports. Always import from specific files.</rule>
-  
+
   <avoid>
     export * from './utils';
     export { default as Button } from './Button';
     export default stuff;
     export const utils = { formatDate, parseNumber };
   </avoid>
-  
+
   <correct>
     import { convertUrlToEmbedUrl } from './urlUtils';
     import { OEmbed } from './components/OEmbed';
   </correct>
-  
+
   <exceptions>
     <lib>For component libraries: flat exports in main entry file (not index.ts)</lib>
     <tests>For tests: use test-utils.ts, not index.ts</tests>
@@ -144,7 +154,7 @@
     <sync>expect(() => { throw new Error("message"); }).toThrowError("message");</sync>
     <async>await expect(async () => { throw new Error("message"); }).rejects.toThrowError("message");</async>
   </use>
-  
+
   <avoid>No custom error utilities like `expectToThrow` or `expectToThrowAsync`</avoid>
   <why>Built-in assertions are robust, simplify code, ensure consistency</why>
 </vitest-error-handling>
@@ -156,21 +166,21 @@
     <sign>Each fix creates new errors in a cascading pattern</sign>
     <sign>Uncertainty about root cause after 2-3 iterations</sign>
   </detection>
-  
+
   <action-plan>
     <step>
       <title>Pause and acknowledge the loop</title>
       <detail>Explicitly state that you are in a potential debug loop</detail>
       <detail>Review what approaches have been tried and failed</detail>
     </step>
-    
+
     <step>
       <title>Minimize to MVP</title>
       <detail>Remove all debugging cruft and experimental code</detail>
       <detail>Revert to the simplest version that demonstrates the issue</detail>
       <detail>Focus on isolating the core problem without added complexity</detail>
     </step>
-    
+
     <step>
       <title>Comprehensive Documentation</title>
       <detail>Provide a clear summary of the issue</detail>
@@ -178,7 +188,7 @@
       <detail>Document exact error messages and unexpected behaviors</detail>
       <detail>Explain your current understanding of potential causes</detail>
     </step>
-    
+
     <step>
       <title>Format for Portability</title>
       <detail>Present the problem in quadruple backticks for easy copying</detail>
@@ -206,7 +216,7 @@
       </format>
     </step>
   </action-plan>
-  
+
   <why>
     <reason>Breaks the cycle of unproductive debugging</reason>
     <reason>Forces focus on the core issue without distractions</reason>
