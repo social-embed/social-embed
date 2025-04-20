@@ -8,26 +8,26 @@ import type { OEmbedElement } from "../src/OEmbedElement";
 describe("o-embed with custom provider", () => {
   // Create a custom provider for testing
   const CustomProvider: EmbedProvider = {
-    name: "CustomTest",
     canParseUrl(url: string) {
       return /customtest\.example\.com\/video\//.test(url);
     },
-    getIdFromUrl(url: string) {
-      return url.split("/").pop() || "";
+    // Add custom dimensions
+    defaultDimensions: {
+      height: "480",
+      width: "720",
     },
     getEmbedUrlFromId(id: string) {
       return `https://customtest.example.com/embed/${id}`;
     },
-    // Add custom dimensions
-    defaultDimensions: {
-      width: "720",
-      height: "480",
+    getIdFromUrl(url: string) {
+      return url.split("/").pop() || "";
     },
     // Add custom iframe attributes
     iframeAttributes: {
-      allowtransparency: "true",
       allow: "autoplay; encrypted-media",
+      allowtransparency: "true",
     },
+    name: "CustomTest",
   };
 
   // Store the original providers to restore after tests
@@ -82,11 +82,11 @@ describe("o-embed with custom provider", () => {
     const shadow = el.shadowRoot;
     // Debug output
     // eslint-disable-next-line no-console
-    console.log('provider:', el.provider);
+    console.log("provider:", el.provider);
     // eslint-disable-next-line no-console
-    console.log('url:', el.url);
+    console.log("url:", el.url);
     // eslint-disable-next-line no-console
-    console.log('shadowRoot.innerHTML:', shadow?.innerHTML);
+    console.log("shadowRoot.innerHTML:", shadow?.innerHTML);
     expect(shadow).toBeTruthy();
     const iframe = shadow?.querySelector("iframe");
     expect(iframe).toBeTruthy();

@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import { isValidUrl } from "./providers/generic"; // or wherever
 import { YouTubeProvider } from "./providers/youtube";

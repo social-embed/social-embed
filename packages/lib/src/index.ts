@@ -2,7 +2,6 @@ export type { EmbedProvider } from "./provider";
 export * from "./providers";
 export { EmbedProviderRegistry } from "./registry";
 
-import { EmbedProviderRegistry } from "./registry";
 import { DailyMotionProvider } from "./providers/dailymotion";
 import { EdPuzzleProvider } from "./providers/edpuzzle";
 import { LoomProvider } from "./providers/loom";
@@ -10,6 +9,7 @@ import { SpotifyProvider } from "./providers/spotify";
 import { VimeoProvider } from "./providers/vimeo";
 import { WistiaProvider } from "./providers/wistia";
 import { YouTubeProvider } from "./providers/youtube";
+import { EmbedProviderRegistry } from "./registry";
 
 /**
  * Array of all built-in providers.
@@ -42,7 +42,7 @@ for (const provider of defaultProviders) {
 }
 
 // Re-export utility functions
-export { getProviderFromUrl, convertUrlToEmbedUrl };
+export { convertUrlToEmbedUrl, getProviderFromUrl };
 
 /**
  * Get the default registry with all built-in providers.
