@@ -114,8 +114,27 @@ export class OEmbedElement extends LitElement {
   /**
    * The matched provider object, determined by calling `getProviderFromUrl(this.url)`.
    * If the URL is recognized, this will be an EmbedProvider object.
+   *
+   * Use @property for reactivity, but do not reflect to attribute.
+   * Always set a new object reference for reactivity.
    */
-  public provider: EmbedProvider | undefined;
+  @property({ type: Object, attribute: false })
+  public get provider(): EmbedProvider | undefined {
+    return this._provider;
+  }
+  public set provider(val: EmbedProvider | undefined) {
+    if (val !== this._provider) {
+      const old = this._provider;
+      // Always use a new object reference for reactivity/immutability
+      this._provider = val ? { ...val } : undefined;
+      this.requestUpdate('provider', old);
+      // Force Lit to also treat url as changed if set, to trigger full update
+      if (this.url) {
+        this.requestUpdate('url', this.url);
+      }
+    }
+  }
+  private _provider: EmbedProvider | undefined = undefined;
 
   /**
    * Creates a `<style>` block that sets width and height for the iframe based on
@@ -124,9 +143,7 @@ export class OEmbedElement extends LitElement {
    * @returns The lit `<style>` template that sets up the container and iframe dimensions.
    */
   public instanceStyle(): TemplateResult {
-    const { widthWithUnits, heightWithUnits } = this.getDefaultDimensions(
-      this.provider,
-    );
+    const { widthWithUnits, heightWithUnits } = this.getDefaultDimensions(this.provider);
     return html`
       <style>
         :host {
@@ -144,36 +161,58 @@ export class OEmbedElement extends LitElement {
 
   /**
    * Main LitElement render cycle method.
-   * 1. Determines `provider` via `getProviderFromUrl(this.url)`.
-   * 2. Chooses a specialized rendering function or fallback logic.
+   * Rendering is guarded by shouldUpdate to ensure both provider and url are set.
    *
    * @returns A lit template containing the correct `<iframe>` or an error message.
    */
   public render(): TemplateResult {
-    // Only set the provider if it's not already set manually
-    if (!this.provider) {
-      this.provider = getProviderFromUrl(this.url);
-    }
-
-    // Return early if no URL was provided at all
-    if (!this.url || this.url === "") {
-      return html``;
-    }
-
     let embedResult: TemplateResult;
-
-    // If no recognized provider, fallback to a generic iframe or error message
     if (!this.provider) {
       embedResult = isValidUrl(this.url)
-        ? this.renderIframe() // fallback if the URL is syntactically valid
+        ? this.renderIframe()
         : html`No provider found for ${this.url}`;
     } else {
-      // First try to use the generic renderProvider method for any provider
       embedResult = this.renderProvider();
     }
-
     return html`${this.instanceStyle()}${embedResult}`;
   }
+
+  /**
+   * Only update/render when both provider and url are set.
+   */
+  /**
+ * Only update/render when url is set. The _changedProperties parameter is required by Lit,
+ * but is not used in this implementation.
+ *
+ * Note: For custom providers, ensure that both provider and url are set before expecting
+ * a rendered iframe.
+ *
+ * Custom Provider Signature Requirement:
+ * - getIdFromUrl(url) MUST return a string (not string[]). If multiple matches are possible, return the first.
+ * - getEmbedUrlFromId(id) MUST accept a string id as its argument.
+ */
+protected shouldUpdate(_changedProperties: Map<string, unknown>): boolean {
+    // Always allow the first update to resolve provider from url
+    if (typeof this.provider === 'undefined' && this.url) {
+      this.provider = getProviderFromUrl(this.url);
+    }
+    // Render whenever url is present (non-empty)
+    return !!this.url;
+  }
+
+  /**
+   * Compute any derived state or handle interdependent logic before rendering.
+   * This is where you can react to changes in provider or url.
+   */
+  protected willUpdate(changedProperties: Map<string, unknown>): void {
+    // If url changes and provider is not set, resolve provider
+    if (changedProperties.has('url') && typeof this.provider === 'undefined') {
+      this.provider = getProviderFromUrl(this.url);
+    }
+    // If provider changes and url is present, you could precompute embedUrl, etc.
+    // (For this component, embedUrl is computed in renderProvider)
+  }
+
 
   /**
    * Default dimension overrides for Spotify content.
@@ -532,9 +571,22 @@ export class OEmbedElement extends LitElement {
         return this.renderLoom();
     }
 
-    // For custom providers, use the generic approach
-    // Get the embed URL from the provider
-    const embedUrl = convertUrlToEmbedUrl(this.url);
+    // For custom providers, use their embed logic if available
+    let embedUrl: string | undefined;
+    if (this.provider.getIdFromUrl && this.provider.getEmbedUrlFromId) {
+      let id = this.provider.getIdFromUrl(this.url);
+      // If a provider returns a string[], use the first element and warn
+      if (Array.isArray(id)) {
+        console.warn("Custom provider getIdFromUrl returned an array; using the first element.", id);
+        id = id[0];
+      }
+      if (!id) {
+        return html`Could not extract ID for ${this.url}`;
+      }
+      embedUrl = this.provider.getEmbedUrlFromId(id);
+    } else {
+      embedUrl = convertUrlToEmbedUrl(this.url);
+    }
     if (!embedUrl) {
       return html`Could not generate embed URL for ${this.url}`;
     }

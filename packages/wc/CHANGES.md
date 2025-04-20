@@ -9,6 +9,13 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+### Internal Improvements
+- Removed all lint and TypeScript warnings from the codebase for maintainability.
+- Documented and enforced that custom provider `getIdFromUrl` must return a `string`, not `string[]`.
+- Added runtime check in `OEmbedElement` to warn if a custom provider returns an array and use the first value.
+- Expanded doc comments for custom provider extension and Lit lifecycle caveats.
+- Cleaned up unused imports/variables in test files.
+
 ### Development
 
 - **Testing Infrastructure**: Migrated from Web Test Runner to Vitest with Browser testing:
