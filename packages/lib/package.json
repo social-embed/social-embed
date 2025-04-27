@@ -18,7 +18,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "Tony Narlock <tony@git-pull.com> (https://www.git-pull.com)",
+  "author": "Tony Narlock <tony@git-pull.com> (https://tony.sh)",
   "homepage": "https://social-embed.git-pull.com/",
   "repository": {
     "type": "git",
