@@ -31,8 +31,8 @@ importers:
         specifier: ^6.3.5
         version: 6.3.5(@types/node@22.15.17)(jiti@1.21.7)(yaml@2.7.0)
       vite-plugin-dts:
-        specifier: ^4.5.3
-        version: 4.5.3(@types/node@22.15.17)(rollup@4.40.0)(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.17)(jiti@1.21.7)(yaml@2.7.0))
+        specifier: ^4.5.4
+        version: 4.5.4(@types/node@22.15.17)(rollup@4.40.0)(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.17)(jiti@1.21.7)(yaml@2.7.0))
       vitest:
         specifier: ^3.1.3
         version: 3.1.3(@types/debug@4.1.12)(@types/node@22.15.17)(@vitest/browser@3.1.3)(@vitest/ui@3.1.3)(jiti@1.21.7)(msw@2.7.3(@types/node@22.15.17)(typescript@5.8.3))(yaml@2.7.0)
@@ -135,8 +135,8 @@ importers:
         specifier: ^6.3.5
         version: 6.3.5(@types/node@22.15.17)(jiti@1.21.7)(yaml@2.7.0)
       vite-plugin-dts:
-        specifier: ^4.5.3
-        version: 4.5.3(@types/node@22.15.17)(rollup@4.40.0)(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.17)(jiti@1.21.7)(yaml@2.7.0))
+        specifier: ^4.5.4
+        version: 4.5.4(@types/node@22.15.17)(rollup@4.40.0)(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.17)(jiti@1.21.7)(yaml@2.7.0))
       vitest:
         specifier: ^3.1.3
         version: 3.1.3(@types/debug@4.1.12)(@types/node@22.15.17)(@vitest/browser@3.1.3)(@vitest/ui@3.1.3)(jiti@1.21.7)(msw@2.7.3(@types/node@22.15.17)(typescript@5.8.3))(yaml@2.7.0)
@@ -3380,9 +3380,6 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
 
-  ufo@1.5.4:
-    resolution: {integrity: sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==}
-
   ufo@1.6.1:
     resolution: {integrity: sha512-9a4/uxlTWJ4+a5i0ooc1rU7C7YOw3wT+UGqdeNNHWnOF9qcMBgLRS+4IYUqbczewFx4mLEig6gawh7X6mFlEkA==}
 
@@ -3547,8 +3544,8 @@ packages:
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
-  vite-plugin-dts@4.5.3:
-    resolution: {integrity: sha512-P64VnD00dR+e8S26ESoFELqc17+w7pKkwlBpgXteOljFyT0zDwD8hH4zXp49M/kciy//7ZbVXIwQCekBJjfWzA==}
+  vite-plugin-dts@4.5.4:
+    resolution: {integrity: sha512-d4sOM8M/8z7vRXHHq/ebbblfaxENjogAAekcfcDCCwAyvGqnPrc7f4NZbvItS+g4WTgerW0xDwSz5qz11JT3vg==}
     peerDependencies:
       typescript: '*'
       vite: '*'
@@ -5236,7 +5233,7 @@ snapshots:
 
   '@vue/compiler-core@3.5.13':
     dependencies:
-      '@babel/parser': 7.26.3
+      '@babel/parser': 7.27.2
       '@vue/shared': 3.5.13
       entities: 4.5.0
       estree-walker: 2.0.2
@@ -5781,7 +5778,7 @@ snapshots:
   esast-util-from-js@2.0.1:
     dependencies:
       '@types/estree-jsx': 1.0.5
-      acorn: 8.14.0
+      acorn: 8.14.1
       esast-util-from-estree: 2.0.0
       vfile-message: 4.0.2
 
@@ -6902,10 +6899,10 @@ snapshots:
 
   mlly@1.7.4:
     dependencies:
-      acorn: 8.14.0
+      acorn: 8.14.1
       pathe: 2.0.3
       pkg-types: 1.3.1
-      ufo: 1.5.4
+      ufo: 1.6.1
 
   mrmime@2.0.0: {}
 
@@ -7796,8 +7793,6 @@ snapshots:
 
   typescript@5.8.3: {}
 
-  ufo@1.5.4: {}
-
   ufo@1.6.1: {}
 
   ultrahtml@1.6.0: {}
@@ -7959,7 +7954,7 @@ snapshots:
       - tsx
       - yaml
 
-  vite-plugin-dts@4.5.3(@types/node@22.15.17)(rollup@4.40.0)(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.17)(jiti@1.21.7)(yaml@2.7.0)):
+  vite-plugin-dts@4.5.4(@types/node@22.15.17)(rollup@4.40.0)(typescript@5.8.3)(vite@6.3.5(@types/node@22.15.17)(jiti@1.21.7)(yaml@2.7.0)):
     dependencies:
       '@microsoft/api-extractor': 7.51.0(@types/node@22.15.17)
       '@rollup/pluginutils': 5.1.4(rollup@4.40.0)
