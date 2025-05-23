@@ -5,7 +5,9 @@
  * This component is part of the @social-embed/wc package.
  */
 
+import type { EmbedProvider } from "@social-embed/lib";
 import {
+  convertUrlToEmbedUrl,
   getDailyMotionEmbedFromId,
   getDailyMotionIdFromUrl,
   getEdPuzzleEmbedUrlFromId,
@@ -111,14 +113,28 @@ export class OEmbedElement extends LitElement {
 
   /**
    * The matched provider object, determined by calling `getProviderFromUrl(this.url)`.
-   * If the URL is recognized, `.name` will be a string like `"YouTube"`.
+   * If the URL is recognized, this will be an EmbedProvider object.
+   *
+   * Use @property for reactivity, but do not reflect to attribute.
+   * Always set a new object reference for reactivity.
    */
-  public provider:
-    | {
-        /** The recognized provider name (e.g., "YouTube", "Vimeo", "Spotify"). */
-        name: string;
+  @property({ type: Object, attribute: false })
+  public get provider(): EmbedProvider | undefined {
+    return this._provider;
+  }
+  public set provider(val: EmbedProvider | undefined) {
+    if (val !== this._provider) {
+      const old = this._provider;
+      // Always use a new object reference for reactivity/immutability
+      this._provider = val ? { ...val } : undefined;
+      this.requestUpdate("provider", old);
+      // Force Lit to also treat url as changed if set, to trigger full update
+      if (this.url) {
+        this.requestUpdate("url", this.url);
       }
-    | undefined;
+    }
+  }
+  private _provider: EmbedProvider | undefined = undefined;
 
   /**
    * Creates a `<style>` block that sets width and height for the iframe based on
@@ -147,59 +163,56 @@ export class OEmbedElement extends LitElement {
 
   /**
    * Main LitElement render cycle method.
-   * 1. Determines `provider` via `getProviderFromUrl(this.url)`.
-   * 2. Chooses a specialized rendering function or fallback logic.
+   * Rendering is guarded by shouldUpdate to ensure both provider and url are set.
    *
    * @returns A lit template containing the correct `<iframe>` or an error message.
    */
   public render(): TemplateResult {
-    this.provider = getProviderFromUrl(this.url);
-
-    // Return early if no URL was provided at all
-    if (!this.url || this.url === "") {
-      return html``;
-    }
-
     let embedResult: TemplateResult;
-
-    // If no recognized provider, fallback to a generic iframe or error message
     if (!this.provider) {
       embedResult = isValidUrl(this.url)
-        ? this.renderIframe() // fallback if the URL is syntactically valid
+        ? this.renderIframe()
         : html`No provider found for ${this.url}`;
     } else {
-      // Switch on provider.name to call the appropriate embed rendering method
-      switch (this.provider.name) {
-        case "YouTube":
-          embedResult = this.renderYouTube();
-          break;
-        case "Spotify":
-          embedResult = this.renderSpotify();
-          break;
-        case "Vimeo":
-          embedResult = this.renderVimeo();
-          break;
-        case "DailyMotion":
-          embedResult = this.renderDailyMotion();
-          break;
-        case "EdPuzzle":
-          embedResult = this.renderEdPuzzle();
-          break;
-        case "Wistia":
-          embedResult = this.renderWistia();
-          break;
-        case "Loom":
-          embedResult = this.renderLoom();
-          break;
-        default:
-          embedResult = isValidUrl(this.url)
-            ? this.renderIframe()
-            : html`No provider found for ${this.url}`;
-          break;
-      }
+      embedResult = this.renderProvider();
     }
-
     return html`${this.instanceStyle()}${embedResult}`;
+  }
+
+  /**
+   * Only update/render when both provider and url are set.
+   */
+  /**
+   * Only update/render when url is set. The _changedProperties parameter is required by Lit,
+   * but is not used in this implementation.
+   *
+   * Note: For custom providers, ensure that both provider and url are set before expecting
+   * a rendered iframe.
+   *
+   * Custom Provider Signature Requirement:
+   * - getIdFromUrl(url) MUST return a string (not string[]). If multiple matches are possible, return the first.
+   * - getEmbedUrlFromId(id) MUST accept a string id as its argument.
+   */
+  protected shouldUpdate(_changedProperties: Map<string, unknown>): boolean {
+    // Always allow the first update to resolve provider from url
+    if (typeof this.provider === "undefined" && this.url) {
+      this.provider = getProviderFromUrl(this.url);
+    }
+    // Render whenever url is present (non-empty)
+    return !!this.url;
+  }
+
+  /**
+   * Compute any derived state or handle interdependent logic before rendering.
+   * This is where you can react to changes in provider or url.
+   */
+  protected willUpdate(changedProperties: Map<string, unknown>): void {
+    // If url changes and provider is not set, resolve provider
+    if (changedProperties.has("url") && typeof this.provider === "undefined") {
+      this.provider = getProviderFromUrl(this.url);
+    }
+    // If provider changes and url is present, you could precompute embedUrl, etc.
+    // (For this component, embedUrl is computed in renderProvider)
   }
 
   /**
@@ -222,14 +235,16 @@ export class OEmbedElement extends LitElement {
     const [spotifyId, spotifyType] = getSpotifyIdAndTypeFromUrl(this.url);
     const url = getSpotifyEmbedUrlFromIdAndType(spotifyId, spotifyType);
 
+    const { width, height } = this.getDefaultDimensions(this.provider);
+
     return html`
       <iframe
         src="${url}"
-        width="${this.width}"
+        width="${width}"
         frameborder=${ifDefined(
           this.frameborder ? this.frameborder : undefined,
         )}
-        height="${this.height}"
+        height="${height}"
         allowtransparency="true"
         allow="encrypted-media"
       ></iframe>
@@ -241,10 +256,23 @@ export class OEmbedElement extends LitElement {
    * Computes dimension info for a recognized provider, possibly using specialized defaults
    * (e.g. Vimeo default is 640x268, EdPuzzle 470x404, etc.).
    *
-   * @param providerObj - The object with `.name` for the matched provider, if any.
+   * @param providerObj - The EmbedProvider object, if any.
    * @returns A `Dimensions` object with `width`, `height`, and optional unit-converted fields.
    */
-  public getDefaultDimensions(providerObj?: { name?: string }): Dimensions {
+  public getDefaultDimensions(providerObj?: EmbedProvider): Dimensions {
+    // First check if the provider has defaultDimensions
+    if (providerObj?.defaultDimensions) {
+      return this.calculateDefaultDimensions({
+        defaults: {
+          width: providerObj.defaultDimensions.width,
+          height: providerObj.defaultDimensions.height,
+          widthWithUnits: providerObj.defaultDimensions.width,
+          heightWithUnits: providerObj.defaultDimensions.height,
+        },
+      });
+    }
+
+    // Fall back to built-in defaults based on provider name
     const providerName = providerObj?.name;
     switch (providerName) {
       case "Vimeo":
@@ -370,10 +398,12 @@ export class OEmbedElement extends LitElement {
     }
     const youtubeUrl = getYouTubeEmbedUrlFromId(youtubeId);
 
+    const { width, height } = this.getDefaultDimensions(this.provider);
+
     return html`
       <iframe
-        width="${this.width}"
-        height="${this.height}"
+        width="${width}"
+        height="${height}"
         src="${youtubeUrl}"
         frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
@@ -508,6 +538,97 @@ export class OEmbedElement extends LitElement {
         src="${embedUrl}"
         frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
+      ></iframe>
+      <slot></slot>
+    `;
+  }
+
+  /**
+   * Renders a provider using the generic approach.
+   * This method is used for all providers, including custom ones.
+   *
+   * @returns A lit template containing the appropriate iframe for the provider.
+   */
+  public renderProvider(): TemplateResult {
+    if (!this.provider || !this.url) {
+      return html`No provider or URL found`;
+    }
+
+    // First try to use the built-in render methods for known providers
+    switch (this.provider.name) {
+      case "YouTube":
+        return this.renderYouTube();
+      case "Spotify":
+        return this.renderSpotify();
+      case "Vimeo":
+        return this.renderVimeo();
+      case "DailyMotion":
+        return this.renderDailyMotion();
+      case "EdPuzzle":
+        return this.renderEdPuzzle();
+      case "Wistia":
+        return this.renderWistia();
+      case "Loom":
+        return this.renderLoom();
+    }
+
+    // For custom providers, use their embed logic if available
+    let embedUrl: string | undefined;
+    if (this.provider.getIdFromUrl && this.provider.getEmbedUrlFromId) {
+      let id = this.provider.getIdFromUrl(this.url);
+      // If a provider returns a string[], use the first element and warn
+      if (Array.isArray(id)) {
+        console.warn(
+          "Custom provider getIdFromUrl returned an array; using the first element.",
+          id,
+        );
+        id = id[0];
+      }
+      if (!id) {
+        return html`Could not extract ID for ${this.url}`;
+      }
+      embedUrl = this.provider.getEmbedUrlFromId(id);
+    } else {
+      embedUrl = convertUrlToEmbedUrl(this.url);
+    }
+    if (!embedUrl) {
+      return html`Could not generate embed URL for ${this.url}`;
+    }
+
+    // Get dimensions directly from the provider or use defaults
+    const width = this.provider.defaultDimensions?.width || this.width;
+    const height = this.provider.defaultDimensions?.height || this.height;
+
+    // Get additional iframe attributes from the provider
+    const iframeAttributes = this.provider.iframeAttributes || {};
+
+    // Handle boolean attributes and regular attributes separately
+    const booleanAttrs: Record<string, boolean> = {};
+    const regularAttrs: Record<string, string> = {};
+
+    // Process each attribute
+    for (const [key, value] of Object.entries(iframeAttributes)) {
+      // Check if it's a boolean attribute (value is true/false)
+      if (typeof value === "boolean") {
+        booleanAttrs[key] = value;
+      } else {
+        // It's a regular attribute
+        regularAttrs[key] = String(value);
+      }
+    }
+
+    // Create a template with all attributes explicitly set
+    return html`
+      <iframe
+        width="${width}"
+        height="${height}"
+        src="${embedUrl}"
+        frameborder=${ifDefined(this.frameborder)}
+        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
+        ?allowtransparency=${regularAttrs.allowtransparency === "true"}
+        allow=${ifDefined(regularAttrs.allow)}
+        loading=${ifDefined(regularAttrs.loading)}
+        title=${ifDefined(regularAttrs.title)}
       ></iframe>
       <slot></slot>
     `;

@@ -2,7 +2,7 @@
 
 > Transform media URLs into beautiful embeds with a single HTML tag.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE)
 [![npm version](https://img.shields.io/npm/v/@social-embed/wc.svg?style=flat)](https://www.npmjs.com/package/@social-embed/wc)
 [![Bundle size](https://img.shields.io/bundlephobia/minzip/@social-embed/wc)](https://bundlephobia.com/package/@social-embed/wc)
 
@@ -38,6 +38,7 @@ See it in action:
 - **Responsive** - Adapts to container width
 - **Lightweight** - Minimal impact on page load
 - **Automatic platform detection** - Supports multiple content providers
+- **Extensible** - Create and register custom providers for any platform
 
 ## Quick Start
 
@@ -99,6 +100,38 @@ document.body.innerHTML = `
 - **Educational Sites** - Embed instructional videos with minimal effort
 
 ## Advanced Usage
+
+### Custom Providers
+
+You can extend the component with your own custom providers for platforms not natively supported:
+
+```javascript
+import { type EmbedProvider, getDefaultRegistry } from "@social-embed/lib";
+import "@social-embed/wc";
+
+// Create a custom provider
+const MyCustomProvider = {
+  name: "MyCustom",
+  canParseUrl(url) { return /mycustom\.example\.com\/video\//.test(url); },
+  getIdFromUrl(url) { return url.split("/").pop() || ""; },
+  getEmbedUrlFromId(id) { return `https://mycustom.example.com/embed/${id}`; },
+  // Optional: Specify default dimensions
+  defaultDimensions: { width: "640", height: "360" },
+  // Optional: Specify custom iframe attributes
+  iframeAttributes: {
+    allowtransparency: "true",
+    allow: "autoplay; encrypted-media"
+  }
+};
+
+// Register your provider
+getDefaultRegistry().register(MyCustomProvider);
+
+// Now you can use it in your HTML
+document.body.innerHTML = `
+  <o-embed url="https://mycustom.example.com/video/xyz123"></o-embed>
+`;
+```
 
 ### Attributes
 

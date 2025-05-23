@@ -24,6 +24,7 @@ https://www.youtube.com/watch?v=Bd8_vO5zrjo
 
 - **Zero dependencies** - Client-side parsing with no backend requirements
 - **Multi-platform support** - YouTube, Spotify, Vimeo, DailyMotion, and more
+- **Extensible** - Create and register custom providers for any platform
 - **Lightweight** - Small footprint for fast page loads
 - **Framework-agnostic** - Works with any frontend technology
 - **Simple API** - Easy to integrate with straightforward methods
