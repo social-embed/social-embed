@@ -1,23 +1,32 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "files": {
-    "ignore": [
-      ".yarn",
-      "node_modules",
-      "dist",
-      "static/",
-      "public/",
-      ".docusaurus/",
-      ".astro/",
-      "yarn-error.log",
-      "docs",
-      "package.json",
-      ".vscode"
-    ],
-    "ignoreUnknown": true
+  "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    }
   },
-  "organizeImports": {
-    "enabled": true
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!**/.yarn/**",
+      "!**/node_modules/**",
+      "!**/dist/**",
+      "!**/static/**",
+      "!**/public/**",
+      "!**/.docusaurus/**",
+      "!**/.astro/**",
+      "!**/yarn-error.log",
+      "!**/docs/**",
+      "!**/package.json",
+      "!**/.vscode/**",
+      "!**/*.d.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -26,7 +35,19 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "style": {
+        "noInferrableTypes": "error",
+        "noParameterAssign": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noUselessElse": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useNumberNamespace": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error"
+      }
     }
   }
 }

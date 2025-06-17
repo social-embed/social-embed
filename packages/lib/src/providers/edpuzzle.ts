@@ -66,8 +66,6 @@ export const getEdPuzzleEmbedUrlFromId = (id: string): string =>
  * EdPuzzle-based media. Useful with `convertUrlToEmbedUrl` or custom logic.
  */
 export const EdPuzzleProvider: EmbedProvider = {
-  /** @inheritdoc */
-  name: "EdPuzzle",
   /**
    * Checks if the given URL belongs to EdPuzzle.
    *
@@ -79,16 +77,6 @@ export const EdPuzzleProvider: EmbedProvider = {
   },
 
   /**
-   * Extracts the EdPuzzle ID from the recognized EdPuzzle URL.
-   *
-   * @param url - The EdPuzzle media URL.
-   * @returns The extracted EdPuzzle ID.
-   */
-  getIdFromUrl(url: string): string {
-    return getEdPuzzleIdFromUrl(url);
-  },
-
-  /**
    * Builds an embeddable EdPuzzle URL from the given media ID.
    *
    * @param id - The EdPuzzle media ID.
@@ -97,4 +85,16 @@ export const EdPuzzleProvider: EmbedProvider = {
   getEmbedUrlFromId(id: string): string {
     return getEdPuzzleEmbedUrlFromId(id);
   },
+
+  /**
+   * Extracts the EdPuzzle ID from the recognized EdPuzzle URL.
+   *
+   * @param url - The EdPuzzle media URL.
+   * @returns The extracted EdPuzzle ID.
+   */
+  getIdFromUrl(url: string): string {
+    return getEdPuzzleIdFromUrl(url);
+  },
+  /** @inheritdoc */
+  name: "EdPuzzle",
 };

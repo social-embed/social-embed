@@ -1,23 +1,24 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "esnext",
-    "lib": ["esnext", "dom", "dom.iterable"],
+    "allowSyntheticDefaultImports": true,
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-    "composite": true
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017"
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["test/**"]
+  "exclude": ["test/**"],
+  "include": ["src/**/*.ts"]
 }

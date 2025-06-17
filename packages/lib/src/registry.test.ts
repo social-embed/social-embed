@@ -45,18 +45,18 @@ describe("EmbedProviderRegistry", () => {
   it("should support a custom provider", () => {
     // 1. Create a custom provider inline
     const MyCustomProvider: EmbedProvider = {
-      name: "MyCustom",
       canParseUrl(url: string) {
         // e.g. matches "https://mycustom.example.com/video/<id>"
         return /mycustom\.example\.com\/video\//.test(url);
+      },
+      getEmbedUrlFromId(id: string) {
+        return `https://mycustom.example.com/embed/${id}`;
       },
       getIdFromUrl(url: string) {
         // e.g. last URL segment is the ID
         return url.split("/").pop() || "";
       },
-      getEmbedUrlFromId(id: string) {
-        return `https://mycustom.example.com/embed/${id}`;
-      },
+      name: "MyCustom",
     };
 
     // 2. Create a new registry and register both YouTube + MyCustom

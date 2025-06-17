@@ -5,12 +5,12 @@ export default defineConfig({
   build: {
     lib: {
       entry: "src/OEmbedElement.ts",
+      fileName: "OEmbedElement",
       formats: ["es", "umd"],
       name: "oembed",
-      fileName: "OEmbedElement",
     },
-    minify: false,
     manifest: false,
+    minify: false,
   },
   plugins: [dts()],
 });

@@ -86,9 +86,6 @@ export const getLoomEmbedUrlFromId = (id: string): string =>
  * A provider implementation for Loom, adhering to the {@link EmbedProvider} interface.
  */
 export const LoomProvider: EmbedProvider = {
-  /** @inheritdoc */
-  name: "Loom",
-
   /**
    * Returns `true` if the provided URL matches the Loom share pattern.
    *
@@ -100,16 +97,6 @@ export const LoomProvider: EmbedProvider = {
   },
 
   /**
-   * Extracts the Loom video ID from a recognized Loom URL.
-   *
-   * @param url - The shared Loom link.
-   * @returns The parsed Loom video ID.
-   */
-  getIdFromUrl(url: string): string {
-    return getLoomIdFromUrl(url);
-  },
-
-  /**
    * Builds an embeddable Loom URL from a given Loom video ID.
    *
    * @param id - The Loom ID (e.g. `"e883f70b219a49f6ba7fbeac71a72604"`).
@@ -118,4 +105,16 @@ export const LoomProvider: EmbedProvider = {
   getEmbedUrlFromId(id: string): string {
     return getLoomEmbedUrlFromId(id);
   },
+
+  /**
+   * Extracts the Loom video ID from a recognized Loom URL.
+   *
+   * @param url - The shared Loom link.
+   * @returns The parsed Loom video ID.
+   */
+  getIdFromUrl(url: string): string {
+    return getLoomIdFromUrl(url);
+  },
+  /** @inheritdoc */
+  name: "Loom",
 };

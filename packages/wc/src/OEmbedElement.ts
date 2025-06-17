@@ -23,7 +23,7 @@ import {
   getYouTubeIdFromUrl,
   isValidUrl,
 } from "@social-embed/lib";
-import { LitElement, type TemplateResult, html } from "lit";
+import { html, LitElement, type TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
@@ -207,10 +207,10 @@ export class OEmbedElement extends LitElement {
    * Will be used if the user hasn't supplied their own `width`/`height`.
    */
   public static spotifyDefaultDimensions: Dimensions = {
-    width: "100%",
-    widthWithUnits: "100%",
     height: "352",
     heightWithUnits: "352px",
+    width: "100%",
+    widthWithUnits: "100%",
   };
 
   /**
@@ -282,14 +282,16 @@ export class OEmbedElement extends LitElement {
    */
   public calculateDefaultDimensions({
     defaults,
-  }: { defaults?: Dimensions } = {}): Dimensions {
+  }: {
+    defaults?: Dimensions;
+  } = {}): Dimensions {
     const width = this.getAttribute("width") || defaults?.width || this.width;
     const widthWithUnits = width.match(/(px|%)/) ? width : `${width}px`;
     const height =
       this.getAttribute("height") || defaults?.height || this.height;
     const heightWithUnits = height.match(/(px|%)/) ? height : `${height}px`;
 
-    return { width, widthWithUnits, height, heightWithUnits };
+    return { height, heightWithUnits, width, widthWithUnits };
   }
 
   /**
@@ -326,10 +328,10 @@ export class OEmbedElement extends LitElement {
    * Default dimension overrides for Vimeo content.
    */
   public static vimeoDefaultDimensions: Dimensions = {
-    width: "640",
-    widthWithUnits: "640px",
     height: "268",
     heightWithUnits: "268px",
+    width: "640",
+    widthWithUnits: "640px",
   };
 
   /**
@@ -403,10 +405,10 @@ export class OEmbedElement extends LitElement {
    * Default dimension overrides for EdPuzzle content.
    */
   public static edPuzzleDefaultDimensions: Dimensions = {
-    width: "470",
-    widthWithUnits: "470px",
     height: "404",
     heightWithUnits: "404px",
+    width: "470",
+    widthWithUnits: "470px",
   };
 
   /**
@@ -441,10 +443,10 @@ export class OEmbedElement extends LitElement {
    * Default dimension overrides for Wistia content.
    */
   public static wistiaDefaultDimensions: Dimensions = {
-    width: "470",
-    widthWithUnits: "470px",
     height: "404",
     heightWithUnits: "404px",
+    width: "470",
+    widthWithUnits: "470px",
   };
 
   /**
@@ -479,10 +481,10 @@ export class OEmbedElement extends LitElement {
    * Default dimension overrides for Loom content.
    */
   public static loomDefaultDimensions: Dimensions = {
-    width: "470",
-    widthWithUnits: "470px",
     height: "404",
     heightWithUnits: "404px",
+    width: "470",
+    widthWithUnits: "470px",
   };
 
   /**

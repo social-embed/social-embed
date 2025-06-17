@@ -139,9 +139,6 @@ export function getSpotifyEmbedUrlFromIdAndType(
  * This provider allows handling any recognized Spotify media (tracks, albums, playlists, artists, shows, episodes).
  */
 export const SpotifyProvider: EmbedProvider = {
-  /** @inheritdoc */
-  name: "Spotify",
-
   /**
    * Determines if the given URL or URI matches a recognized Spotify pattern.
    *
@@ -150,16 +147,6 @@ export const SpotifyProvider: EmbedProvider = {
    */
   canParseUrl(url: string): boolean {
     return spotifyUrlRegex.test(url) || spotifySymbolRegex.test(url);
-  },
-
-  /**
-   * Extracts the ID and type from a recognized Spotify URL or `spotify:` URI.
-   *
-   * @param url - The Spotify link.
-   * @returns `[id, type]` if matched, otherwise `["", ""]`.
-   */
-  getIdFromUrl(url: string) {
-    return getSpotifyIdAndTypeFromUrl(url);
   },
 
   /**
@@ -172,4 +159,16 @@ export const SpotifyProvider: EmbedProvider = {
   getEmbedUrlFromId(id: string, ...args: unknown[]) {
     return getSpotifyEmbedUrlFromIdAndType(id, ...args);
   },
+
+  /**
+   * Extracts the ID and type from a recognized Spotify URL or `spotify:` URI.
+   *
+   * @param url - The Spotify link.
+   * @returns `[id, type]` if matched, otherwise `["", ""]`.
+   */
+  getIdFromUrl(url: string) {
+    return getSpotifyIdAndTypeFromUrl(url);
+  },
+  /** @inheritdoc */
+  name: "Spotify",
 };
