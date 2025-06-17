@@ -1,8 +1,9 @@
 export * from "./providers";
 export {
-  getProviderFromUrl,
   convertUrlToEmbedUrl,
+  getProviderFromUrl,
 } from "./utils";
+
 import type { EmbedProvider } from "./provider";
 import { DailyMotionProvider } from "./providers/dailymotion";
 import { EdPuzzleProvider } from "./providers/edpuzzle";

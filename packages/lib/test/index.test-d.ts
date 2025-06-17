@@ -7,17 +7,17 @@
 
 import { describe, expectTypeOf, test } from "vitest";
 import {
+  convertUrlToEmbedUrl,
   DailyMotionProvider,
+  defaultProviders,
+  defaultRegistry,
   EdPuzzleProvider,
+  getProviderFromUrl,
   LoomProvider,
   SpotifyProvider,
   VimeoProvider,
   WistiaProvider,
   YouTubeProvider,
-  convertUrlToEmbedUrl,
-  defaultProviders,
-  defaultRegistry,
-  getProviderFromUrl,
 } from "../src";
 import type { EmbedProvider } from "../src/provider";
 import type { EmbedProviderRegistry } from "../src/registry";
