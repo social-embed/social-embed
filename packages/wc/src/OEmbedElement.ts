@@ -23,7 +23,7 @@ import {
   getYouTubeIdFromUrl,
   isValidUrl,
 } from "@social-embed/lib";
-import { LitElement, type TemplateResult, html } from "lit";
+import { html, LitElement, type TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
@@ -282,7 +282,9 @@ export class OEmbedElement extends LitElement {
    */
   public calculateDefaultDimensions({
     defaults,
-  }: { defaults?: Dimensions } = {}): Dimensions {
+  }: {
+    defaults?: Dimensions;
+  } = {}): Dimensions {
     const width = this.getAttribute("width") || defaults?.width || this.width;
     const widthWithUnits = width.match(/(px|%)/) ? width : `${width}px`;
     const height =

@@ -1,6 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { EmbedProviderRegistry } from "./registry";
-
 // Import the providers under test
 import { EdPuzzleProvider } from "./providers/edpuzzle";
 import { LoomProvider } from "./providers/loom";
@@ -8,6 +6,7 @@ import { SpotifyProvider } from "./providers/spotify";
 import { VimeoProvider } from "./providers/vimeo";
 import { WistiaProvider } from "./providers/wistia";
 import { YouTubeProvider } from "./providers/youtube";
+import { EmbedProviderRegistry } from "./registry";
 
 describe("EdPuzzleProvider", () => {
   it("should detect and parse EdPuzzle URLs", () => {
