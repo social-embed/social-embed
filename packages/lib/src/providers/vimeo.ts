@@ -53,9 +53,6 @@ export const getVimeoEmbedUrlFromId = (id: string): string =>
  * - `getEmbedUrlFromId()` builds an embeddable `<iframe>` URL for Vimeo.
  */
 export const VimeoProvider: EmbedProvider = {
-  /** @inheritdoc */
-  name: "Vimeo",
-
   /**
    * Determines if the given URL matches the Vimeo pattern.
    *
@@ -67,16 +64,6 @@ export const VimeoProvider: EmbedProvider = {
   },
 
   /**
-   * Extracts the Vimeo video ID from a recognized URL.
-   *
-   * @param url - The Vimeo URL.
-   * @returns The numeric video ID.
-   */
-  getIdFromUrl(url: string) {
-    return getVimeoIdFromUrl(url);
-  },
-
-  /**
    * Builds an embeddable Vimeo URL from a numeric video ID.
    *
    * @param id - The numeric Vimeo ID.
@@ -85,4 +72,16 @@ export const VimeoProvider: EmbedProvider = {
   getEmbedUrlFromId(id: string) {
     return getVimeoEmbedUrlFromId(id);
   },
+
+  /**
+   * Extracts the Vimeo video ID from a recognized URL.
+   *
+   * @param url - The Vimeo URL.
+   * @returns The numeric video ID.
+   */
+  getIdFromUrl(url: string) {
+    return getVimeoIdFromUrl(url);
+  },
+  /** @inheritdoc */
+  name: "Vimeo",
 };

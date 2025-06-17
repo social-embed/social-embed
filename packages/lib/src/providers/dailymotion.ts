@@ -60,8 +60,6 @@ export const getDailyMotionEmbedFromId = (id: string): string => {
  * with `convertUrlToEmbedUrl()`.
  */
 export const DailyMotionProvider: EmbedProvider = {
-  /** @inheritdoc */
-  name: "DailyMotion",
   /**
    * Checks whether a given URL matches the DailyMotion pattern.
    *
@@ -73,16 +71,6 @@ export const DailyMotionProvider: EmbedProvider = {
   },
 
   /**
-   * Extracts the ID from a recognized DailyMotion URL.
-   *
-   * @param url - The DailyMotion URL string.
-   * @returns The video ID found in the URL.
-   */
-  getIdFromUrl(url: string): string {
-    return getDailyMotionIdFromUrl(url);
-  },
-
-  /**
    * Builds an embed URL for a given DailyMotion ID.
    *
    * @param id - The DailyMotion video ID.
@@ -91,4 +79,16 @@ export const DailyMotionProvider: EmbedProvider = {
   getEmbedUrlFromId(id: string): string {
     return getDailyMotionEmbedFromId(id);
   },
+
+  /**
+   * Extracts the ID from a recognized DailyMotion URL.
+   *
+   * @param url - The DailyMotion URL string.
+   * @returns The video ID found in the URL.
+   */
+  getIdFromUrl(url: string): string {
+    return getDailyMotionIdFromUrl(url);
+  },
+  /** @inheritdoc */
+  name: "DailyMotion",
 };

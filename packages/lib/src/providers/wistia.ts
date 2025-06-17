@@ -87,9 +87,6 @@ export const getWistiaEmbedUrlFromId = (id: string): string =>
  * A provider implementation for Wistia, following the {@link EmbedProvider} interface.
  */
 export const WistiaProvider: EmbedProvider = {
-  /** @inheritdoc */
-  name: "Wistia",
-
   /**
    * Checks if a URL is recognized as a Wistia link by testing the pattern {@link wistiaUrlRegex}.
    *
@@ -101,16 +98,6 @@ export const WistiaProvider: EmbedProvider = {
   },
 
   /**
-   * Extracts the Wistia media ID from a recognized Wistia URL.
-   *
-   * @param url - The shared Wistia link.
-   * @returns The extracted Wistia ID (e.g. `"26sk4lmiix"`).
-   */
-  getIdFromUrl(url: string) {
-    return getWistiaIdFromUrl(url);
-  },
-
-  /**
    * Constructs a Wistia embed URL given a media ID.
    *
    * @param id - The Wistia media ID.
@@ -119,4 +106,16 @@ export const WistiaProvider: EmbedProvider = {
   getEmbedUrlFromId(id: string) {
     return getWistiaEmbedUrlFromId(id);
   },
+
+  /**
+   * Extracts the Wistia media ID from a recognized Wistia URL.
+   *
+   * @param url - The shared Wistia link.
+   * @returns The extracted Wistia ID (e.g. `"26sk4lmiix"`).
+   */
+  getIdFromUrl(url: string) {
+    return getWistiaIdFromUrl(url);
+  },
+  /** @inheritdoc */
+  name: "Wistia",
 };

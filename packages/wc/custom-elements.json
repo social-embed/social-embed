@@ -1,88 +1,88 @@
 {
-  "version": "experimental",
   "tags": [
     {
-      "name": "o-embed",
-      "path": "./src/o-embed.ts",
-      "description": "Renders embeds from <o-embed url=\"\"> tags",
       "attributes": [
         {
-          "name": "url",
           "description": "The URL or ID (if supported)",
+          "name": "url",
           "type": "string"
         },
         {
-          "name": "width",
+          "default": "\"560\"",
           "description": "Pass-through of width attribute",
-          "type": "string",
-          "default": "\"560\""
+          "name": "width",
+          "type": "string"
         },
         {
-          "name": "height",
+          "default": "\"315\"",
           "description": "Pass-through of height attribute",
-          "type": "string",
-          "default": "\"315\""
+          "name": "height",
+          "type": "string"
         },
         {
-          "name": "frameborder",
+          "default": "\"0\"",
           "description": "Pass-through of frameborder attribute, only used in iframe embeds.",
-          "type": "string",
-          "default": "\"0\""
+          "name": "frameborder",
+          "type": "string"
         },
         {
-          "name": "allowfullscreen",
+          "default": "\"true\"",
           "description": "For YouTube only. Passing anything other than 1/true omits the tag.",
-          "type": "string | boolean | undefined",
-          "default": "\"true\""
+          "name": "allowfullscreen",
+          "type": "string | boolean | undefined"
         }
       ],
+      "description": "Renders embeds from <o-embed url=\"\"> tags",
+      "name": "o-embed",
+      "path": "./src/o-embed.ts",
       "properties": [
         {
+          "default": "\"css`\\n    :host {\\n      border: 0;\\n      padding: 0;\\n    }\\n  `\"",
           "name": "styles",
-          "type": "CSSResult",
-          "default": "\"css`\\n    :host {\\n      border: 0;\\n      padding: 0;\\n    }\\n  `\""
+          "type": "CSSResult"
         },
         {
-          "name": "url",
           "attribute": "url",
           "description": "The URL or ID (if supported)",
+          "name": "url",
           "type": "string"
         },
         {
-          "name": "width",
           "attribute": "width",
+          "default": "\"560\"",
           "description": "Pass-through of width attribute",
-          "type": "string",
-          "default": "\"560\""
+          "name": "width",
+          "type": "string"
         },
         {
-          "name": "height",
           "attribute": "height",
+          "default": "\"315\"",
           "description": "Pass-through of height attribute",
-          "type": "string",
-          "default": "\"315\""
+          "name": "height",
+          "type": "string"
         },
         {
-          "name": "frameborder",
           "attribute": "frameborder",
+          "default": "\"0\"",
           "description": "Pass-through of frameborder attribute, only used in iframe embeds.",
-          "type": "string",
-          "default": "\"0\""
+          "name": "frameborder",
+          "type": "string"
         },
         {
-          "name": "allowfullscreen",
           "attribute": "allowfullscreen",
+          "default": "\"true\"",
           "description": "For YouTube only. Passing anything other than 1/true omits the tag.",
-          "type": "string | boolean | undefined",
-          "default": "\"true\""
+          "name": "allowfullscreen",
+          "type": "string | boolean | undefined"
         }
       ],
       "slots": [
         {
-          "name": "",
-          "description": "Directly pass through child contents to bottom of embed, optional."
+          "description": "Directly pass through child contents to bottom of embed, optional.",
+          "name": ""
         }
       ]
     }
-  ]
+  ],
+  "version": "experimental"
 }
