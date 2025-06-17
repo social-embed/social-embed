@@ -18,7 +18,16 @@
     ],
     "ignoreUnknown": true
   },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    }
+  },
   "formatter": {
     "enabled": true,
     "indentStyle": "space"
