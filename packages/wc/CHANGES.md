@@ -21,6 +21,12 @@ sidebar:
   - Support for `.test-d.ts` type tests that validate component types
   - Isolated type checking within the package to prevent cross-package type issues
 
+- **Build System**: TypeScript and module resolution improvements (#45)
+  - Updated `moduleResolution` to `"bundler"` for modern tooling compatibility
+  - Added `skipLibCheck` to handle third-party type declaration issues
+  - Applied Biome 2.0 formatting rules across all source files
+  - Improved import organization and code consistency
+
 ### Documentation
 
 - **README overhaul**: Completely revitalized documentation with:

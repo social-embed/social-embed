@@ -16,6 +16,12 @@ sidebar:
   - Support for declarative type tests using `.test-d.ts` files
   - Isolated package type checking to prevent cross-package type leakage
 
+- **Build System**: TypeScript and tooling improvements (#45)
+  - Updated `moduleResolution` to `"bundler"` for Vite 5+ compatibility
+  - Added `skipLibCheck` to avoid third-party type declaration issues
+  - Fixed package.json exports to include explicit types field
+  - Applied Biome 2.0 formatting with improved import sorting
+
 ### Documentation
 
 - **README overhaul**: Enhanced documentation with:
