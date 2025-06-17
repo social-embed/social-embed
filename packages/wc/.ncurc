@@ -1,3 +1,3 @@
 {
-  "reject": ["rimraf"]
+  "reject": ["rimraf", "/.*biome.*/"]
 }
