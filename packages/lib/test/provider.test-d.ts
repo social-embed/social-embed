@@ -44,7 +44,6 @@ describe("EmbedProvider Type Tests", () => {
   test("Provider implementation should conform to interface", () => {
     // Mock implementation for testing
     const mockProvider: EmbedProvider = {
-      name: "TestProvider",
       canParseUrl(url: string): boolean {
         try {
           // Properly parse the URL and check the hostname
@@ -59,6 +58,9 @@ describe("EmbedProvider Type Tests", () => {
           return false;
         }
       },
+      getEmbedUrlFromId(id: string): string {
+        return `https://embed.test.com/${id}`;
+      },
       getIdFromUrl(url: string): string {
         try {
           const parsedUrl = new URL(url);
@@ -69,9 +71,7 @@ describe("EmbedProvider Type Tests", () => {
           return url.split("/").pop() || "";
         }
       },
-      getEmbedUrlFromId(id: string): string {
-        return `https://embed.test.com/${id}`;
-      },
+      name: "TestProvider",
     };
 
     expectTypeOf(mockProvider).toMatchTypeOf<EmbedProvider>();

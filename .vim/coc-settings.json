@@ -2,7 +2,7 @@
   "[markdown][javascript][typescript][typescriptreact]": {
     "coc.preferences.formatOnSave": true
   },
-  "prettier.enable": false,
+  "biome.enable": true,
   "eslint.enable": false,
-  "biome.enable": true
+  "prettier.enable": false
 }

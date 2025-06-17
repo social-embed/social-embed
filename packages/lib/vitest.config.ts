@@ -11,16 +11,16 @@ export default defineConfig({
   },
   plugins: [dts()],
   test: {
-    globals: true,
     environment: "node",
+    globals: true,
     include: ["**/*.{test,spec}.ts", "**/*.test-d.ts"],
-    watch: false,
     typecheck: {
       enabled: true,
-      include: ["**/*.test-d.ts"],
       ignoreSourceErrors: true,
-      tsconfigSearchPath: __dirname,
+      include: ["**/*.test-d.ts"],
       isolatedPackages: true,
+      tsconfigSearchPath: __dirname,
     },
+    watch: false,
   },
 });

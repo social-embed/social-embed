@@ -3,6 +3,16 @@ import dts from "vite-plugin-dts";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+  build: {
+    lib: {
+      entry: "src/OEmbedElement.ts",
+      fileName: "OEmbedElement",
+      formats: ["es", "umd"],
+      name: "oembed",
+    },
+    manifest: false,
+    minify: false,
+  },
   plugins: [dts()],
   // Module resolution aliases for both Vite and Vitest
   resolve: {
@@ -13,24 +23,27 @@ export default defineConfig({
   test: {
     browser: {
       enabled: true,
-      provider: "playwright",
-      headless: true, // Always use headless mode by default
+      headless: true,
       instances: [
         {
           browser: "chromium",
+          context: {
+            // Playwright context options (per test file)
+          },
           // Playwright-specific options for this browser instance
           launch: {
             // Any additional Playwright launch options can go here
           },
-          context: {
-            // Playwright context options (per test file)
-          },
         },
-      ],
+      ], // Always use headless mode by default
+      provider: "playwright",
     },
-    // Setup files run before tests
-    setupFiles: ["./test/browser-setup.ts"],
-    globals: true, // Access test APIs like describe, it without imports
+    // Include test files in coverage
+    coverage: {
+      include: ["src/**/*.ts", "test/**/*.ts"],
+      provider: "istanbul",
+      reporter: ["text", "html", "lcov"],
+    },
     // Dependencies to inline in the browser (using recommended approach)
     deps: {
       optimizer: {
@@ -38,34 +51,21 @@ export default defineConfig({
           include: ["@social-embed/lib"],
         },
       },
-    },
-    // Default: tests run only if changed/affected
-    watch: false,
+    }, // Access test APIs like describe, it without imports
+    globals: true,
     // Include all test files
     include: ["**/*.{test,spec}.?(c|m)[jt]s?(x)", "**/*.test-d.ts"],
-    // Include test files in coverage
-    coverage: {
-      provider: "istanbul",
-      include: ["src/**/*.ts", "test/**/*.ts"],
-      reporter: ["text", "html", "lcov"],
-    },
+    // Setup files run before tests
+    setupFiles: ["./test/browser-setup.ts"],
     // Typecheck configuration - enable by default for all test runs
     typecheck: {
       enabled: true,
-      include: ["**/*.test-d.ts"],
       ignoreSourceErrors: true,
-      tsconfigSearchPath: __dirname,
+      include: ["**/*.test-d.ts"],
       isolatedPackages: true,
+      tsconfigSearchPath: __dirname,
     },
-  },
-  build: {
-    lib: {
-      entry: "src/OEmbedElement.ts",
-      formats: ["es", "umd"],
-      name: "oembed",
-      fileName: "OEmbedElement",
-    },
-    minify: false,
-    manifest: false,
+    // Default: tests run only if changed/affected
+    watch: false,
   },
 });

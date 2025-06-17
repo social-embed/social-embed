@@ -67,9 +67,6 @@ export const getYouTubeEmbedUrlFromId = (id: string | undefined): string => {
  * - `getEmbedUrlFromId()` builds a playable embed URL.
  */
 export const YouTubeProvider: EmbedProvider = {
-  /** @inheritdoc */
-  name: "YouTube",
-
   /**
    * Determines if a given URL is recognized as a YouTube link.
    *
@@ -81,16 +78,6 @@ export const YouTubeProvider: EmbedProvider = {
   },
 
   /**
-   * Extracts the 11-char YouTube ID from a recognized YouTube URL.
-   *
-   * @param url - The potential YouTube link.
-   * @returns The extracted video ID or an empty string if none found.
-   */
-  getIdFromUrl(url: string) {
-    return getYouTubeIdFromUrl(url);
-  },
-
-  /**
    * Builds a full YouTube embed URL (e.g. `https://www.youtube.com/embed/<id>`).
    *
    * @param id - The 11-char YouTube video ID.
@@ -99,4 +86,16 @@ export const YouTubeProvider: EmbedProvider = {
   getEmbedUrlFromId(id: string) {
     return getYouTubeEmbedUrlFromId(id);
   },
+
+  /**
+   * Extracts the 11-char YouTube ID from a recognized YouTube URL.
+   *
+   * @param url - The potential YouTube link.
+   * @returns The extracted video ID or an empty string if none found.
+   */
+  getIdFromUrl(url: string) {
+    return getYouTubeIdFromUrl(url);
+  },
+  /** @inheritdoc */
+  name: "YouTube",
 };

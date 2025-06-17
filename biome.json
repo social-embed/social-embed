@@ -1,6 +1,17 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    }
+  },
   "files": {
+    "ignoreUnknown": true,
     "includes": [
       "**",
       "!**/.yarn/**",
@@ -15,18 +26,7 @@
       "!**/package.json",
       "!**/.vscode/**",
       "!**/*.d.ts"
-    ],
-    "ignoreUnknown": true
-  },
-  "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": "on",
-        "useSortedAttributes": "on",
-        "useSortedKeys": "on",
-        "useSortedProperties": "on"
-      }
-    }
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -37,16 +37,16 @@
     "rules": {
       "recommended": true,
       "style": {
+        "noInferrableTypes": "error",
         "noParameterAssign": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noUselessElse": "error",
         "useAsConstAssertion": "error",
         "useDefaultParameterLast": "error",
         "useEnumInitializers": "error",
-        "useSelfClosingElements": "error",
-        "useSingleVarDeclarator": "error",
-        "noUnusedTemplateLiteral": "error",
         "useNumberNamespace": "error",
-        "noInferrableTypes": "error",
-        "noUselessElse": "error"
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error"
       }
     }
   }
