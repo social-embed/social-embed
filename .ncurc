@@ -1,6 +1,5 @@
 {
   "reject": [
-    "/.*biome.*/",
     "/.*react.*/",
     "/.*tailwind*/",
     "/.*astro*/",
