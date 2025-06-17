@@ -16,6 +16,14 @@ Here you can find project-wide changes. For more detailed changes:
   - Ensures type safety across the codebase without separate type-check steps
   - Improved developer experience with fewer manual steps
 
+### Development
+
+- **Tooling**: Upgrade to Biome 2.0 (#45)
+  - Migrated configuration from v1 to v2 format
+  - Updated ignore patterns to use new glob syntax (`/**` instead of `/`)
+  - Fixed TypeScript module resolution for Vite 5+ compatibility
+  - Applied new sorting rules for imports and object properties
+
 ### Breaking changes
 
 - Build system: Move to `vite` (#8)
