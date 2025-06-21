@@ -62,7 +62,7 @@
     "lit": "^3.3.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.0",
+    "@biomejs/biome": "2.0.4",
     "@vitest/browser": "^3.2.4",
     "@vitest/ui": "^3.2.4",
     "chai": "^5.2.0",
