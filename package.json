@@ -29,7 +29,7 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.4",
+    "@biomejs/biome": "2.0.6",
     "cross-env": "^7.0.3"
   }
 }

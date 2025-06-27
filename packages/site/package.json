@@ -38,7 +38,7 @@
     "tailwindcss": "^3.4.17"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.0.4",
+    "@biomejs/biome": "^2.0.6",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2"
   }

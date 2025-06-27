@@ -62,7 +62,7 @@
     "lit": "^3.3.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.4",
+    "@biomejs/biome": "2.0.6",
     "@vitest/browser": "^3.2.4",
     "@vitest/ui": "^3.2.4",
     "chai": "^5.2.0",
@@ -71,7 +71,7 @@
     "playwright": "^1.53.1",
     "rimraf": "^5.0.7",
     "typescript": "^5.8.3",
-    "vite": "^6.3.5",
+    "vite": "^7.0.0",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.2.4",
     "web-component-analyzer": "^2.0.0"
