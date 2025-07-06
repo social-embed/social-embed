@@ -84,6 +84,7 @@
 /** For code embeds on example pages **/
 .sl-markdown-content :is(video, iframe):not(:where(.not-content *)) {
   height: revert-layer;
+  min-height: 600px;
 }
 
 @layer utilities {
