@@ -2,7 +2,7 @@ import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwind from "@astrojs/tailwind";
-// @ts-check
+import type { AstroUserConfig } from "astro/config";
 import { defineConfig } from "astro/config";
 
 // https://astro.build/config
@@ -136,4 +136,4 @@ export default defineConfig({
     }),
   ],
   site: "https://social-embed.git-pull.com",
-});
+} satisfies AstroUserConfig);
