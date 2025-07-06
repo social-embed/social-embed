@@ -1,7 +1,7 @@
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import starlightDocSearch from "@astrojs/starlight-docsearch";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import type { AstroUserConfig } from "astro/config";
 import { defineConfig } from "astro/config";
 
@@ -118,17 +118,25 @@ export default defineConfig({
         "news",
       ],
       social: [
-        { icon: "codeberg", link: "https://codeberg.org/social-embed/social-embed" },
-        { icon: "github", link: "https://github.com/social-embed/social-embed" },
-        { icon: "gitlab", link: "https://gitlab.com/social-embed/social-embed" },
+        {
+          href: "https://codeberg.org/social-embed/social-embed",
+          icon: "codeberg",
+          label: "Codeberg",
+        },
+        {
+          href: "https://github.com/social-embed/social-embed",
+          icon: "github",
+          label: "GitHub",
+        },
+        {
+          href: "https://gitlab.com/social-embed/social-embed",
+          icon: "gitlab",
+          label: "GitLab",
+        },
       ],
       title: "social-embed",
     }),
     react(),
-    tailwind({
-      // Disable the default base styles:
-      applyBaseStyles: false,
-    }),
     starlightDocSearch({
       apiKey: "a59a27c90979939bd097dcb51d8f22e3",
       appId: "BIATGF4K4K",
@@ -136,4 +144,7 @@ export default defineConfig({
     }),
   ],
   site: "https://social-embed.git-pull.com",
+  vite: {
+    plugins: [tailwindcss()],
+  },
 } satisfies AstroUserConfig);
