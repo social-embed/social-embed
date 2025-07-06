@@ -8,6 +8,19 @@
   /* Font configuration using Astro's experimental fonts API */
   --font-mono: var(--font-ibm-plex-mono);
   --font-sans: var(--font-ibm-plex-sans);
+
+  /* Define slate colors for use in dark mode */
+  --color-slate-50: #f8fafc;
+  --color-slate-100: #f1f5f9;
+  --color-slate-200: #e2e8f0;
+  --color-slate-300: #cbd5e1;
+  --color-slate-400: #94a3b8;
+  --color-slate-500: #64748b;
+  --color-slate-600: #475569;
+  --color-slate-700: #334155;
+  --color-slate-800: #1e293b;
+  --color-slate-900: #0f172a;
+  --color-slate-950: #020617;
 }
 
 /* Target small displays like phones */
@@ -71,4 +84,17 @@
 /** For code embeds on example pages **/
 .sl-markdown-content :is(video, iframe):not(:where(.not-content *)) {
   height: revert-layer;
+}
+
+@layer utilities {
+  /* Override gray colors with slate colors in dark mode */
+  :root {
+    --sl-color-gray-1: var(--color-slate-200);
+    --sl-color-gray-2: var(--color-slate-300);
+    --sl-color-gray-3: var(--color-slate-400);
+    --sl-color-gray-4: var(--color-slate-600);
+    --sl-color-gray-5: var(--color-slate-700);
+    --sl-color-gray-6: var(--color-slate-800);
+    --sl-color-black: var(--color-slate-900);
+  }
 }
