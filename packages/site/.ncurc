@@ -1,7 +1,4 @@
 {
   "reject": [
-    "/.*react.*/",
-    "/.*tailwind*/",
-    "/.*astro*/",
   ]
 }
