@@ -117,11 +117,11 @@ export default defineConfig({
         "migration",
         "news",
       ],
-      social: {
-        codeberg: "https://codeberg.org/social-embed/social-embed",
-        github: "https://github.com/social-embed/social-embed",
-        gitlab: "https://gitlab.com/social-embed/social-embed",
-      },
+      social: [
+        { icon: "codeberg", link: "https://codeberg.org/social-embed/social-embed" },
+        { icon: "github", link: "https://github.com/social-embed/social-embed" },
+        { icon: "gitlab", link: "https://gitlab.com/social-embed/social-embed" },
+      ],
       title: "social-embed",
     }),
     react(),
