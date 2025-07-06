@@ -1,0 +1,11 @@
+---
+import { Font } from "astro:assets";
+import Default from "@astrojs/starlight/components/Head.astro";
+import type { Props } from "@astrojs/starlight/props";
+---
+
+<Default {...Astro.props}><slot /></Default>
+
+{/* Load fonts using Astro's experimental fonts API */}
+<Font cssVariable="--font-ibm-plex-sans" preload />
+<Font cssVariable="--font-ibm-plex-mono" preload />

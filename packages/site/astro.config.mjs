@@ -7,21 +7,82 @@ import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
+  // Experimental fonts API configuration
+  experimental: {
+    fonts: [
+      // IBM Plex Sans
+      {
+        cssVariable: "--font-ibm-plex-sans",
+        fallbacks: ["ui-sans-serif", "system-ui", "sans-serif"],
+        name: "IBM Plex Sans",
+        optimizedFallbacks: true,
+        provider: "local",
+        variants: [
+          {
+            display: "swap",
+            src: [
+              {
+                url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2",
+              },
+            ],
+            style: "normal",
+            weight: "400",
+          },
+          {
+            display: "swap",
+            src: [
+              {
+                url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2",
+              },
+            ],
+            style: "normal",
+            weight: "600",
+          },
+        ],
+      },
+      // IBM Plex Mono
+      {
+        cssVariable: "--font-ibm-plex-mono",
+        fallbacks: ["ui-monospace", "monospace"],
+        name: "IBM Plex Mono",
+        optimizedFallbacks: true,
+        provider: "local",
+        variants: [
+          {
+            display: "swap",
+            src: [
+              {
+                url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2",
+              },
+            ],
+            style: "normal",
+            weight: "400",
+          },
+          {
+            display: "swap",
+            src: [
+              {
+                url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2",
+              },
+            ],
+            style: "normal",
+            weight: "600",
+          },
+        ],
+      },
+    ],
+  },
   integrations: [
     starlight({
       components: {
         Footer: "./src/components/Footer.astro",
+        Head: "./src/components/Head.astro",
         Search: "./src/components/Search.astro",
       },
       credits: true,
       customCss: [
         // Path to your Tailwind base styles:
         "./src/tailwind.css",
-        // Fontsource files for to regular and semi-bold font weights.
-        "@fontsource/ibm-plex-sans/400.css",
-        "@fontsource/ibm-plex-sans/600.css",
-        "@fontsource/ibm-plex-mono/400.css",
-        "@fontsource/ibm-plex-mono/600.css",
       ],
       editLink: {
         baseUrl:
