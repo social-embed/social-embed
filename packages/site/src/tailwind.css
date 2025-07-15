@@ -44,14 +44,14 @@
 
 /** Content regions: More room on smaller displays */
 .main-pane .sl-container {
-  margin-inline: unset !important;
   max-width: 100%;
+  margin-inline: unset !important;
 }
 
 @media (min-width: 1024px) {
   .main-pane .sl-container {
-    margin-inline: var(--sl-content-margin-inline, auto) !important;
     max-width: var(--sl-content-width);
+    margin-inline: var(--sl-content-margin-inline, auto) !important;
   }
 }
 
