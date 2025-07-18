@@ -46,9 +46,9 @@
     "format": "pnpm run biome check . --write; pnpm run biome format . --write"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.1.1",
+    "@biomejs/biome": "2.1.2",
     "typescript": "^5.8.3",
-    "vite": "^7.0.4",
+    "vite": "^7.0.5",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.2.4"
   },
