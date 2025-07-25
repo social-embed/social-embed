@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.2",
-    "cross-env": "^7.0.3"
+    "cross-env": "^10.0.0"
   }
 }
