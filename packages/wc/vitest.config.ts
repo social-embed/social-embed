@@ -59,6 +59,7 @@ export default defineConfig({
     setupFiles: ["./test/browser-setup.ts"],
     // Typecheck configuration - enable by default for all test runs
     typecheck: {
+      checker: "tsc",
       enabled: true,
       ignoreSourceErrors: true,
       include: ["**/*.test-d.ts"],
