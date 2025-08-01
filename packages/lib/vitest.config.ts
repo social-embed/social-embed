@@ -15,6 +15,7 @@ export default defineConfig({
     globals: true,
     include: ["**/*.{test,spec}.ts", "**/*.test-d.ts"],
     typecheck: {
+      checker: "tsc",
       enabled: true,
       ignoreSourceErrors: true,
       include: ["**/*.test-d.ts"],
