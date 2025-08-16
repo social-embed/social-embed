@@ -14,17 +14,17 @@
     "ignoreUnknown": true,
     "includes": [
       "**",
-      "!**/.yarn/**",
-      "!**/node_modules/**",
-      "!**/dist/**",
-      "!**/static/**",
-      "!**/public/**",
-      "!**/.docusaurus/**",
-      "!**/.astro/**",
+      "!**/.yarn",
+      "!**/node_modules",
+      "!**/dist",
+      "!**/static",
+      "!**/public",
+      "!**/.docusaurus",
+      "!**/.astro",
       "!**/yarn-error.log",
-      "!**/docs/**",
+      "!**/docs",
       "!**/package.json",
-      "!**/.vscode/**",
+      "!**/.vscode",
       "!**/*.d.ts"
     ]
   },
@@ -58,6 +58,16 @@
           "correctness": {
             "noUnusedImports": "off",
             "noUnusedVariables": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noUnknownAtRules": "off"
           }
         }
       }
