@@ -30,7 +30,7 @@
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
     "@tailwindcss/vite": "^4.1.12",
-    "astro": "^5.13.2",
+    "astro": "^5.13.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-live": "^4.1.8",
@@ -38,8 +38,8 @@
     "tailwindcss": "^4.1.12"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.0",
-    "@types/react": "^19.1.10",
+    "@biomejs/biome": "^2.2.2",
+    "@types/react": "^19.1.11",
     "@types/react-dom": "^19.1.7"
   }
 }
