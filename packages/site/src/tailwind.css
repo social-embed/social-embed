@@ -31,7 +31,10 @@
 @media (min-width: 640px) {
   /* Target small displays like tablets */
   :root {
-    --sl-content-width: calc(100% - (var(--sl-content-pad-x) * 2)); /* Make it wider on small screens */
+    --sl-content-width: calc(
+      100% -
+      (var(--sl-content-pad-x) * 2)
+    ); /* Make it wider on small screens */
   }
 }
 
