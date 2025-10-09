@@ -68,7 +68,7 @@
     "chai": "^6.2.0",
     "deepmerge": "^4.3.1",
     "lit-analyzer": "^2.0.3",
-    "playwright": "^1.55.1",
+    "playwright": "^1.56.0",
     "rimraf": "^5.0.7",
     "typescript": "^5.9.3",
     "vite": "^7.1.9",
