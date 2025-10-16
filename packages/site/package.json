@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^4.4.0",
-    "@astrojs/starlight": "^0.36.0",
+    "@astrojs/starlight": "^0.36.1",
     "@astrojs/starlight-docsearch": "^0.6.0",
     "@astrojs/starlight-tailwind": "^4.0.1",
     "@fontsource/ibm-plex-mono": "^5.2.7",
@@ -30,7 +30,7 @@
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
     "@tailwindcss/vite": "^4.1.14",
-    "astro": "^5.14.4",
+    "astro": "^5.14.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-live": "^4.1.8",
@@ -38,8 +38,8 @@
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.5",
+    "@biomejs/biome": "^2.2.6",
     "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.1"
+    "@types/react-dom": "^19.2.2"
   }
 }
