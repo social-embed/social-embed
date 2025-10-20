@@ -29,13 +29,13 @@
     "@fontsource/ibm-plex-sans": "^5.2.8",
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
-    "@tailwindcss/vite": "^4.1.14",
-    "astro": "^5.14.6",
+    "@tailwindcss/vite": "^4.1.15",
+    "astro": "^5.14.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-live": "^4.1.8",
     "sharp": "^0.34.4",
-    "tailwindcss": "^4.1.14"
+    "tailwindcss": "^4.1.15"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.6",
