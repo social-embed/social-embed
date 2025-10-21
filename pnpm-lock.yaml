@@ -44,13 +44,13 @@ importers:
         version: 4.4.0(@types/node@24.0.14)(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(jiti@2.6.1)(lightningcss@1.30.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@astrojs/starlight':
         specifier: ^0.36.1
-        version: 0.36.1(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
+        version: 0.36.1(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
       '@astrojs/starlight-docsearch':
         specifier: ^0.6.0
-        version: 0.6.0(@algolia/client-search@5.33.0)(@astrojs/starlight@0.36.1(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)
+        version: 0.6.0(@algolia/client-search@5.33.0)(@astrojs/starlight@0.36.1(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)
       '@astrojs/starlight-tailwind':
         specifier: ^4.0.1
-        version: 4.0.1(@astrojs/starlight@0.36.1(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)))(tailwindcss@4.1.15)
+        version: 4.0.1(@astrojs/starlight@0.36.1(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)))(tailwindcss@4.1.15)
       '@fontsource/ibm-plex-mono':
         specifier: ^5.2.7
         version: 5.2.7
@@ -67,8 +67,8 @@ importers:
         specifier: ^4.1.15
         version: 4.1.15(vite@7.1.11(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2))
       astro:
-        specifier: ^5.14.7
-        version: 5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)
+        specifier: ^5.14.8
+        version: 5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -1387,8 +1387,8 @@ packages:
     peerDependencies:
       astro: ^4.0.0-beta || ^5.0.0-beta || ^3.3.0
 
-  astro@5.14.7:
-    resolution: {integrity: sha512-vdZmRN2MFf60ZTjFkZNrQQkrmeeZzTI1c6N3ZRQN55rPGHjywM2VplJwJ68q496DfpaoDoAroDBpdm+eTgHUtQ==}
+  astro@5.14.8:
+    resolution: {integrity: sha512-nKqCLs7BFvGQL9QWQOUqxHhlHtV0UMLXz1ANJygozvjcexBWS7FYkWI2LzRPMNYmbW4msIWNWnX2RvLdvI5Cnw==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -3532,12 +3532,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@4.3.0(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))':
+  '@astrojs/mdx@4.3.0(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))':
     dependencies:
       '@astrojs/markdown-remark': 6.3.2
       '@mdx-js/mdx': 3.1.0(acorn@8.15.0)
       acorn: 8.15.0
-      astro: 5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)
+      astro: 5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)
       es-module-lexer: 1.7.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -3584,9 +3584,9 @@ snapshots:
       stream-replace-string: 2.0.0
       zod: 3.25.76
 
-  '@astrojs/starlight-docsearch@0.6.0(@algolia/client-search@5.33.0)(@astrojs/starlight@0.36.1(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)':
+  '@astrojs/starlight-docsearch@0.6.0(@algolia/client-search@5.33.0)(@astrojs/starlight@0.36.1(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)':
     dependencies:
-      '@astrojs/starlight': 0.36.1(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
+      '@astrojs/starlight': 0.36.1(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
       '@docsearch/css': 3.9.0
       '@docsearch/js': 3.9.0(@algolia/client-search@5.33.0)(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(search-insights@2.17.3)
     transitivePeerDependencies:
@@ -3596,22 +3596,22 @@ snapshots:
       - react-dom
       - search-insights
 
-  '@astrojs/starlight-tailwind@4.0.1(@astrojs/starlight@0.36.1(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)))(tailwindcss@4.1.15)':
+  '@astrojs/starlight-tailwind@4.0.1(@astrojs/starlight@0.36.1(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)))(tailwindcss@4.1.15)':
     dependencies:
-      '@astrojs/starlight': 0.36.1(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
+      '@astrojs/starlight': 0.36.1(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
       tailwindcss: 4.1.15
 
-  '@astrojs/starlight@0.36.1(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))':
+  '@astrojs/starlight@0.36.1(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))':
     dependencies:
       '@astrojs/markdown-remark': 6.3.8
-      '@astrojs/mdx': 4.3.0(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
+      '@astrojs/mdx': 4.3.0(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
       '@astrojs/sitemap': 3.4.1
       '@pagefind/default-ui': 1.3.0
       '@types/hast': 3.0.4
       '@types/js-yaml': 4.0.9
       '@types/mdast': 4.0.4
-      astro: 5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)
-      astro-expressive-code: 0.41.3(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
+      astro: 5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)
+      astro-expressive-code: 0.41.3(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3))
       bcp-47: 2.1.0
       hast-util-from-html: 2.0.3
       hast-util-select: 6.0.4
@@ -4706,12 +4706,12 @@ snapshots:
 
   astring@1.9.0: {}
 
-  astro-expressive-code@0.41.3(astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)):
+  astro-expressive-code@0.41.3(astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)):
     dependencies:
-      astro: 5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)
+      astro: 5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3)
       rehype-expressive-code: 0.41.3
 
-  astro@5.14.7(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3):
+  astro@5.14.8(@types/node@24.0.14)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.45.1)(typescript@5.9.3):
     dependencies:
       '@astrojs/compiler': 2.12.2
       '@astrojs/internal-helpers': 0.7.4
