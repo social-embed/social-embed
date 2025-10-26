@@ -1,5 +1,5 @@
-import { page } from "@vitest/browser/context";
 import { expect as vitestExpect } from "vitest";
+import { page } from "vitest/browser";
 
 /**
  * Creates a fixture with the given template

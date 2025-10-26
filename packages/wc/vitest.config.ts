@@ -1,5 +1,5 @@
+import { playwright } from "@vitest/browser-playwright";
 import dts from "vite-plugin-dts";
-/// <reference types="@vitest/browser/providers/playwright" />
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -27,16 +27,9 @@ export default defineConfig({
       instances: [
         {
           browser: "chromium",
-          context: {
-            // Playwright context options (per test file)
-          },
-          // Playwright-specific options for this browser instance
-          launch: {
-            // Any additional Playwright launch options can go here
-          },
         },
       ], // Always use headless mode by default
-      provider: "playwright",
+      provider: playwright(),
     },
     // Include test files in coverage
     coverage: {

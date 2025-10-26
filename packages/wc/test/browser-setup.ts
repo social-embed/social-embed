@@ -1,5 +1,4 @@
 import { beforeAll } from "vitest";
-/// <reference types="@vitest/browser/providers/playwright" />
 import { OEmbedElement } from "../src/OEmbedElement";
 
 // Register the custom element once before all tests

@@ -1,4 +1,3 @@
-/// <reference types="@vitest/browser/providers/playwright" />
 import { describe, expect, it } from "vitest";
 import { expectShadowDomEventually, fixture, html } from "./utils";
 import "../src/OEmbedElement";
