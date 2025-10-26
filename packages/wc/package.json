@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.0",
-    "@vitest/browser": "^4.0.3",
+    "@vitest/browser-playwright": "^4.0.3",
     "@vitest/ui": "^4.0.3",
     "chai": "^6.2.0",
     "deepmerge": "^4.3.1",
