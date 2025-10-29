@@ -21,7 +21,7 @@
     "docs:oembed": "[ ! -f ../wc/dist/OEmbedElement.umd.cjs ] && pnpm --filter @social-embed/wc build; mkdir -p public/js && cp ../wc/dist/OEmbedElement.umd.cjs public/js/o-embed.bundled.js"
   },
   "dependencies": {
-    "@astrojs/react": "^4.4.0",
+    "@astrojs/react": "^4.4.1",
     "@astrojs/starlight": "^0.36.1",
     "@astrojs/starlight-docsearch": "^0.6.0",
     "@astrojs/starlight-tailwind": "^4.0.1",
@@ -30,7 +30,7 @@
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
     "@tailwindcss/vite": "^4.1.16",
-    "astro": "^5.15.1",
+    "astro": "^5.15.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-live": "^4.1.8",
@@ -38,7 +38,7 @@
     "tailwindcss": "^4.1.16"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.1",
+    "@biomejs/biome": "^2.3.2",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2"
   }
