@@ -16,3 +16,6 @@ biome-logs/
 
 # vitest screenshots
 __screenshots__/
+
+# playwright
+playwright-report/
