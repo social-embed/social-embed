@@ -1,7 +1,3 @@
 {
-  "reject": [
-    "/.*react.*/",
-    "/.*tailwind*/",
-    "/.*astro*/",
-  ]
+  "reject": ["@biomejs/biome"]
 }
