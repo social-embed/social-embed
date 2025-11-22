@@ -30,7 +30,7 @@
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
     "@tailwindcss/vite": "^4.1.17",
-    "astro": "^5.15.9",
+    "astro": "^5.16.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-live": "^4.1.8",
