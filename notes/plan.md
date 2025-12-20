@@ -495,3 +495,219 @@ class OEmbedElement extends LitElement {
 | Matcher priority | Priority score (higher wins), then registration order, with custom resolver |
 | HTML escaping | Use `he` library for robustness |
 | Type complexity | Worth it - correlated match typing provides strong inference |
+
+---
+
+## Phase 10: ESM/CDN Optimization
+
+> **Status**: Implementation Required
+> **Added**: 2025-12-17
+> **Goal**: Enable CDN usage via esm.sh, unpkg, JSFiddle, AI canvas environments
+
+### Current State Analysis
+
+The v2 refactor created the architecture but **build configuration is incomplete**:
+
+| Aspect | Status | Issue |
+|--------|--------|-------|
+| `"type": "module"` | ✅ | ESM package |
+| Dual ESM/CJS exports | ✅ | `lib.js` + `lib.umd.cjs` |
+| Zero dependencies | ✅ | Pure JS, browser-safe |
+| `/browser` subpath | ❌ | Only `.d.ts` files, no JS output! |
+| `unpkg`/`browser` fields | ❌ | Missing from package.json |
+| Source maps | ❌ | Not generated |
+| IIFE for `<script>` tag | ❌ | Only ES/UMD formats |
+
+### Critical Gap: `/browser` Subpath
+
+**Source exists:**
+```
+src/browser/
+├── index.ts      ← Re-exports mount, clearScriptCache
+└── mount.ts      ← DOM-specific code
+```
+
+**Build output missing JS:**
+```
+dist/browser/
+├── index.d.ts    ← Types only!
+└── mount.d.ts    ← No .js files!
+```
+
+**Result:** `import { mount } from "@social-embed/lib/browser"` fails at runtime.
+
+### Implementation Plan
+
+#### Commit 1: Add `/browser` subpath export
+
+**File: `packages/lib/package.json`**
+```json
+{
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/lib.js",
+      "require": "./dist/lib.umd.cjs"
+    },
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "import": "./dist/browser/index.js",
+      "require": "./dist/browser/index.cjs"
+    }
+  }
+}
+```
+
+#### Commit 2: Update Vite config for multiple entries
+
+**File: `packages/lib/vite.config.ts`**
+
+Using Vite's multiple entry pattern (from `vite/playground/lib/vite.multiple-output.config.js`):
+
+```typescript
+import { resolve } from "node:path";
+import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
+
+export default defineConfig({
+  build: {
+    sourcemap: true,  // Enable source maps
+    lib: {
+      entry: {
+        index: resolve(__dirname, "src/index.ts"),
+        "browser/index": resolve(__dirname, "src/browser/index.ts"),
+      },
+      name: "SocialEmbedLib",
+      formats: ["es", "cjs"],
+      fileName: (format, entryName) => {
+        const ext = format === "es" ? "js" : "cjs";
+        return `${entryName}.${ext}`;
+      },
+    },
+    rollupOptions: {
+      output: {
+        preserveModules: false,
+      },
+    },
+  },
+  plugins: [dts()],
+});
+```
+
+#### Commit 3: Add CDN-friendly package.json fields
+
+**File: `packages/lib/package.json`**
+```json
+{
+  "unpkg": "./dist/lib.umd.cjs",
+  "jsdelivr": "./dist/lib.umd.cjs",
+  "browser": "./dist/lib.js",
+  "sideEffects": false
+}
+```
+
+#### Commit 4: Add IIFE build for `<script>` tag usage
+
+Update vite.config.ts to include IIFE format:
+
+```typescript
+formats: ["es", "cjs", "iife"],
+fileName: (format, entryName) => {
+  if (format === "iife") return `${entryName}.global.js`;
+  // ...
+},
+```
+
+#### Commit 5: Add local CDN testing infrastructure
+
+**Testing approaches (from research):**
+
+1. **esm.sh local testing**: Use `?raw` query or self-host esm.sh server
+2. **unpkg simulation**: Serve dist/ via local HTTP server
+3. **verdaccio**: Local npm registry for full package testing
+
+**File: `packages/lib/test/cdn.test.ts`**
+```typescript
+import { describe, it, expect } from "vitest";
+import { readFileSync } from "node:fs";
+
+describe("CDN compatibility", () => {
+  it("should have browser subpath JS files", () => {
+    const browserIndex = readFileSync("dist/browser/index.js", "utf-8");
+    expect(browserIndex).toContain("mount");
+  });
+
+  it("should have valid UMD global", () => {
+    const umd = readFileSync("dist/lib.umd.cjs", "utf-8");
+    expect(umd).toContain("SocialEmbedLib");
+  });
+});
+```
+
+**File: `packages/lib/scripts/test-cdn.sh`**
+```bash
+#!/bin/bash
+# Start local server and test CDN imports
+npx serve dist -p 3333 &
+SERVER_PID=$!
+
+# Test ESM import
+node --input-type=module -e "
+  import('http://localhost:3333/lib.js')
+    .then(m => console.log('ESM OK:', Object.keys(m)))
+    .catch(e => { console.error('ESM FAIL:', e); process.exit(1); })
+    .finally(() => process.kill($SERVER_PID));
+"
+```
+
+#### Commit 6: Document CDN usage patterns
+
+**File: `packages/lib/README.md`** (add section)
+```markdown
+## CDN Usage
+
+### esm.sh (recommended)
+\`\`\`html
+<script type="module">
+  import { MatcherRegistry } from "https://esm.sh/@social-embed/lib";
+  import { mount } from "https://esm.sh/@social-embed/lib/browser";
+
+  const registry = MatcherRegistry.withDefaults();
+  const output = registry.toOutput("https://youtu.be/abc123");
+  await mount(output, { container: "#embed" });
+</script>
+\`\`\`
+
+### unpkg (UMD)
+\`\`\`html
+<script src="https://unpkg.com/@social-embed/lib"></script>
+<script>
+  const registry = SocialEmbedLib.MatcherRegistry.withDefaults();
+</script>
+\`\`\`
+
+### JSFiddle / CodePen / AI Canvas
+Use the esm.sh imports above in the JavaScript panel.
+\`\`\`
+
+### Local CDN Testing
+
+To verify CDN compatibility locally before publishing:
+
+```bash
+# Build the package
+pnpm run build
+
+# Test with local server
+pnpm run test:cdn
+
+# Or manually with esm.sh raw mode simulation
+npx serve dist -p 3333
+# Then in browser: import("http://localhost:3333/lib.js")
+```
+
+### References
+
+- [esm.sh CDN](https://esm.sh/) - No-build ESM CDN, auto-transforms CommonJS
+- [unpkg](https://unpkg.com/) - Raw file CDN for npm packages
+- [Vite Library Mode](https://vite.dev/guide/build.html#library-mode) - Build configuration patterns
