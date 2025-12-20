@@ -19,6 +19,10 @@
       "require": "./dist/browser/index.cjs"
     }
   },
+  "unpkg": "dist/browser/index.js",
+  "jsdelivr": "dist/browser/index.js",
+  "browser": "dist/browser/index.js",
+  "sideEffects": false,
   "license": "MIT",
   "keywords": ["embed", "typescript", "youtube", "dailymotion"],
   "publishConfig": {
