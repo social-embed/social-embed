@@ -51,6 +51,17 @@ export class OEmbedElement extends LitElement {
 
   /**
    * Controls the "allowfullscreen" attribute on iframes.
+   *
+   * @remarks
+   * Uses Lit's `type: Boolean` which handles standard HTML attribute patterns:
+   * - `<o-embed allowfullscreen>` → true
+   * - `<o-embed allowfullscreen="true">` → true
+   * - `<o-embed allowfullscreen="1">` → true (truthy string)
+   *
+   * **Known regression from v1**: The explicit empty string `allowfullscreen=""`
+   * now coerces to `false` instead of `true`. This edge case is unlikely in
+   * practice since the standard HTML pattern uses presence, not empty string.
+   *
    * @defaultValue `true`
    */
   @property({ type: Boolean })
