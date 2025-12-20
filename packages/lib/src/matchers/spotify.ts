@@ -134,7 +134,7 @@ export const SpotifyMatcher: UrlMatcher<"Spotify", SpotifyData> = {
         frameborder: "0",
       },
       options,
-      { height: 380, width: 300 },
+      { height: 352, width: "100%" },
     );
 
     // For tracks, use compact player

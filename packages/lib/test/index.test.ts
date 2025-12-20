@@ -93,6 +93,28 @@ describe("registry.toEmbedUrl", () => {
         ),
       ).toEqual("https://open.spotify.com/embed/track/7Ca8EuTCyU3pjJR4TNOXqs");
     });
+
+    it("should use 100% width and 352px height by default for albums/playlists", () => {
+      const output = registry.toOutput("spotify:album:1DFixLWuPkv3KT3TnV35m3");
+      expect(output?.nodes[0]).toMatchObject({
+        attributes: expect.objectContaining({
+          height: "352",
+          width: "100%",
+        }),
+        type: "iframe",
+      });
+    });
+
+    it("should use compact 80px height for tracks", () => {
+      const output = registry.toOutput("spotify:track:1w4etUoKfql47wtTFq031f");
+      expect(output?.nodes[0]).toMatchObject({
+        attributes: expect.objectContaining({
+          height: "80",
+          width: "100%",
+        }),
+        type: "iframe",
+      });
+    });
   });
 
   describe("DailyMotion", () => {
