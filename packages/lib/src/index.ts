@@ -151,7 +151,13 @@ export {
 // Legacy Exports (deprecated, for backward compatibility)
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { MatcherRegistry } from "./registry";
+
 /**
+ * Default registry instance with all built-in matchers.
+ *
  * @deprecated Use `MatcherRegistry.withDefaults()` instead.
+ * This export is provided for backward compatibility with v1 code that used
+ * `defaultRegistry.register()` or similar instance methods.
  */
-export { MatcherRegistry as defaultRegistry } from "./registry";
+export const defaultRegistry = MatcherRegistry.withDefaults();

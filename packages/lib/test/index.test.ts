@@ -7,7 +7,29 @@
 
 import { describe, expect, it } from "vitest";
 
-import { MatcherRegistry, renderOutput } from "../src";
+import { defaultRegistry, MatcherRegistry, renderOutput } from "../src";
+
+describe("defaultRegistry (legacy export)", () => {
+  it("should be a MatcherRegistry instance, not a class", () => {
+    // Verify it's an instance with instance methods available
+    expect(defaultRegistry).toBeInstanceOf(MatcherRegistry);
+    expect(typeof defaultRegistry.match).toBe("function");
+    expect(typeof defaultRegistry.register).toBe("function");
+    expect(typeof defaultRegistry.toEmbedUrl).toBe("function");
+  });
+
+  it("should have built-in matchers registered", () => {
+    expect(defaultRegistry.size).toBeGreaterThan(0);
+    expect(defaultRegistry.has("YouTube")).toBe(true);
+    expect(defaultRegistry.has("Spotify")).toBe(true);
+  });
+
+  it("should support v1-style usage patterns", () => {
+    // This verifies backward compatibility with v1 code
+    const embedUrl = defaultRegistry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY");
+    expect(embedUrl).toContain("youtube-nocookie.com/embed/FTQbiNvZqaY");
+  });
+});
 
 describe("MatcherRegistry", () => {
   const registry = MatcherRegistry.withDefaults();
