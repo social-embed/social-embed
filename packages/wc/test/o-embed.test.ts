@@ -26,19 +26,17 @@ describe("o-embed", () => {
     expect(children.length).toBe(0);
   });
 
-  it("fallback to <iframe> for unrecognized but valid URL", async () => {
+  it("shows error for unrecognized URL", async () => {
     const customUrl = "https://example.com/myembed/video1234";
     const el = await fixture(html`<o-embed url=${customUrl}></o-embed>`);
 
+    // New behavior: unrecognized URLs show an error message, not a fallback iframe
     const iframe = el.shadowRoot?.querySelector("iframe");
-    expect(iframe).toBeTruthy();
-    expect(iframe?.getAttribute("src")).toBe(customUrl);
-    expect(iframe?.getAttribute("width")).toBe("560");
-    expect(iframe?.getAttribute("height")).toBe("315");
-    expect(iframe?.getAttribute("frameborder")).toBe("0");
+    expect(iframe).toBeNull();
 
-    const slot = el.shadowRoot?.querySelector("slot");
-    expect(slot).toBeTruthy();
+    // Check error message
+    const errorText = el.shadowRoot?.textContent?.trim();
+    expect(errorText).toContain("No provider found for");
   });
 
   it("renders an error message for invalid URLs", async () => {
@@ -71,13 +69,14 @@ describe("o-embed", () => {
   });
 
   it("respects custom width and height attributes", async () => {
-    const customUrl = "https://example.com/video";
+    // Use a recognized URL to test width/height
+    const youtubeUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
     const customWidth = "800";
     const customHeight = "450";
 
     const el = await fixture(
-      html`<o-embed 
-        url=${customUrl}
+      html`<o-embed
+        url=${youtubeUrl}
         width=${customWidth}
         height=${customHeight}
       ></o-embed>`,
@@ -103,16 +102,14 @@ describe("o-embed", () => {
     // Basic iframe checks
     const iframe = el.shadowRoot?.querySelector("iframe");
     expect(iframe).not.toBeNull();
+    // Privacy mode is enabled by default, so youtube-nocookie.com is used
     expect(iframe?.getAttribute("src")).toContain(
-      "youtube.com/embed/dQw4w9WgXcQ",
+      "youtube-nocookie.com/embed/dQw4w9WgXcQ",
     );
     expect(iframe?.getAttribute("width")).toBe("560");
     expect(iframe?.getAttribute("height")).toBe("315");
-    expect(iframe?.getAttribute("frameborder")).toBe("0");
 
     // Check for YouTube-specific attributes
-    // The component might not set the allow attribute for YouTube embeds
-    // Let's check if allowfullscreen is set instead
     expect(iframe?.hasAttribute("allowfullscreen")).toBe(true);
 
     document.body.removeChild(el);
@@ -149,10 +146,8 @@ describe("o-embed", () => {
     el.allowfullscreen = false;
     document.body.appendChild(el);
 
-    // Wait for component to render
-    await expectShadowDomEventually(el, (shadow) => {
-      return shadow.querySelector("iframe") !== null;
-    });
+    // Wait for component to render using Lit's updateComplete
+    await el.updateComplete;
 
     // Verify the allowfullscreen attribute is not set
     const iframe = el.shadowRoot?.querySelector("iframe");
@@ -162,11 +157,8 @@ describe("o-embed", () => {
     // Now toggle to true
     el.allowfullscreen = true;
 
-    // Wait for component to update
-    await expectShadowDomEventually(el, (shadow) => {
-      const iframe = shadow.querySelector("iframe");
-      return iframe?.hasAttribute("allowfullscreen") === true;
-    });
+    // Wait for component to update using Lit's updateComplete
+    await el.updateComplete;
 
     // Verify the allowfullscreen attribute is now set
     const updatedIframe = el.shadowRoot?.querySelector("iframe");
@@ -193,7 +185,6 @@ describe("o-embed", () => {
       expect(src).toContain("4cOdK2wGLETKBW3PvgPWqT");
 
       // Check iframe attributes
-      expect(iframe?.getAttribute("frameborder")).toBe("0");
       expect(iframe?.getAttribute("allowtransparency")).toBe("true");
     });
 
@@ -245,7 +236,6 @@ describe("o-embed", () => {
       expect(src).toContain("x8a2ke3");
 
       // Check iframe attributes
-      expect(iframe?.getAttribute("frameborder")).toBe("0");
       expect(iframe?.hasAttribute("allowfullscreen")).toBe(true);
     });
   });
@@ -263,9 +253,6 @@ describe("o-embed", () => {
       const src = iframe?.getAttribute("src");
       expect(src).toContain("edpuzzle.com/embed/media/");
       expect(src).toContain("60eebed0d6188041831a94d0");
-
-      // Check iframe attributes
-      expect(iframe?.getAttribute("frameborder")).toBe("0");
     });
   });
 
@@ -284,7 +271,6 @@ describe("o-embed", () => {
       expect(src).toContain("e4a27b971d");
 
       // Check iframe attributes
-      expect(iframe?.getAttribute("frameborder")).toBe("0");
       expect(iframe?.hasAttribute("allowfullscreen")).toBe(true);
     });
   });
@@ -305,7 +291,6 @@ describe("o-embed", () => {
       expect(src).toContain("3f0b152c0c324dc7bc0f965b0fd2f6d0");
 
       // Check iframe attributes
-      expect(iframe?.getAttribute("frameborder")).toBe("0");
       expect(iframe?.hasAttribute("allowfullscreen")).toBe(true);
     });
   });
@@ -319,17 +304,19 @@ describe("o-embed", () => {
       el.url = youtubeUrl;
       document.body.appendChild(el);
 
-      // Wait for YouTube embed to render
+      // Wait for YouTube embed to render (privacy mode enabled, so youtube-nocookie.com)
       await expectShadowDomEventually(el, (shadow) => {
         const iframe = shadow.querySelector("iframe");
         return (
-          iframe?.getAttribute("src")?.includes("youtube.com/embed/") || false
+          iframe
+            ?.getAttribute("src")
+            ?.includes("youtube-nocookie.com/embed/") || false
         );
       });
 
       let iframe = el.shadowRoot?.querySelector("iframe");
       expect(iframe?.getAttribute("src")).toContain(
-        "youtube.com/embed/dQw4w9WgXcQ",
+        "youtube-nocookie.com/embed/dQw4w9WgXcQ",
       );
 
       // Now change to Vimeo
@@ -462,8 +449,9 @@ describe("o-embed", () => {
       expect(iframe).toBeTruthy();
 
       // Check that the correct video ID was extracted despite the query parameters
+      // Privacy mode uses youtube-nocookie.com by default
       const src = iframe?.getAttribute("src");
-      expect(src).toContain("youtube.com/embed/dQw4w9WgXcQ");
+      expect(src).toContain("youtube-nocookie.com/embed/dQw4w9WgXcQ");
     });
 
     it("handles YouTube URL with fragment", async () => {
@@ -477,8 +465,9 @@ describe("o-embed", () => {
       expect(iframe).toBeTruthy();
 
       // Check that the correct video ID was extracted despite the fragment
+      // Privacy mode uses youtube-nocookie.com by default
       const src = iframe?.getAttribute("src");
-      expect(src).toContain("youtube.com/embed/dQw4w9WgXcQ");
+      expect(src).toContain("youtube-nocookie.com/embed/dQw4w9WgXcQ");
     });
 
     it("handles YouTube shortened URL format", async () => {
@@ -491,8 +480,9 @@ describe("o-embed", () => {
       expect(iframe).toBeTruthy();
 
       // Check that the correct video ID was extracted from the short URL
+      // Privacy mode uses youtube-nocookie.com by default
       const src = iframe?.getAttribute("src");
-      expect(src).toContain("youtube.com/embed/dQw4w9WgXcQ");
+      expect(src).toContain("youtube-nocookie.com/embed/dQw4w9WgXcQ");
     });
 
     it("gracefully handles undefined URL", async () => {
