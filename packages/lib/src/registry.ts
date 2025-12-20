@@ -37,7 +37,8 @@ export interface RegistryOptions {
    * Custom resolver for conflict resolution.
    * Called when multiple matchers claim the same URL.
    *
-   * @param candidates - Matchers that can handle the URL (sorted by priority)
+   * @param candidates - Matchers that can handle the URL (in dispatch order:
+   *   domain-specific → scheme-based → wildcards, each category sorted by priority)
    * @param url - The URL being matched
    * @returns The winning matcher, or undefined for no match
    */
