@@ -1,18 +1,12 @@
 ---
-import EditLink from "virtual:starlight/components/EditLink";
-import LastUpdated from "virtual:starlight/components/LastUpdated";
-import Pagination from "virtual:starlight/components/Pagination";
-import config from "virtual:starlight/user-config";
-import { Icon } from "@astrojs/starlight/components";
 import Default from "@astrojs/starlight/components/Footer.astro";
-import type { Props } from "../props";
 import GitPullLogo from "./GitPullLogo.astro";
 ---
 
 <Default {...Astro.props}><slot /></Default>
 
 <footer class="sl-flex text-center items-center">
-  <div class="kudos sl-flex" href="https://tony.sh">
+  <div class="kudos sl-flex">
     Copyright © 2021- <a href="https://tony.sh" target="_blank" class="footer__link-item">Tony Narlock</a>.
   </div>
   <GitPullLogo />

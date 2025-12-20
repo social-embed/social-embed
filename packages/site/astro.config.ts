@@ -2,7 +2,6 @@ import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwindcss from "@tailwindcss/vite";
-import type { AstroUserConfig } from "astro/config";
 import { defineConfig } from "astro/config";
 
 // https://astro.build/config
@@ -145,6 +144,7 @@ export default defineConfig({
   ],
   site: "https://social-embed.git-pull.com",
   vite: {
-    plugins: [tailwindcss()],
+    // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
+    plugins: [tailwindcss() as any],
   },
-} satisfies AstroUserConfig);
+});

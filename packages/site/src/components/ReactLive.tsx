@@ -4,7 +4,6 @@ import {
   LiveError,
   LivePreview,
   LiveProvider,
-  type LiveProviderProps,
 } from "react-live";
 
 export interface ReactLiveProps {
@@ -37,6 +36,8 @@ render(<Example />);
 `;
 
   // You can further customize LiveProvider (e.g., add theme or scope) if needed
+  type LiveProviderProps = React.ComponentProps<typeof LiveProvider>;
+
   const providerProps: LiveProviderProps = {
     code,
     noInline,
