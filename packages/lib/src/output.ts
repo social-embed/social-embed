@@ -228,7 +228,7 @@ export function createHtmlOutput(
 export function mergeOutputOptions(
   baseAttrs: Record<string, string>,
   options: OutputOptions | undefined,
-  defaults: { width?: number; height?: number } = {},
+  defaults: { width?: string | number; height?: string | number } = {},
 ): Record<string, string> {
   const width = options?.width ?? defaults.width ?? 560;
   const height = options?.height ?? defaults.height ?? 315;

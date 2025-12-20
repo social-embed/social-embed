@@ -101,10 +101,11 @@ export interface IframeMatcherConfig<TName extends string> {
   /**
    * Default iframe dimensions.
    * Used when width/height not specified in options.
+   * Can be numbers (pixels) or CSS strings (e.g., "100%").
    */
   defaultDimensions?: {
-    width: number;
-    height: number;
+    width: string | number;
+    height: string | number;
   };
 
   /**
