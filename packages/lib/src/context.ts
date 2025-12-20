@@ -98,6 +98,11 @@ export function createContext(input: string): Result<MatchContext> {
     return parseError("Input must be a non-empty string");
   }
 
+  // Prevent ReDoS attacks with excessively long URLs
+  if (input.length > 2048) {
+    return parseError("URL too long (max 2048 characters)");
+  }
+
   // Check for URI scheme pattern (spotify:track:abc, tel:+1234, etc.)
   const uriMatch = input.match(URI_SCHEME_REGEX);
   if (uriMatch) {
