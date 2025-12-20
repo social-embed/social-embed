@@ -66,7 +66,7 @@ if (result.ok) {
 **Key differences:**
 - Use `MatcherRegistry.withDefaults()` instead of importing functions
 - Privacy-enhanced mode is **enabled by default**
-- `registry.match()` returns a `Result<T>` type for explicit error handling
+- `registry.match()` returns a `Result\<T\>` type for explicit error handling
 
 ---
 
@@ -126,7 +126,7 @@ if (!id) {
 }
 ```
 
-### v2: Result<T> monad
+### v2: Result\<T\> monad
 
 ```typescript
 const result = registry.match(url);
@@ -139,7 +139,7 @@ if (!result.ok) {
 ```
 
 **Key differences:**
-- Explicit `Result<T>` type instead of nullable/undefined
+- Explicit `Result\<T\>` type instead of nullable/undefined
 - Structured error codes for programmatic handling
 - `fatal` flag indicates if error is recoverable
 
@@ -320,7 +320,7 @@ const youtube = registry.get("YouTube");
 - [ ] Replace `getProviderFromUrl()` with `registry.match()`
 - [ ] Replace `convertUrlToEmbedUrl()` with `registry.toEmbedUrl()`
 - [ ] Replace provider-specific `get*IdFromUrl()` functions with `registry.match()`
-- [ ] Update error handling to use `Result<T>` pattern
+- [ ] Update error handling to use `Result\<T\>` pattern
 - [ ] Migrate custom providers to `defineIframeMatcher()` or `UrlMatcher` interface
 - [ ] Replace registry imports with `MatcherRegistry.withDefaults()`
 - [ ] Test privacy-enhanced URLs (or add `{ privacy: false }` to maintain v1 behavior)
