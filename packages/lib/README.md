@@ -169,6 +169,33 @@ console.log(isValidUrl("notaurl")); // false
 
 If you want a ready-to-use HTML component, check out [@social-embed/wc](https://social-embed.org/wc/) - our Web Component implementation that uses this library internally.
 
+## Security
+
+### Built-in Matchers
+
+All built-in matchers (YouTube, Spotify, Vimeo, etc.) use iframe-based embeds with properly escaped attributes. They are safe to use with any URL input.
+
+### Custom Matchers
+
+When creating custom matchers with `defineScriptMatcher`, you must escape any user-provided data:
+
+```typescript
+import { defineScriptMatcher, escapeHtml } from "@social-embed/lib";
+
+const MyMatcher = defineScriptMatcher({
+  // ...
+  renderPlaceholder: (data) => {
+    // ❌ UNSAFE - XSS vulnerability
+    // return `<div>${data.userInput}</div>`;
+
+    // ✅ SAFE - escape user data
+    return `<div>${escapeHtml(data.userInput)}</div>`;
+  },
+});
+```
+
+The `escapeHtml()` function escapes `& < > " '` characters to prevent XSS attacks.
+
 ## License
 
 MIT
