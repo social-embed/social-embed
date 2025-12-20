@@ -21,6 +21,7 @@
     "start": "pnpm vite",
     "clean": "rimraf dist/",
     "check": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
     "ncu": "ncu",
     "update": "ncu",
     "lint": "npm run lint:lit-analyzer && npm run lint:biome",

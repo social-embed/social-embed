@@ -8,6 +8,8 @@
     "format": "pnpm run --recursive format",
     "format:check": "biome format .",
     "lint": "biome lint .",
+    "check": "pnpm run --recursive check",
+    "type-check": "pnpm run --recursive type-check",
     "build:watch": "pnpm run --recursive build:watch",
     "test": "pnpm run --recursive test",
     "test:watch": "pnpm run --recursive test:watch",

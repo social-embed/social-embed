@@ -9,6 +9,8 @@
     "build": "astro build --outDir build",
     "preview": "astro preview",
     "astro": "astro",
+    "check": "astro check",
+    "type-check": "astro check",
     "test": "echo 'NOOP'",
     "ncu": "ncu",
     "update": "ncu",
@@ -38,6 +40,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.6",
     "@biomejs/biome": "^2.3.10",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3"
