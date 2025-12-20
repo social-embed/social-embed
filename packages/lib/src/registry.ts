@@ -416,11 +416,16 @@ export class MatcherRegistry {
       }
     }
 
-    // Add wildcards as fallback
-    candidates.push(...this.wildcards);
+    // Add wildcards as fallback (with deduplication)
+    for (const entry of this.wildcards) {
+      if (!candidates.some((e) => e.matcher.name === entry.matcher.name)) {
+        candidates.push(entry);
+      }
+    }
 
-    // Sort by priority (highest first)
-    candidates.sort((a, b) => b.priority - a.priority);
+    // Note: No global sort needed - each category is already sorted by priority
+    // when added in addEntry(). Global sort would break the dispatch hierarchy:
+    // domain-specific → scheme-based → wildcards.
 
     return candidates;
   }
