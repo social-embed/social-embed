@@ -10,7 +10,12 @@ export default defineConfig({
       name: "oembed",
     },
     manifest: false,
-    minify: false,
+    minify: true,
+    sourcemap: true,
   },
-  plugins: [dts()],
+  plugins: [
+    dts({
+      include: ["src/**/*.ts"],
+    }),
+  ],
 });
