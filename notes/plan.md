@@ -1,15 +1,48 @@
 # @social-embed/lib API Redesign Proposal
 
-> **Status**: RFC - Requesting feedback before implementation
+> **Status**: RFC - Validated by expert review, ready for implementation
 > **Breaking**: Yes - Replaces `EmbedProvider`/`EmbedProviderRegistry` API
+> **Version**: 2.0 (clean slate)
+
+---
+
+## Target Environment
+
+| Constraint | Decision |
+|------------|----------|
+| **Runtime** | Modern browsers (2025+), Node.js 18+, Deno, Bun, Edge workers |
+| **Module format** | ESM-only. No UMD/CommonJS. |
+| **CDN usage** | Optimized for `esm.sh`, JSFiddle, CodePen, AI canvas embeds (ChatGPT/Claude/Gemini artifacts) |
+| **TypeScript** | Full inference, strict mode. No specific version constraints beyond modern TS. |
+| **Dependencies** | Minimal, vetted. Small trusted deps OK (e.g., `he` for HTML escaping). |
+| **Bundle size** | Critical. Tree-shakable. Separate entry points per matcher. |
+
+---
+
+## Validated Decisions (from expert review)
+
+| Question | Decision | Rationale |
+|----------|----------|-----------|
+| Backward compatibility | **Clean break** | No existing users to migrate |
+| SSR support | **Required** | All methods must be pure strings, no DOM APIs |
+| Privacy-by-default | **Yes** | `youtube-nocookie.com` by default, DNT attributes |
+| oEmbed integration | **No** | Matcher-only, no network fetching |
+| Matcher scale | **Hundreds** | Need indexed dispatch, not linear scan |
+| Conflict resolution | **Priority + custom** | Priority scores + optional custom resolver |
+| Parser/Renderer split | **Keep bundled** | Single `UrlMatcher` interface for simplicity |
+| HTML escaping | **Vetted dep** | Use `he` library for robustness |
+
+---
 
 ## Goals
 
 1. **Type-safe** - Full TypeScript inference for parse results and options per matcher
-2. **Flexible** - Support both simple (regex-based) and bespoke (custom function) matchers
-3. **Runtime-augmentable** - Registries can be modified after construction
-4. **HTML generation** - Lib generates iframe HTML, WC becomes thin wrapper
-5. **Generic** - `UrlMatcher` naming works beyond embeds (metadata extraction, routing, etc.)
+2. **Privacy-first** - Privacy-enhanced embeds by default
+3. **SSR-safe** - No DOM APIs, pure string transformations
+4. **Scalable** - Indexed dispatch for hundreds of matchers
+5. **Flexible** - Simple (config-driven) and bespoke (custom function) matchers
+6. **Runtime-augmentable** - Mutable registry for CDN/canvas scenarios
+7. **Tree-shakable** - Separate entry points for minimal bundles
 
 ---
 
@@ -25,23 +58,61 @@ interface UrlMatcher<
 > {
   readonly name: TName;
 
+  /**
+   * Domains this matcher handles (for indexed dispatch).
+   * Required for simple matchers. Omit only for cross-domain matchers.
+   * @example ["youtube.com", "youtu.be"]
+   */
+  readonly domains?: readonly string[];
+
+  /**
+   * Whether this matcher supports privacy-enhanced mode.
+   * @example YouTube → youtube-nocookie.com
+   */
+  readonly supportsPrivacyMode?: boolean;
+
   /** Quick check if this matcher handles the URL */
   canMatch(url: string): boolean;
 
-  /** Parse URL into structured data */
+  /**
+   * Parse URL into structured data.
+   * ⚠️ SSR-safe: no DOM APIs (document, window, etc.)
+   */
   parse(url: string): ParseResult<TParseResult>;
 
-  /** Generate embed URL from parsed data */
-  toEmbedUrl(data: TParseResult, options?: TRenderOptions): string;
+  /**
+   * Generate embed URL from parsed data.
+   * ⚠️ SSR-safe: pure string transformation.
+   */
+  toEmbedUrl(data: TParseResult, options?: PrivacyOptions & TRenderOptions): string;
 
-  /** Generate iframe HTML from parsed data */
-  toHtml(data: TParseResult, options?: HtmlOptions & TRenderOptions): string;
+  /**
+   * Generate iframe HTML from parsed data.
+   * ⚠️ SSR-safe: no DOM APIs, returns string only.
+   */
+  toHtml(data: TParseResult, options?: HtmlOptions & PrivacyOptions & TRenderOptions): string;
 }
 
 interface ParseResult<T> {
   success: boolean;
   data?: T;
-  error?: string;
+  error?: ParseError;
+}
+
+/** Structured error for property-based testing */
+interface ParseError {
+  code: "NO_MATCH" | "INVALID_FORMAT" | "MISSING_ID" | "UNKNOWN";
+  message: string;
+}
+
+/** Privacy options - enabled by default */
+interface PrivacyOptions {
+  /**
+   * Enable privacy-enhanced mode (default: true).
+   * - YouTube: uses youtube-nocookie.com
+   * - Others: adds DNT/tracking-prevention attributes
+   */
+  privacy?: boolean;
 }
 
 interface HtmlOptions {
@@ -52,27 +123,37 @@ interface HtmlOptions {
 }
 ```
 
-### MatcherRegistry
+### MatcherRegistry (with indexed dispatch)
 
 ```typescript
 class MatcherRegistry {
+  // Internal indexes for O(1) domain lookup
+  private byDomain: Map<string, UrlMatcher[]>;
+  private byName: Map<string, UrlMatcher>;
+  private wildcards: UrlMatcher[];
+
   // Construction
-  static create(matchers?: MatcherInput[]): MatcherRegistry;
-  static withDefaults(): MatcherRegistry;  // All built-in matchers
+  static create(
+    matchers?: MatcherInput[],
+    options?: {
+      resolver?: (candidates: UrlMatcher[], url: string) => UrlMatcher | undefined;
+    }
+  ): MatcherRegistry;
+  static withDefaults(): MatcherRegistry;
 
   // Immutable composition (returns NEW registry)
   with(...matchers: MatcherInput[]): MatcherRegistry;
   without(...names: string[]): MatcherRegistry;
 
-  // Mutable augmentation (modifies IN PLACE)
-  register(matcher: UrlMatcher): this;
+  // Mutable augmentation (modifies IN PLACE) - for runtime/CDN scenarios
+  register(matcher: UrlMatcher, options?: { priority?: number }): this;
   unregister(name: string): this;
 
   // Core operations
   match(url: string): MatchResult | undefined;
   parse(url: string): { matcher: UrlMatcher; data: unknown } | undefined;
-  toEmbedUrl(url: string): string | undefined;
-  toHtml(url: string, options?: HtmlOptions): string | undefined;
+  toEmbedUrl(url: string, options?: PrivacyOptions): string | undefined;
+  toHtml(url: string, options?: HtmlOptions & PrivacyOptions): string | undefined;
 
   // Discovery
   list(): UrlMatcher[];
@@ -81,52 +162,61 @@ class MatcherRegistry {
 }
 ```
 
+**Indexed dispatch algorithm:**
+1. Extract domain from URL (fast, no regex)
+2. Look up domain in `byDomain` map → O(1)
+3. Scan only that domain's matchers (typically 1-2)
+4. Fall back to wildcards if no match
+5. Resolve conflicts via priority score, then registration order
+
 ---
 
 ## Two-Tier Matcher System
 
 ### Simple Matchers (config-driven)
 
-For straightforward providers with regex patterns and template URLs:
-
 ```typescript
 import { defineSimpleMatcher } from "@social-embed/lib";
 
 const YouTubeMatcher = defineSimpleMatcher({
   name: "YouTube",
+  domains: ["youtube.com", "youtu.be", "youtube-nocookie.com"],
   patterns: [
     /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
     /youtu\.be\/([a-zA-Z0-9_-]{11})/,
   ],
-  embedUrl: (id) => `https://www.youtube.com/embed/${id}`,
+  // Privacy mode uses youtube-nocookie.com by default
+  embedUrl: (id, { privacy = true } = {}) =>
+    privacy
+      ? `https://www.youtube-nocookie.com/embed/${id}`
+      : `https://www.youtube.com/embed/${id}`,
   defaultDimensions: { width: 560, height: 315 },
-  iframeAttributes: { frameborder: "0" },
+  supportsPrivacyMode: true,
 });
 ```
 
 ### Bespoke Matchers (full control)
 
-For complex providers requiring custom logic:
-
 ```typescript
 const SpotifyMatcher: UrlMatcher<"Spotify", SpotifyData, SpotifyOptions> = {
   name: "Spotify",
+  domains: ["spotify.com", "open.spotify.com"],
+  supportsPrivacyMode: false,
 
   canMatch(url) {
     return /spotify\.com/.test(url) || /^spotify:/.test(url);
   },
 
   parse(url) {
-    // Custom parsing for both URLs and URIs
     // Returns { id, contentType: "track" | "album" | ... }
   },
 
-  toEmbedUrl(data, options) {
+  toEmbedUrl(data) {
     return `https://open.spotify.com/embed/${data.contentType}/${data.id}`;
   },
 
   toHtml(data, options) {
-    // Custom HTML with special attributes like allowtransparency
+    // Custom HTML with allowtransparency, encrypted-media
   },
 };
 ```
@@ -142,58 +232,66 @@ import { MatcherRegistry } from "@social-embed/lib";
 
 const registry = MatcherRegistry.withDefaults();
 
-// Get embed URL
+// Privacy-enhanced by default
 const embedUrl = registry.toEmbedUrl("https://youtu.be/abc123");
-// => "https://www.youtube.com/embed/abc123"
+// => "https://www.youtube-nocookie.com/embed/abc123"
 
-// Get HTML
 const html = registry.toHtml("https://youtu.be/abc123", { width: 800 });
-// => '<iframe src="https://www.youtube.com/embed/abc123" width="800" ...></iframe>'
+// => '<iframe src="https://www.youtube-nocookie.com/embed/abc123" width="800" ...></iframe>'
+
+// Opt out of privacy mode
+const regularUrl = registry.toEmbedUrl("https://youtu.be/abc123", { privacy: false });
+// => "https://www.youtube.com/embed/abc123"
 ```
 
-### Custom Matcher + Defaults
+### CDN / JSFiddle / AI Canvas Usage
+
+```html
+<script type="module">
+  import { MatcherRegistry, matchers, defineSimpleMatcher } from "https://esm.sh/@social-embed/lib";
+
+  // Use defaults
+  const registry = MatcherRegistry.withDefaults();
+  document.body.innerHTML = registry.toHtml("https://youtu.be/abc123");
+
+  // Or add custom matchers at runtime
+  const TikTok = defineSimpleMatcher({
+    name: "TikTok",
+    domains: ["tiktok.com"],
+    patterns: [/tiktok\.com\/@[\w]+\/video\/(\d+)/],
+    embedUrl: (id) => `https://www.tiktok.com/embed/${id}`,
+    defaultDimensions: { width: 325, height: 580 },
+  });
+
+  registry.register(TikTok);
+</script>
+```
+
+### Minimal Bundle (tree-shaking)
 
 ```typescript
-import { MatcherRegistry, defineSimpleMatcher } from "@social-embed/lib";
+// Only import what you need
+import { MatcherRegistry } from "@social-embed/lib/registry";
+import { YouTubeMatcher } from "@social-embed/lib/matchers/youtube";
+import { VimeoMatcher } from "@social-embed/lib/matchers/vimeo";
 
-const TikTokMatcher = defineSimpleMatcher({
-  name: "TikTok",
-  patterns: [/tiktok\.com\/@[\w]+\/video\/(\d+)/],
-  embedUrl: (id) => `https://www.tiktok.com/embed/${id}`,
-  defaultDimensions: { width: 325, height: 580 },
+const registry = MatcherRegistry.create([YouTubeMatcher, VimeoMatcher]);
+```
+
+### Conflict Resolution
+
+```typescript
+// Register with priority (higher = checked first)
+registry.register(SpecificMatcher, { priority: 10 });
+registry.register(GenericMatcher, { priority: 0 });
+
+// Or use custom resolver
+const registry = MatcherRegistry.create(matchers, {
+  resolver: (candidates, url) => {
+    // Custom logic to pick winner
+    return candidates.find(m => m.name === "YouTube") ?? candidates[0];
+  }
 });
-
-// Immutable: returns new registry
-const registry = MatcherRegistry.withDefaults().with(TikTokMatcher);
-```
-
-### Runtime Augmentation
-
-```typescript
-import { MatcherRegistry, matchers } from "@social-embed/lib";
-
-// Create mutable registry
-const registry = MatcherRegistry.withDefaults();
-
-// Augment at runtime (mutates in place)
-registry.register(MyCustomMatcher);
-registry.unregister("DailyMotion");
-```
-
-### Subset of Providers
-
-```typescript
-import { matchers, MatcherRegistry } from "@social-embed/lib";
-
-// Only video providers
-const videoOnly = MatcherRegistry.create([
-  matchers.YouTube,
-  matchers.Vimeo,
-  matchers.Loom,
-]);
-
-// All except specific ones
-const filtered = MatcherRegistry.withDefaults().without("DailyMotion", "Wistia");
 ```
 
 ### Metadata Extraction
@@ -207,42 +305,49 @@ if (result) {
 }
 ```
 
-### Browser/CDN Usage (ESM)
+---
 
-```html
-<script type="module">
-  import { MatcherRegistry } from "https://esm.sh/@social-embed/lib";
+## Package Exports
 
-  const registry = MatcherRegistry.withDefaults();
-  document.body.innerHTML = registry.toHtml("https://youtu.be/abc123");
-</script>
+```json
+{
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./registry": "./dist/registry.js",
+    "./matchers/youtube": "./dist/matchers/youtube.js",
+    "./matchers/spotify": "./dist/matchers/spotify.js",
+    "./matchers/vimeo": "./dist/matchers/vimeo.js",
+    "./matchers/*": "./dist/matchers/*.js"
+  }
+}
 ```
+
+---
+
+## SSR Enforcement
+
+All matchers must be SSR-safe. Enforced via:
+
+1. **Type-level**: Methods return `string`, not DOM nodes
+2. **Lint rule**: ESLint forbids `document`, `window`, `HTMLElement` in matcher files
+3. **Test-time**: Run in Node.js without DOM polyfills
+4. **Documentation**: JSDoc warnings on all interface methods
 
 ---
 
 ## Provider-Specific Types
 
 ```typescript
-// YouTube - simple string ID
 interface YouTubeData { videoId: string }
 
-// Spotify - discriminated content type
 type SpotifyContentType = "track" | "album" | "playlist" | "artist" | "show" | "episode";
 interface SpotifyData { id: string; contentType: SpotifyContentType }
 
-// Vimeo
 interface VimeoData { videoId: string }
-
-// DailyMotion
 interface DailyMotionData { videoId: string }
-
-// Loom
 interface LoomData { videoId: string }
-
-// Wistia
 interface WistiaData { videoId: string }
-
-// EdPuzzle
 interface EdPuzzleData { mediaId: string }
 ```
 
@@ -250,7 +355,7 @@ interface EdPuzzleData { mediaId: string }
 
 ## WC Integration
 
-The web component becomes a thin wrapper around the lib:
+The web component becomes a thin wrapper:
 
 ```typescript
 import { MatcherRegistry } from "@social-embed/lib";
@@ -260,6 +365,7 @@ class OEmbedElement extends LitElement {
   @property() url = "";
   @property({ type: Number }) width?: number;
   @property({ type: Number }) height?: number;
+  @property({ type: Boolean }) privacy = true;
 
   registry: MatcherRegistry = MatcherRegistry.withDefaults();
 
@@ -267,6 +373,7 @@ class OEmbedElement extends LitElement {
     const html = this.registry.toHtml(this.url, {
       width: this.width,
       height: this.height,
+      privacy: this.privacy,
     });
     return html ? unsafeHTML(html) : this.renderFallback();
   }
@@ -275,23 +382,12 @@ class OEmbedElement extends LitElement {
 
 ---
 
-## Open Questions
+## Resolved Questions
 
-1. **Should `toHtml()` be optional on the interface?** Some use cases only need `parse()` or `toEmbedUrl()`.
-
-2. **Error handling strategy**: Should `parse()` throw or return `{ success: false }`? Currently proposing result type.
-
-3. **Registry immutability default**: Should `.with()` be the only way to add matchers, or keep mutable `.register()` for runtime scenarios?
-
-4. **Matcher priority/ordering**: When multiple matchers could match a URL, how do we handle priority? First-registered wins?
-
-5. **HTML escaping**: Should we use a dependency like `he` or roll our own minimal escaper?
-
----
-
-## Feedback Requested
-
-- Does the two-tier (simple/bespoke) matcher system make sense?
-- Is the immutable (`.with()`) vs mutable (`.register()`) distinction clear and useful?
-- Any concerns about the type-safe generic approach?
-- Suggestions for the API naming?
+| Question | Resolution |
+|----------|------------|
+| `toHtml()` optional? | No - keep required. Use `parse()` + `toEmbedUrl()` for metadata-only |
+| Error handling | Result type `{ success, data?, error? }` - no throwing |
+| Registry mutability | Both: `.with()` for immutable, `.register()` for runtime |
+| Matcher priority | Priority score (higher wins), then registration order, with custom resolver option |
+| HTML escaping | Use `he` library for robustness |
