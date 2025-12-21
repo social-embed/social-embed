@@ -2,7 +2,7 @@
   "compilerOptions": {
     "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
-  "exclude": ["dist", "public"],
+  "exclude": ["dist", "public/js/o-embed.bundled.js"],
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"]
 }
