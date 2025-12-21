@@ -2,7 +2,11 @@ import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwindcss from "@tailwindcss/vite";
+import type { ViteUserConfig } from "astro";
 import { defineConfig } from "astro/config";
+
+type VitePlugin = NonNullable<ViteUserConfig["plugins"]>[number];
+const tailwindPlugin = tailwindcss() as unknown as VitePlugin;
 
 // https://astro.build/config
 export default defineConfig({
@@ -145,6 +149,6 @@ export default defineConfig({
   site: "https://social-embed.git-pull.com",
   vite: {
     // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
-    plugins: [tailwindcss() as any],
+    plugins: [tailwindPlugin],
   },
 });
