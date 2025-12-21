@@ -1,10 +1,5 @@
 import type React from "react";
-import {
-  LiveEditor,
-  LiveError,
-  LivePreview,
-  LiveProvider,
-} from "react-live";
+import { LiveEditor, LiveError, LivePreview, LiveProvider } from "react-live";
 
 export interface ReactLiveProps {
   /**
