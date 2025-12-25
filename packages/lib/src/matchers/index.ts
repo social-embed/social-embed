@@ -19,6 +19,7 @@
 export type { DailyMotionOutputOptions } from "./dailymotion";
 export { DailyMotionMatcher } from "./dailymotion";
 export { EdPuzzleMatcher } from "./edpuzzle";
+export type { LoomOutputOptions } from "./loom";
 export { LoomMatcher } from "./loom";
 export type { SpotifyOutputOptions } from "./spotify";
 export {

@@ -402,6 +402,56 @@ describe("registry.toEmbedUrl", () => {
         expectedUrl,
       );
     });
+
+    it("should add start time parameter", () => {
+      expect(
+        registry.toEmbedUrl(`https://www.loom.com/share/${loomId}`, {
+          start: 80,
+        }),
+      ).toEqual(`${expectedUrl}?t=80s`);
+    });
+
+    it("should add autoplay parameter", () => {
+      expect(
+        registry.toEmbedUrl(`https://www.loom.com/share/${loomId}`, {
+          autoplay: true,
+        }),
+      ).toEqual(`${expectedUrl}?autoplay=1`);
+    });
+
+    it("should add hideEmbedTopBar parameter", () => {
+      expect(
+        registry.toEmbedUrl(`https://www.loom.com/share/${loomId}`, {
+          hideTopBar: true,
+        }),
+      ).toEqual(`${expectedUrl}?hideEmbedTopBar=true`);
+    });
+
+    it("should combine multiple parameters", () => {
+      expect(
+        registry.toEmbedUrl(`https://www.loom.com/share/${loomId}`, {
+          autoplay: true,
+          hideTopBar: true,
+          start: 120,
+        }),
+      ).toEqual(`${expectedUrl}?t=120s&autoplay=1&hideEmbedTopBar=true`);
+    });
+
+    it("should floor decimal start times", () => {
+      expect(
+        registry.toEmbedUrl(`https://www.loom.com/share/${loomId}`, {
+          start: 80.7,
+        }),
+      ).toEqual(`${expectedUrl}?t=80s`);
+    });
+
+    it("should ignore start of 0", () => {
+      expect(
+        registry.toEmbedUrl(`https://www.loom.com/share/${loomId}`, {
+          start: 0,
+        }),
+      ).toEqual(expectedUrl);
+    });
   });
 
   describe("EdPuzzle", () => {

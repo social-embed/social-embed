@@ -119,6 +119,7 @@ export type {
   DailyMotionOutputOptions,
   EdPuzzleData,
   LoomData,
+  LoomOutputOptions,
   SpotifyContentType,
   SpotifyData,
   SpotifyOutputOptions,
