@@ -26,6 +26,33 @@ export type SpotifyContentType =
   | "episode";
 
 /**
+ * Spotify embed size tiers.
+ *
+ * @remarks
+ * - `compact`: Minimal player (80px for tracks, 152px for others)
+ * - `normal`: Standard player (152px for tracks, 352px for albums/playlists)
+ * - `large`: Full-featured player with more details (352-500px)
+ */
+export type SpotifySize = "compact" | "normal" | "large";
+
+/**
+ * Spotify embed theme.
+ *
+ * @remarks
+ * Maps to URL param: dark → theme=0, light → theme=1
+ */
+export type SpotifyTheme = "dark" | "light";
+
+/**
+ * Spotify embed view mode.
+ *
+ * @remarks
+ * - `list`: Standard view showing track listings (default)
+ * - `coverart`: Minimal view emphasizing album/track artwork
+ */
+export type SpotifyView = "list" | "coverart";
+
+/**
  * Spotify content data.
  */
 export interface SpotifyData {

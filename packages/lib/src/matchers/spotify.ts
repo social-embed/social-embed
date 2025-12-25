@@ -7,7 +7,13 @@ import {
   type PrivacyOptions,
 } from "../output";
 import { noMatch, ok, type Result } from "../result";
-import type { SpotifyContentType, SpotifyData } from "./types";
+import type {
+  SpotifyContentType,
+  SpotifyData,
+  SpotifySize,
+  SpotifyTheme,
+  SpotifyView,
+} from "./types";
 
 /**
  * Supported Spotify content types.
@@ -20,6 +26,84 @@ export const SPOTIFY_TYPES: readonly SpotifyContentType[] = [
   "show",
   "episode",
 ];
+
+/**
+ * Height lookup table for Spotify embeds by content type and size tier.
+ *
+ * @remarks
+ * Heights are optimized for each content type:
+ * - Tracks: Compact (80px) shows just controls, normal/large add artwork
+ * - Albums/Playlists/Artists: Need more height for track listings
+ * - Shows/Episodes: Podcast players with description visibility
+ * - Coverart: Fixed heights for minimal cover art view
+ * - Video: Fixed 624x351 for video podcasts
+ *
+ * @example
+ * ```typescript
+ * // Get height for a compact album player
+ * const height = SPOTIFY_HEIGHTS.album.compact; // 152
+ *
+ * // Get video podcast dimensions
+ * const { width, height } = SPOTIFY_HEIGHTS.video; // 624, 351
+ * ```
+ */
+export const SPOTIFY_HEIGHTS = {
+  album: { compact: 152, large: 500, normal: 352 },
+  artist: { compact: 152, large: 500, normal: 352 },
+  coverart: { compact: 80, large: 352, normal: 152 },
+  episode: { compact: 152, large: 352, normal: 232 },
+  playlist: { compact: 152, large: 500, normal: 352 },
+  show: { compact: 152, large: 352, normal: 232 },
+  track: { compact: 80, large: 352, normal: 152 },
+  video: { height: 351, width: 624 },
+} as const;
+
+/**
+ * Spotify-specific output options.
+ *
+ * @remarks
+ * These options extend the base OutputOptions with Spotify-specific features:
+ * - Size tiers for different player heights
+ * - Theme selection (dark/light)
+ * - View mode (list/coverart)
+ * - Start time for podcasts
+ *
+ * @example
+ * ```typescript
+ * const options: SpotifyOutputOptions = {
+ *   size: "compact",
+ *   theme: "dark",
+ *   view: "coverart",
+ * };
+ *
+ * const output = SpotifyMatcher.toOutput(data, options);
+ * ```
+ */
+export interface SpotifyOutputOptions extends OutputOptions {
+  /**
+   * Size tier for the embed.
+   * Auto-detected from content type if not specified.
+   */
+  size?: SpotifySize;
+
+  /**
+   * Start time in seconds (podcasts only).
+   * Maps to `t=` URL parameter.
+   */
+  start?: number;
+
+  /**
+   * Theme (dark or light).
+   * Maps to `theme=0` (dark) or `theme=1` (light).
+   */
+  theme?: SpotifyTheme;
+
+  /**
+   * View mode (list or coverart).
+   * Maps to `view=coverart` URL parameter.
+   */
+  view?: SpotifyView;
+}
 
 /**
  * Regex for Spotify web URLs.
