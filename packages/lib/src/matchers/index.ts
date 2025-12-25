@@ -46,6 +46,7 @@ export type {
 } from "./types";
 export type { VimeoOutputOptions } from "./vimeo";
 export { VimeoMatcher } from "./vimeo";
+export type { WistiaOutputOptions } from "./wistia";
 export { WistiaMatcher } from "./wistia";
 // Export all matchers
 export type { YouTubeOutputOptions } from "./youtube";

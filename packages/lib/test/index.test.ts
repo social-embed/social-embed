@@ -576,6 +576,62 @@ describe("registry.toEmbedUrl", () => {
         registry.toEmbedUrl(`https://support.wi.st/embed/${wistiaId}`),
       ).toEqual(expectedUrl);
     });
+
+    // Wistia option tests
+    it("should support autoPlay option (camelCase)", () => {
+      expect(
+        registry.toEmbedUrl(`https://support.wistia.com/medias/${wistiaId}`, {
+          autoPlay: true,
+        }),
+      ).toEqual(`${expectedUrl}?autoPlay=true`);
+    });
+
+    it("should support muted option", () => {
+      expect(
+        registry.toEmbedUrl(`https://support.wistia.com/medias/${wistiaId}`, {
+          muted: true,
+        }),
+      ).toEqual(`${expectedUrl}?muted=true`);
+    });
+
+    it("should support playerColor option", () => {
+      expect(
+        registry.toEmbedUrl(`https://support.wistia.com/medias/${wistiaId}`, {
+          playerColor: "ff69b4",
+        }),
+      ).toEqual(`${expectedUrl}?playerColor=ff69b4`);
+    });
+
+    it("should strip # from playerColor", () => {
+      expect(
+        registry.toEmbedUrl(`https://support.wistia.com/medias/${wistiaId}`, {
+          playerColor: "#00ff00",
+        }),
+      ).toEqual(`${expectedUrl}?playerColor=00ff00`);
+    });
+
+    it("should support videoFoam option", () => {
+      expect(
+        registry.toEmbedUrl(`https://support.wistia.com/medias/${wistiaId}`, {
+          videoFoam: true,
+        }),
+      ).toEqual(`${expectedUrl}?videoFoam=true`);
+      expect(
+        registry.toEmbedUrl(`https://support.wistia.com/medias/${wistiaId}`, {
+          videoFoam: false,
+        }),
+      ).toEqual(`${expectedUrl}?videoFoam=false`);
+    });
+
+    it("should combine multiple Wistia options", () => {
+      expect(
+        registry.toEmbedUrl(`https://support.wistia.com/medias/${wistiaId}`, {
+          autoPlay: true,
+          muted: true,
+          playerColor: "ff69b4",
+        }),
+      ).toEqual(`${expectedUrl}?autoPlay=true&muted=true&playerColor=ff69b4`);
+    });
   });
 });
 

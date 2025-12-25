@@ -129,6 +129,7 @@ export type {
   VimeoData,
   VimeoOutputOptions,
   WistiaData,
+  WistiaOutputOptions,
   YouTubeData,
   YouTubeOutputOptions,
 } from "./matchers";
