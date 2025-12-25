@@ -88,6 +88,32 @@ describe("registry.toEmbedUrl", () => {
         registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", { privacy: false }),
       ).toEqual("https://www.youtube.com/embed/FTQbiNvZqaY");
     });
+
+    it("should handle youtube.com/shorts URLs", () => {
+      expect(
+        registry.toEmbedUrl("https://www.youtube.com/shorts/FTQbiNvZqaY"),
+      ).toEqual("https://www.youtube-nocookie.com/embed/FTQbiNvZqaY");
+    });
+
+    it("should handle Shorts URLs without www", () => {
+      expect(
+        registry.toEmbedUrl("https://youtube.com/shorts/FTQbiNvZqaY"),
+      ).toEqual("https://www.youtube-nocookie.com/embed/FTQbiNvZqaY");
+    });
+
+    it("should handle Shorts URLs without protocol", () => {
+      expect(registry.toEmbedUrl("youtube.com/shorts/FTQbiNvZqaY")).toEqual(
+        "https://www.youtube-nocookie.com/embed/FTQbiNvZqaY",
+      );
+    });
+
+    it("should handle Shorts URLs with query parameters", () => {
+      expect(
+        registry.toEmbedUrl(
+          "https://www.youtube.com/shorts/FTQbiNvZqaY?feature=share",
+        ),
+      ).toEqual("https://www.youtube-nocookie.com/embed/FTQbiNvZqaY");
+    });
   });
 
   describe("Spotify", () => {

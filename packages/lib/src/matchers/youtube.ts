@@ -7,6 +7,7 @@ import { defineIframeMatcher } from "../factories/iframe";
  * Matches:
  * - `https://www.youtube.com/watch?v=VIDEO_ID`
  * - `https://youtu.be/VIDEO_ID`
+ * - `https://www.youtube.com/shorts/VIDEO_ID`
  * - `https://www.youtube-nocookie.com/embed/VIDEO_ID`
  *
  * Video ID is always 11 characters.
@@ -17,6 +18,9 @@ const YOUTUBE_PATTERNS = [
 
   // Short URL: youtu.be/VIDEO_ID
   /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+
+  // Shorts URL: youtube.com/shorts/VIDEO_ID
+  /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
 
   // Embed URL: youtube.com/embed/VIDEO_ID or youtube-nocookie.com/embed/VIDEO_ID
   /youtube(?:-nocookie)?\.com\/embed\/([a-zA-Z0-9_-]{11})/,

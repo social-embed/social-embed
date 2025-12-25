@@ -5,9 +5,9 @@ sidebar_label: YouTube
 description: YouTube Video embed support for <o-embed> component.
 ---
 
-## Basic
+## Basic Usage
 
-### HTML
+### Standard URL
 
 URL: https://youtu.be/FTQbiNvZqaY
 
@@ -17,7 +17,59 @@ URL: https://youtu.be/FTQbiNvZqaY
 
 <o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
 
-## Optional: Inner / child content
+---
+
+## YouTube Shorts
+
+Shorts URLs are automatically converted to standard embeds:
+
+```html
+<o-embed url="https://www.youtube.com/shorts/FTQbiNvZqaY"></o-embed>
+```
+
+<o-embed url="https://www.youtube.com/shorts/FTQbiNvZqaY"></o-embed>
+
+---
+
+## URL Formats
+
+All of these YouTube URL formats are supported:
+
+| Format | Example |
+|--------|---------|
+| Standard watch URL | `https://www.youtube.com/watch?v=VIDEO_ID` |
+| Short URL | `https://youtu.be/VIDEO_ID` |
+| Shorts URL | `https://www.youtube.com/shorts/VIDEO_ID` |
+| Embed URL | `https://www.youtube.com/embed/VIDEO_ID` |
+| Privacy-enhanced | `https://www.youtube-nocookie.com/embed/VIDEO_ID` |
+
+---
+
+## Privacy Mode
+
+By default, embeds use `youtube-nocookie.com` for enhanced privacy. This prevents YouTube from storing cookies on the user's browser unless they interact with the video.
+
+To disable privacy mode:
+
+```html
+<o-embed url="https://youtu.be/FTQbiNvZqaY" privacy="false"></o-embed>
+```
+
+---
+
+## Custom Dimensions
+
+```html
+<o-embed url="https://youtu.be/FTQbiNvZqaY" width="800" height="450"></o-embed>
+```
+
+<o-embed url="https://youtu.be/FTQbiNvZqaY" width="800" height="450"></o-embed>
+
+---
+
+## Slotted Content
+
+You can add child content that appears after the embed:
 
 ### CSS
 
