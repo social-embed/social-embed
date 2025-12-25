@@ -7,7 +7,9 @@
 
 import {
   MatcherRegistry,
+  type OutputOptions,
   renderOutput,
+  type SpotifyOutputOptions,
   type SpotifySize,
   type SpotifyTheme,
   type SpotifyView,
@@ -230,12 +232,26 @@ export class OEmbedElement extends LitElement {
 
     this.providerName = result.matcher.name;
 
-    const output = result.matcher.toOutput(result.data, {
+    // Build base output options
+    const options: OutputOptions &
+      SpotifyOutputOptions &
+      Record<string, unknown> = {
       attributes: this.allowfullscreen ? { allowfullscreen: "" } : {},
       height: this.height,
       privacy: this.privacy,
       width: this.width,
-    });
+      ...this.providerOptions, // Escape hatch
+    };
+
+    // Add Spotify-specific options when provider is Spotify
+    if (this.providerName === "Spotify") {
+      if (this.spotifySize) options.size = this.spotifySize;
+      if (this.spotifyTheme) options.theme = this.spotifyTheme;
+      if (this.spotifyView) options.view = this.spotifyView;
+      if (this.spotifyStart !== undefined) options.start = this.spotifyStart;
+    }
+
+    const output = result.matcher.toOutput(result.data, options);
 
     const embedHtml = renderOutput(output);
 
