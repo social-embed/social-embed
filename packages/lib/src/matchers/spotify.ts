@@ -106,6 +106,110 @@ export interface SpotifyOutputOptions extends OutputOptions {
 }
 
 /**
+ * Get the default size tier for a Spotify content type.
+ *
+ * @param contentType - The Spotify content type
+ * @returns Default size tier for auto-detection
+ *
+ * @remarks
+ * - Tracks default to "compact" for minimal display
+ * - Albums/playlists/artists default to "normal" for tracklist visibility
+ * - Podcasts default to "normal" for description visibility
+ *
+ * @example
+ * ```typescript
+ * getSpotifyDefaultSize("track")    // "compact"
+ * getSpotifyDefaultSize("album")    // "normal"
+ * getSpotifyDefaultSize("episode")  // "normal"
+ * ```
+ */
+export function getSpotifyDefaultSize(
+  contentType: SpotifyContentType,
+): SpotifySize {
+  switch (contentType) {
+    case "track":
+      return "compact";
+    case "album":
+    case "playlist":
+    case "artist":
+    case "show":
+    case "episode":
+    default:
+      return "normal";
+  }
+}
+
+/**
+ * Get the height for a Spotify embed configuration.
+ *
+ * @param contentType - The Spotify content type
+ * @param size - Size tier (auto-detected if not specified)
+ * @param options - Optional view and video settings
+ * @returns Height in pixels
+ *
+ * @remarks
+ * Priority order:
+ * 1. Video podcasts use fixed 351px height
+ * 2. Coverart view uses coverart heights
+ * 3. Standard heights by content type and size
+ *
+ * @example
+ * ```typescript
+ * getSpotifyHeight("track", "compact")                      // 80
+ * getSpotifyHeight("album", "large")                        // 500
+ * getSpotifyHeight("episode", "normal", { video: true })    // 351
+ * getSpotifyHeight("track", "normal", { view: "coverart" }) // 152
+ * ```
+ */
+export function getSpotifyHeight(
+  contentType: SpotifyContentType,
+  size?: SpotifySize,
+  options?: { video?: boolean; view?: SpotifyView },
+): number {
+  // Video podcasts have fixed dimensions
+  if (
+    options?.video &&
+    (contentType === "show" || contentType === "episode")
+  ) {
+    return SPOTIFY_HEIGHTS.video.height;
+  }
+
+  // Coverart view has its own heights
+  if (options?.view === "coverart") {
+    const effectiveSize = size ?? "normal";
+    return SPOTIFY_HEIGHTS.coverart[effectiveSize];
+  }
+
+  // Standard heights by content type and size
+  const effectiveSize = size ?? getSpotifyDefaultSize(contentType);
+  return SPOTIFY_HEIGHTS[contentType][effectiveSize];
+}
+
+/**
+ * Get the width for a Spotify embed.
+ *
+ * @param options - Optional video flag
+ * @returns Width (number for video, "100%" for standard)
+ *
+ * @remarks
+ * Video podcasts use fixed 624px width; all other embeds use 100%.
+ *
+ * @example
+ * ```typescript
+ * getSpotifyWidth()                  // "100%"
+ * getSpotifyWidth({ video: true })   // 624
+ * ```
+ */
+export function getSpotifyWidth(options?: {
+  video?: boolean;
+}): string | number {
+  if (options?.video) {
+    return SPOTIFY_HEIGHTS.video.width;
+  }
+  return "100%";
+}
+
+/**
  * Regex for Spotify web URLs.
  *
  * @remarks
