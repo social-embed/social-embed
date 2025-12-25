@@ -20,7 +20,7 @@ const EDPUZZLE_PATTERNS = [
  *
  * @remarks
  * - Supports media URLs
- * - Default dimensions: 560x315
+ * - Default dimensions: 470x404
  *
  * @example
  * ```typescript
@@ -33,8 +33,8 @@ const EDPUZZLE_PATTERNS = [
  */
 export const EdPuzzleMatcher = defineIframeMatcher({
   defaultDimensions: {
-    height: 315,
-    width: 560,
+    height: 404,
+    width: 470,
   },
 
   domains: ["edpuzzle.com"],
