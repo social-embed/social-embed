@@ -379,6 +379,78 @@ describe("registry.toEmbedUrl", () => {
         registry.toEmbedUrl("vimeo.com/channels/staffpicks/134668506"),
       ).toEqual("https://player.vimeo.com/video/134668506");
     });
+
+    it("should add autoplay parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", { autoplay: true }),
+      ).toEqual("https://player.vimeo.com/video/134668506?autoplay=1");
+    });
+
+    it("should add muted parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", { muted: true }),
+      ).toEqual("https://player.vimeo.com/video/134668506?muted=1");
+    });
+
+    it("should add loop parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", { loop: true }),
+      ).toEqual("https://player.vimeo.com/video/134668506?loop=1");
+    });
+
+    it("should add background parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", {
+          background: true,
+        }),
+      ).toEqual("https://player.vimeo.com/video/134668506?background=1");
+    });
+
+    it("should add autopause=0 when autopause is false", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", {
+          autopause: false,
+        }),
+      ).toEqual("https://player.vimeo.com/video/134668506?autopause=0");
+    });
+
+    it("should add controls=0 when controls is false", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", { controls: false }),
+      ).toEqual("https://player.vimeo.com/video/134668506?controls=0");
+    });
+
+    it("should add title=0 when title is false", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", { title: false }),
+      ).toEqual("https://player.vimeo.com/video/134668506?title=0");
+    });
+
+    it("should add byline=0 when byline is false", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", { byline: false }),
+      ).toEqual("https://player.vimeo.com/video/134668506?byline=0");
+    });
+
+    it("should add portrait=0 when portrait is false", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", { portrait: false }),
+      ).toEqual("https://player.vimeo.com/video/134668506?portrait=0");
+    });
+
+    it("should combine multiple parameters", () => {
+      expect(
+        registry.toEmbedUrl("https://vimeo.com/134668506", {
+          autoplay: true,
+          byline: false,
+          loop: true,
+          muted: true,
+          title: false,
+        }),
+      ).toEqual(
+        "https://player.vimeo.com/video/134668506?autoplay=1&muted=1&loop=1&title=0&byline=0",
+      );
+    });
   });
 
   describe("Loom", () => {

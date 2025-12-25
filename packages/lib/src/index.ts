@@ -127,6 +127,7 @@ export type {
   SpotifyTheme,
   SpotifyView,
   VimeoData,
+  VimeoOutputOptions,
   WistiaData,
   YouTubeData,
   YouTubeOutputOptions,
