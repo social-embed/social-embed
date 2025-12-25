@@ -333,8 +333,37 @@ export const SpotifyMatcher: UrlMatcher<"Spotify", SpotifyData> = {
 
   supportsPrivacyMode: false,
 
-  toEmbedUrl(data: SpotifyData, _options?: PrivacyOptions): string {
-    return `https://open.spotify.com/embed/${data.contentType}/${data.id}`;
+  toEmbedUrl(
+    data: SpotifyData,
+    options?: PrivacyOptions & SpotifyOutputOptions,
+  ): string {
+    const baseUrl = `https://open.spotify.com/embed/${data.contentType}/${data.id}`;
+    const params = new URLSearchParams();
+
+    // Theme: prefer options, fall back to data (extracted from input URL)
+    const theme = options?.theme ?? data.theme;
+    if (theme === "dark") {
+      params.set("theme", "0");
+    } else if (theme === "light") {
+      params.set("theme", "1");
+    }
+
+    // View mode
+    if (options?.view === "coverart") {
+      params.set("view", "coverart");
+    }
+
+    // Start time (podcasts only)
+    if (
+      options?.start !== undefined &&
+      options.start > 0 &&
+      (data.contentType === "show" || data.contentType === "episode")
+    ) {
+      params.set("t", String(Math.floor(options.start)));
+    }
+
+    const queryString = params.toString();
+    return queryString ? `${baseUrl}?${queryString}` : baseUrl;
   },
 
   toOutput(
