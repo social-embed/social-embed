@@ -56,11 +56,23 @@ export type SpotifyView = "list" | "coverart";
  * Spotify content data.
  */
 export interface SpotifyData {
+  /** Content type (track, album, playlist, etc.) */
+  contentType: SpotifyContentType;
+
   /** 22-character Spotify ID */
   id: string;
 
-  /** Content type (track, album, playlist, etc.) */
-  contentType: SpotifyContentType;
+  /**
+   * Theme extracted from input URL.
+   * Preserved so it can be passed through to embed URL.
+   */
+  theme?: SpotifyTheme;
+
+  /**
+   * Whether this is a video podcast.
+   * Detected from /video suffix in URL for show/episode content.
+   */
+  video?: boolean;
 }
 
 /**

@@ -210,21 +210,26 @@ export function getSpotifyWidth(options?: {
 }
 
 /**
- * Regex for Spotify web URLs.
+ * Regex for Spotify web URLs with video detection.
  *
  * @remarks
  * Matches:
  * - `https://open.spotify.com/track/ID`
  * - `https://open.spotify.com/album/ID`
- * - `https://open.spotify.com/playlist/ID`
- * - etc.
+ * - `https://open.spotify.com/episode/ID/video`
+ * - `https://open.spotify.com/show/ID?theme=0`
+ *
+ * Captures:
+ * - Group 1: Content type (track, album, etc.)
+ * - Group 2: ID (22 characters)
+ * - Group 3: Optional /video suffix
  *
  * ID is 22 characters.
  */
 const SPOTIFY_URL_REGEX = new RegExp(
   `^(?:https?:)?(?://)?(?:embed\\.)?(?:open\\.)?spotify\\.com/(${SPOTIFY_TYPES.join(
     "|",
-  )})/([a-zA-Z0-9_-]{22})(?:\\?si=[a-zA-Z0-9_-]+)?`,
+  )})/([a-zA-Z0-9_-]{22})(/video)?(?:\\?.*)?$`,
 );
 
 /**
@@ -235,9 +240,11 @@ const SPOTIFY_URL_REGEX = new RegExp(
  * - `spotify:track:ID`
  * - `spotify:album:ID`
  * - etc.
+ *
+ * Note: URIs don't support video suffix or theme.
  */
 const SPOTIFY_URI_REGEX = new RegExp(
-  `^spotify:(${SPOTIFY_TYPES.join("|")}):([a-zA-Z0-9_-]{22})`,
+  `^spotify:(${SPOTIFY_TYPES.join("|")}):([a-zA-Z0-9_-]{22})$`,
 );
 
 /**
@@ -284,12 +291,32 @@ export const SpotifyMatcher: UrlMatcher<"Spotify", SpotifyData> = {
     if (urlMatch) {
       const contentType = urlMatch[1] as SpotifyContentType;
       const id = urlMatch[2];
+      const hasVideo = urlMatch[3] === "/video";
+
       if (id && SPOTIFY_TYPES.includes(contentType)) {
-        return ok({ contentType, id });
+        const data: SpotifyData = { contentType, id };
+
+        // Detect video for podcast content (shows and episodes only)
+        if (
+          hasVideo &&
+          (contentType === "show" || contentType === "episode")
+        ) {
+          data.video = true;
+        }
+
+        // Extract theme from URL query params
+        const themeParam = ctx.parsed.searchParams?.get("theme");
+        if (themeParam === "0") {
+          data.theme = "dark";
+        } else if (themeParam === "1") {
+          data.theme = "light";
+        }
+
+        return ok(data);
       }
     }
 
-    // Try spotify: URI
+    // Try spotify: URI (no video or theme support)
     const uriMatch = ctx.raw.match(SPOTIFY_URI_REGEX);
     if (uriMatch) {
       const contentType = uriMatch[1] as SpotifyContentType;
