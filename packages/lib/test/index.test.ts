@@ -7,7 +7,16 @@
 
 import { describe, expect, it } from "vitest";
 
-import { defaultRegistry, MatcherRegistry, renderOutput } from "../src";
+import {
+  defaultRegistry,
+  getSpotifyDefaultSize,
+  getSpotifyHeight,
+  getSpotifyWidth,
+  MatcherRegistry,
+  renderOutput,
+  SPOTIFY_HEIGHTS,
+  SpotifyMatcher,
+} from "../src";
 
 describe("defaultRegistry (legacy export)", () => {
   it("should be a MatcherRegistry instance, not a class", () => {
@@ -329,5 +338,255 @@ describe("registry.match", () => {
       expect(result.matcher.name).toBe("Spotify");
       expect(result.data).toEqual({ contentType: "track", id: spotifyId });
     }
+  });
+});
+
+describe("Spotify utility functions", () => {
+  describe("SPOTIFY_HEIGHTS", () => {
+    it("should have correct height values for all content types", () => {
+      expect(SPOTIFY_HEIGHTS.track).toEqual({ compact: 80, normal: 152, large: 352 });
+      expect(SPOTIFY_HEIGHTS.album).toEqual({ compact: 152, normal: 352, large: 500 });
+      expect(SPOTIFY_HEIGHTS.playlist).toEqual({ compact: 152, normal: 352, large: 500 });
+      expect(SPOTIFY_HEIGHTS.artist).toEqual({ compact: 152, normal: 352, large: 500 });
+      expect(SPOTIFY_HEIGHTS.show).toEqual({ compact: 152, normal: 232, large: 352 });
+      expect(SPOTIFY_HEIGHTS.episode).toEqual({ compact: 152, normal: 232, large: 352 });
+    });
+
+    it("should have coverart and video dimensions", () => {
+      expect(SPOTIFY_HEIGHTS.coverart).toEqual({ compact: 80, normal: 152, large: 352 });
+      expect(SPOTIFY_HEIGHTS.video).toEqual({ width: 624, height: 351 });
+    });
+  });
+
+  describe("getSpotifyDefaultSize", () => {
+    it("should return compact for tracks", () => {
+      expect(getSpotifyDefaultSize("track")).toBe("compact");
+    });
+
+    it("should return normal for albums, playlists, artists", () => {
+      expect(getSpotifyDefaultSize("album")).toBe("normal");
+      expect(getSpotifyDefaultSize("playlist")).toBe("normal");
+      expect(getSpotifyDefaultSize("artist")).toBe("normal");
+    });
+
+    it("should return normal for podcasts", () => {
+      expect(getSpotifyDefaultSize("show")).toBe("normal");
+      expect(getSpotifyDefaultSize("episode")).toBe("normal");
+    });
+  });
+
+  describe("getSpotifyHeight", () => {
+    it("should return auto-detected height without size", () => {
+      expect(getSpotifyHeight("track")).toBe(80); // track defaults to compact
+      expect(getSpotifyHeight("album")).toBe(352); // album defaults to normal
+    });
+
+    it("should return explicit size heights", () => {
+      expect(getSpotifyHeight("track", "compact")).toBe(80);
+      expect(getSpotifyHeight("track", "normal")).toBe(152);
+      expect(getSpotifyHeight("track", "large")).toBe(352);
+    });
+
+    it("should return video height for video podcasts", () => {
+      expect(getSpotifyHeight("episode", "normal", { video: true })).toBe(351);
+      expect(getSpotifyHeight("show", "compact", { video: true })).toBe(351);
+    });
+
+    it("should return coverart heights for coverart view", () => {
+      expect(getSpotifyHeight("album", "compact", { view: "coverart" })).toBe(80);
+      expect(getSpotifyHeight("album", "normal", { view: "coverart" })).toBe(152);
+      expect(getSpotifyHeight("album", "large", { view: "coverart" })).toBe(352);
+    });
+  });
+
+  describe("getSpotifyWidth", () => {
+    it("should return 100% for standard embeds", () => {
+      expect(getSpotifyWidth()).toBe("100%");
+      expect(getSpotifyWidth({})).toBe("100%");
+    });
+
+    it("should return 624 for video podcasts", () => {
+      expect(getSpotifyWidth({ video: true })).toBe(624);
+    });
+  });
+});
+
+describe("Spotify features", () => {
+  const registry = MatcherRegistry.withDefaults();
+
+  describe("size tiers", () => {
+    it("should auto-detect compact size for tracks", () => {
+      const output = registry.toOutput("spotify:track:1w4etUoKfql47wtTFq031f");
+      expect(output?.nodes[0].attributes?.height).toBe("80");
+    });
+
+    it("should auto-detect normal size for albums", () => {
+      const output = registry.toOutput("spotify:album:1DFixLWuPkv3KT3TnV35m3");
+      expect(output?.nodes[0].attributes?.height).toBe("352");
+    });
+
+    it("should respect explicit size option", () => {
+      const output = registry.toOutput("spotify:track:1w4etUoKfql47wtTFq031f", {
+        size: "large",
+      });
+      expect(output?.nodes[0].attributes?.height).toBe("352");
+    });
+
+    it("should respect explicit height over size tier", () => {
+      const output = registry.toOutput("spotify:album:1DFixLWuPkv3KT3TnV35m3", {
+        height: 200,
+        size: "compact",
+      });
+      expect(output?.nodes[0].attributes?.height).toBe("200");
+    });
+  });
+
+  describe("theme", () => {
+    it("should add dark theme param", () => {
+      const url = registry.toEmbedUrl("spotify:album:1DFixLWuPkv3KT3TnV35m3", {
+        theme: "dark",
+      });
+      expect(url).toContain("theme=0");
+    });
+
+    it("should add light theme param", () => {
+      const url = registry.toEmbedUrl("spotify:album:1DFixLWuPkv3KT3TnV35m3", {
+        theme: "light",
+      });
+      expect(url).toContain("theme=1");
+    });
+
+    it("should preserve theme from input URL", () => {
+      const result = registry.match(
+        "https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3?theme=0",
+      );
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.data).toEqual({
+          contentType: "album",
+          id: "1DFixLWuPkv3KT3TnV35m3",
+          theme: "dark",
+        });
+      }
+    });
+
+    it("should pass through theme from input URL to embed", () => {
+      const url = registry.toEmbedUrl(
+        "https://open.spotify.com/track/1w4etUoKfql47wtTFq031f?theme=1",
+      );
+      expect(url).toContain("theme=1");
+    });
+  });
+
+  describe("coverart view", () => {
+    it("should add view=coverart param", () => {
+      const url = registry.toEmbedUrl("spotify:album:1DFixLWuPkv3KT3TnV35m3", {
+        view: "coverart",
+      });
+      expect(url).toContain("view=coverart");
+    });
+
+    it("should use coverart heights when view is coverart", () => {
+      const output = registry.toOutput("spotify:album:1DFixLWuPkv3KT3TnV35m3", {
+        size: "compact",
+        view: "coverart",
+      });
+      expect(output?.nodes[0].attributes?.height).toBe("80");
+    });
+  });
+
+  describe("video podcasts", () => {
+    it("should detect /video suffix in URL", () => {
+      const result = registry.match(
+        "https://open.spotify.com/episode/1w4etUoKfql47wtTFq031f/video",
+      );
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.data).toEqual({
+          contentType: "episode",
+          id: "1w4etUoKfql47wtTFq031f",
+          video: true,
+        });
+      }
+    });
+
+    it("should use fixed video dimensions", () => {
+      const output = registry.toOutput(
+        "https://open.spotify.com/episode/1w4etUoKfql47wtTFq031f/video",
+      );
+      expect(output?.nodes[0].attributes?.width).toBe("624");
+      expect(output?.nodes[0].attributes?.height).toBe("351");
+    });
+
+    it("should not detect video for non-podcast content", () => {
+      const result = registry.match(
+        "https://open.spotify.com/track/1w4etUoKfql47wtTFq031f/video",
+      );
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.data.video).toBeUndefined();
+      }
+    });
+  });
+
+  describe("start time", () => {
+    it("should add start time for episodes", () => {
+      const url = registry.toEmbedUrl(
+        "spotify:episode:1w4etUoKfql47wtTFq031f",
+        { start: 120 },
+      );
+      expect(url).toContain("t=120");
+    });
+
+    it("should add start time for shows", () => {
+      const url = registry.toEmbedUrl("spotify:show:1w4etUoKfql47wtTFq031f", {
+        start: 60,
+      });
+      expect(url).toContain("t=60");
+    });
+
+    it("should ignore start time for non-podcast content", () => {
+      const url = registry.toEmbedUrl("spotify:track:1w4etUoKfql47wtTFq031f", {
+        start: 120,
+      });
+      expect(url).not.toContain("t=");
+    });
+
+    it("should floor decimal start times", () => {
+      const url = registry.toEmbedUrl(
+        "spotify:episode:1w4etUoKfql47wtTFq031f",
+        { start: 90.7 },
+      );
+      expect(url).toContain("t=90");
+    });
+  });
+
+  describe("enhanced iframe attributes", () => {
+    it("should include loading=lazy", () => {
+      const output = registry.toOutput("spotify:album:1DFixLWuPkv3KT3TnV35m3");
+      expect(output?.nodes[0].attributes?.loading).toBe("lazy");
+    });
+
+    it("should include expanded allow permissions", () => {
+      const output = registry.toOutput("spotify:album:1DFixLWuPkv3KT3TnV35m3");
+      const allow = output?.nodes[0].attributes?.allow;
+      expect(allow).toContain("autoplay");
+      expect(allow).toContain("clipboard-write");
+      expect(allow).toContain("encrypted-media");
+      expect(allow).toContain("fullscreen");
+      expect(allow).toContain("picture-in-picture");
+    });
+  });
+
+  describe("SpotifyMatcher.toEmbedUrl", () => {
+    it("should combine multiple options", () => {
+      const url = SpotifyMatcher.toEmbedUrl(
+        { contentType: "episode", id: "1w4etUoKfql47wtTFq031f" },
+        { start: 30, theme: "dark", view: "coverart" },
+      );
+      expect(url).toContain("theme=0");
+      expect(url).toContain("view=coverart");
+      expect(url).toContain("t=30");
+    });
   });
 });

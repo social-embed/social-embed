@@ -124,11 +124,16 @@ export type {
   WistiaData,
   YouTubeData,
 } from "./matchers";
+export type { SpotifyOutputOptions, SpotifySize, SpotifyTheme, SpotifyView } from "./matchers";
 export {
   ALL_MATCHERS,
   DailyMotionMatcher,
   EdPuzzleMatcher,
+  getSpotifyDefaultSize,
+  getSpotifyHeight,
+  getSpotifyWidth,
   LoomMatcher,
+  SPOTIFY_HEIGHTS,
   SPOTIFY_TYPES,
   SpotifyMatcher,
   VimeoMatcher,
