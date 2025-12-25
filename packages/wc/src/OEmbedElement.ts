@@ -5,7 +5,13 @@
  * This component is part of the @social-embed/wc package.
  */
 
-import { MatcherRegistry, renderOutput } from "@social-embed/lib";
+import {
+  MatcherRegistry,
+  renderOutput,
+  type SpotifySize,
+  type SpotifyTheme,
+  type SpotifyView,
+} from "@social-embed/lib";
 import { html, LitElement, type TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
@@ -73,6 +79,125 @@ export class OEmbedElement extends LitElement {
    */
   @property({ type: Boolean })
   public privacy = true;
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Spotify-specific attributes
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Spotify embed size tier.
+   *
+   * @remarks
+   * Controls the height of the Spotify embed player:
+   * - `"compact"`: Minimal player (80px for tracks, 152px for others)
+   * - `"normal"`: Standard player (default, 152-352px based on content type)
+   * - `"large"`: Full-featured player with more details (352-500px)
+   *
+   * If not specified, the size is auto-detected based on content type
+   * (e.g., tracks default to "compact", albums to "normal").
+   *
+   * Only applies to Spotify URLs; ignored for other providers.
+   *
+   * @example
+   * ```html
+   * <o-embed url="spotify:track:..." spotify-size="large"></o-embed>
+   * ```
+   */
+  @property({ type: String, attribute: "spotify-size" })
+  public spotifySize?: SpotifySize;
+
+  /**
+   * Spotify embed theme.
+   *
+   * @remarks
+   * Controls the visual theme of the Spotify embed:
+   * - `"dark"`: Dark background (maps to `theme=0`)
+   * - `"light"`: Light background (maps to `theme=1`)
+   *
+   * If not specified, uses Spotify's default (usually dark).
+   * Only applies to Spotify URLs; ignored for other providers.
+   *
+   * @example
+   * ```html
+   * <o-embed url="spotify:album:..." spotify-theme="light"></o-embed>
+   * ```
+   */
+  @property({ type: String, attribute: "spotify-theme" })
+  public spotifyTheme?: SpotifyTheme;
+
+  /**
+   * Spotify embed view mode.
+   *
+   * @remarks
+   * Controls the display mode:
+   * - `"list"`: Standard view with track listings (default)
+   * - `"coverart"`: Minimal view emphasizing album/track artwork
+   *
+   * Only applies to Spotify URLs; ignored for other providers.
+   *
+   * @example
+   * ```html
+   * <o-embed url="spotify:album:..." spotify-view="coverart"></o-embed>
+   * ```
+   */
+  @property({ type: String, attribute: "spotify-view" })
+  public spotifyView?: SpotifyView;
+
+  /**
+   * Spotify podcast start time in seconds.
+   *
+   * @remarks
+   * Sets the start position for podcast playback.
+   * Only works with podcast content (shows and episodes).
+   * Ignored for other content types (tracks, albums, etc.)
+   *
+   * Only applies to Spotify URLs; ignored for other providers.
+   *
+   * @example
+   * ```html
+   * <o-embed url="spotify:episode:..." spotify-start="120"></o-embed>
+   * ```
+   */
+  @property({ type: Number, attribute: "spotify-start" })
+  public spotifyStart?: number;
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Escape hatch
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Provider-specific options as a JSON object.
+   *
+   * @remarks
+   * Escape hatch for passing arbitrary options to the matcher's toOutput method.
+   * Useful for future Spotify parameters or other provider-specific options.
+   *
+   * @example
+   * ```html
+   * <o-embed
+   *   url="spotify:album:..."
+   *   provider-options='{"utm_source": "my-site"}'
+   * ></o-embed>
+   * ```
+   */
+  @property({
+    type: String,
+    attribute: "provider-options",
+    converter: {
+      fromAttribute(value: string | null): Record<string, unknown> | undefined {
+        if (!value) return undefined;
+        try {
+          return JSON.parse(value) as Record<string, unknown>;
+        } catch {
+          return undefined;
+        }
+      },
+      toAttribute(value: Record<string, unknown> | undefined): string | null {
+        return value ? JSON.stringify(value) : null;
+      },
+    },
+  })
+  public providerOptions?: Record<string, unknown>;
 
   /**
    * The matched provider name, available after matching.
