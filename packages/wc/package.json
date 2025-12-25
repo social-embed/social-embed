@@ -60,13 +60,13 @@
   },
   "dependencies": {
     "@social-embed/lib": "workspace:*",
-    "lit": "^3.3.1"
+    "lit": "^3.3.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.10",
     "@vitest/browser-playwright": "^4.0.16",
     "@vitest/ui": "^4.0.16",
-    "chai": "^6.2.1",
+    "chai": "^6.2.2",
     "deepmerge": "^4.3.1",
     "lit-analyzer": "^2.0.3",
     "playwright": "^1.57.0",
