@@ -368,23 +368,50 @@ export const SpotifyMatcher: UrlMatcher<"Spotify", SpotifyData> = {
 
   toOutput(
     data: SpotifyData,
-    options?: OutputOptions & PrivacyOptions,
+    options?: OutputOptions & PrivacyOptions & SpotifyOutputOptions,
   ): EmbedOutput {
     const src = this.toEmbedUrl(data, options);
+
+    // Determine dimensions using utility functions
+    const isVideo =
+      data.video &&
+      (data.contentType === "show" || data.contentType === "episode");
+
+    let width: string | number;
+    let height: number;
+
+    if (isVideo) {
+      // Video podcasts use fixed 624x351 dimensions
+      width = getSpotifyWidth({ video: true });
+      height = getSpotifyHeight(data.contentType, options?.size, {
+        video: true,
+      });
+    } else if (options?.height !== undefined) {
+      // Explicit height provided - use it
+      width = options.width ?? "100%";
+      height =
+        typeof options.height === "string"
+          ? parseInt(options.height, 10)
+          : options.height;
+    } else {
+      // Auto-calculate height based on content type and size
+      width = options?.width ?? "100%";
+      height = getSpotifyHeight(data.contentType, options?.size, {
+        view: options?.view,
+      });
+    }
+
     const attrs = mergeOutputOptions(
       {
-        allow: "encrypted-media",
+        allow:
+          "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture",
         allowtransparency: "true",
         frameborder: "0",
+        loading: "lazy",
       },
       options,
-      { height: 352, width: "100%" },
+      { height, width },
     );
-
-    // For tracks, use compact player
-    if (data.contentType === "track" && !options?.height) {
-      attrs.height = "80";
-    }
 
     return {
       nodes: [
