@@ -5,6 +5,8 @@ sidebar_label: YouTube
 description: YouTube Video embed support for <o-embed> component.
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 ## Basic Usage
 
 ### Standard URL
@@ -53,6 +55,89 @@ To disable privacy mode:
 
 ```html
 <o-embed url="https://youtu.be/FTQbiNvZqaY" privacy="false"></o-embed>
+```
+
+---
+
+## YouTube-specific Options
+
+The `<o-embed>` component supports YouTube-specific options via the `provider-options` attribute.
+
+### Available Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `start` | number | Start time in seconds |
+| `end` | number | End time in seconds |
+| `autoplay` | boolean | Auto-start the video (requires `mute: true` in most browsers) |
+| `mute` | boolean | Start the video muted |
+| `loop` | boolean | Loop the video continuously |
+| `controls` | boolean | Show player controls (default: true) |
+
+### Start Time
+
+Start playback at a specific time (in seconds):
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"start": 30}'
+></o-embed>
+```
+
+### End Time
+
+Stop playback at a specific time:
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"start": 10, "end": 30}'
+></o-embed>
+```
+
+### Autoplay (Muted)
+
+<Aside type="note">
+Most browsers require videos to be muted for autoplay to work. Always set `mute: true` when using `autoplay: true`.
+</Aside>
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"autoplay": true, "mute": true}'
+></o-embed>
+```
+
+### Loop
+
+Enable continuous looping:
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"loop": true}'
+></o-embed>
+```
+
+### Hide Controls
+
+Hide the player controls:
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"controls": false}'
+></o-embed>
+```
+
+### Combining Options
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"start": 30, "autoplay": true, "mute": true, "loop": true}'
+></o-embed>
 ```
 
 ---

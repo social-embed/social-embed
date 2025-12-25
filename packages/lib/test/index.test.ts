@@ -114,6 +114,87 @@ describe("registry.toEmbedUrl", () => {
         ),
       ).toEqual("https://www.youtube-nocookie.com/embed/FTQbiNvZqaY");
     });
+
+    it("should add start parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", { start: 90 }),
+      ).toEqual("https://www.youtube-nocookie.com/embed/FTQbiNvZqaY?start=90");
+    });
+
+    it("should add end parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", { end: 180 }),
+      ).toEqual("https://www.youtube-nocookie.com/embed/FTQbiNvZqaY?end=180");
+    });
+
+    it("should add autoplay parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", { autoplay: true }),
+      ).toEqual(
+        "https://www.youtube-nocookie.com/embed/FTQbiNvZqaY?autoplay=1",
+      );
+    });
+
+    it("should add mute parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", { mute: true }),
+      ).toEqual("https://www.youtube-nocookie.com/embed/FTQbiNvZqaY?mute=1");
+    });
+
+    it("should add loop parameter with playlist for single video", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", { loop: true }),
+      ).toEqual(
+        "https://www.youtube-nocookie.com/embed/FTQbiNvZqaY?loop=1&playlist=FTQbiNvZqaY",
+      );
+    });
+
+    it("should add controls=0 when controls is false", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", {
+          controls: false,
+        }),
+      ).toEqual(
+        "https://www.youtube-nocookie.com/embed/FTQbiNvZqaY?controls=0",
+      );
+    });
+
+    it("should combine multiple parameters", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", {
+          autoplay: true,
+          end: 180,
+          mute: true,
+          start: 90,
+        }),
+      ).toEqual(
+        "https://www.youtube-nocookie.com/embed/FTQbiNvZqaY?start=90&end=180&autoplay=1&mute=1",
+      );
+    });
+
+    it("should combine privacy=false with other parameters", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", {
+          privacy: false,
+          start: 60,
+        }),
+      ).toEqual("https://www.youtube.com/embed/FTQbiNvZqaY?start=60");
+    });
+
+    it("should floor decimal time values", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", { start: 90.7 }),
+      ).toEqual("https://www.youtube-nocookie.com/embed/FTQbiNvZqaY?start=90");
+    });
+
+    it("should ignore start/end of 0", () => {
+      expect(
+        registry.toEmbedUrl("https://youtu.be/FTQbiNvZqaY", {
+          end: 0,
+          start: 0,
+        }),
+      ).toEqual("https://www.youtube-nocookie.com/embed/FTQbiNvZqaY");
+    });
   });
 
   describe("Spotify", () => {
@@ -429,7 +510,7 @@ describe("registry.match", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.matcher.name).toBe("YouTube");
-      expect(result.data).toEqual({ id: "FTQbiNvZqaY" });
+      expect(result.data).toEqual({ videoId: "FTQbiNvZqaY" });
     }
   });
 

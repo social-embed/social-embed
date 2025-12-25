@@ -46,6 +46,7 @@ export type {
 export { VimeoMatcher } from "./vimeo";
 export { WistiaMatcher } from "./wistia";
 // Export all matchers
+export type { YouTubeOutputOptions } from "./youtube";
 export { YouTubeMatcher } from "./youtube";
 
 import { DailyMotionMatcher } from "./dailymotion";

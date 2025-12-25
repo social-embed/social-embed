@@ -128,6 +128,7 @@ export type {
   VimeoData,
   WistiaData,
   YouTubeData,
+  YouTubeOutputOptions,
 } from "./matchers";
 export {
   ALL_MATCHERS,
