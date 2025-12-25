@@ -129,11 +129,6 @@ export function getSpotifyDefaultSize(
   switch (contentType) {
     case "track":
       return "compact";
-    case "album":
-    case "playlist":
-    case "artist":
-    case "show":
-    case "episode":
     default:
       return "normal";
   }
@@ -167,10 +162,7 @@ export function getSpotifyHeight(
   options?: { video?: boolean; view?: SpotifyView },
 ): number {
   // Video podcasts have fixed dimensions
-  if (
-    options?.video &&
-    (contentType === "show" || contentType === "episode")
-  ) {
+  if (options?.video && (contentType === "show" || contentType === "episode")) {
     return SPOTIFY_HEIGHTS.video.height;
   }
 
@@ -297,10 +289,7 @@ export const SpotifyMatcher: UrlMatcher<"Spotify", SpotifyData> = {
         const data: SpotifyData = { contentType, id };
 
         // Detect video for podcast content (shows and episodes only)
-        if (
-          hasVideo &&
-          (contentType === "show" || contentType === "episode")
-        ) {
+        if (hasVideo && (contentType === "show" || contentType === "episode")) {
           data.video = true;
         }
 
@@ -391,7 +380,7 @@ export const SpotifyMatcher: UrlMatcher<"Spotify", SpotifyData> = {
       width = options.width ?? "100%";
       height =
         typeof options.height === "string"
-          ? parseInt(options.height, 10)
+          ? Number.parseInt(options.height, 10)
           : options.height;
     } else {
       // Auto-calculate height based on content type and size

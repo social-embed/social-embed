@@ -331,6 +331,108 @@ describe("o-embed", () => {
 
       document.body.removeChild(el);
     });
+
+    // Tests for computed CSS height (visual height)
+    it("applies correct computed CSS height for spotify-size compact", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT";
+      el.setAttribute("spotify-size", "compact");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      if (!iframe) throw new Error("iframe not found");
+      const computed = window.getComputedStyle(iframe);
+      expect(computed.height).toBe("80px");
+
+      document.body.removeChild(el);
+    });
+
+    it("applies correct computed CSS height for spotify-size large", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3";
+      el.setAttribute("spotify-size", "large");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      if (!iframe) throw new Error("iframe not found");
+      const computed = window.getComputedStyle(iframe);
+      expect(computed.height).toBe("500px");
+
+      document.body.removeChild(el);
+    });
+
+    it("applies correct computed CSS height for spotify-view coverart", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3";
+      el.setAttribute("spotify-view", "coverart");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      // coverart default size is "normal" → 152px
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      if (!iframe) throw new Error("iframe not found");
+      const computed = window.getComputedStyle(iframe);
+      expect(computed.height).toBe("152px");
+
+      document.body.removeChild(el);
+    });
+
+    it("applies legacy height attribute for Spotify", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M";
+      el.setAttribute("height", "152");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      if (!iframe) throw new Error("iframe not found");
+      // Both the attribute and computed CSS should be 152px
+      expect(iframe.getAttribute("height")).toBe("152");
+      const computed = window.getComputedStyle(iframe);
+      expect(computed.height).toBe("152px");
+
+      document.body.removeChild(el);
+    });
+
+    it("auto-detects compact size for tracks", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT";
+      // No spotify-size set - should auto-detect compact for tracks
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      if (!iframe) throw new Error("iframe not found");
+      // Tracks default to compact (80px)
+      const computed = window.getComputedStyle(iframe);
+      expect(computed.height).toBe("80px");
+
+      document.body.removeChild(el);
+    });
+
+    it("auto-detects normal size for albums", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3";
+      // No spotify-size set - should auto-detect normal for albums
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      if (!iframe) throw new Error("iframe not found");
+      // Albums default to normal (352px)
+      const computed = window.getComputedStyle(iframe);
+      expect(computed.height).toBe("352px");
+
+      document.body.removeChild(el);
+    });
   });
 
   // Tests for DailyMotion

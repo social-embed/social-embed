@@ -344,17 +344,45 @@ describe("registry.match", () => {
 describe("Spotify utility functions", () => {
   describe("SPOTIFY_HEIGHTS", () => {
     it("should have correct height values for all content types", () => {
-      expect(SPOTIFY_HEIGHTS.track).toEqual({ compact: 80, normal: 152, large: 352 });
-      expect(SPOTIFY_HEIGHTS.album).toEqual({ compact: 152, normal: 352, large: 500 });
-      expect(SPOTIFY_HEIGHTS.playlist).toEqual({ compact: 152, normal: 352, large: 500 });
-      expect(SPOTIFY_HEIGHTS.artist).toEqual({ compact: 152, normal: 352, large: 500 });
-      expect(SPOTIFY_HEIGHTS.show).toEqual({ compact: 152, normal: 232, large: 352 });
-      expect(SPOTIFY_HEIGHTS.episode).toEqual({ compact: 152, normal: 232, large: 352 });
+      expect(SPOTIFY_HEIGHTS.track).toEqual({
+        compact: 80,
+        large: 352,
+        normal: 152,
+      });
+      expect(SPOTIFY_HEIGHTS.album).toEqual({
+        compact: 152,
+        large: 500,
+        normal: 352,
+      });
+      expect(SPOTIFY_HEIGHTS.playlist).toEqual({
+        compact: 152,
+        large: 500,
+        normal: 352,
+      });
+      expect(SPOTIFY_HEIGHTS.artist).toEqual({
+        compact: 152,
+        large: 500,
+        normal: 352,
+      });
+      expect(SPOTIFY_HEIGHTS.show).toEqual({
+        compact: 152,
+        large: 352,
+        normal: 232,
+      });
+      expect(SPOTIFY_HEIGHTS.episode).toEqual({
+        compact: 152,
+        large: 352,
+        normal: 232,
+      });
     });
 
     it("should have coverart and video dimensions", () => {
-      expect(SPOTIFY_HEIGHTS.coverart).toEqual({ compact: 80, normal: 152, large: 352 });
-      expect(SPOTIFY_HEIGHTS.video).toEqual({ width: 624, height: 351 });
+      expect(SPOTIFY_HEIGHTS.coverart).toEqual({
+        compact: 80,
+        large: 352,
+        normal: 152,
+      });
+      expect(SPOTIFY_HEIGHTS.video).toEqual({ height: 351, width: 624 });
     });
   });
 
@@ -393,9 +421,15 @@ describe("Spotify utility functions", () => {
     });
 
     it("should return coverart heights for coverart view", () => {
-      expect(getSpotifyHeight("album", "compact", { view: "coverart" })).toBe(80);
-      expect(getSpotifyHeight("album", "normal", { view: "coverart" })).toBe(152);
-      expect(getSpotifyHeight("album", "large", { view: "coverart" })).toBe(352);
+      expect(getSpotifyHeight("album", "compact", { view: "coverart" })).toBe(
+        80,
+      );
+      expect(getSpotifyHeight("album", "normal", { view: "coverart" })).toBe(
+        152,
+      );
+      expect(getSpotifyHeight("album", "large", { view: "coverart" })).toBe(
+        352,
+      );
     });
   });
 

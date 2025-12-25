@@ -19,6 +19,7 @@
 export { DailyMotionMatcher } from "./dailymotion";
 export { EdPuzzleMatcher } from "./edpuzzle";
 export { LoomMatcher } from "./loom";
+export type { SpotifyOutputOptions } from "./spotify";
 export {
   getSpotifyDefaultSize,
   getSpotifyHeight,
@@ -27,7 +28,6 @@ export {
   SPOTIFY_TYPES,
   SpotifyMatcher,
 } from "./spotify";
-export type { SpotifyOutputOptions } from "./spotify";
 // Export data types
 export type {
   DailyMotionData,

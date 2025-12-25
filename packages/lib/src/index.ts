@@ -120,11 +120,14 @@ export type {
   LoomData,
   SpotifyContentType,
   SpotifyData,
+  SpotifyOutputOptions,
+  SpotifySize,
+  SpotifyTheme,
+  SpotifyView,
   VimeoData,
   WistiaData,
   YouTubeData,
 } from "./matchers";
-export type { SpotifyOutputOptions, SpotifySize, SpotifyTheme, SpotifyView } from "./matchers";
 export {
   ALL_MATCHERS,
   DailyMotionMatcher,

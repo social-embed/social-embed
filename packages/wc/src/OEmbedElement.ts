@@ -6,9 +6,11 @@
  */
 
 import {
+  getSpotifyHeight,
   MatcherRegistry,
   type OutputOptions,
   renderOutput,
+  type SpotifyData,
   type SpotifyOutputOptions,
   type SpotifySize,
   type SpotifyTheme,
@@ -105,7 +107,7 @@ export class OEmbedElement extends LitElement {
    * <o-embed url="spotify:track:..." spotify-size="large"></o-embed>
    * ```
    */
-  @property({ type: String, attribute: "spotify-size" })
+  @property({ attribute: "spotify-size", type: String })
   public spotifySize?: SpotifySize;
 
   /**
@@ -124,7 +126,7 @@ export class OEmbedElement extends LitElement {
    * <o-embed url="spotify:album:..." spotify-theme="light"></o-embed>
    * ```
    */
-  @property({ type: String, attribute: "spotify-theme" })
+  @property({ attribute: "spotify-theme", type: String })
   public spotifyTheme?: SpotifyTheme;
 
   /**
@@ -142,7 +144,7 @@ export class OEmbedElement extends LitElement {
    * <o-embed url="spotify:album:..." spotify-view="coverart"></o-embed>
    * ```
    */
-  @property({ type: String, attribute: "spotify-view" })
+  @property({ attribute: "spotify-view", type: String })
   public spotifyView?: SpotifyView;
 
   /**
@@ -160,7 +162,7 @@ export class OEmbedElement extends LitElement {
    * <o-embed url="spotify:episode:..." spotify-start="120"></o-embed>
    * ```
    */
-  @property({ type: Number, attribute: "spotify-start" })
+  @property({ attribute: "spotify-start", type: Number })
   public spotifyStart?: number;
 
   // ─────────────────────────────────────────────────────────────────────────────
@@ -183,7 +185,6 @@ export class OEmbedElement extends LitElement {
    * ```
    */
   @property({
-    type: String,
     attribute: "provider-options",
     converter: {
       fromAttribute(value: string | null): Record<string, unknown> | undefined {
@@ -198,6 +199,7 @@ export class OEmbedElement extends LitElement {
         return value ? JSON.stringify(value) : null;
       },
     },
+    type: String,
   })
   public providerOptions?: Record<string, unknown>;
 
@@ -242,6 +244,9 @@ export class OEmbedElement extends LitElement {
       ...this.providerOptions, // Escape hatch
     };
 
+    // Track the effective height for CSS styling
+    let effectiveHeight: string | number = this.height;
+
     // Add Spotify-specific options when provider is Spotify
     if (this.providerName === "Spotify") {
       if (this.spotifySize) options.size = this.spotifySize;
@@ -249,10 +254,25 @@ export class OEmbedElement extends LitElement {
       if (this.spotifyView) options.view = this.spotifyView;
       if (this.spotifyStart !== undefined) options.start = this.spotifyStart;
 
-      // Only pass height if explicitly set (not default "315")
-      // When spotifySize is set, let the lib calculate the height
-      if (!this.spotifySize || this.height !== "315") {
+      const data = result.data as SpotifyData;
+
+      // Calculate effective height for CSS styling
+      if (this.height !== "315") {
+        // User explicitly set height - use it
+        effectiveHeight = this.height;
         options.height = this.height;
+      } else if (this.spotifySize || this.spotifyView) {
+        // Use calculated height from lib based on size/view
+        effectiveHeight = getSpotifyHeight(data.contentType, this.spotifySize, {
+          video: data.video,
+          view: this.spotifyView,
+        });
+        // Don't pass height to options - let lib calculate it
+      } else {
+        // Auto-detect: let lib calculate, but also get height for CSS
+        effectiveHeight = getSpotifyHeight(data.contentType, undefined, {
+          video: data.video,
+        });
       }
     } else {
       // For non-Spotify providers, always pass height
@@ -264,7 +284,7 @@ export class OEmbedElement extends LitElement {
     const embedHtml = renderOutput(output);
 
     return html`
-      ${this.instanceStyle()}
+      ${this.instanceStyle(effectiveHeight)}
       ${unsafeHTML(embedHtml)}
       <slot></slot>
     `;
@@ -272,12 +292,20 @@ export class OEmbedElement extends LitElement {
 
   /**
    * Creates a `<style>` block for the component.
+   *
+   * @param height - The effective height to use (may differ from this.height for Spotify)
    */
-  private instanceStyle(): TemplateResult {
-    const widthStyle =
-      typeof this.width === "number" ? `${this.width}px` : this.width;
-    const heightStyle =
-      typeof this.height === "number" ? `${this.height}px` : this.height;
+  private instanceStyle(height: string | number = this.height): TemplateResult {
+    // Ensure dimensions have units - numeric values and numeric strings need "px"
+    const formatDimension = (value: string | number): string => {
+      if (typeof value === "number") return `${value}px`;
+      // If string is purely numeric, add px
+      if (/^\d+$/.test(value)) return `${value}px`;
+      return value;
+    };
+
+    const widthStyle = formatDimension(this.width);
+    const heightStyle = formatDimension(height);
 
     return html`
       <style>
