@@ -40,3 +40,15 @@ what:
 - Convert Shorts URLs to `youtube.com/embed/<id>`
 - Add tests for common Shorts URL variants
 ```
+For multi-line commits, use heredoc to preserve formatting:
+```bash
+git commit -m "$(cat <<'EOF'
+feat(Component[method]) add feature description
+
+why: Explanation of the change.
+what:
+- First change
+- Second change
+EOF
+)"
+```
