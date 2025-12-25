@@ -237,7 +237,6 @@ export class OEmbedElement extends LitElement {
       SpotifyOutputOptions &
       Record<string, unknown> = {
       attributes: this.allowfullscreen ? { allowfullscreen: "" } : {},
-      height: this.height,
       privacy: this.privacy,
       width: this.width,
       ...this.providerOptions, // Escape hatch
@@ -249,6 +248,15 @@ export class OEmbedElement extends LitElement {
       if (this.spotifyTheme) options.theme = this.spotifyTheme;
       if (this.spotifyView) options.view = this.spotifyView;
       if (this.spotifyStart !== undefined) options.start = this.spotifyStart;
+
+      // Only pass height if explicitly set (not default "315")
+      // When spotifySize is set, let the lib calculate the height
+      if (!this.spotifySize || this.height !== "315") {
+        options.height = this.height;
+      }
+    } else {
+      // For non-Spotify providers, always pass height
+      options.height = this.height;
     }
 
     const output = result.matcher.toOutput(result.data, options);

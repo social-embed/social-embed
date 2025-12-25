@@ -219,6 +219,118 @@ describe("o-embed", () => {
       expect(src).toContain("open.spotify.com/embed/playlist/");
       expect(src).toContain("37i9dQZF1DXcBWIGoYBM5M");
     });
+
+    it("applies spotify-size attribute", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT";
+      el.setAttribute("spotify-size", "large");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      // Check that large size results in 352px height for tracks
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("height")).toBe("352");
+
+      document.body.removeChild(el);
+    });
+
+    it("applies spotify-theme attribute", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3";
+      el.setAttribute("spotify-theme", "dark");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      // Check that theme=0 is in the URL
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("src")).toContain("theme=0");
+
+      document.body.removeChild(el);
+    });
+
+    it("applies spotify-view attribute", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3";
+      el.setAttribute("spotify-view", "coverart");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      // Check that view=coverart is in the URL
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("src")).toContain("view=coverart");
+
+      document.body.removeChild(el);
+    });
+
+    it("applies spotify-start attribute for podcasts", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/episode/4cOdK2wGLETKBW3PvgPWqT";
+      el.setAttribute("spotify-start", "120");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      // Check that t=120 is in the URL
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("src")).toContain("t=120");
+
+      document.body.removeChild(el);
+    });
+
+    it("ignores spotify attributes for non-Spotify URLs", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      el.setAttribute("spotify-theme", "dark");
+      el.setAttribute("spotify-size", "large");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      // Spotify params should not appear in YouTube URL
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("src")).not.toContain("theme=");
+      expect(iframe?.getAttribute("src")).toContain("youtube-nocookie.com");
+
+      document.body.removeChild(el);
+    });
+
+    it("applies provider-options escape hatch", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3";
+      el.setAttribute("provider-options", '{"theme": "light"}');
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      // Check that theme=1 (light) is in the URL
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("src")).toContain("theme=1");
+
+      document.body.removeChild(el);
+    });
+
+    it("combines multiple spotify attributes", async () => {
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = "https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3";
+      el.setAttribute("spotify-theme", "dark");
+      el.setAttribute("spotify-view", "coverart");
+      el.setAttribute("spotify-size", "compact");
+      document.body.appendChild(el);
+
+      await el.updateComplete;
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      const src = iframe?.getAttribute("src");
+      expect(src).toContain("theme=0");
+      expect(src).toContain("view=coverart");
+      // Compact coverart height is 80px
+      expect(iframe?.getAttribute("height")).toBe("80");
+
+      document.body.removeChild(el);
+    });
   });
 
   // Tests for DailyMotion
