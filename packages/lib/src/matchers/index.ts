@@ -16,6 +16,7 @@
  * ```
  */
 
+export type { DailyMotionOutputOptions } from "./dailymotion";
 export { DailyMotionMatcher } from "./dailymotion";
 export { EdPuzzleMatcher } from "./edpuzzle";
 export { LoomMatcher } from "./loom";

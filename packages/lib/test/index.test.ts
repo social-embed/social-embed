@@ -149,22 +149,108 @@ describe("registry.toEmbedUrl", () => {
   });
 
   describe("DailyMotion", () => {
-    it("should handle dailymotion.com URLs", () => {
+    it("should handle dailymotion.com URLs with new endpoint", () => {
       expect(
         registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0"),
-      ).toEqual("https://www.dailymotion.com/embed/video/x7znrd0");
+      ).toEqual("https://geo.dailymotion.com/player.html?video=x7znrd0");
     });
 
     it("should handle http URLs", () => {
       expect(
         registry.toEmbedUrl("http://dailymotion.com/video/x7znrd0"),
-      ).toEqual("https://www.dailymotion.com/embed/video/x7znrd0");
+      ).toEqual("https://geo.dailymotion.com/player.html?video=x7znrd0");
     });
 
     it("should handle URLs without protocol", () => {
       expect(registry.toEmbedUrl("dailymotion.com/video/x7znrd0")).toEqual(
-        "https://www.dailymotion.com/embed/video/x7znrd0",
+        "https://geo.dailymotion.com/player.html?video=x7znrd0",
       );
+    });
+
+    it("should handle dai.ly short URLs", () => {
+      expect(registry.toEmbedUrl("https://dai.ly/x7znrd0")).toEqual(
+        "https://geo.dailymotion.com/player.html?video=x7znrd0",
+      );
+    });
+
+    it("should add mute parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0", {
+          mute: true,
+        }),
+      ).toEqual(
+        "https://geo.dailymotion.com/player.html?video=x7znrd0&mute=true",
+      );
+    });
+
+    it("should add startTime parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0", {
+          startTime: 90,
+        }),
+      ).toEqual(
+        "https://geo.dailymotion.com/player.html?video=x7znrd0&startTime=90",
+      );
+    });
+
+    it("should add loop parameter", () => {
+      expect(
+        registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0", {
+          loop: true,
+        }),
+      ).toEqual(
+        "https://geo.dailymotion.com/player.html?video=x7znrd0&loop=true",
+      );
+    });
+
+    it("should combine multiple parameters", () => {
+      expect(
+        registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0", {
+          loop: true,
+          mute: true,
+          startTime: 60,
+        }),
+      ).toEqual(
+        "https://geo.dailymotion.com/player.html?video=x7znrd0&mute=true&startTime=60&loop=true",
+      );
+    });
+
+    it("should use custom Player ID when provided", () => {
+      expect(
+        registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0", {
+          playerId: "xc394",
+        }),
+      ).toEqual("https://geo.dailymotion.com/player/xc394.html?video=x7znrd0");
+    });
+
+    it("should combine Player ID with other parameters", () => {
+      expect(
+        registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0", {
+          mute: true,
+          playerId: "xc394",
+          startTime: 30,
+        }),
+      ).toEqual(
+        "https://geo.dailymotion.com/player/xc394.html?video=x7znrd0&mute=true&startTime=30",
+      );
+    });
+
+    it("should floor decimal startTime values", () => {
+      expect(
+        registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0", {
+          startTime: 90.7,
+        }),
+      ).toEqual(
+        "https://geo.dailymotion.com/player.html?video=x7znrd0&startTime=90",
+      );
+    });
+
+    it("should ignore startTime of 0", () => {
+      expect(
+        registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0", {
+          startTime: 0,
+        }),
+      ).toEqual("https://geo.dailymotion.com/player.html?video=x7znrd0");
     });
   });
 

@@ -444,10 +444,10 @@ describe("o-embed", () => {
       const iframe = el.shadowRoot?.querySelector("iframe");
       expect(iframe).toBeTruthy();
 
-      // Check that the src contains dailymotion embed URL format
+      // Check that the src contains new geo.dailymotion.com endpoint
       const src = iframe?.getAttribute("src");
-      expect(src).toContain("dailymotion.com/embed/video/");
-      expect(src).toContain("x8a2ke3");
+      expect(src).toContain("geo.dailymotion.com/player.html");
+      expect(src).toContain("video=x8a2ke3");
 
       // Check iframe attributes
       expect(iframe?.hasAttribute("allowfullscreen")).toBe(true);

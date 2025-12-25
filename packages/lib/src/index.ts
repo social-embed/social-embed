@@ -116,6 +116,7 @@ export { defineScriptMatcher } from "./factories/script";
 
 export type {
   DailyMotionData,
+  DailyMotionOutputOptions,
   EdPuzzleData,
   LoomData,
   SpotifyContentType,
