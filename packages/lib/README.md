@@ -46,12 +46,37 @@ pnpm add @social-embed/lib
 
 ### Using a CDN
 
-```typescript
-// unpkg
-import { getYouTubeIdFromUrl } from "https://www.unpkg.com/@social-embed/lib?module";
+For browser environments, JSFiddle, CodePen, or AI code canvases:
 
-// skypack
-import { getYouTubeIdFromUrl } from "https://cdn.skypack.dev/@social-embed/lib";
+```typescript
+// esm.sh (recommended for modern browsers)
+import { MatcherRegistry } from "https://esm.sh/@social-embed/lib";
+
+// jsdelivr
+import { MatcherRegistry } from "https://cdn.jsdelivr.net/npm/@social-embed/lib/+esm";
+
+// unpkg
+import { MatcherRegistry } from "https://unpkg.com/@social-embed/lib";
+```
+
+**Browser subpath** (includes DOM mount utilities):
+
+```typescript
+import { mount } from "https://esm.sh/@social-embed/lib/browser";
+```
+
+**Quick CDN example:**
+
+```html
+<div id="embed"></div>
+<script type="module">
+  import { MatcherRegistry } from "https://esm.sh/@social-embed/lib";
+  import { mount } from "https://esm.sh/@social-embed/lib/browser";
+
+  const registry = MatcherRegistry.withDefaults();
+  const output = registry.toOutput("https://youtu.be/dQw4w9WgXcQ");
+  await mount(output, { container: "#embed" });
+</script>
 ```
 
 ## Key Features
@@ -143,6 +168,33 @@ console.log(isValidUrl("notaurl")); // false
 ## Related Packages
 
 If you want a ready-to-use HTML component, check out [@social-embed/wc](https://social-embed.org/wc/) - our Web Component implementation that uses this library internally.
+
+## Security
+
+### Built-in Matchers
+
+All built-in matchers (YouTube, Spotify, Vimeo, etc.) use iframe-based embeds with properly escaped attributes. They are safe to use with any URL input.
+
+### Custom Matchers
+
+When creating custom matchers with `defineScriptMatcher`, you must escape any user-provided data:
+
+```typescript
+import { defineScriptMatcher, escapeHtml } from "@social-embed/lib";
+
+const MyMatcher = defineScriptMatcher({
+  // ...
+  renderPlaceholder: (data) => {
+    // ❌ UNSAFE - XSS vulnerability
+    // return `<div>${data.userInput}</div>`;
+
+    // ✅ SAFE - escape user data
+    return `<div>${escapeHtml(data.userInput)}</div>`;
+  },
+});
+```
+
+The `escapeHtml()` function escapes `& < > " '` characters to prevent XSS attacks.
 
 ## License
 
