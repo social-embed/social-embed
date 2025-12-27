@@ -20,7 +20,7 @@
     "access": "public"
   },
   "author": "Tony Narlock <tony@git-pull.com> (https://tony.sh)",
-  "homepage": "https://social-embed.git-pull.com/",
+  "homepage": "https://social-embed.org/",
   "repository": {
     "type": "git",
     "url": "https://github.com/social-embed/social-embed"

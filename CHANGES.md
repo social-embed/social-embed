@@ -4,8 +4,8 @@ title: News
 
 Here you can find project-wide changes. For more detailed changes:
 
-- [`@social-embed/lib`](https://social-embed.git-pull.com/lib/release-notes)
-- [`@social-embed/wc`](https://social-embed.git-pull.com/wc/release-notes)
+- [`@social-embed/lib`](https://social-embed.org/lib/release-notes)
+- [`@social-embed/wc`](https://social-embed.org/wc/release-notes)
 
 ## 0.1 (unreleased)
 
@@ -67,7 +67,20 @@ Here you can find project-wide changes. For more detailed changes:
 [yarn classic]: https://classic.yarnpkg.com/
 [pnpm]: https://pnpm.io/
 
+### Infrastructure
+
+- **CI/CD**: Migrate from AWS Amplify to GitHub Actions with S3/CloudFront
+  - `deploy-site.yml`: Main site deployment to social-embed.org via S3/CloudFront
+  - `cdn-preview.yml`: CDN preview deployments for pull requests
+  - Environment protection and author verification for secure deployments
+  - More control over build process and deployment configuration
+
 ### Docs / Site
+
+- **Domain migration**: Move from `social-embed.git-pull.com` to `social-embed.org`
+  - Updated site URL in Astro config
+  - Updated homepage fields in package.json files
+  - Updated all documentation links across README and CHANGES files
 
 - Documentation overhaul: Comprehensive README improvements across the project (#x)
   

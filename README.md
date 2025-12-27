@@ -10,7 +10,7 @@ Easily convert URLs from popular platforms (YouTube, Spotify, Vimeo, etc.) into 
 
 ## Demo
 
-[Try it on CodePen](https://codepen.io/attachment/pen/poRRwdy) | [Live Examples](https://social-embed.git-pull.com/wc/)
+[Try it on CodePen](https://codepen.io/attachment/pen/poRRwdy) | [Live Examples](https://social-embed.org/wc/)
 
 ```html
 <!-- Before: Raw URL that users need to manually process -->
@@ -67,14 +67,14 @@ const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
 | EdPuzzle    | edpuzzle.com/media/ID                            | ✅ Stable   |
 | Wistia      | support.wistia.com/medias/ID                     | ✅ Stable   |
 
-For more details and examples for each platform, [see the documentation](https://social-embed.git-pull.com/).
+For more details and examples for each platform, [see the documentation](https://social-embed.org/).
 
 ## Packages
 
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
-| **@social-embed/lib** | Core library for parsing and generating embed URLs | 🟡 API in development | [Documentation](https://social-embed.git-pull.com/lib/) · [npm](https://www.npmjs.com/package/@social-embed/lib) |
-| **@social-embed/wc** | Web Component for easy embedding in any HTML | ✅ Stable | [Documentation](https://social-embed.git-pull.com/wc/) · [npm](https://www.npmjs.com/package/@social-embed/wc) |
+| **@social-embed/lib** | Core library for parsing and generating embed URLs | 🟡 API in development | [Documentation](https://social-embed.org/lib/) · [npm](https://www.npmjs.com/package/@social-embed/lib) |
+| **@social-embed/wc** | Web Component for easy embedding in any HTML | ✅ Stable | [Documentation](https://social-embed.org/wc/) · [npm](https://www.npmjs.com/package/@social-embed/wc) |
 
 ## Use Cases
 
@@ -92,8 +92,8 @@ Works in all modern browsers that support Web Components.
 
 | Package     | Source          | Website                                                | Status          | Description                               |
 | ----------- | --------------- | ------------------------------------------------------ | --------------- | ----------------------------------------- |
-| Library     | [packages/lib/] | https://social-embed.git-pull.com/lib/                 | 🟡 API unstable | Constants, regexes, id scraper, url maker |
-| `<o-embed>` | [packages/wc/]  | https://social-embed.git-pull.com/wc/                  | ✅ Stable       | [custom element] / [web component]        |
+| Library     | [packages/lib/] | https://social-embed.org/lib/                 | 🟡 API unstable | Constants, regexes, id scraper, url maker |
+| `<o-embed>` | [packages/wc/]  | https://social-embed.org/wc/                  | ✅ Stable       | [custom element] / [web component]        |
 
 [packages/wc/]: packages/wc/
 [packages/lib/]: packages/lib/

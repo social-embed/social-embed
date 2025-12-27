@@ -1,13 +1,13 @@
 # Social Embed Documentation Site
 
-> The official documentation site for the Social Embed project, available at [social-embed.git-pull.com](https://social-embed.git-pull.com)
+> The official documentation site for the Social Embed project, available at [social-embed.org](https://social-embed.org)
 
 [![Built with Astro](https://img.shields.io/badge/Built%20with-Astro-FF5D01.svg?style=flat-square)](https://astro.build)
 [![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
 
 This site documents the Social Embed project and its packages:
-- [@social-embed/lib](https://social-embed.git-pull.com/lib/) - Core URL parsing library
-- [@social-embed/wc](https://social-embed.git-pull.com/wc/) - Web Component implementation
+- [@social-embed/lib](https://social-embed.org/lib/) - Core URL parsing library
+- [@social-embed/wc](https://social-embed.org/wc/) - Web Component implementation
 
 ## Development
 

@@ -142,7 +142,7 @@ console.log(isValidUrl("notaurl")); // false
 
 ## Related Packages
 
-If you want a ready-to-use HTML component, check out [@social-embed/wc](https://social-embed.git-pull.com/wc/) - our Web Component implementation that uses this library internally.
+If you want a ready-to-use HTML component, check out [@social-embed/wc](https://social-embed.org/wc/) - our Web Component implementation that uses this library internally.
 
 ## License
 
