@@ -1,0 +1,102 @@
+name: CDN Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      publish_latest:
+        description: Publish latest alias paths
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    # Block forks and require owner for PRs
+    if: |
+      github.event_name != 'pull_request' || (
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        github.event.pull_request.author_association == 'OWNER'
+      )
+    runs-on: ubuntu-latest
+    environment: cdn-preview
+    env:
+      PUBLISH_LATEST: ${{ inputs.publish_latest || 'true' }}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22.x"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: |
+          pnpm build
+          pnpm --filter @social-embed/site build
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.SOCIAL_EMBED_CDN_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Compute publish paths
+        id: paths
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            channel="preview/pr/${{ github.event.pull_request.number }}"
+          else
+            if [ "${{ github.ref_name }}" = "master" ]; then
+              channel="canary/master"
+            else
+              channel="canary/${{ github.ref_name }}"
+            fi
+          fi
+          sha="$(git rev-parse HEAD)"
+          echo "base_prefix=${channel}/sha/${sha}" >> "$GITHUB_OUTPUT"
+          echo "latest_prefix=${channel}/latest" >> "$GITHUB_OUTPUT"
+
+      - name: Upload immutable artifacts
+        run: |
+          bucket="${{ secrets.SOCIAL_EMBED_CDN_BUCKET }}"
+          base="${{ steps.paths.outputs.base_prefix }}"
+          cache="public,max-age=31536000,immutable"
+
+          aws s3 sync packages/lib/dist "s3://${bucket}/${base}/@social-embed/lib/dist" --cache-control "$cache"
+          aws s3 sync packages/wc/dist "s3://${bucket}/${base}/@social-embed/wc/dist" --cache-control "$cache"
+          aws s3 sync packages/site/build "s3://${bucket}/${base}/site" --cache-control "$cache"
+
+      - name: Upload latest aliases
+        if: env.PUBLISH_LATEST == 'true'
+        run: |
+          bucket="${{ secrets.SOCIAL_EMBED_CDN_BUCKET }}"
+          latest="${{ steps.paths.outputs.latest_prefix }}"
+          cache="public,max-age=60"
+
+          aws s3 sync packages/lib/dist "s3://${bucket}/${latest}/@social-embed/lib/dist" --delete --cache-control "$cache"
+          aws s3 sync packages/wc/dist "s3://${bucket}/${latest}/@social-embed/wc/dist" --delete --cache-control "$cache"
+          aws s3 sync packages/site/build "s3://${bucket}/${latest}/site" --delete --cache-control "$cache"
+
+      - name: Invalidate CloudFront (latest)
+        if: env.PUBLISH_LATEST == 'true'
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ secrets.SOCIAL_EMBED_CDN_DISTRIBUTION }}" \
+            --paths "/${{ steps.paths.outputs.latest_prefix }}/*"
