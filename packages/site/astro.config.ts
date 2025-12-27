@@ -146,7 +146,7 @@ export default defineConfig({
       indexName: "social-embed",
     }),
   ],
-  site: "https://social-embed.git-pull.com",
+  site: "https://social-embed.org",
   vite: {
     // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
     plugins: [tailwindPlugin],

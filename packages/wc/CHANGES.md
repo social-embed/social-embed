@@ -29,6 +29,8 @@ sidebar:
 
 ### Documentation
 
+- **Domain migration**: Documentation links updated from `social-embed.git-pull.com` to `social-embed.org`
+
 - **README overhaul**: Completely revitalized documentation with:
   - Clearer introduction and value proposition
   - Improved installation and usage instructions
@@ -265,7 +267,7 @@ See [commits](https://github.com/social-embed/social-embed/compare/@social-embed
 ## current
 
 - Added normal documentation:
-  https://social-embed.git-pull.com/wc/
+  https://social-embed.org/wc/
 - [#29](https://github.com/social-embed/social-embed/pull/29) - Simplify test
   runner with esbuild. No need to wait for builds to `dist`/
 - Disable specRunner (runs before diff outputs on errors, making errosr harder

@@ -24,10 +24,10 @@ See it in action:
 
 ### Live Examples by Platform
 
-- [YouTube](https://social-embed.git-pull.com/wc/providers/youtube)
-- [Spotify](https://social-embed.git-pull.com/wc/providers/spotify)
-- [Vimeo](https://social-embed.git-pull.com/wc/providers/vimeo)
-- [DailyMotion](https://social-embed.git-pull.com/wc/providers/dailymotion)
+- [YouTube](https://social-embed.org/wc/providers/youtube)
+- [Spotify](https://social-embed.org/wc/providers/spotify)
+- [Vimeo](https://social-embed.org/wc/providers/vimeo)
+- [DailyMotion](https://social-embed.org/wc/providers/dailymotion)
 
 ## Key Features
 
@@ -125,7 +125,7 @@ document.body.innerHTML = `
 Built with:
 - [**Lit**](https://lit.dev/) - Lightweight web component framework
 - [**TypeScript**](https://www.typescriptlang.org/) - Type-safe JavaScript
-- [**@social-embed/lib**](https://social-embed.git-pull.com/lib/) - URL parsing engine
+- [**@social-embed/lib**](https://social-embed.org/lib/) - URL parsing engine
 
 ## Alternative Solutions
 
@@ -133,7 +133,7 @@ Built with:
 - [plyr](https://plyr.io/) - Custom video/audio player
 - Other web components - [Angular](https://github.com/ckeditor/ckeditor5/issues/2737#issuecomment-471326090), [thangman22](https://github.com/thangman22/oembed-component)
 
-_Want just the URL parsing without the component? Check out [@social-embed/lib](https://social-embed.git-pull.com/lib/)._
+_Want just the URL parsing without the component? Check out [@social-embed/lib](https://social-embed.org/lib/)._
 
 ## License
 
@@ -141,7 +141,7 @@ MIT
 
 [codesandbox]: https://codepen.io/attachment/pen/poRRwdy
 [jsfiddle]: https://jsfiddle.net/gitpull/vc13Lhkz/
-[youtube]: https://social-embed.git-pull.com/wc/providers/youtube
-[spotify]: https://social-embed.git-pull.com/wc/providers/spotify
-[dailymotion]: https://social-embed.git-pull.com/wc/providers/dailymotion
-[vimeo]: https://social-embed.git-pull.com/wc/providers/vimeo
+[youtube]: https://social-embed.org/wc/providers/youtube
+[spotify]: https://social-embed.org/wc/providers/spotify
+[dailymotion]: https://social-embed.org/wc/providers/dailymotion
+[vimeo]: https://social-embed.org/wc/providers/vimeo

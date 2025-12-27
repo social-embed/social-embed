@@ -24,6 +24,8 @@ sidebar:
 
 ### Documentation
 
+- **Domain migration**: Documentation links updated from `social-embed.git-pull.com` to `social-embed.org`
+
 - **README overhaul**: Enhanced documentation with:
   - Better explanation of utility functions and their usage
   - Improved installation instructions for different package managers
@@ -165,7 +167,7 @@ See [commits](https://github.com/social-embed/social-embed/compare/@social-embed
 ## 0.0.1: next.0 - next.11
 
 - Added normal documentation:
-  https://social-embed.git-pull.com/lib/
+  https://social-embed.org/lib/
 - YouTube: Move back to single file
 - [#30](https://github.com/social-embed/social-embed/pull/30): Add loom, wistia
   and edpuzzle
