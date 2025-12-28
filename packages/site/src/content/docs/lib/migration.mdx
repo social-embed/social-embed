@@ -1,0 +1,327 @@
+---
+title: Migration Guide
+description: Migrating from @social-embed/lib v1 to v2
+sidebar:
+  order: 80
+---
+
+## Migrating from v1 to v2
+
+Version 2.0 is a **complete API redesign**. This guide covers all breaking changes and how to update your code.
+
+### Overview of Changes
+
+| v1 | v2 | Notes |
+|----|-----|-------|
+| `EmbedProvider` | `UrlMatcher` | Generic interface with type inference |
+| `EmbedProviderRegistry` | `MatcherRegistry` | O(1) indexed dispatch |
+| `getProviderFromUrl()` | `registry.match()` | Returns `Result<MatchOk>` |
+| `getIdFromUrl()` | `matcher.parse()` | Returns `Result<TData>` |
+| `getEmbedUrlFromId()` | `matcher.toEmbedUrl()` | Takes typed data, not string |
+| _(none)_ | `matcher.toOutput()` | **NEW**: Structured output model |
+| _(none)_ | Privacy-by-default | YouTube uses `youtube-nocookie.com` |
+
+---
+
+## Basic Usage Migration
+
+### v1: Provider-based approach
+
+```typescript
+import { getProviderFromUrl, convertUrlToEmbedUrl } from "@social-embed/lib";
+
+const url = "https://youtu.be/dQw4w9WgXcQ";
+
+// Option 1: Direct conversion
+const embedUrl = convertUrlToEmbedUrl(url);
+// => "https://www.youtube.com/embed/dQw4w9WgXcQ"
+
+// Option 2: Manual provider handling
+const provider = getProviderFromUrl(url);
+if (provider) {
+  const id = provider.getIdFromUrl(url);
+  const embedUrl = provider.getEmbedUrlFromId(id);
+}
+```
+
+### v2: Registry-based approach
+
+```typescript
+import { MatcherRegistry } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+const url = "https://youtu.be/dQw4w9WgXcQ";
+
+// Option 1: Direct conversion
+const embedUrl = registry.toEmbedUrl(url);
+// => "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ" (privacy-enhanced)
+
+// Option 2: Match and handle result
+const result = registry.match(url);
+if (result.ok) {
+  const embedUrl = result.matcher.toEmbedUrl(result.data);
+}
+```
+
+**Key differences:**
+- Use `MatcherRegistry.withDefaults()` instead of importing functions
+- Privacy-enhanced mode is **enabled by default**
+- `registry.match()` returns a `Result\<T\>` type for explicit error handling
+
+---
+
+## Provider-Specific Functions
+
+### v1: Individual function imports
+
+```typescript
+import {
+  getYouTubeIdFromUrl,
+  getYouTubeEmbedUrlFromId,
+  getSpotifyIdAndTypeFromUrl,
+  getSpotifyEmbedUrlFromIdAndType,
+  getVimeoIdFromUrl,
+  getVimeoEmbedUrlFromId,
+} from "@social-embed/lib";
+
+const youtubeId = getYouTubeIdFromUrl("https://youtu.be/abc123");
+const embedUrl = getYouTubeEmbedUrlFromId(youtubeId);
+```
+
+### v2: Unified registry API
+
+```typescript
+import { MatcherRegistry } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+
+// All providers use the same pattern
+const result = registry.match("https://youtu.be/abc123");
+if (result.ok) {
+  console.log(result.data);  // { id: "abc123" } for YouTube
+  const embedUrl = result.matcher.toEmbedUrl(result.data);
+}
+```
+
+**Key differences:**
+- No more provider-specific function imports
+- All matchers accessed through the registry
+- Parse results are typed per matcher
+
+---
+
+## Error Handling
+
+### v1: Nullable returns
+
+```typescript
+const provider = getProviderFromUrl(url);
+if (!provider) {
+  // No match - provider is undefined
+}
+
+const id = provider.getIdFromUrl(url);
+if (!id) {
+  // Parse failed - id is empty string
+}
+```
+
+### v2: Result\<T\> monad
+
+```typescript
+const result = registry.match(url);
+
+if (!result.ok) {
+  console.log(result.error.code);     // "NO_MATCH" | "INVALID_FORMAT" | "MISSING_ID" | "PARSE_ERROR"
+  console.log(result.error.message);  // Human-readable message
+  console.log(result.error.fatal);    // Should other matchers try?
+}
+```
+
+**Key differences:**
+- Explicit `Result\<T\>` type instead of nullable/undefined
+- Structured error codes for programmatic handling
+- `fatal` flag indicates if error is recoverable
+
+---
+
+## Custom Provider Migration
+
+### v1: EmbedProvider interface
+
+```typescript
+import type { EmbedProvider } from "@social-embed/lib";
+
+const MyProvider: EmbedProvider = {
+  name: "MyService",
+  canParseUrl(url: string): boolean {
+    return url.includes("myservice.com");
+  },
+  getIdFromUrl(url: string): string {
+    return url.match(/\/v\/(\w+)/)?.[1] ?? "";
+  },
+  getEmbedUrlFromId(id: string): string {
+    return `https://myservice.com/embed/${id}`;
+  },
+};
+
+// Register with default registry
+defaultRegistry.providers.set("MyService", MyProvider);
+```
+
+### v2: UrlMatcher with defineIframeMatcher
+
+```typescript
+import { defineIframeMatcher, MatcherRegistry } from "@social-embed/lib";
+
+const MyMatcher = defineIframeMatcher({
+  name: "MyService",
+  domains: ["myservice.com"],
+  patterns: [/myservice\.com\/v\/(\w+)/],
+  embedUrl: (id) => `https://myservice.com/embed/${id}`,
+  defaultDimensions: { width: 640, height: 360 },
+});
+
+// Register with registry
+const registry = MatcherRegistry.withDefaults().with(MyMatcher);
+// Or mutate existing registry
+registry.register(MyMatcher);
+```
+
+**Key differences:**
+- Use `defineIframeMatcher()` factory for simple iframe embeds
+- Specify `domains` for O(1) indexed lookup
+- Patterns use regex capture groups
+- Default dimensions are part of the config
+
+---
+
+## Registry Migration
+
+### v1: Direct registry manipulation
+
+```typescript
+import { defaultRegistry, EmbedProviderRegistry } from "@social-embed/lib";
+
+// Add to default
+defaultRegistry.providers.set("MyService", MyProvider);
+
+// Create new registry
+const registry = new EmbedProviderRegistry([MyProvider]);
+```
+
+### v2: Immutable + mutable patterns
+
+```typescript
+import { MatcherRegistry } from "@social-embed/lib";
+
+// Create with defaults
+const registry = MatcherRegistry.withDefaults();
+
+// Immutable extension (returns new registry)
+const extended = registry.with(MyMatcher);
+
+// Mutable modification
+registry.register(MyMatcher);  // Modifies in place
+
+// Remove a matcher
+const noSpotify = registry.without("Spotify");
+
+// Create from scratch
+const custom = MatcherRegistry.create([MyMatcher1, MyMatcher2]);
+```
+
+**Key differences:**
+- `MatcherRegistry.withDefaults()` instead of importing `defaultRegistry`
+- Both immutable (`with()`, `without()`) and mutable (`register()`, `unregister()`) APIs
+- Indexed dispatch for O(1) domain lookup
+
+---
+
+## Privacy-Enhanced Mode
+
+**New in v2:** Privacy mode is enabled by default.
+
+```typescript
+const registry = MatcherRegistry.withDefaults();
+
+// Default: privacy enabled
+registry.toEmbedUrl("https://youtu.be/abc123");
+// => "https://www.youtube-nocookie.com/embed/abc123"
+
+// Opt out
+registry.toEmbedUrl("https://youtu.be/abc123", { privacy: false });
+// => "https://www.youtube.com/embed/abc123"
+```
+
+To maintain v1 behavior (no privacy enhancement), pass `{ privacy: false }` to all calls.
+
+---
+
+## New Features in v2
+
+### Structured Output
+
+```typescript
+const result = registry.match("https://youtu.be/abc123");
+
+if (result.ok) {
+  const output = result.matcher.toOutput(result.data, {
+    width: 800,
+    height: 450,
+  });
+
+  console.log(output);
+  // {
+  //   nodes: [{
+  //     type: "iframe",
+  //     src: "https://www.youtube-nocookie.com/embed/abc123",
+  //     attributes: { width: "800", height: "450", ... }
+  //   }]
+  // }
+}
+```
+
+### SSR-Safe HTML Rendering
+
+```typescript
+import { MatcherRegistry, renderOutput } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+const result = registry.match("https://youtu.be/abc123");
+
+if (result.ok) {
+  const output = result.matcher.toOutput(result.data);
+  const html = renderOutput(output);
+  // Returns HTML string, safe for SSR
+}
+```
+
+### Matcher Discovery
+
+```typescript
+const registry = MatcherRegistry.withDefaults();
+
+// List all matchers
+console.log(registry.list().map(m => m.name));
+// ["YouTube", "Vimeo", "Spotify", ...]
+
+// Check if matcher exists
+registry.has("YouTube");  // true
+
+// Get specific matcher
+const youtube = registry.get("YouTube");
+```
+
+---
+
+## Summary Checklist
+
+- [ ] Replace `getProviderFromUrl()` with `registry.match()`
+- [ ] Replace `convertUrlToEmbedUrl()` with `registry.toEmbedUrl()`
+- [ ] Replace provider-specific `get*IdFromUrl()` functions with `registry.match()`
+- [ ] Update error handling to use `Result\<T\>` pattern
+- [ ] Migrate custom providers to `defineIframeMatcher()` or `UrlMatcher` interface
+- [ ] Replace registry imports with `MatcherRegistry.withDefaults()`
+- [ ] Test privacy-enhanced URLs (or add `{ privacy: false }` to maintain v1 behavior)
+- [ ] Update any code that uses structured output (`toOutput()` instead of direct HTML)
