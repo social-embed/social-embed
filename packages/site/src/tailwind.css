@@ -132,9 +132,10 @@
     --sl-color-black: var(--color-slate-900);
 
     /* Override Starlight badge hues with microviz OKLCH colors */
-    --sl-color-green: var(--color-mv-green);
-    --sl-color-green-low: var(--color-mv-green-light);
-    --sl-color-green-high: var(--color-mv-green-dark);
+    /* success variant uses cyan for "try it" badge */
+    --sl-color-green: var(--color-mv-cyan);
+    --sl-color-green-low: var(--color-mv-cyan-light);
+    --sl-color-green-high: var(--color-mv-cyan-dark);
 
     --sl-color-blue: var(--color-mv-blue);
     --sl-color-blue-low: var(--color-mv-blue-light);
