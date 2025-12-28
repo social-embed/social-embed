@@ -82,6 +82,7 @@ export default defineConfig({
       components: {
         Footer: "./src/components/Footer.astro",
         Head: "./src/components/Head.astro",
+        PageFrame: "./src/components/PageFrame.astro",
         Search: "./src/components/Search.astro",
       },
       credits: true,
