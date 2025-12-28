@@ -132,24 +132,43 @@
     --sl-color-black: var(--color-slate-900);
 
     /* Override Starlight badge hues with microviz OKLCH colors */
+    /* Dark mode (default): -low = dark bg, -high = light text */
     /* success variant uses cyan for "try it" badge */
     --sl-color-green: var(--color-mv-cyan);
+    --sl-color-green-low: var(--color-mv-cyan-dark);
+    --sl-color-green-high: var(--color-mv-cyan-light);
+
+    --sl-color-blue: var(--color-mv-blue);
+    --sl-color-blue-low: var(--color-mv-blue-dark);
+    --sl-color-blue-high: var(--color-mv-blue-light);
+
+    --sl-color-purple: var(--color-mv-purple);
+    --sl-color-purple-low: var(--color-mv-purple-dark);
+    --sl-color-purple-high: var(--color-mv-purple-light);
+
+    --sl-color-orange: var(--color-mv-orange);
+    --sl-color-orange-low: var(--color-mv-orange-dark);
+    --sl-color-orange-high: var(--color-mv-orange-light);
+
+    --sl-color-red: var(--color-mv-red);
+    --sl-color-red-low: var(--color-mv-red-dark);
+    --sl-color-red-high: var(--color-mv-red-light);
+  }
+
+  /* Light mode: -low = light bg, -high = dark text */
+  [data-theme="light"] {
     --sl-color-green-low: var(--color-mv-cyan-light);
     --sl-color-green-high: var(--color-mv-cyan-dark);
 
-    --sl-color-blue: var(--color-mv-blue);
     --sl-color-blue-low: var(--color-mv-blue-light);
     --sl-color-blue-high: var(--color-mv-blue-dark);
 
-    --sl-color-purple: var(--color-mv-purple);
     --sl-color-purple-low: var(--color-mv-purple-light);
     --sl-color-purple-high: var(--color-mv-purple-dark);
 
-    --sl-color-orange: var(--color-mv-orange);
     --sl-color-orange-low: var(--color-mv-orange-light);
     --sl-color-orange-high: var(--color-mv-orange-dark);
 
-    --sl-color-red: var(--color-mv-red);
     --sl-color-red-low: var(--color-mv-red-light);
     --sl-color-red-high: var(--color-mv-red-dark);
   }
