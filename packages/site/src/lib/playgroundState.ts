@@ -4,6 +4,10 @@
  */
 
 import {
+  DEFAULT_PRESET,
+  getPresetById,
+} from "../components/playground/presets";
+import {
   type CdnSource,
   DEFAULT_CDN_SOURCE,
   parseCdnSource,
@@ -46,21 +50,33 @@ export const DEFAULT_STATE: PlaygroundState = {
 
 /**
  * Encode state to a URL-safe string.
+ * Optimized to avoid storing redundant data:
+ * - If preset is selected and code matches preset exactly, only store preset ID
+ * - If code matches default preset, don't store code
+ * - Only store CDN if not the default
  */
 export function encodePlaygroundState(state: PlaygroundState): string {
   const serialized: SerializedState = {};
 
-  // Only encode non-default values for compact URLs
-  if (state.code !== DEFAULT_CODE) {
+  // Handle preset and code together to avoid redundancy
+  if (state.presetId) {
+    const preset = getPresetById(state.presetId);
+    if (preset && state.code === preset.code) {
+      // Code matches preset exactly - only store preset ID
+      serialized.p = state.presetId;
+    } else {
+      // Preset was edited - store both
+      serialized.p = state.presetId;
+      serialized.c = btoa(state.code);
+    }
+  } else if (state.code !== DEFAULT_PRESET.code) {
+    // No preset, and code differs from default - store custom code
     serialized.c = btoa(state.code);
   }
 
+  // Only store CDN if not default
   if (state.cdnSource.type !== DEFAULT_CDN_SOURCE.type) {
     serialized.cdn = serializeCdnSource(state.cdnSource);
-  }
-
-  if (state.presetId) {
-    serialized.p = state.presetId;
   }
 
   // If nothing to encode, return empty string
