@@ -20,7 +20,7 @@ export type CdnSource =
   | { type: "custom"; url: string };
 
 export const CDN_SOURCE_LABELS: Record<CdnSourceType, string> = {
-  "cdn-dev": "cdn-dev.social-embed.org",
+  "cdn-dev": "cdn.social-embed.org",
   custom: "Custom URL",
   "esm-sh": "esm.sh",
   jsdelivr: "jsDelivr",
@@ -49,8 +49,8 @@ export function getCdnUrls(source: CdnSource): { lib: string; wc: string } {
       };
     case "cdn-dev":
       return {
-        lib: "https://cdn-dev.social-embed.org/canary/master/latest/lib/dist/lib.js",
-        wc: "https://cdn-dev.social-embed.org/canary/master/latest/wc/dist/OEmbedElement.js",
+        lib: "https://cdn.social-embed.org/canary/master/latest/@social-embed/lib/dist/lib.js",
+        wc: "https://cdn.social-embed.org/canary/master/latest/@social-embed/wc/dist/OEmbedElement.js",
       };
     case "jsdelivr":
       return {
