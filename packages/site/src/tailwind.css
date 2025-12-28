@@ -104,19 +104,13 @@
 }
 
 /**
- * Full viewport playground - escape Starlight container constraints
+ * Full viewport playground - escape ALL Starlight container constraints
+ * Uses position:fixed to completely escape document flow
  * Uses :has() selector for parent targeting (supported in all modern browsers)
  */
-[data-page="playground"] {
-  width: 100vw;
-  height: calc(100vh - var(--sl-nav-height, 3.5rem));
-  margin-left: calc(-50vw + 50%);
-  overflow: hidden;
-}
 
-/* Remove padding and hide title for playground page */
-:has([data-page="playground"]) .sl-container {
-  max-width: 100%;
+/* Nuclear reset: strip all inherited Starlight styles from playground ancestors */
+:has([data-page="playground"]) main {
   padding: 0;
 }
 
@@ -128,12 +122,24 @@
   padding-inline: 0;
 }
 
+:has([data-page="playground"]) .sl-container,
+:has([data-page="playground"]) .sl-container > * {
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
 /* Hide Starlight's PageTitle component */
 :has([data-page="playground"]) h1[id="_top"] {
   display: none;
 }
 
-/* Remove ContentPanel's child margins */
-:has([data-page="playground"]) .content-panel > * {
-  margin-top: 0;
+/* Playground wrapper: fixed position to escape flow entirely */
+[data-page="playground"] {
+  position: fixed;
+  top: var(--sl-nav-height, 3.5rem);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
 }
