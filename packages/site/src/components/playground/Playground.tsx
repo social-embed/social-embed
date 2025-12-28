@@ -82,7 +82,7 @@ export function Playground() {
       <div className="flex flex-wrap items-center gap-2 p-2 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
         {/* Preset selector */}
         <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+          <span className="text-xs font-medium text-slate-500 dark:text-slate-400 select-none">
             Preset:
           </span>
           <select
