@@ -84,6 +84,7 @@ export default defineConfig({
         Head: "./src/components/Head.astro",
         PageFrame: "./src/components/PageFrame.astro",
         Search: "./src/components/Search.astro",
+        ThemeSelect: "./src/components/ThemeSelect.astro",
       },
       credits: true,
       customCss: [
