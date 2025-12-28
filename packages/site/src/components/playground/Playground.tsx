@@ -32,6 +32,13 @@ export function Playground() {
 
   const [consoleLogs, setConsoleLogs] = useState<ConsoleEntry[]>([]);
   const [stableCode, setStableCode] = useState(state.code);
+  const [isConsoleOpen, setIsConsoleOpen] = useState(() => {
+    // Default: open on desktop (md: 768px+), closed on mobile
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(min-width: 768px)").matches;
+    }
+    return true; // SSR fallback
+  });
 
   // Debounce code changes for preview
   useEffect(() => {
@@ -138,9 +145,11 @@ export function Playground() {
 
           {/* Console output */}
           <ConsoleOutput
-            className="h-[150px] shrink-0"
+            className={isConsoleOpen ? "h-[150px] shrink-0" : "shrink-0"}
+            isOpen={isConsoleOpen}
             logs={consoleLogs}
             onClear={handleClearConsole}
+            onToggle={() => setIsConsoleOpen((prev) => !prev)}
           />
         </div>
       </div>
