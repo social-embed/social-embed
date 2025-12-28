@@ -56,7 +56,7 @@ export function CdnSourcePicker({
       {/* Source type buttons */}
       {SOURCE_TYPES.map((type) => (
         <button
-          className={`h-[26px] px-2 py-1 text-xs rounded border transition-colors ${
+          className={`h-[26px] px-2 py-1 text-xs rounded border transition-colors cursor-pointer select-none ${
             value.type === type
               ? "bg-blue-600 text-white border-blue-600"
               : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-blue-400"

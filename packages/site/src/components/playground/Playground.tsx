@@ -86,7 +86,7 @@ export function Playground() {
             Preset:
           </span>
           <select
-            className="h-[26px] px-2 py-1 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-blue-400"
+            className="h-[26px] px-2 py-1 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-blue-400 cursor-pointer select-none"
             onChange={(e) => {
               const preset = getPresetById(e.target.value);
               if (preset) handlePresetChange(preset);
