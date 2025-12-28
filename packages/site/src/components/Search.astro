@@ -41,13 +41,19 @@ import Default from "@astrojs/starlight/components/Search.astro";
 </div>
 
 <style>
-  /* Override Starlight's 50rem breakpoint to 64rem (1024px) for search */
+  /* Hide search entirely below tablet (768px), show icon-only until 1024px */
   :global(button[data-open-modal]) {
+    display: none !important;
     padding-inline-end: 0.75rem;
   }
   :global(button[data-open-modal] > span),
   :global(button[data-open-modal] > kbd) {
     display: none !important;
+  }
+  @media (min-width: 48rem) {
+    :global(button[data-open-modal]) {
+      display: flex !important;
+    }
   }
   @media (min-width: 64rem) {
     :global(button[data-open-modal] > span) {
