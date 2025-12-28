@@ -57,7 +57,7 @@ export default defineConfig({
       ignoreSourceErrors: true,
       include: ["**/*.test-d.ts"],
       isolatedPackages: true,
-      tsconfigSearchPath: import.meta.dirname,
+      tsconfigSearchPath: __dirname,
     },
     // Default: tests run only if changed/affected
     watch: false,

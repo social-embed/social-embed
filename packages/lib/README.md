@@ -13,7 +13,7 @@ This library makes it easy to work with media URLs from popular platforms like Y
 - **Convert** URLs to their embeddable format
 - **Extract** IDs from media URLs
 - **Detect** which platform a URL belongs to
-- **Validate** URLs with a simple utility function
+- **Check** if a URL is supported by any provider
 
 All with **zero dependencies** - runs in any JavaScript environment (browsers, Node.js, edge workers).
 
@@ -45,10 +45,37 @@ pnpm add @social-embed/lib
 
 ### Using a CDN
 
-unpkg:
+For browser environments, JSFiddle, CodePen, or AI code canvases:
 
 ```typescript
-import { convertUrlToEmbedUrl } from "https://www.unpkg.com/@social-embed/lib?module";
+// esm.sh (recommended for modern browsers)
+import { MatcherRegistry } from "https://esm.sh/@social-embed/lib";
+
+// jsdelivr
+import { MatcherRegistry } from "https://cdn.jsdelivr.net/npm/@social-embed/lib/+esm";
+
+// unpkg
+import { MatcherRegistry } from "https://unpkg.com/@social-embed/lib";
+```
+
+**Browser subpath** (includes DOM mount utilities):
+
+```typescript
+import { mount } from "https://esm.sh/@social-embed/lib/browser";
+```
+
+**Quick CDN example:**
+
+```html
+<div id="embed"></div>
+<script type="module">
+  import { MatcherRegistry } from "https://esm.sh/@social-embed/lib";
+  import { mount } from "https://esm.sh/@social-embed/lib/browser";
+
+  const registry = MatcherRegistry.withDefaults();
+  const output = registry.toOutput("https://youtu.be/dQw4w9WgXcQ");
+  await mount(output, { container: "#embed" });
+</script>
 ```
 
 ## Key Features
@@ -66,34 +93,45 @@ import { convertUrlToEmbedUrl } from "https://www.unpkg.com/@social-embed/lib?mo
 Extract ID from any YouTube URL format:
 
 ```typescript
-const videoId = getYouTubeIdFromUrl("https://youtu.be/Bd8_vO5zrjo");
-console.log(videoId); // "Bd8_vO5zrjo"
-```
+import { MatcherRegistry } from "@social-embed/lib";
 
-Convert to embed URL:
+const registry = MatcherRegistry.withDefaults();
 
-```typescript
-const embedUrl = getYouTubeEmbedUrlFromId("Bd8_vO5zrjo");
-console.log(embedUrl); // "https://www.youtube.com/embed/Bd8_vO5zrjo"
-```
+// Extract video ID
+const result = registry.match("https://youtu.be/Bd8_vO5zrjo");
+if (result.ok) {
+  console.log(result.data.videoId); // "Bd8_vO5zrjo"
+}
 
-Or do it all in one step:
+// Get embed URL (privacy-enhanced by default)
+const embedUrl = registry.toEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
+console.log(embedUrl);
+// "https://www.youtube-nocookie.com/embed/Bd8_vO5zrjo"
 
-```typescript
-console.log(convertUrlToEmbedUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"));
-// "https://www.youtube.com/embed/Bd8_vO5zrjo"
+// With options (start time, autoplay, etc.)
+const embedUrlWithOptions = registry.toEmbedUrl("https://youtu.be/Bd8_vO5zrjo", {
+  start: 90,
+  autoplay: true,
+  mute: true,
+});
 ```
 
 ### DailyMotion
 
 ```typescript
-const videoId = getDailyMotionIdFromUrl("https://www.dailymotion.com/video/x7znrd0");
-console.log(videoId); // "x7znrd0"
-```
+import { MatcherRegistry } from "@social-embed/lib";
 
-```typescript
-console.log(getDailyMotionEmbedFromId("x7znrd0"));
-// "https://www.dailymotion.com/embed/video/x7znrd0"
+const registry = MatcherRegistry.withDefaults();
+
+// Extract video ID
+const result = registry.match("https://www.dailymotion.com/video/x7znrd0");
+if (result.ok) {
+  console.log(result.data.videoId); // "x7znrd0"
+}
+
+// Get embed URL
+console.log(registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0"));
+// "https://geo.dailymotion.com/player.html?video=x7znrd0"
 ```
 
 ### Spotify
@@ -131,33 +169,49 @@ console.log(convertUrlToEmbedUrl("https://support.wistia.com/medias/26sk4lmiix")
 // "https://fast.wistia.net/embed/iframe/26sk4lmiix"
 ```
 
-### General URL Validation
+### Check Provider Support
 
 ```typescript
-import { isValidUrl } from "@social-embed/lib";
+import { MatcherRegistry } from "@social-embed/lib";
 
-console.log(isValidUrl("https://apple.com")); // true
-console.log(isValidUrl("notaurl")); // false
+const registry = MatcherRegistry.withDefaults();
+
+// Check if URL matches any supported provider
+const youtubeResult = registry.match("https://youtu.be/abc123");
+console.log(youtubeResult.ok); // true
+
+const unknownResult = registry.match("https://example.com");
+console.log(unknownResult.ok); // false
+
+// Get the matched provider name
+if (youtubeResult.ok) {
+  console.log(youtubeResult.matcher.name); // "YouTube"
+}
 ```
 
-## Custom Providers
+## Custom matchers
 
-Add support for any platform by implementing the `EmbedProvider` interface (3 methods + a name) and registering it:
+Add support for a platform with `defineIframeMatcher` (or `defineScriptMatcher`) and `.with()` on the registry:
 
 ```typescript
-import { defaultRegistry } from "@social-embed/lib";
+import {
+  defineIframeMatcher,
+  MatcherRegistry,
+} from "@social-embed/lib";
 
-defaultRegistry.register({
+const MyPlatformMatcher = defineIframeMatcher({
   name: "MyPlatform",
-  canParseUrl: (url) => /myplatform\.com\/video\//.test(url),
-  getIdFromUrl: (url) => url.split("/").pop() || "",
-  getEmbedUrlFromId: (id) => `https://myplatform.com/embed/${id}`,
+  domains: ["myplatform.com"],
+  patterns: [/myplatform\.com\/video\/([^/]+)/],
+  embedUrl: (id) => `https://myplatform.com/embed/${id}`,
 });
 
-// Now convertUrlToEmbedUrl() handles MyPlatform URLs
+const registry = MatcherRegistry.withDefaults().with(MyPlatformMatcher);
+
+// registry.toEmbedUrl(...) and registry.match(...) now include MyPlatform
 ```
 
-See the [full extensibility guide](https://social-embed.org/lib/examples#5-adding-a-new-provider) for details.
+See the site docs for full examples and security notes for script-based embeds.
 
 ## Try It Out
 
@@ -168,6 +222,33 @@ See the [full extensibility guide](https://social-embed.org/lib/examples#5-addin
 ## Related Packages
 
 If you want a ready-to-use HTML component, check out [@social-embed/wc](https://social-embed.org/wc/) - our Web Component implementation that uses this library internally.
+
+## Security
+
+### Built-in Matchers
+
+All built-in matchers (YouTube, Spotify, Vimeo, etc.) use iframe-based embeds with properly escaped attributes. They are safe to use with any URL input.
+
+### Custom Matchers
+
+When creating custom matchers with `defineScriptMatcher`, you must escape any user-provided data:
+
+```typescript
+import { defineScriptMatcher, escapeHtml } from "@social-embed/lib";
+
+const MyMatcher = defineScriptMatcher({
+  // ...
+  renderPlaceholder: (data) => {
+    // ❌ UNSAFE - XSS vulnerability
+    // return `<div>${data.userInput}</div>`;
+
+    // ✅ SAFE - escape user data
+    return `<div>${escapeHtml(data.userInput)}</div>`;
+  },
+});
+```
+
+The `escapeHtml()` function escapes `& < > " '` characters to prevent XSS attacks.
 
 ## License
 
