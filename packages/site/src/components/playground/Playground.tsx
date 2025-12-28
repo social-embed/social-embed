@@ -27,7 +27,11 @@ export function Playground() {
     }
     return urlState.code !== DEFAULT_STATE.code
       ? urlState
-      : { ...DEFAULT_STATE, code: DEFAULT_PRESET.code };
+      : {
+          ...DEFAULT_STATE,
+          code: DEFAULT_PRESET.code,
+          presetId: DEFAULT_PRESET.id,
+        };
   });
 
   const [consoleLogs, setConsoleLogs] = useState<ConsoleEntry[]>([]);

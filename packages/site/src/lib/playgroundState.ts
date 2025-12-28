@@ -62,8 +62,10 @@ export function encodePlaygroundState(state: PlaygroundState): string {
   if (state.presetId) {
     const preset = getPresetById(state.presetId);
     if (preset && state.code === preset.code) {
-      // Code matches preset exactly - only store preset ID
-      serialized.p = state.presetId;
+      // Code matches preset - only store preset ID if not default
+      if (state.presetId !== DEFAULT_PRESET.id) {
+        serialized.p = state.presetId;
+      }
     } else {
       // Preset was edited - store both
       serialized.p = state.presetId;
