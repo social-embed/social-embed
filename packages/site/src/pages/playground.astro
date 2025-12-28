@@ -1,0 +1,18 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { Playground as PlaygroundComponent } from "../components/playground/Playground";
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "Playground",
+    description: "Interactive playground for testing social-embed components",
+    template: "splash",
+    tableOfContents: false,
+  }}
+  hasSidebar={false}
+>
+  <div data-page="playground" class="playground-wrapper">
+    <PlaygroundComponent client:only="react" />
+  </div>
+</StarlightPage>

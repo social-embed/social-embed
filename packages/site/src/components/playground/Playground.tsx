@@ -77,7 +77,7 @@ export function Playground() {
   }, []);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-200px)] min-h-[600px] border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
+    <div className="flex flex-col h-full min-h-[600px] border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-4 p-3 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
         {/* Preset selector */}

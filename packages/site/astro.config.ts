@@ -110,6 +110,11 @@ export default defineConfig({
       sidebar: [
         "getting-started",
         {
+          badge: { text: "try it", variant: "success" },
+          label: "Playground",
+          link: "/playground",
+        },
+        {
           autogenerate: { directory: "lib" },
           badge: { text: "lib", variant: "note" },
           label: "Library",
