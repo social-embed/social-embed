@@ -2,18 +2,27 @@
   "name": "@social-embed/lib",
   "description": "URL detection and parsing for embed providers (YouTube, other OEmbed compatible providers),",
   "version": "0.1.0-next.11",
-  "main": "dist/lib.umd.cjs",
-  "module": "dist/lib.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
   "typings": "dist/index.d.ts",
   "type": "module",
   "files": ["dist", "types"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/lib.js",
-      "require": "./dist/lib.umd.cjs"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./browser": {
+      "types": "./dist/browser/index.d.ts",
+      "import": "./dist/browser/index.js",
+      "require": "./dist/browser/index.cjs"
     }
   },
+  "unpkg": "dist/index.js",
+  "jsdelivr": "dist/index.js",
+  "browser": "dist/index.js",
+  "sideEffects": false,
   "license": "MIT",
   "keywords": ["embed", "typescript", "youtube", "dailymotion"],
   "publishConfig": {
