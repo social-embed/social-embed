@@ -10,7 +10,7 @@ export interface ConsoleOutputProps {
 
 const LOG_TYPE_STYLES: Record<ConsoleEntry["type"], string> = {
   error: "text-red-600 dark:text-red-400",
-  info: "text-blue-600 dark:text-blue-400",
+  info: "text-sky-600 dark:text-sky-400",
   log: "text-slate-700 dark:text-slate-300",
   warn: "text-amber-600 dark:text-amber-400",
 };

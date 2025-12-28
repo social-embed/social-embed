@@ -58,8 +58,8 @@ export function CdnSourcePicker({
         <button
           className={`h-[26px] px-2 py-1 text-xs rounded border transition-colors cursor-pointer select-none ${
             value.type === type
-              ? "bg-blue-600 text-white border-blue-600"
-              : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-blue-400"
+              ? "bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 border-slate-800 dark:border-slate-200"
+              : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500"
           }`}
           key={type}
           onClick={() => handleSourceChange(type)}
@@ -73,7 +73,7 @@ export function CdnSourcePicker({
       {/* Custom URL input */}
       {value.type === "custom" && (
         <input
-          className="flex-1 min-w-[200px] px-2 py-1 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-blue-400"
+          className="flex-1 min-w-[200px] px-2 py-1 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-slate-500 dark:focus:border-slate-400"
           onChange={(e) => handleCustomUrlChange(e.target.value)}
           placeholder="Enter lib URL (comma-separate for lib,wc)"
           type="text"
