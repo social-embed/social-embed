@@ -17,7 +17,11 @@
     "update": "ncu",
     "lint": "biome lint .",
     "biome": "biome",
-    "format": "pnpm run biome check . --write; pnpm run biome format . --write"
+    "format": "pnpm run biome check . --write; pnpm run biome format . --write",
+    "prebuild": "pnpm docs:oembed",
+    "prestart": "pnpm docs:oembed",
+    "prepare": "pnpm --filter @social-embed/wc build; mkdir -p public/js && cp ../wc/dist/OEmbedElement.js public/js/o-embed.bundled.js",
+    "docs:oembed": "[ ! -f ../wc/dist/OEmbedElement.js ] && pnpm --filter @social-embed/wc build; mkdir -p public/js && cp ../wc/dist/OEmbedElement.js public/js/o-embed.bundled.js"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^6.3.10",
