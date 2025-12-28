@@ -5,6 +5,91 @@ sidebar:
   order: 90
 ---
 
+## 0.2.0 (unreleased)
+
+### Breaking Changes - Complete API Redesign
+
+This release completely redesigns the library API for type safety and SSR compatibility.
+
+#### New Core Types
+
+- **`UrlMatcher<TName, TData, TOptions>`** replaces `EmbedProvider`
+  ```typescript
+  interface UrlMatcher<TName extends string, TData, TOptions> {
+    readonly name: TName;
+    readonly domains?: readonly string[];
+    readonly supportsPrivacyMode?: boolean;
+    canMatch(ctx: MatchContext): boolean;
+    parse(ctx: MatchContext): Result<TData>;
+    toEmbedUrl(data: TData, options?: PrivacyOptions): string;
+    toOutput(data: TData, options?: OutputOptions): EmbedOutput;
+  }
+  ```
+
+- **`MatcherRegistry`** replaces `EmbedProviderRegistry`
+  - O(1) domain-based indexed dispatch
+  - Immutable: `with()`, `without()` return new registries
+  - Mutable: `register()`, `unregister()` modify in place
+
+- **`Result<T>`** monad for explicit error handling
+  - `{ ok: true, value: T }` or `{ ok: false, error: MatchError }`
+  - Error codes: `NO_MATCH`, `INVALID_FORMAT`, `MISSING_ID`, `PARSE_ERROR`
+
+- **`EmbedOutput`** structured output model
+  - `nodes: EmbedNode[]` - iframe or HTML nodes
+  - `scripts?: ScriptRequest[]` - for future script-hydrated embeds
+  - `styles?: StyleChunk[]` - for custom styling
+
+- **`MatchContext`** pre-parsed URL context
+  - Parse once, match many pattern for efficiency
+
+#### New Features
+
+- **Privacy-by-default**: YouTube embeds use `youtube-nocookie.com`
+- **Factory functions**: `defineIframeMatcher()` for config-driven matchers
+- **Browser module**: `import { mount } from "@social-embed/lib/browser"`
+- **SSR-safe**: All core APIs work without DOM
+
+#### Migration Guide
+
+```typescript
+// Before (v1)
+import { getProviderFromUrl, convertUrlToEmbedUrl } from "@social-embed/lib";
+const provider = getProviderFromUrl(url);
+const embedUrl = provider?.getEmbedUrlFromId(provider.getIdFromUrl(url));
+
+// After (v2)
+import { MatcherRegistry } from "@social-embed/lib";
+const registry = MatcherRegistry.withDefaults();
+const result = registry.match(url);
+if (result.ok) {
+  const embedUrl = result.matcher.toEmbedUrl(result.data);
+}
+```
+
+#### Custom Matcher Migration
+
+```typescript
+// Before (v1)
+const MyProvider: EmbedProvider = {
+  name: "MyService",
+  canParseUrl(url) { return url.includes("myservice.com"); },
+  getIdFromUrl(url) { return url.match(/\/v\/(\w+)/)?.[1] ?? ""; },
+  getEmbedUrlFromId(id) { return `https://myservice.com/embed/${id}`; },
+};
+
+// After (v2)
+import { defineIframeMatcher } from "@social-embed/lib";
+const MyMatcher = defineIframeMatcher({
+  name: "MyService",
+  domains: ["myservice.com"],
+  patterns: [/myservice\.com\/v\/(\w+)/],
+  embedUrl: (id) => `https://myservice.com/embed/${id}`,
+});
+```
+
+---
+
 ## Upcoming release
 
 <!-- _Enter the most recent changes here_ -->
