@@ -79,14 +79,14 @@ export function Playground() {
   return (
     <div className="flex flex-col h-full min-h-[600px] border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center gap-4 p-3 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
+      <div className="flex flex-wrap items-center gap-2 p-2 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
         {/* Preset selector */}
         <div className="flex items-center gap-2">
           <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
             Preset:
           </span>
           <select
-            className="px-2 py-1 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-blue-400"
+            className="h-[26px] px-2 py-1 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-blue-400"
             onChange={(e) => {
               const preset = getPresetById(e.target.value);
               if (preset) handlePresetChange(preset);

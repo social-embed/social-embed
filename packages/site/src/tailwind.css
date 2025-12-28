@@ -108,15 +108,13 @@
  * Uses :has() selector for parent targeting (supported in all modern browsers)
  */
 [data-page="playground"] {
-  /* Make this container fill available space */
   width: 100vw;
-  /* Height calculation: viewport minus fixed header minus some padding for hero area */
-  height: calc(100vh - var(--sl-nav-height, 3.5rem) - 2rem);
+  height: calc(100vh - var(--sl-nav-height, 3.5rem));
   margin-left: calc(-50vw + 50%);
   overflow: hidden;
 }
 
-/* Remove padding from parent containers when playground is active */
+/* Remove padding and hide title for playground page */
 :has([data-page="playground"]) .sl-container {
   max-width: 100%;
   padding: 0;
@@ -128,4 +126,14 @@
 
 :has([data-page="playground"]) .main-pane {
   padding-inline: 0;
+}
+
+/* Hide Starlight's PageTitle component */
+:has([data-page="playground"]) h1[id="_top"] {
+  display: none;
+}
+
+/* Remove ContentPanel's child margins */
+:has([data-page="playground"]) .content-panel > * {
+  margin-top: 0;
 }

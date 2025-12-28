@@ -52,30 +52,28 @@ export function CdnSourcePicker({
   const urls = getCdnUrls(value);
 
   return (
-    <div className={`flex flex-col gap-2 ${className}`}>
+    <div className={`flex flex-wrap items-center gap-1 ${className}`}>
       {/* Source type buttons */}
-      <div className="flex flex-wrap gap-1">
-        {SOURCE_TYPES.map((type) => (
-          <button
-            className={`px-2 py-1 text-xs rounded border transition-colors ${
-              value.type === type
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-blue-400"
-            }`}
-            key={type}
-            onClick={() => handleSourceChange(type)}
-            title={CDN_SOURCE_DESCRIPTIONS[type]}
-            type="button"
-          >
-            {CDN_SOURCE_LABELS[type]}
-          </button>
-        ))}
-      </div>
+      {SOURCE_TYPES.map((type) => (
+        <button
+          className={`h-[26px] px-2 py-1 text-xs rounded border transition-colors ${
+            value.type === type
+              ? "bg-blue-600 text-white border-blue-600"
+              : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-blue-400"
+          }`}
+          key={type}
+          onClick={() => handleSourceChange(type)}
+          title={CDN_SOURCE_DESCRIPTIONS[type]}
+          type="button"
+        >
+          {CDN_SOURCE_LABELS[type]}
+        </button>
+      ))}
 
       {/* Custom URL input */}
       {value.type === "custom" && (
         <input
-          className="w-full px-2 py-1 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-blue-400"
+          className="flex-1 min-w-[200px] px-2 py-1 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-blue-400"
           onChange={(e) => handleCustomUrlChange(e.target.value)}
           placeholder="Enter lib URL (comma-separate for lib,wc)"
           type="text"
@@ -83,11 +81,10 @@ export function CdnSourcePicker({
         />
       )}
 
-      {/* Resolved URLs display */}
-      <div className="text-[10px] text-slate-400 dark:text-slate-500 font-mono truncate">
-        <span className="text-slate-500 dark:text-slate-400">wc:</span>{" "}
+      {/* Resolved URL display */}
+      <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono truncate ml-2">
         {urls.wc}
-      </div>
+      </span>
     </div>
   );
 }
