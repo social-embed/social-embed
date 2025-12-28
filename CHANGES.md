@@ -77,6 +77,15 @@ Here you can find project-wide changes. For more detailed changes:
 
 ### Docs / Site
 
+- **Playground**: Add interactive playground at `/playground` (#49)
+  - Live code editor with syntax highlighting (CodeMirror 6)
+  - Real-time preview with sandboxed iframe execution
+  - Console output panel for debugging (collapsible)
+  - CDN source picker: local build, cdn.social-embed.org, jsDelivr, unpkg, esm.sh, custom URL
+  - Provider-focused presets: YouTube, Spotify, Vimeo, DailyMotion, Loom
+  - URL state serialization for shareable playground links
+  - Responsive layout: horizontal on desktop, vertical on mobile
+
 - **Domain migration**: Move from `social-embed.git-pull.com` to `social-embed.org`
   - Updated site URL in Astro config
   - Updated homepage fields in package.json files
