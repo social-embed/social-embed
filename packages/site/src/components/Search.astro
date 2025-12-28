@@ -39,3 +39,22 @@ import Default from "@astrojs/starlight/components/Search.astro";
 <div class="flex items-center justify-end">
   <Default {...Astro.props}><slot /></Default>
 </div>
+
+<style>
+  /* Override Starlight's 50rem breakpoint to 64rem (1024px) for search */
+  :global(button[data-open-modal]) {
+    padding-inline-end: 0.75rem;
+  }
+  :global(button[data-open-modal] > span),
+  :global(button[data-open-modal] > kbd) {
+    display: none !important;
+  }
+  @media (min-width: 64rem) {
+    :global(button[data-open-modal] > span) {
+      display: block !important;
+    }
+    :global(button[data-open-modal] > kbd) {
+      display: flex !important;
+    }
+  }
+</style>
