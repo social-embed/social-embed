@@ -7,6 +7,39 @@ Here you can find project-wide changes. For more detailed changes:
 - [`@social-embed/lib`](https://social-embed.org/lib/release-notes)
 - [`@social-embed/wc`](https://social-embed.org/wc/release-notes)
 
+## 0.2 (unreleased)
+
+### Breaking Changes - API Redesign
+
+Complete API redesign of `@social-embed/lib` with new type-safe architecture:
+
+- **`EmbedProvider` → `UrlMatcher`**: New generic interface with correlated types
+  - `UrlMatcher<TName, TData, TOptions>` provides type-safe parse results
+  - Methods: `canMatch()`, `parse()`, `toEmbedUrl()`, `toOutput()`
+
+- **`EmbedProviderRegistry` → `MatcherRegistry`**: O(1) indexed dispatch
+  - Domain-based lookup for efficient matching with hundreds of matchers
+  - Both immutable (`with()`/`without()`) and mutable (`register()`/`unregister()`) APIs
+
+- **`Result<T>` monad**: Explicit error handling replaces nullable returns
+  - Structured `MatchError` with codes: `NO_MATCH`, `INVALID_FORMAT`, `MISSING_ID`, `PARSE_ERROR`
+
+- **`EmbedOutput` structured model**: SSR-safe output
+  - Separates `nodes`, `scripts`, `styles` for flexibility
+  - Future-proofs for script-hydrated embeds (Twitter, Instagram)
+
+- **Privacy-by-default**: YouTube uses `youtube-nocookie.com` by default
+  - Opt out with `{ privacy: false }`
+
+- **Core/Browser split**: SSR-safe core, optional browser module
+  - `import { mount } from "@social-embed/lib/browser"` for DOM execution
+
+- **Factory pattern**: `defineIframeMatcher()` for creating config-driven matchers
+
+See individual package CHANGES.md for migration details.
+
+---
+
 ## 0.1 (unreleased)
 
 ### Features and Improvements
