@@ -2,16 +2,20 @@
   "name": "@social-embed/wc",
   "version": "0.1.0-next.13",
   "description": "A drop-in component for <o-embed> tags",
-  "main": "./dist/OEmbedElement.umd.cjs",
+  "main": "./dist/OEmbedElement.js",
   "module": "./dist/OEmbedElement.js",
-  "typings": "./dist/OEmbedElement.d.ts",
+  "typings": "./dist/src/OEmbedElement.d.ts",
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/OEmbedElement.js",
-      "require": "./dist/OEmbedElement.umd.cjs"
+      "types": "./dist/src/OEmbedElement.d.ts",
+      "import": "./dist/OEmbedElement.js"
     }
   },
+  "unpkg": "dist/OEmbedElement.js",
+  "jsdelivr": "dist/OEmbedElement.js",
+  "browser": "dist/OEmbedElement.js",
+  "sideEffects": ["./dist/OEmbedElement.js"],
   "scripts": {
     "prebuild": "pnpm clean && pnpm --filter @social-embed/lib build",
     "build": "vite build",
