@@ -110,41 +110,32 @@ import ReactLive from "../../components/ReactLive";
     <Code
       lang="ts"
       wrap
-      code={`import {
-    getProviderFromUrl,
-    getYouTubeIdFromUrl,
-    youTubeUrlRegex,
-} from "@social-embed/lib";
+      code={`import { MatcherRegistry } from "@social-embed/lib";
 
-"https://youtu.be/watch?v=Bd8_vO5zrjo".match(
-    youTubeUrlRegex
+const registry = MatcherRegistry.withDefaults();
+
+// Match any supported URL
+const result = registry.match(
+    "https://youtu.be/Bd8_vO5zrjo"
 );
-// => [
-//   "https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"
-// ]
 
-getYouTubeIdFromUrl(
-    "https://youtu.be/watch?v=Bd8_vO5zrjo"
-);
-// => "Bd8_vO5zrjo"
+if (result.ok) {
+    console.log(result.matcher.name);
+    // => "YouTube"
 
-const provider = getProviderFromUrl(
-    "https://youtu.be/watch?v=Bd8_vO5zrjo"
-);
-// => {
-//   name: "YouTube",
-//   canParseUrl: [Function],
-//   getIdFromUrl: [Function],
-//   getEmbedUrlFromId: [Function]
-// }
+    console.log(result.data);
+    // => { id: "Bd8_vO5zrjo" }
 
-provider.getIdFromUrl(
-    "https://youtu.be/watch?v=Bd8_vO5zrjo"
-);
-// => "Bd8_vO5zrjo"
+    // Get embed URL (privacy-enhanced by default)
+    const embedUrl = result.matcher.toEmbedUrl(result.data);
+    // => "https://www.youtube-nocookie.com/embed/Bd8_vO5zrjo"
 
-provider.getEmbedUrlFromId("Bd8_vO5zrjo");
-// => "https://www.youtube.com/embed/Bd8_vO5zrjo"
+    // Get structured output for rendering
+    const output = result.matcher.toOutput(result.data, {
+        width: 800,
+        height: 450,
+    });
+}
 `}
 />
 
@@ -264,28 +255,28 @@ provider.getEmbedUrlFromId("Bd8_vO5zrjo");
       </div>
       
       <div class="mb-4">
-        <div class="text-sm text-slate-600 dark:text-slate-400 mb-2">Import what you need:</div>
+        <div class="text-sm text-slate-600 dark:text-slate-400 mb-2">Import and create registry:</div>
         <Code
           lang="ts"
           wrap
-          code={`import { 
-    getProviderFromUrl, 
-    getYouTubeIdFromUrl 
-} from '@social-embed/lib';`}
+          code={`import { MatcherRegistry } from '@social-embed/lib';
+
+const registry = MatcherRegistry.withDefaults();`}
         />
       </div>
-      
+
       <div>
         <div class="text-sm text-slate-600 dark:text-slate-400 mb-2">Parse and transform media URLs:</div>
         <Code
           lang="ts"
           wrap
-          code={`// Get YouTube ID from URL
-const videoId = getYouTubeIdFromUrl('https://youtu.be/FTQbiNvZqaY');
+          code={`// Match URL and get typed result
+const result = registry.match('https://youtu.be/FTQbiNvZqaY');
 
-// Get provider and convert to embed URL
-const provider = getProviderFromUrl('https://youtu.be/FTQbiNvZqaY');
-const embedUrl = provider.getEmbedUrlFromId(videoId);`}
+if (result.ok) {
+    // Privacy-enhanced embed URL
+    const embedUrl = result.matcher.toEmbedUrl(result.data);
+}`}
         />
       </div>
     </div>

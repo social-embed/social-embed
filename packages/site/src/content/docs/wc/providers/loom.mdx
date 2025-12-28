@@ -5,13 +5,13 @@ sidebar_label: Loom
 description: Loom video embed support for <o-embed> component.
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 [Loom] is a workplace messaging platform.
 
 [loom]: https://www.loom.com
 
-## Default dimensions
-
-URL:
+## Basic Usage
 
 ```html
 <o-embed
@@ -19,10 +19,71 @@ URL:
 ></o-embed>
 ```
 
-<o-embed
-url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075"></o-embed>
+<o-embed url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075"></o-embed>
 
-## Custom dimensions
+---
+
+## Loom-specific Options
+
+The `<o-embed>` component supports Loom-specific options via the `provider-options` attribute.
+
+### Available Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `start` | number | Start time in seconds |
+| `autoplay` | boolean | Auto-start the video |
+| `hideTopBar` | boolean | Hide the embed top bar |
+
+### Start Time
+
+Start playback at a specific time (in seconds):
+
+```html
+<o-embed
+  url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075"
+  provider-options='{"start": 30}'
+></o-embed>
+```
+
+<Aside type="note">
+The start time is converted to the `t=30s` URL parameter format that Loom uses.
+</Aside>
+
+### Autoplay
+
+Enable autoplay:
+
+```html
+<o-embed
+  url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075"
+  provider-options='{"autoplay": true}'
+></o-embed>
+```
+
+### Hide Top Bar
+
+Hide the embed top bar for a cleaner appearance:
+
+```html
+<o-embed
+  url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075"
+  provider-options='{"hideTopBar": true}'
+></o-embed>
+```
+
+### Combining Options
+
+```html
+<o-embed
+  url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075"
+  provider-options='{"start": 30, "autoplay": true, "hideTopBar": true}'
+></o-embed>
+```
+
+---
+
+## Custom Dimensions
 
 ```html
 <o-embed
@@ -32,17 +93,13 @@ url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075"></o-embed>
 ></o-embed>
 ```
 
-<o-embed
-url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075" width="520" height="360"></o-embed>
+<o-embed url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075" width="520" height="360"></o-embed>
 
-```html
-<o-embed
-  url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075"
-  height="320"
-></o-embed>
-```
+---
 
-<o-embed url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075" height="320"></o-embed>
+## Responsive Width
+
+Use percentage width for responsive embeds:
 
 ```html
 <o-embed
