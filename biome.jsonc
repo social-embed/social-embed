@@ -26,6 +26,7 @@
       "!**/public",
       "!**/.docusaurus",
       "!**/.astro",
+      "!**/build",
       "!**/playwright-report",
       "!**/yarn-error.log",
       "!**/docs",
