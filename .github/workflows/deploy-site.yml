@@ -2,7 +2,7 @@ name: Deploy Site
 
 on:
   push:
-    branches: [master, playground] # TODO: remove playground after testing
+    branches: [master]
   workflow_dispatch:
 
 permissions:
