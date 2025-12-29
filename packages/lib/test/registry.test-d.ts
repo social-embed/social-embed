@@ -78,11 +78,7 @@ describe("MatcherRegistry Type Tests", () => {
     // Test size property
     expectTypeOf<Registry["size"]>().toBeNumber();
 
-    // Test mutable methods
-    expectTypeOf<Registry["register"]>().toBeFunction();
-    expectTypeOf<Registry["unregister"]>().toBeFunction();
-
-    // Test immutable methods
+    // Test immutable composition methods (MatcherRegistry is immutable by design)
     expectTypeOf<Registry["with"]>().toBeFunction();
     expectTypeOf<Registry["without"]>().toBeFunction();
   });
@@ -100,11 +96,5 @@ describe("MatcherRegistry Type Tests", () => {
 
     // Verify without() returns a new MatcherRegistry
     expectTypeOf(registry.without).returns.toMatchTypeOf<MatcherRegistry>();
-
-    // Verify register() returns this for chaining
-    expectTypeOf(registry.register).returns.toMatchTypeOf<MatcherRegistry>();
-
-    // Verify unregister() returns this for chaining
-    expectTypeOf(registry.unregister).returns.toMatchTypeOf<MatcherRegistry>();
   });
 });
