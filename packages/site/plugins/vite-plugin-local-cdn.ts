@@ -49,9 +49,19 @@ export function localCdnPlugin(): Plugin {
       const root = isLib
         ? resolve(packagesDir, "lib")
         : resolve(packagesDir, "wc");
-      const alias: Record<string, string> = isLib
-        ? {}
-        : { "@social-embed/lib": resolve(packagesDir, "lib/src/index.ts") };
+      // Use array format with specific paths first to avoid prefix matching issues
+      const alias = isLib
+        ? []
+        : [
+            {
+              find: "@social-embed/lib/browser",
+              replacement: resolve(packagesDir, "lib/src/browser/index.ts"),
+            },
+            {
+              find: "@social-embed/lib",
+              replacement: resolve(packagesDir, "lib/src/index.ts"),
+            },
+          ];
 
       const result = await build({
         build: {
