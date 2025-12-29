@@ -5,40 +5,52 @@
  * This library provides type-safe URL parsing and embed URL generation
  * for popular media providers (YouTube, Spotify, Vimeo, etc.).
  *
- * ## Quick Start
+ * ## Tier 1: Zero-Config Usage (Browser)
+ *
+ * For CDN, JSFiddle, or simple browser use, import from `/browser`:
  *
  * ```typescript
- * import { MatcherRegistry } from "@social-embed/lib";
+ * import { toEmbedUrl, toEmbed, register } from "@social-embed/lib/browser";
+ *
+ * // One-liner: get embed URL
+ * const embedUrl = toEmbedUrl("https://youtu.be/abc123");
+ * // => "https://www.youtube-nocookie.com/embed/abc123"
+ *
+ * // Rich Embed object with methods
+ * const embed = toEmbed("https://youtu.be/abc123");
+ * embed.toHtml();   // Full iframe HTML
+ * embed.toUrl();    // Just the embed URL
+ *
+ * // Register custom matcher (notifies all WC subscribers)
+ * register(MyCustomMatcher);
+ * ```
+ *
+ * ## Tier 2: SSR / Framework Integration
+ *
+ * For SSR or when you need more control, use the registry directly:
+ *
+ * ```typescript
+ * import { MatcherRegistry, renderOutput } from "@social-embed/lib";
  *
  * const registry = MatcherRegistry.withDefaults();
  *
- * // Match and get embed URL (privacy-enhanced by default)
+ * // Match and get embed URL
  * const embedUrl = registry.toEmbedUrl("https://youtu.be/abc123");
- * // => "https://www.youtube-nocookie.com/embed/abc123"
  *
  * // Get structured output for SSR
  * const output = registry.toOutput("https://youtu.be/abc123", { width: 800 });
  * const html = renderOutput(output);
  * ```
  *
- * ## Browser Usage
+ * ## Tier 3: Custom Matchers
+ *
+ * Create custom matchers with the unified factory:
  *
  * ```typescript
- * import { MatcherRegistry } from "@social-embed/lib";
- * import { mount } from "@social-embed/lib/browser";
+ * import { defineMatcher, MatcherRegistry } from "@social-embed/lib";
  *
- * const registry = MatcherRegistry.withDefaults();
- * const output = registry.toOutput("https://youtu.be/abc123");
- *
- * await mount(output, { container: "#embed" });
- * ```
- *
- * ## Custom Matchers
- *
- * ```typescript
- * import { defineIframeMatcher, MatcherRegistry } from "@social-embed/lib";
- *
- * const TikTokMatcher = defineIframeMatcher({
+ * const TikTokMatcher = defineMatcher({
+ *   type: "iframe",
  *   name: "TikTok",
  *   domains: ["tiktok.com"],
  *   patterns: [/tiktok\.com\/@[\w]+\/video\/(\d+)/],
@@ -55,25 +67,41 @@
 // Core Types
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type { MatchContext, ParsedInput } from "./context";
+// Context types (MatchInput is the stable public API for custom matchers)
+export type { MatchContext, MatchInput, ParsedInput } from "./context";
 export {
   createContext,
+  createMatchInput,
   getBaseDomain,
   getQueryParam,
   hostMatches,
 } from "./context";
-export type { MatcherInput, MatchOk, MatchResult, UrlMatcher } from "./matcher";
-export { extractMatcher, extractPriority } from "./matcher";
-
+// Embed types (new v2 API)
+// Legacy node type for backward compatibility
 export type {
+  EmbedData,
   EmbedNode,
   EmbedOutput,
   HtmlNode,
   IframeNode,
-  OutputOptions,
-  PrivacyOptions,
+  RawHtmlNode,
   ScriptRequest,
   StyleChunk,
+} from "./embed";
+export {
+  createEmbed,
+  createHtmlEmbed,
+  createIframeEmbed,
+  Embed,
+} from "./embed";
+export type { MatcherInput, MatchOk, MatchResult, UrlMatcher } from "./matcher";
+export { extractMatcher, extractPriority } from "./matcher";
+
+// Output options
+export type {
+  EmbedOptions,
+  OutputOptions,
+  PrivacyOptions,
 } from "./output";
 export {
   createHtmlOutput,
@@ -88,19 +116,32 @@ export {
   noMatch,
   ok,
   parseError,
+  unsupportedPrivacy,
 } from "./result";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Registry
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type { RegisterOptions, RegistryOptions } from "./registry";
+export type { RegistryOptions } from "./registry";
 export { MatcherRegistry, renderOutput } from "./registry";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Store (Mutable Registry Wrapper with Reactivity)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type { RegistryListener, Unsubscribe } from "./store";
+export { RegistryStore } from "./store";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Factories
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Unified factory (recommended for new matchers)
+export type { MatcherConfig } from "./factories";
+export { defineMatcher } from "./factories";
+
+// Specialized factories (for advanced use cases)
 export type {
   IframeMatcherConfig,
   IframeParseResult,
