@@ -6,7 +6,7 @@
  */
 
 import { describe, expectTypeOf, test } from "vitest";
-import type { EmbedOutput, UrlMatcher } from "../src";
+import type { DangerousHtmlNode, EmbedOutput, UrlMatcher } from "../src";
 import {
   ALL_MATCHERS,
   DailyMotionMatcher,
@@ -69,5 +69,19 @@ describe("Main Library Exports Type Tests", () => {
     expectTypeOf(YouTubeMatcher.parse).toBeFunction();
     expectTypeOf(YouTubeMatcher.toEmbedUrl).toBeFunction();
     expectTypeOf(YouTubeMatcher.toOutput).toBeFunction();
+  });
+
+  test("DangerousHtmlNode should be properly exported", () => {
+    // Verify the type has expected properties
+    expectTypeOf<DangerousHtmlNode>().toHaveProperty("type");
+    expectTypeOf<DangerousHtmlNode>().toHaveProperty("content");
+
+    // Verify type property is exactly "dangerouslySetHtml"
+    expectTypeOf<
+      DangerousHtmlNode["type"]
+    >().toEqualTypeOf<"dangerouslySetHtml">();
+
+    // Verify content is a string
+    expectTypeOf<DangerousHtmlNode["content"]>().toEqualTypeOf<string>();
   });
 });

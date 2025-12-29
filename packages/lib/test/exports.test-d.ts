@@ -17,7 +17,15 @@ import {
 } from "../src";
 import type { MountOptions } from "../src/browser";
 // Browser subpath exports
-import { clearScriptCache, mount } from "../src/browser";
+import {
+  clearScriptCache,
+  defaultStore,
+  match,
+  mount,
+  register,
+  toEmbed,
+  toEmbedUrl,
+} from "../src/browser";
 
 describe("Main Entry Exports (@social-embed/lib)", () => {
   test("exports MatcherRegistry class", () => {
@@ -61,5 +69,34 @@ describe("Browser Subpath Exports (@social-embed/lib/browser)", () => {
     // Verify MountOptions has expected properties
     expectTypeOf<MountOptions>().toHaveProperty("container");
     expectTypeOf<MountOptions>().toHaveProperty("mode");
+  });
+
+  test("exports defaultStore singleton", () => {
+    expectTypeOf(defaultStore).toHaveProperty("register");
+    expectTypeOf(defaultStore).toHaveProperty("unregister");
+    expectTypeOf(defaultStore).toHaveProperty("match");
+    expectTypeOf(defaultStore).toHaveProperty("subscribe");
+    expectTypeOf(defaultStore).toHaveProperty("current");
+  });
+
+  test("exports register function with options support", () => {
+    expectTypeOf(register).toBeFunction();
+    // Should accept matcher and optional options parameter
+    expectTypeOf(register).returns.toBeVoid();
+  });
+
+  test("exports toEmbedUrl function", () => {
+    expectTypeOf(toEmbedUrl).toBeFunction();
+    expectTypeOf(toEmbedUrl).returns.toMatchTypeOf<string | undefined>();
+  });
+
+  test("exports toEmbed function", () => {
+    expectTypeOf(toEmbed).toBeFunction();
+    // Returns Embed | undefined
+  });
+
+  test("exports match function", () => {
+    expectTypeOf(match).toBeFunction();
+    // Returns MatchResult
   });
 });
