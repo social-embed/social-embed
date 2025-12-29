@@ -444,6 +444,172 @@ if (result.ok) {
 
 ---
 
+## 9. Embed Class
+
+The `Embed` class provides a rich wrapper around embed output with convenient methods:
+
+```ts
+import { toEmbed } from "@social-embed/lib/browser";
+
+// Create an Embed instance from a URL
+const embed = toEmbed("https://youtu.be/dQw4w9WgXcQ");
+
+if (embed) {
+  // Get the embed URL
+  console.log(embed.toUrl());
+  // => "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
+
+  // Get complete HTML for rendering
+  console.log(embed.toHtml());
+  // => '<iframe src="..." width="560" height="315" ...></iframe>'
+
+  // Get raw nodes for custom rendering
+  const nodes = embed.toNodes();
+  // => [{ type: "iframe", src: "...", attributes: {...} }]
+
+  // Get structured data for serialization
+  const data = embed.toData();
+  // => { nodes: [...], scripts?: [...] }
+}
+```
+
+### Embed Properties
+
+```ts
+const embed = toEmbed("https://open.spotify.com/track/abc123");
+
+if (embed) {
+  console.log(embed.provider);  // "Spotify"
+  console.log(embed.data);      // { contentType: "track", id: "abc123" }
+  console.log(embed.nodes);     // Direct access to output nodes
+}
+```
+
+---
+
+## 10. Browser Convenience Functions
+
+For CDN, JSFiddle, or simple browser use, import from `/browser`:
+
+```ts
+import {
+  toEmbedUrl,
+  toEmbed,
+  match,
+  register,
+  unregister,
+  defaultStore,
+} from "@social-embed/lib/browser";
+```
+
+### One-Liner Conversions
+
+```ts
+// Get embed URL directly
+const embedUrl = toEmbedUrl("https://youtu.be/abc123");
+// => "https://www.youtube-nocookie.com/embed/abc123"
+
+// Get rich Embed object
+const embed = toEmbed("https://youtu.be/abc123");
+embed?.toHtml();  // Full iframe HTML
+
+// Get match result for conditional handling
+const result = match("https://youtu.be/abc123");
+if (result.ok) {
+  console.log(result.matcher.name);  // "YouTube"
+}
+```
+
+### Custom Matcher Registration
+
+```ts
+import { defineIframeMatcher } from "@social-embed/lib";
+
+const TikTokMatcher = defineIframeMatcher({
+  name: "TikTok",
+  domains: ["tiktok.com"],
+  patterns: [/tiktok\.com\/@[\w]+\/video\/(\d+)/],
+  embedUrl: (id) => `https://www.tiktok.com/embed/${id}`,
+});
+
+// Register globally (affects all components)
+register(TikTokMatcher);
+
+// Optionally set priority (higher = matches first)
+register(TikTokMatcher, { priority: 10 });
+
+// Remove when no longer needed
+unregister("TikTok");
+```
+
+---
+
+## 11. RegistryStore (Reactive State)
+
+The `RegistryStore` provides reactive state management for dynamic matcher registration:
+
+```ts
+import { RegistryStore, defineIframeMatcher } from "@social-embed/lib";
+
+const store = RegistryStore.withDefaults();
+
+// Subscribe to registry changes
+const unsubscribe = store.subscribe((registry) => {
+  console.log("Registry updated:", registry.list().map(m => m.name));
+});
+
+// Mutations trigger subscribers
+store.register(MyCustomMatcher);
+// => "Registry updated: [YouTube, Vimeo, ..., MyCustomMatcher]"
+
+// Clean up
+unsubscribe();
+```
+
+### React Integration Example
+
+```tsx
+import { useEffect, useState } from "react";
+import { defaultStore, toEmbed } from "@social-embed/lib/browser";
+
+function EmbedComponent({ url }: { url: string }) {
+  const [embed, setEmbed] = useState(() => toEmbed(url));
+
+  useEffect(() => {
+    // Re-render when matchers change
+    return defaultStore.subscribe(() => {
+      setEmbed(toEmbed(url));
+    });
+  }, [url]);
+
+  if (!embed) return <p>Unsupported URL</p>;
+
+  // Render using iframe node data directly
+  const node = embed.toNodes()[0];
+  if (node.type === "iframe") {
+    return <iframe src={node.src} {...node.attributes} />;
+  }
+  return null;
+}
+```
+
+### Store Properties
+
+```ts
+const store = RegistryStore.withDefaults();
+
+// Check if matcher exists
+store.has("YouTube");  // true
+
+// Get current registry (immutable)
+const registry = store.current;
+
+// Get matcher count
+store.size;  // 7 (built-in matchers)
+```
+
+---
+
 ## Summary
 
 - **Registry-based**: Use `MatcherRegistry.withDefaults()` as your entry point
@@ -451,5 +617,6 @@ if (result.ok) {
 - **Privacy-first**: YouTube uses `youtube-nocookie.com` by default
 - **Extensible**: Add custom matchers with `defineIframeMatcher()` or implement `UrlMatcher` directly
 - **SSR-safe**: All core APIs work without DOM
+- **Reactive**: Use `RegistryStore` for dynamic matcher management
 
 Check out the [Matchers documentation](/lib/providers/) for more details on the `UrlMatcher` interface.
