@@ -59,9 +59,9 @@ describe("RegistryStore", () => {
       expect(matcher?.domains).toContain("test2.example.com");
     });
 
-    it("should accept tuple with priority", () => {
+    it("should accept options with priority", () => {
       const store = new RegistryStore();
-      store.register({ matcher: TestMatcher, priority: 10 });
+      store.register(TestMatcher, { priority: 10 });
 
       expect(store.has("Test")).toBe(true);
     });
