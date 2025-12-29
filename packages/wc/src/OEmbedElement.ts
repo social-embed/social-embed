@@ -7,17 +7,28 @@
 
 import {
   getSpotifyHeight,
-  MatcherRegistry,
+  type MatcherRegistry,
   type OutputOptions,
+  RegistryStore,
   renderOutput,
   type SpotifyData,
   type SpotifyOutputOptions,
   type SpotifySize,
   type SpotifyTheme,
   type SpotifyView,
+  type Unsubscribe,
 } from "@social-embed/lib";
 import { html, LitElement, type TemplateResult } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+
+/**
+ * Default store for reactive matcher updates.
+ *
+ * @remarks
+ * This is a module-level singleton that all `<o-embed>` elements subscribe to.
+ * When `defaultStore.register()` is called, all components re-render.
+ */
+export const defaultStore = new RegistryStore();
 
 /**
  * `<o-embed>` is a LitElement-based web component that automatically detects and
@@ -217,10 +228,110 @@ export class OEmbedElement extends LitElement {
   private providerName: string | undefined;
 
   /**
-   * Registry instance for URL matching.
-   * Can be replaced with a custom registry for testing or custom matchers.
+   * Store instance for URL matching.
+   * Defaults to the module-level `defaultStore`.
+   * Can be replaced with a custom store for testing or isolation.
    */
-  public registry: MatcherRegistry = MatcherRegistry.withDefaults();
+  public store: RegistryStore = defaultStore;
+
+  /**
+   * @deprecated Use `store.current` instead.
+   * Registry instance for URL matching (legacy compatibility).
+   */
+  public get registry(): MatcherRegistry {
+    return this.store.current;
+  }
+
+  /**
+   * @deprecated Use `store` property instead.
+   */
+  public set registry(value: MatcherRegistry) {
+    this.store.setRegistry(value);
+  }
+
+  /**
+   * Unsubscribe function for store subscription.
+   */
+  private storeUnsubscribe?: Unsubscribe;
+
+  /**
+   * LitElement lifecycle: called when element is added to DOM.
+   * Subscribes to the store for reactive updates.
+   */
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    // Subscribe to store changes
+    this.storeUnsubscribe = this.store.subscribe(() => {
+      this.requestUpdate();
+    });
+  }
+
+  /**
+   * LitElement lifecycle: called when element is removed from DOM.
+   * Cleans up store subscription.
+   */
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    // Unsubscribe from store
+    if (this.storeUnsubscribe) {
+      this.storeUnsubscribe();
+      this.storeUnsubscribe = undefined;
+    }
+  }
+
+  /**
+   * Force re-render (useful after late matcher registration).
+   *
+   * @remarks
+   * Normally not needed since the component subscribes to store changes.
+   * Use this if you have a custom store or need manual control.
+   */
+  public refresh(): void {
+    this.requestUpdate();
+  }
+
+  /**
+   * Collect `data-opt-*` attributes as provider options.
+   *
+   * @remarks
+   * Provides a universal escape hatch for provider-specific options.
+   * Attributes are converted from kebab-case to camelCase.
+   *
+   * @example
+   * ```html
+   * <o-embed url="..." data-opt-start="120" data-opt-hide-top-bar="true"></o-embed>
+   * ```
+   *
+   * @returns Object with camelCase keys and string values
+   */
+  private getDataOptAttributes(): Record<string, unknown> {
+    const opts: Record<string, unknown> = {};
+
+    for (const attr of Array.from(this.attributes)) {
+      if (attr.name.startsWith("data-opt-")) {
+        // Convert data-opt-hide-top-bar -> hideTopBar
+        const key = attr.name
+          .slice(9) // Remove "data-opt-"
+          .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+
+        // Parse value: try boolean, number, or keep as string
+        const value = attr.value;
+        if (value === "true") {
+          opts[key] = true;
+        } else if (value === "false") {
+          opts[key] = false;
+        } else if (/^-?\d+(?:\.\d+)?$/.test(value)) {
+          opts[key] = Number(value);
+        } else {
+          opts[key] = value;
+        }
+      }
+    }
+
+    return opts;
+  }
 
   /**
    * Main LitElement render cycle method.
@@ -232,7 +343,7 @@ export class OEmbedElement extends LitElement {
       return html``;
     }
 
-    const result = this.registry.match(this.url);
+    const result = this.store.match(this.url);
 
     if (!result.ok) {
       this.providerName = undefined;
@@ -241,6 +352,9 @@ export class OEmbedElement extends LitElement {
 
     this.providerName = result.matcher.name;
 
+    // Collect data-opt-* attributes for provider options
+    const dataOptAttrs = this.getDataOptAttributes();
+
     // Build base output options
     const options: OutputOptions &
       SpotifyOutputOptions &
@@ -248,7 +362,8 @@ export class OEmbedElement extends LitElement {
       attributes: this.allowfullscreen ? { allowfullscreen: "" } : {},
       privacy: this.privacy,
       width: this.width,
-      ...this.providerOptions, // Escape hatch
+      ...dataOptAttrs, // data-opt-* attributes (lower priority)
+      ...this.providerOptions, // Escape hatch (higher priority)
     };
 
     // Track the effective height for CSS styling
