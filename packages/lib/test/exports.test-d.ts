@@ -11,7 +11,6 @@ import type { EmbedOutput, UrlMatcher } from "../src";
 // Main entry point exports
 import {
   ALL_MATCHERS,
-  defaultRegistry,
   MatcherRegistry,
   renderOutput,
   YouTubeMatcher,
@@ -27,11 +26,7 @@ describe("Main Entry Exports (@social-embed/lib)", () => {
     expectTypeOf(MatcherRegistry.withDefaults).toBeFunction();
   });
 
-  test("exports defaultRegistry instance", () => {
-    expectTypeOf(defaultRegistry).toMatchTypeOf<MatcherRegistry>();
-    expectTypeOf(defaultRegistry.toEmbedUrl).toBeFunction();
-    expectTypeOf(defaultRegistry.toOutput).toBeFunction();
-  });
+  // Note: defaultRegistry was removed in v2 - use MatcherRegistry.withDefaults()
 
   test("exports ALL_MATCHERS array", () => {
     expectTypeOf(ALL_MATCHERS).toBeArray();
