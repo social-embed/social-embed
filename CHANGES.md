@@ -86,6 +86,12 @@ Here you can find project-wide changes. For more detailed changes:
   - URL state serialization for shareable playground links
   - Responsive layout: horizontal on desktop, vertical on mobile
 
+- **Site design improvements** (#49)
+  - Consistent header layout across all pages (no layout shifts between sidebar/no-sidebar pages)
+  - Theme selector redesign: icon buttons (sun/computer/moon) replacing dropdown
+  - Responsive search: icon-only below 1024px for better mobile nav
+  - Refreshed OKLCH color palette for badges with proper light/dark contrast
+
 - **Domain migration**: Move from `social-embed.git-pull.com` to `social-embed.org`
   - Updated site URL in Astro config
   - Updated homepage fields in package.json files
