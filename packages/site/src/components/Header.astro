@@ -1,0 +1,75 @@
+---
+/**
+ * Custom Header with simple flexbox layout.
+ * Removes Starlight's sidebar-dependent grid calculations for consistent nav across all pages.
+ */
+
+// @ts-expect-error - Virtual module resolved at build time
+import LanguageSelect from "virtual:starlight/components/LanguageSelect";
+// @ts-expect-error - Virtual module resolved at build time
+import Search from "virtual:starlight/components/Search";
+// @ts-expect-error - Virtual module resolved at build time
+import SiteTitle from "virtual:starlight/components/SiteTitle";
+// @ts-expect-error - Virtual module resolved at build time
+import SocialIcons from "virtual:starlight/components/SocialIcons";
+// @ts-expect-error - Virtual module resolved at build time
+import ThemeSelect from "virtual:starlight/components/ThemeSelect";
+import config from "virtual:starlight/user-config";
+
+const shouldRenderSearch =
+  config.pagefind ||
+  config.components.Search !== "@astrojs/starlight/components/Search.astro";
+---
+
+<div class="header">
+  <div class="title-wrapper sl-flex">
+    <SiteTitle />
+  </div>
+  <div class="search-area sl-flex print:hidden">
+    {shouldRenderSearch && <Search />}
+  </div>
+  <div class="sl-hidden md:sl-flex print:hidden right-group">
+    <div class="sl-flex social-icons">
+      <SocialIcons />
+    </div>
+    <ThemeSelect />
+    <LanguageSelect />
+  </div>
+</div>
+
+<style>
+  @layer starlight.core {
+    .header {
+      display: flex;
+      gap: var(--sl-nav-gap);
+      align-items: center;
+      height: 100%;
+    }
+
+    .title-wrapper {
+      overflow: clip;
+      padding: 0.25rem;
+      margin: -0.25rem;
+      min-width: 0;
+      flex-shrink: 0;
+    }
+
+    .search-area {
+      flex: 1;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .right-group,
+    .social-icons {
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .social-icons::after {
+      content: "";
+      height: 2rem;
+      border-inline-end: 1px solid var(--sl-color-gray-5);
+    }
+  }
+</style>

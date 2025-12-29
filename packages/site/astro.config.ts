@@ -4,9 +4,11 @@ import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
 import { defineConfig } from "astro/config";
+import { localCdnPlugin } from "./plugins/vite-plugin-local-cdn";
 
 type VitePlugin = NonNullable<ViteUserConfig["plugins"]>[number];
 const tailwindPlugin = tailwindcss() as unknown as VitePlugin;
+const localCdn = localCdnPlugin() as unknown as VitePlugin;
 
 // https://astro.build/config
 export default defineConfig({
@@ -80,7 +82,10 @@ export default defineConfig({
       components: {
         Footer: "./src/components/Footer.astro",
         Head: "./src/components/Head.astro",
+        Header: "./src/components/Header.astro",
+        PageFrame: "./src/components/PageFrame.astro",
         Search: "./src/components/Search.astro",
+        ThemeSelect: "./src/components/ThemeSelect.astro",
       },
       credits: true,
       customCss: [
@@ -107,6 +112,11 @@ export default defineConfig({
       },
       sidebar: [
         "getting-started",
+        {
+          badge: { text: "try it", variant: "success" },
+          label: "Playground",
+          link: "/playground",
+        },
         {
           autogenerate: { directory: "lib" },
           badge: { text: "lib", variant: "note" },
@@ -149,6 +159,6 @@ export default defineConfig({
   site: "https://social-embed.org",
   vite: {
     // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
-    plugins: [tailwindPlugin],
+    plugins: [tailwindPlugin, localCdn],
   },
 });

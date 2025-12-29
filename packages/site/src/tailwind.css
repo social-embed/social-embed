@@ -21,6 +21,36 @@
   --color-slate-800: #1e293b;
   --color-slate-900: #0f172a;
   --color-slate-950: #020617;
+
+  /* Microviz OKLCH series colors - perceptually consistent palette */
+  --color-mv-blue: oklch(0.65 0.15 250);
+  --color-mv-teal: oklch(0.7 0.15 150);
+  --color-mv-yellow: oklch(0.72 0.15 80);
+  --color-mv-orange: oklch(0.72 0.12 30);
+  --color-mv-red: oklch(0.68 0.14 10);
+  --color-mv-purple: oklch(0.67 0.16 295);
+  --color-mv-cyan: oklch(0.71 0.14 200);
+  --color-mv-green: oklch(0.73 0.13 120);
+
+  /* Light variants (for light mode backgrounds) */
+  --color-mv-blue-light: color-mix(in oklch, oklch(0.65 0.15 250), white 80%);
+  --color-mv-teal-light: color-mix(in oklch, oklch(0.7 0.15 150), white 80%);
+  --color-mv-yellow-light: color-mix(in oklch, oklch(0.72 0.15 80), white 80%);
+  --color-mv-orange-light: color-mix(in oklch, oklch(0.72 0.12 30), white 80%);
+  --color-mv-red-light: color-mix(in oklch, oklch(0.68 0.14 10), white 80%);
+  --color-mv-purple-light: color-mix(in oklch, oklch(0.67 0.16 295), white 80%);
+  --color-mv-cyan-light: color-mix(in oklch, oklch(0.71 0.14 200), white 80%);
+  --color-mv-green-light: color-mix(in oklch, oklch(0.73 0.13 120), white 80%);
+
+  /* Dark variants (for dark mode backgrounds) */
+  --color-mv-blue-dark: color-mix(in oklch, oklch(0.65 0.15 250), black 30%);
+  --color-mv-teal-dark: color-mix(in oklch, oklch(0.7 0.15 150), black 30%);
+  --color-mv-yellow-dark: color-mix(in oklch, oklch(0.72 0.15 80), black 30%);
+  --color-mv-orange-dark: color-mix(in oklch, oklch(0.72 0.12 30), black 30%);
+  --color-mv-red-dark: color-mix(in oklch, oklch(0.68 0.14 10), black 30%);
+  --color-mv-purple-dark: color-mix(in oklch, oklch(0.67 0.16 295), black 30%);
+  --color-mv-cyan-dark: color-mix(in oklch, oklch(0.71 0.14 200), black 30%);
+  --color-mv-green-dark: color-mix(in oklch, oklch(0.73 0.13 120), black 30%);
 }
 
 /* Target small displays like phones */
@@ -91,7 +121,7 @@
 }
 
 @layer utilities {
-  /* Override gray colors with slate colors in dark mode */
+  /* Override gray colors with slate colors */
   :root {
     --sl-color-gray-1: var(--color-slate-200);
     --sl-color-gray-2: var(--color-slate-300);
@@ -100,5 +130,46 @@
     --sl-color-gray-5: var(--color-slate-700);
     --sl-color-gray-6: var(--color-slate-800);
     --sl-color-black: var(--color-slate-900);
+
+    /* Override Starlight badge hues with microviz OKLCH colors */
+    /* Dark mode (default): -low = dark bg, -high = light text */
+    /* success variant uses cyan for "try it" badge */
+    --sl-color-green: var(--color-mv-cyan);
+    --sl-color-green-low: var(--color-mv-cyan-dark);
+    --sl-color-green-high: var(--color-mv-cyan-light);
+
+    --sl-color-blue: var(--color-mv-blue);
+    --sl-color-blue-low: var(--color-mv-blue-dark);
+    --sl-color-blue-high: var(--color-mv-blue-light);
+
+    --sl-color-purple: var(--color-mv-purple);
+    --sl-color-purple-low: var(--color-mv-purple-dark);
+    --sl-color-purple-high: var(--color-mv-purple-light);
+
+    --sl-color-orange: var(--color-mv-orange);
+    --sl-color-orange-low: var(--color-mv-orange-dark);
+    --sl-color-orange-high: var(--color-mv-orange-light);
+
+    --sl-color-red: var(--color-mv-red);
+    --sl-color-red-low: var(--color-mv-red-dark);
+    --sl-color-red-high: var(--color-mv-red-light);
+  }
+
+  /* Light mode: -low = light bg, -high = dark text */
+  [data-theme="light"] {
+    --sl-color-green-low: var(--color-mv-cyan-light);
+    --sl-color-green-high: var(--color-mv-cyan-dark);
+
+    --sl-color-blue-low: var(--color-mv-blue-light);
+    --sl-color-blue-high: var(--color-mv-blue-dark);
+
+    --sl-color-purple-low: var(--color-mv-purple-light);
+    --sl-color-purple-high: var(--color-mv-purple-dark);
+
+    --sl-color-orange-low: var(--color-mv-orange-light);
+    --sl-color-orange-high: var(--color-mv-orange-dark);
+
+    --sl-color-red-low: var(--color-mv-red-light);
+    --sl-color-red-high: var(--color-mv-red-dark);
   }
 }
