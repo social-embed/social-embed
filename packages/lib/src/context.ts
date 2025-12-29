@@ -1,5 +1,129 @@
 import { ok, parseError, type Result } from "./result";
 
+// ─────────────────────────────────────────────────────────────────────────────
+// MatchInput Facade (stable API for custom matchers)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Stable input interface for custom matchers.
+ *
+ * @remarks
+ * This facade hides internal parsing details from matcher authors.
+ * The underlying implementation can change without breaking custom matchers.
+ *
+ * Use this interface when implementing custom matchers instead of
+ * depending on `MatchContext` directly.
+ *
+ * @example
+ * ```typescript
+ * const myMatcher: UrlMatcher<"MyService", MyData> = {
+ *   name: "MyService",
+ *   domains: ["myservice.com"],
+ *
+ *   canMatch(input: MatchInput) {
+ *     return input.hostname === "myservice.com";
+ *   },
+ *
+ *   parse(input: MatchInput) {
+ *     const id = input.getParam("id") ?? input.getPathSegment(1);
+ *     if (!id) return noMatch();
+ *     return ok({ id });
+ *   },
+ *   // ...
+ * };
+ * ```
+ */
+export interface MatchInput {
+  /** The original URL string */
+  readonly url: string;
+
+  /** The hostname (e.g., "youtube.com", "open.spotify.com") */
+  readonly hostname: string;
+
+  /** The URL pathname (e.g., "/watch", "/track/abc123") */
+  readonly pathname: string;
+
+  /** The URL scheme without colon (e.g., "https", "spotify") */
+  readonly scheme: string;
+
+  /**
+   * Get a query parameter value.
+   *
+   * @param name - The parameter name
+   * @returns The parameter value, or null if not present
+   *
+   * @example
+   * ```typescript
+   * // For URL: https://youtube.com/watch?v=abc123
+   * input.getParam("v") // "abc123"
+   * input.getParam("foo") // null
+   * ```
+   */
+  getParam(name: string): string | null;
+
+  /**
+   * Get a path segment by index.
+   *
+   * @param index - Zero-based index of the path segment
+   * @returns The segment value, or null if index out of bounds
+   *
+   * @remarks
+   * Path segments are split by `/`. Leading empty segment (from leading `/`)
+   * is excluded.
+   *
+   * @example
+   * ```typescript
+   * // For URL: https://example.com/users/123/profile
+   * input.getPathSegment(0) // "users"
+   * input.getPathSegment(1) // "123"
+   * input.getPathSegment(2) // "profile"
+   * input.getPathSegment(3) // null
+   * ```
+   */
+  getPathSegment(index: number): string | null;
+}
+
+/**
+ * Create a MatchInput facade from a MatchContext.
+ *
+ * @param ctx - The internal MatchContext
+ * @returns A MatchInput facade
+ *
+ * @internal
+ */
+export function createMatchInput(ctx: MatchContext): MatchInput {
+  // Pre-compute path segments for efficiency
+  const pathSegments = (ctx.parsed.pathname ?? "")
+    .split("/")
+    .filter((s) => s.length > 0);
+
+  return {
+    getParam(name: string): string | null {
+      return ctx.parsed.searchParams?.get(name) ?? null;
+    },
+
+    getPathSegment(index: number): string | null {
+      return pathSegments[index] ?? null;
+    },
+    get hostname() {
+      return ctx.parsed.hostname ?? ctx.host ?? "";
+    },
+    get pathname() {
+      return ctx.parsed.pathname ?? "";
+    },
+    get scheme() {
+      return ctx.scheme ?? "";
+    },
+    get url() {
+      return ctx.raw;
+    },
+  };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Internal Types (used by registry, not exposed to matcher authors)
+// ─────────────────────────────────────────────────────────────────────────────
+
 /**
  * Parsed URL components.
  *
