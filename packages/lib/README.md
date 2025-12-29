@@ -87,6 +87,18 @@ import { mount } from "https://esm.sh/@social-embed/lib/browser";
 - **Comprehensive support** - Works with numerous media platforms
 - **No external dependencies** - Zero npm dependencies
 
+## Scope & Limitations
+
+This is a **client-side URL pattern matching library**. It does NOT:
+
+- Make network requests (no OEmbed/OpenGraph discovery)
+- Fetch aspect ratios or metadata from APIs
+- Require a server - everything runs in the browser
+
+While not OEmbed-compatible, this library is designed to **replace OEmbed services** for common providers. Instead of server-side endpoint discovery, it uses deterministic pattern matching to transform URLs instantly.
+
+All matching and transformation happens synchronously. For providers requiring server-side resolution or dynamic metadata, pair this with a backend OEmbed service.
+
 ## Supported Platforms & Examples
 
 ### YouTube
@@ -202,9 +214,9 @@ If you want a ready-to-use HTML component, check out [@social-embed/wc](https://
 
 All built-in matchers (YouTube, Spotify, Vimeo, etc.) use iframe-based embeds with properly escaped attributes. They are safe to use with any URL input.
 
-### Custom Matchers
+### Custom Matchers with HTML Output
 
-When creating custom matchers with `defineScriptMatcher`, you must escape any user-provided data:
+When using `defineScriptMatcher` or working with `DangerousHtmlNode` types, **you are responsible for escaping user input**. The "Dangerous" prefix in the type name is intentional - it signals that content inserted here bypasses normal escaping.
 
 ```typescript
 import { defineScriptMatcher, escapeHtml } from "@social-embed/lib";
