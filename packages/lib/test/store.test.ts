@@ -65,6 +65,54 @@ describe("RegistryStore", () => {
 
       expect(store.has("Test")).toBe(true);
     });
+
+    it("should match higher priority matchers first", () => {
+      // Create two matchers that handle the same domain
+      const LowPriorityMatcher = defineIframeMatcher({
+        domains: ["priority-test.example.com"],
+        embedUrl: (id) => `https://low.example.com/embed/${id}`,
+        name: "LowPriority",
+        patterns: [/priority-test\.example\.com\/v\/(\w+)/],
+      });
+
+      const HighPriorityMatcher = defineIframeMatcher({
+        domains: ["priority-test.example.com"],
+        embedUrl: (id) => `https://high.example.com/embed/${id}`,
+        name: "HighPriority",
+        patterns: [/priority-test\.example\.com\/v\/(\w+)/],
+      });
+
+      // Create empty store and register both matchers
+      const store = new RegistryStore(MatcherRegistry.create([]));
+      store.register(LowPriorityMatcher, { priority: 1 });
+      store.register(HighPriorityMatcher, { priority: 10 });
+
+      // Higher priority should match first
+      const result = store.match("https://priority-test.example.com/v/abc123");
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.matcher.name).toBe("HighPriority");
+      }
+    });
+
+    it("should respect priority when overriding built-in matchers", () => {
+      // Create a custom YouTube matcher with higher priority
+      const CustomYouTubeMatcher = defineIframeMatcher({
+        domains: ["youtube.com", "youtu.be"],
+        embedUrl: (id) => `https://custom.youtube.com/embed/${id}`,
+        name: "CustomYouTube",
+        patterns: [/youtu\.be\/(\w+)/, /youtube\.com\/watch\?v=(\w+)/],
+      });
+
+      const store = new RegistryStore(); // Has default matchers
+      store.register(CustomYouTubeMatcher, { priority: 100 });
+
+      const result = store.match("https://youtu.be/abc123");
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.matcher.name).toBe("CustomYouTube");
+      }
+    });
   });
 
   describe("unregister", () => {
