@@ -195,11 +195,17 @@ export class MatcherRegistry {
    * Does not modify the original registry.
    */
   with(...matchers: MatcherInput[]): MatcherRegistry {
-    const existingEntries = Array.from(this.byName.values());
     const newEntries = matchers.map((input) => ({
       matcher: extractMatcher(input),
       priority: extractPriority(input),
     }));
+
+    // Deduplicate: exclude existing entries that are being replaced
+    const newNames = new Set(newEntries.map((e) => e.matcher.name));
+    const existingEntries = Array.from(this.byName.values()).filter(
+      (entry) => !newNames.has(entry.matcher.name),
+    );
+
     return new MatcherRegistry([...existingEntries, ...newEntries], {
       resolver: this.resolver,
     });
