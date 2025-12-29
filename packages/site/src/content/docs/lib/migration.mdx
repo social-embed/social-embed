@@ -315,6 +315,76 @@ const youtube = registry.get("YouTube");
 
 ---
 
+## New APIs (Post v2.0)
+
+These features were added after the initial v2 release:
+
+### Type-Safe Matching with `isMatch()`
+
+Use `isMatch()` for type-safe access to matcher-specific data:
+
+```typescript
+import { MatcherRegistry, YouTubeMatcher, SpotifyMatcher } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+const result = registry.match(url);
+
+// Type guard narrows result to specific matcher
+if (registry.isMatch(result, YouTubeMatcher)) {
+  // TypeScript knows result.data is YouTubeData
+  console.log(result.data.videoId);
+}
+
+if (registry.isMatch(result, SpotifyMatcher)) {
+  // TypeScript knows result.data is SpotifyData
+  console.log(result.data.contentType);  // "track", "album", etc.
+  console.log(result.data.id);
+}
+```
+
+### Register with Priority
+
+Control matcher ordering with the `priority` option:
+
+```typescript
+const registry = MatcherRegistry.withDefaults();
+
+// Higher priority = matches first
+registry.register(MyCustomMatcher, { priority: 10 });
+
+// Override built-in matcher
+const CustomYouTubeMatcher = defineIframeMatcher({
+  name: "CustomYouTube",
+  domains: ["youtube.com", "youtu.be"],
+  patterns: [/youtu\.be\/(\w+)/, /youtube\.com\/watch\?v=(\w+)/],
+  embedUrl: (id) => `https://my-proxy.example.com/youtube/${id}`,
+});
+
+registry.register(CustomYouTubeMatcher, { priority: 100 });
+// Now CustomYouTubeMatcher matches before the built-in YouTubeMatcher
+```
+
+### DangerousHtmlNode Type
+
+For custom matchers that output raw HTML (e.g., script-based embeds):
+
+```typescript
+import type { DangerousHtmlNode, EmbedOutput } from "@social-embed/lib";
+
+const output: EmbedOutput = {
+  nodes: [
+    {
+      type: "dangerouslySetHtml",
+      content: "<blockquote>Custom HTML content</blockquote>",
+    } satisfies DangerousHtmlNode
+  ],
+};
+```
+
+**Security note:** Content in `DangerousHtmlNode` is rendered directly without escaping. Always sanitize user input with `escapeHtml()` before including it.
+
+---
+
 ## Summary Checklist
 
 - [ ] Replace `getProviderFromUrl()` with `registry.match()`
