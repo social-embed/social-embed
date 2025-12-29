@@ -46,24 +46,11 @@ export interface RegistryOptions {
 }
 
 /**
- * Options for registering a matcher.
- */
-export interface RegisterOptions {
-  /**
-   * Priority for conflict resolution.
-   * Higher values are checked first.
-   *
-   * @default 0
-   */
-  priority?: number;
-}
-
-/**
- * Registry for URL matchers with indexed dispatch.
+ * Immutable registry for URL matchers with indexed dispatch.
  *
  * @remarks
  * Provides O(1) domain-based lookup for efficient matching.
- * Supports both immutable (with/without) and mutable (register/unregister) APIs.
+ * Immutable by design: use `with()` and `without()` to create new registries.
  *
  * **Indexed dispatch algorithm:**
  * 1. Extract domain from URL
@@ -157,39 +144,6 @@ export class MatcherRegistry {
     }
   }
 
-  /**
-   * Remove an entry from internal indexes.
-   */
-  private removeEntry(name: string): boolean {
-    const entry = this.byName.get(name);
-    if (!entry) return false;
-
-    const { matcher } = entry;
-    this.byName.delete(name);
-
-    if (matcher.domains && matcher.domains.length > 0) {
-      for (const domain of matcher.domains) {
-        const key = domain.toLowerCase();
-        const entries = this.byDomain.get(key);
-        if (entries) {
-          const filtered = entries.filter((e) => e.matcher.name !== name);
-          if (filtered.length > 0) {
-            this.byDomain.set(key, filtered);
-          } else {
-            this.byDomain.delete(key);
-          }
-        }
-      }
-    } else {
-      const idx = this.wildcards.findIndex((e) => e.matcher.name === name);
-      if (idx !== -1) {
-        this.wildcards.splice(idx, 1);
-      }
-    }
-
-    return true;
-  }
-
   // ─────────────────────────────────────────────────────────────────────────
   // Static Factory Methods
   // ─────────────────────────────────────────────────────────────────────────
@@ -266,45 +220,6 @@ export class MatcherRegistry {
       (entry) => !nameSet.has(entry.matcher.name),
     );
     return new MatcherRegistry(remaining, { resolver: this.resolver });
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // Mutable Runtime Augmentation
-  // ─────────────────────────────────────────────────────────────────────────
-
-  /**
-   * Register a matcher (modifies in place).
-   *
-   * @param matcher - Matcher to register
-   * @param options - Registration options (priority)
-   * @returns this for chaining
-   *
-   * @remarks
-   * Use for runtime augmentation in CDN/JSFiddle scenarios.
-   * For immutable composition, use `with()` instead.
-   */
-  register(matcher: UrlMatcher, options: RegisterOptions = {}): this {
-    // Remove existing if present
-    this.removeEntry(matcher.name);
-
-    // Add new entry
-    this.addEntry({
-      matcher,
-      priority: options.priority ?? 0,
-    });
-
-    return this;
-  }
-
-  /**
-   * Unregister a matcher by name (modifies in place).
-   *
-   * @param name - Name of matcher to remove
-   * @returns this for chaining
-   */
-  unregister(name: string): this {
-    this.removeEntry(name);
-    return this;
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -530,7 +445,7 @@ export function renderOutput(output: EmbedOutput | undefined): string {
       if (node.type === "iframe") {
         return renderIframe(node.src, node.attributes);
       }
-      if (node.type === "html") {
+      if (node.type === "rawHtml") {
         return node.content;
       }
       return "";
