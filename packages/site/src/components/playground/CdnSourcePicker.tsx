@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CDN_SOURCE_DESCRIPTIONS,
   CDN_SOURCE_LABELS,
@@ -33,6 +33,15 @@ export function CdnSourcePicker({
   const [customUrl, setCustomUrl] = useState(
     value.type === "custom" ? value.url : "",
   );
+
+  // Sync customUrl when value changes from parent (e.g., URL state restoration)
+  const valueUrl = value.type === "custom" ? value.url : "";
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally sync only on parent value changes
+  useEffect(() => {
+    if (value.type === "custom" && valueUrl !== customUrl) {
+      setCustomUrl(valueUrl);
+    }
+  }, [value.type, valueUrl]);
 
   const handleSourceChange = (type: CdnSourceType) => {
     if (type === "custom") {
