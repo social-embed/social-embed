@@ -30,12 +30,14 @@ export type Result<T> =
  * - `INVALID_FORMAT`: URL matches pattern but is malformed
  * - `MISSING_ID`: URL pattern matched but ID extraction failed
  * - `PARSE_ERROR`: General parsing failure (e.g., URL API threw)
+ * - `UNSUPPORTED_PRIVACY`: Matcher doesn't support privacy-enhanced mode
  */
 export type MatchErrorCode =
   | "NO_MATCH"
   | "INVALID_FORMAT"
   | "MISSING_ID"
-  | "PARSE_ERROR";
+  | "PARSE_ERROR"
+  | "UNSUPPORTED_PRIVACY";
 
 /**
  * Structured error for match failures.
@@ -132,4 +134,30 @@ export function missingId<T = never>(
  */
 export function parseError<T = never>(message: string): Result<T> {
   return err({ code: "PARSE_ERROR", message });
+}
+
+/**
+ * Create an UNSUPPORTED_PRIVACY error Result.
+ *
+ * @param matcherName - Name of the matcher that doesn't support privacy mode
+ * @returns A Result with UNSUPPORTED_PRIVACY error
+ *
+ * @remarks
+ * Use this when a matcher is asked to use privacy mode but doesn't support it.
+ * This allows callers to decide whether to fall back to non-privacy mode
+ * or show a warning to the user.
+ *
+ * @example
+ * ```typescript
+ * if (options?.privacy && !this.supportsPrivacyMode) {
+ *   // Can return error or proceed without privacy
+ *   console.warn(unsupportedPrivacy("MyMatcher").error.message);
+ * }
+ * ```
+ */
+export function unsupportedPrivacy<T = never>(matcherName: string): Result<T> {
+  return err({
+    code: "UNSUPPORTED_PRIVACY",
+    message: `${matcherName} does not support privacy-enhanced mode`,
+  });
 }
