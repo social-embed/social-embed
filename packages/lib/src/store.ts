@@ -9,9 +9,19 @@
  * reference and notifies subscribers when it changes.
  */
 
-import type { MatcherInput, UrlMatcher } from "./matcher";
-import { extractMatcher, extractPriority } from "./matcher";
+import type { UrlMatcher } from "./matcher";
 import { MatcherRegistry } from "./registry";
+
+/**
+ * Options for registering a matcher.
+ */
+export interface RegisterOptions {
+  /**
+   * Priority for matching order.
+   * Higher values match first. Default is 0.
+   */
+  priority?: number;
+}
 
 /**
  * Listener callback for registry changes.
@@ -88,17 +98,26 @@ export class RegistryStore {
   /**
    * Register a matcher (replaces existing with same name).
    *
-   * @param matcher - Matcher to register (or [matcher, { priority }] tuple)
+   * @param matcher - The matcher to register
+   * @param options - Optional registration options (e.g., priority)
+   *
+   * @example
+   * ```typescript
+   * // Simple registration
+   * store.register(MyMatcher);
+   *
+   * // With priority (higher matches first)
+   * store.register(MyMatcher, { priority: 10 });
+   * ```
    */
-  register(matcher: MatcherInput): void {
-    const m = extractMatcher(matcher);
-    const priority = extractPriority(matcher);
+  register(matcher: UrlMatcher, options?: RegisterOptions): void {
+    const priority = options?.priority ?? 0;
 
     // Create new registry with the matcher
     // Using without() first ensures replacement if name exists
     this.registry = this.registry
-      .without(m.name)
-      .with({ matcher: m, priority });
+      .without(matcher.name)
+      .with({ matcher, priority });
     this.notify();
   }
 
