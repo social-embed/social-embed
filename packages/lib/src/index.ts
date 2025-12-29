@@ -79,6 +79,7 @@ export {
 // Embed types (new v2 API)
 // Legacy node type for backward compatibility
 export type {
+  DangerousHtmlNode,
   EmbedData,
   EmbedNode,
   EmbedOutput,
@@ -130,7 +131,7 @@ export { MatcherRegistry, renderOutput } from "./registry";
 // Store (Mutable Registry Wrapper with Reactivity)
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type { RegistryListener, Unsubscribe } from "./store";
+export type { RegisterOptions, RegistryListener, Unsubscribe } from "./store";
 export { RegistryStore } from "./store";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -208,18 +209,15 @@ export {
 import { MatcherRegistry } from "./registry";
 
 /**
- * Default registry instance with all built-in matchers.
- *
- * @deprecated Use `MatcherRegistry.withDefaults()` instead.
- * This export is provided for backward compatibility with v1 code that used
- * `defaultRegistry.register()` or similar instance methods.
+ * Internal default registry for legacy `convertUrlToEmbedUrl` function.
+ * Not exported - use `MatcherRegistry.withDefaults()` instead.
  */
-export const defaultRegistry = MatcherRegistry.withDefaults();
+const _defaultRegistry = MatcherRegistry.withDefaults();
 
 /**
  * Convert a URL to its embed URL equivalent.
  *
- * @deprecated Use `defaultRegistry.toEmbedUrl(url)` instead for more control.
+ * @deprecated Use `MatcherRegistry.withDefaults().toEmbedUrl(url)` for more control.
  * This function is provided for backward compatibility with v1.
  *
  * @param url - The URL to convert
@@ -237,5 +235,5 @@ export const defaultRegistry = MatcherRegistry.withDefaults();
  * ```
  */
 export function convertUrlToEmbedUrl(url: string): string {
-  return defaultRegistry.toEmbedUrl(url) ?? "";
+  return _defaultRegistry.toEmbedUrl(url) ?? "";
 }
