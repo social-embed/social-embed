@@ -9,6 +9,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   convertUrlToEmbedUrl,
+  defineIframeMatcher,
   getSpotifyDefaultSize,
   getSpotifyHeight,
   getSpotifyWidth,
@@ -56,6 +57,64 @@ describe("MatcherRegistry", () => {
     expect(matchers).toBeInstanceOf(Array);
     expect(matchers.length).toBeGreaterThan(0);
     expect(matchers.some((m) => m.name === "YouTube")).toBe(true);
+  });
+
+  describe("with()", () => {
+    it("should replace existing matcher with same name", () => {
+      const CustomYouTubeMatcher = defineIframeMatcher({
+        domains: ["youtube.com", "youtu.be"],
+        embedUrl: (id) => `https://custom.youtube.com/embed/${id}`,
+        name: "YouTube",
+        patterns: [/youtu\.be\/(\w+)/],
+      });
+
+      const customRegistry = registry.with({
+        matcher: CustomYouTubeMatcher,
+        priority: 100,
+      });
+
+      // Size should remain the same (not increase)
+      expect(customRegistry.size).toBe(registry.size);
+
+      // Should use the new matcher
+      const result = customRegistry.match("https://youtu.be/test123");
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        const embedUrl = result.matcher.toEmbedUrl(result.data);
+        expect(embedUrl).toContain("custom.youtube.com");
+      }
+    });
+
+    it("should not have duplicate entries in domain index", () => {
+      const TestMatcher = defineIframeMatcher({
+        domains: ["test.example.com"],
+        embedUrl: (id) => `https://test.example.com/embed/${id}`,
+        name: "TestProvider",
+        patterns: [/test\.example\.com\/v\/(\w+)/],
+      });
+
+      const TestMatcher2 = defineIframeMatcher({
+        domains: ["test.example.com"],
+        embedUrl: (id) => `https://test2.example.com/embed/${id}`,
+        name: "TestProvider",
+        patterns: [/test\.example\.com\/v\/(\w+)/],
+      });
+
+      // Add same-named matcher twice
+      const reg1 = MatcherRegistry.create([TestMatcher]);
+      const reg2 = reg1.with(TestMatcher2);
+
+      // Size should remain 1
+      expect(reg2.size).toBe(1);
+
+      // The new matcher should be used
+      const result = reg2.match("https://test.example.com/v/abc123");
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        const embedUrl = result.matcher.toEmbedUrl(result.data);
+        expect(embedUrl).toBe("https://test2.example.com/embed/abc123");
+      }
+    });
   });
 });
 
