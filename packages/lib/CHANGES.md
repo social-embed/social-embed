@@ -11,6 +11,27 @@ sidebar:
 
 This release completely redesigns the library API for type safety and SSR compatibility.
 
+#### Architecture Overview
+
+```
+@social-embed/lib
+├── Core (SSR-safe, immutable)
+│   ├── MatcherRegistry     ← Immutable, .with()/.without() only
+│   ├── defineMatcher()     ← Factory function
+│   ├── Result<T>           ← Error handling
+│   └── matchers/           ← Built-in matchers
+│
+├── Browser (mutable, reactive)
+│   ├── defaultStore        ← RegistryStore singleton
+│   ├── toEmbedUrl()        ← Convenience wrapper
+│   ├── toEmbed()           ← Returns Embed object
+│   ├── register()          ← Modifies defaultStore
+│   └── mount()             ← DOM execution
+│
+└── WC Integration
+    └── <o-embed>           ← Subscribes to defaultStore
+```
+
 #### New Core Types
 
 - **`UrlMatcher<TName, TData, TOptions>`** replaces `EmbedProvider`
@@ -19,8 +40,8 @@ This release completely redesigns the library API for type safety and SSR compat
     readonly name: TName;
     readonly domains?: readonly string[];
     readonly supportsPrivacyMode?: boolean;
-    canMatch(ctx: MatchContext): boolean;
-    parse(ctx: MatchContext): Result<TData>;
+    canMatch(input: MatchInput): boolean;
+    parse(input: MatchInput): Result<TData>;
     toEmbedUrl(data: TData, options?: PrivacyOptions): string;
     toOutput(data: TData, options?: OutputOptions): EmbedOutput;
   }
@@ -28,26 +49,32 @@ This release completely redesigns the library API for type safety and SSR compat
 
 - **`MatcherRegistry`** replaces `EmbedProviderRegistry`
   - O(1) domain-based indexed dispatch
-  - Immutable: `with()`, `without()` return new registries
-  - Mutable: `register()`, `unregister()` modify in place
+  - **Immutable by design**: `with()`, `without()` return new registries
+  - No `register()`/`unregister()` methods (use `RegistryStore` for mutable operations)
+
+- **`RegistryStore`** (NEW) - Mutable wrapper with reactivity
+  - `register()`, `unregister()` for runtime changes
+  - `subscribe()` for reactive components
+  - Wraps an immutable `MatcherRegistry` internally
 
 - **`Result<T>`** monad for explicit error handling
   - `{ ok: true, value: T }` or `{ ok: false, error: MatchError }`
-  - Error codes: `NO_MATCH`, `INVALID_FORMAT`, `MISSING_ID`, `PARSE_ERROR`
+  - Error codes: `NO_MATCH`, `INVALID_FORMAT`, `MISSING_ID`, `PARSE_ERROR`, `UNSUPPORTED_PRIVACY`
 
-- **`EmbedOutput`** structured output model
-  - `nodes: EmbedNode[]` - iframe or HTML nodes
-  - `scripts?: ScriptRequest[]` - for future script-hydrated embeds
-  - `styles?: StyleChunk[]` - for custom styling
+- **`Embed`** class (NEW) - Rich output object
+  - `.toHtml()` - Render to HTML string (SSR-safe)
+  - `.toUrl()` - Get the primary embed URL
+  - `.toNodes()` - Get raw `EmbedNode[]` for custom rendering
 
-- **`MatchContext`** pre-parsed URL context
-  - Parse once, match many pattern for efficiency
+- **`MatchInput`** facade for custom matchers
+  - Stable API: `hostname`, `pathname`, `getParam()`, `getPathSegment()`
+  - Hides internal parsing details
 
 #### New Features
 
 - **Privacy-by-default**: YouTube embeds use `youtube-nocookie.com`
-- **Factory functions**: `defineIframeMatcher()` for config-driven matchers
-- **Browser module**: `import { mount } from "@social-embed/lib/browser"`
+- **Factory functions**: `defineMatcher({ type: "iframe" })` for config-driven matchers
+- **Browser module**: `import { toEmbedUrl, register } from "@social-embed/lib/browser"`
 - **SSR-safe**: All core APIs work without DOM
 
 #### Migration Guide
@@ -58,7 +85,12 @@ import { getProviderFromUrl, convertUrlToEmbedUrl } from "@social-embed/lib";
 const provider = getProviderFromUrl(url);
 const embedUrl = provider?.getEmbedUrlFromId(provider.getIdFromUrl(url));
 
-// After (v2)
+// After (v2) - Option 1: Zero-config browser API
+import { toEmbedUrl } from "@social-embed/lib/browser";
+const embedUrl = toEmbedUrl(url);
+// => "https://www.youtube-nocookie.com/embed/abc123"
+
+// After (v2) - Option 2: Registry API for SSR/advanced use
 import { MatcherRegistry } from "@social-embed/lib";
 const registry = MatcherRegistry.withDefaults();
 const result = registry.match(url);
@@ -79,13 +111,39 @@ const MyProvider: EmbedProvider = {
 };
 
 // After (v2)
-import { defineIframeMatcher } from "@social-embed/lib";
-const MyMatcher = defineIframeMatcher({
+import { defineMatcher } from "@social-embed/lib";
+const MyMatcher = defineMatcher({
+  type: "iframe",
   name: "MyService",
   domains: ["myservice.com"],
   patterns: [/myservice\.com\/v\/(\w+)/],
   embedUrl: (id) => `https://myservice.com/embed/${id}`,
 });
+
+// Register at runtime (browser only)
+import { register } from "@social-embed/lib/browser";
+register(MyMatcher);
+
+// Or use immutable composition (SSR-safe)
+const extended = registry.with(MyMatcher);
+```
+
+#### Using the Embed Class
+
+```typescript
+import { toEmbed } from "@social-embed/lib/browser";
+
+const embed = toEmbed("https://youtu.be/abc123");
+if (embed) {
+  // Render to HTML (SSR-safe)
+  const html = embed.toHtml();
+
+  // Get just the URL
+  const url = embed.toUrl();
+
+  // Get raw nodes for custom rendering
+  const nodes = embed.toNodes();
+}
 ```
 
 ---
