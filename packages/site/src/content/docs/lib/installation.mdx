@@ -47,17 +47,27 @@ pnpm add @social-embed/lib
 For environments that support ES modules from remote sources (e.g., online sandbox environments), you can import the library directly:
 
 <Tabs syncKey="cdn">
-<TabItem label="unpkg">
+<TabItem label="esm.sh (recommended)">
 
 ```typescript
-import { getYouTubeIdFromUrl } from "https://www.unpkg.com/@social-embed/lib?module";
+import { MatcherRegistry } from "https://esm.sh/@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+const embedUrl = registry.toEmbedUrl("https://youtu.be/abc123");
 ```
 
 </TabItem>
-<TabItem label="skypack">
+<TabItem label="unpkg">
 
 ```typescript
-import { getYouTubeIdFromUrl } from "https://cdn.skypack.dev/@social-embed/lib";
+import { MatcherRegistry } from "https://www.unpkg.com/@social-embed/lib?module";
+```
+
+</TabItem>
+<TabItem label="jsdelivr">
+
+```typescript
+import { MatcherRegistry } from "https://cdn.jsdelivr.net/npm/@social-embed/lib/+esm";
 ```
 
 </TabItem>
