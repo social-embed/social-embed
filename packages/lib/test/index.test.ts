@@ -24,7 +24,7 @@ describe("defaultRegistry (legacy export)", () => {
     // Verify it's an instance with instance methods available
     expect(defaultRegistry).toBeInstanceOf(MatcherRegistry);
     expect(typeof defaultRegistry.match).toBe("function");
-    expect(typeof defaultRegistry.register).toBe("function");
+    expect(typeof defaultRegistry.with).toBe("function");
     expect(typeof defaultRegistry.toEmbedUrl).toBe("function");
   });
 
