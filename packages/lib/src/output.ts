@@ -101,9 +101,9 @@ export function createIframeOutput(
 /**
  * Create an HTML-based EmbedData with optional script.
  *
- * @param content - Pre-escaped HTML content
+ * @param content - Pre-escaped HTML content (MUST be sanitized)
  * @param script - Optional script to load for hydration
- * @returns EmbedData with rawHtml node and optional script
+ * @returns EmbedData with dangerouslySetHtml node and optional script
  *
  * @deprecated Use `createHtmlEmbed()` from `./embed.ts` instead.
  */
@@ -112,7 +112,7 @@ export function createHtmlOutput(
   script?: ScriptRequest,
 ): EmbedData {
   const output: EmbedData = {
-    nodes: [{ content, type: "rawHtml" }],
+    nodes: [{ content, type: "dangerouslySetHtml" }],
   };
   if (script) {
     output.scripts = [script];

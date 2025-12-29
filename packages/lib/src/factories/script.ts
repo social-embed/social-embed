@@ -154,7 +154,7 @@ export function defineScriptMatcher<TName extends string, TData>(
         nodes: [
           {
             content: renderPlaceholder(data),
-            type: "rawHtml",
+            type: "dangerouslySetHtml",
           },
         ],
         scripts: [scriptRequest],
