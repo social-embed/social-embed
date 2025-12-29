@@ -188,17 +188,29 @@ Control the embed height with predefined size tiers:
 
 ```html
 <!-- Compact track player -->
-<o-embed url="spotify:track:1w4etUoKfql47wtTFq031f" spotify-size="compact"></o-embed>
+<o-embed
+  url="spotify:track:1w4etUoKfql47wtTFq031f"
+  spotify-size="compact"
+></o-embed>
 
 <!-- Large album player -->
-<o-embed url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX" spotify-size="large"></o-embed>
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-size="large"
+></o-embed>
 ```
 
-<o-embed url="spotify:track:1w4etUoKfql47wtTFq031f" spotify-size="compact"></o-embed>
+<o-embed
+  url="spotify:track:1w4etUoKfql47wtTFq031f"
+  spotify-size="compact"
+></o-embed>
 
 <br />
 
-<o-embed url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX" spotify-size="large"></o-embed>
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-size="large"
+></o-embed>
 
 <Aside type="tip">
 When no size is specified, the height is auto-detected based on content type:
@@ -217,10 +229,16 @@ Set the visual theme of the player:
 - `light` - Light background
 
 ```html
-<o-embed url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX" spotify-theme="light"></o-embed>
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-theme="light"
+></o-embed>
 ```
 
-<o-embed url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX" spotify-theme="light"></o-embed>
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-theme="light"
+></o-embed>
 
 ---
 
@@ -232,10 +250,16 @@ Control the display mode:
 - `coverart` - Minimal view emphasizing album/track artwork
 
 ```html
-<o-embed url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX" spotify-view="coverart"></o-embed>
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-view="coverart"
+></o-embed>
 ```
 
-<o-embed url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX" spotify-view="coverart"></o-embed>
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-view="coverart"
+></o-embed>
 
 ---
 
@@ -245,10 +269,16 @@ For podcast content (shows and episodes), set the playback start position in sec
 
 ```html
 <!-- Start podcast at 2 minutes (120 seconds) -->
-<o-embed url="spotify:episode:0Bx6gWK755bUoM238X2Ma1" spotify-start="120"></o-embed>
+<o-embed
+  url="spotify:episode:0Bx6gWK755bUoM238X2Ma1"
+  spotify-start="120"
+></o-embed>
 ```
 
-<o-embed url="spotify:episode:0Bx6gWK755bUoM238X2Ma1" spotify-start="120"></o-embed>
+<o-embed
+  url="spotify:episode:0Bx6gWK755bUoM238X2Ma1"
+  spotify-start="120"
+></o-embed>
 
 ---
 
@@ -265,7 +295,12 @@ Attributes can be combined for maximum customization:
 ></o-embed>
 ```
 
-<o-embed url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX" spotify-size="compact" spotify-theme="dark" spotify-view="coverart"></o-embed>
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-size="compact"
+  spotify-theme="dark"
+  spotify-view="coverart"
+></o-embed>
 
 ---
 
@@ -287,10 +322,16 @@ For advanced use cases or future Spotify parameters, use the `provider-options` 
 You can also set explicit dimensions using standard `height` and `width` attributes:
 
 ```html
-<o-embed url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi" height="152"></o-embed>
+<o-embed
+  url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi"
+  height="152"
+></o-embed>
 ```
 
-<o-embed url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi" height="152"></o-embed>
+<o-embed
+  url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi"
+  height="152"
+></o-embed>
 
 <br />
 

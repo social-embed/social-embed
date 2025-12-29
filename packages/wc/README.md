@@ -125,20 +125,33 @@ document.body.innerHTML = `
 
 ```html
 <!-- Set custom dimensions -->
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" width="640" height="360"></o-embed>
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  width="640"
+  height="360"
+></o-embed>
 
 <!-- Enable fullscreen button -->
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  allowfullscreen
+></o-embed>
 
 <!-- Add loading spinner with message -->
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" loading="Loading video..."></o-embed>
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  loading="Loading video..."
+></o-embed>
 ```
 
 ### Error Handling
 
 ```html
 <!-- Custom error message -->
-<o-embed url="invalid-url" error-message="Sorry, this URL isn't supported"></o-embed>
+<o-embed
+  url="invalid-url"
+  error-message="Sorry, this URL isn't supported"
+></o-embed>
 ```
 
 ## Technical Details
