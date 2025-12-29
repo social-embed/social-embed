@@ -52,8 +52,9 @@
  */
 
 import { Embed } from "../embed";
-import type { MatcherInput, MatchResult } from "../matcher";
+import type { MatchResult, UrlMatcher } from "../matcher";
 import type { EmbedOptions, PrivacyOptions } from "../output";
+import type { RegisterOptions } from "../store";
 import { RegistryStore } from "../store";
 
 export { clearScriptCache, type MountOptions, mount } from "./mount";
@@ -168,10 +169,13 @@ export function match(url: string): MatchResult {
  * });
  *
  * register(TikTokMatcher);
+ *
+ * // With priority
+ * register(TikTokMatcher, { priority: 10 });
  * ```
  */
-export function register(matcher: MatcherInput): void {
-  defaultStore.register(matcher);
+export function register(matcher: UrlMatcher, options?: RegisterOptions): void {
+  defaultStore.register(matcher, options);
 }
 
 /**
