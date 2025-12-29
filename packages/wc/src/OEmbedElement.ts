@@ -9,7 +9,7 @@ import {
   getSpotifyHeight,
   type MatcherRegistry,
   type OutputOptions,
-  RegistryStore,
+  type RegistryStore,
   renderOutput,
   type SpotifyData,
   type SpotifyOutputOptions,
@@ -18,6 +18,7 @@ import {
   type SpotifyView,
   type Unsubscribe,
 } from "@social-embed/lib";
+import { defaultStore } from "@social-embed/lib/browser";
 import { html, LitElement, type TemplateResult } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
@@ -27,8 +28,10 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
  * @remarks
  * This is a module-level singleton that all `<o-embed>` elements subscribe to.
  * When `defaultStore.register()` is called, all components re-render.
+ *
+ * Re-exported from `@social-embed/lib/browser` to ensure a single shared singleton.
  */
-export const defaultStore = new RegistryStore();
+export { defaultStore };
 
 /**
  * `<o-embed>` is a LitElement-based web component that automatically detects and
