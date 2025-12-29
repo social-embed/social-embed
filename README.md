@@ -51,10 +51,12 @@ npm install @social-embed/lib
 ```
 
 ```javascript
-import { convertUrlToEmbedUrl } from "@social-embed/lib";
+// Convert a URL to its embed form
+import { MatcherRegistry } from "@social-embed/lib";
 
-const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
-// "https://www.youtube.com/embed/Bd8_vO5zrjo"
+const registry = MatcherRegistry.withDefaults();
+const embedUrl = registry.toEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
+// Output: "https://www.youtube-nocookie.com/embed/Bd8_vO5zrjo"
 ```
 
 ## Why social-embed
@@ -64,7 +66,7 @@ const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
 - **Zero npm dependencies** — The core library (`@social-embed/lib`) has no dependencies; the web component uses [Lit](https://lit.dev/)
 - **Small bundles** — ~2 kB gzipped for the library, ~10 kB for the web component (includes Lit)
 - **Client-side only** — No backend, no API keys, no oEmbed server
-- **Extensible** — Add custom providers by implementing three methods on the `EmbedProvider` interface
+- **Extensible** — Add custom matchers with `defineIframeMatcher` / `defineScriptMatcher` and register them on `MatcherRegistry`
 
 ## Supported Platforms
 
