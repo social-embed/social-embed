@@ -155,36 +155,41 @@ console.log(registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0"));
 ### Spotify
 
 ```typescript
-console.log(convertUrlToEmbedUrl("spotify:album:1DFixLWuPkv3KT3TnV35m3"));
-// "https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3"
+// Spotify URI format
+registry.toEmbedUrl("spotify:album:1DFixLWuPkv3KT3TnV35m3");
+// => "https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3"
+
+// Web URL format
+registry.toEmbedUrl("https://open.spotify.com/track/4iV5W9uYEdYUVa79Axb7Rh");
+// => "https://open.spotify.com/embed/track/4iV5W9uYEdYUVa79Axb7Rh"
 ```
 
 ### Vimeo
 
 ```typescript
-console.log(convertUrlToEmbedUrl("vimeo.com/channels/staffpicks/134668506"));
-// "https://player.vimeo.com/video/134668506"
+registry.toEmbedUrl("https://vimeo.com/channels/staffpicks/134668506");
+// => "https://player.vimeo.com/video/134668506"
 ```
 
 ### Loom
 
 ```typescript
-console.log(convertUrlToEmbedUrl("loom.com/share/e883f70b219a49f6ba7fbeac71a72604"));
-// "https://www.loom.com/embed/e883f70b219a49f6ba7fbeac71a72604"
+registry.toEmbedUrl("https://loom.com/share/e883f70b219a49f6ba7fbeac71a72604");
+// => "https://www.loom.com/embed/e883f70b219a49f6ba7fbeac71a72604"
 ```
 
 ### EdPuzzle
 
 ```typescript
-console.log(convertUrlToEmbedUrl("edpuzzle.com/media/606b413369971e424ec6021e"));
-// "https://edpuzzle.com/embed/media/606b413369971e424ec6021e"
+registry.toEmbedUrl("https://edpuzzle.com/media/606b413369971e424ec6021e");
+// => "https://edpuzzle.com/embed/media/606b413369971e424ec6021e"
 ```
 
 ### Wistia
 
 ```typescript
-console.log(convertUrlToEmbedUrl("https://support.wistia.com/medias/26sk4lmiix"));
-// "https://fast.wistia.net/embed/iframe/26sk4lmiix"
+registry.toEmbedUrl("https://support.wistia.com/medias/26sk4lmiix");
+// => "https://fast.wistia.net/embed/iframe/26sk4lmiix"
 ```
 
 ### Check Provider Support
