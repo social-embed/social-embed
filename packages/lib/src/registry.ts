@@ -290,6 +290,41 @@ export class MatcherRegistry {
   }
 
   /**
+   * Type guard for narrowing match results to a specific matcher.
+   *
+   * @param result - The match result to check
+   * @param matcher - The matcher to check against
+   * @returns true if the result is from the specified matcher (narrows type)
+   *
+   * @remarks
+   * Enables TypeScript to narrow the `result.data` type based on the matcher.
+   * Essential for type-safe access to provider-specific parsed data.
+   *
+   * @example
+   * ```typescript
+   * import { YouTubeMatcher, SpotifyMatcher } from "@social-embed/lib";
+   *
+   * const result = registry.match(url);
+   *
+   * if (registry.isMatch(result, YouTubeMatcher)) {
+   *   // result.data is now typed as YouTubeData
+   *   console.log(result.data.id); // ✓ Type-safe
+   * }
+   *
+   * if (registry.isMatch(result, SpotifyMatcher)) {
+   *   // result.data is now typed as SpotifyData
+   *   console.log(result.data.type); // ✓ Type-safe
+   * }
+   * ```
+   */
+  isMatch<M extends UrlMatcher>(
+    result: MatchResult,
+    matcher: M,
+  ): result is MatchResult<M> & { ok: true } {
+    return result.ok && result.matcher.name === matcher.name;
+  }
+
+  /**
    * Find candidate matchers for a context.
    */
   private findCandidates(ctx: MatchContext): MatcherEntry[] {
@@ -445,7 +480,7 @@ export function renderOutput(output: EmbedOutput | undefined): string {
       if (node.type === "iframe") {
         return renderIframe(node.src, node.attributes);
       }
-      if (node.type === "rawHtml") {
+      if (node.type === "dangerouslySetHtml") {
         return node.content;
       }
       return "";
