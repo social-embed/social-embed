@@ -19,22 +19,36 @@ Complete API redesign of `@social-embed/lib` with new type-safe architecture:
 
 - **`EmbedProviderRegistry` → `MatcherRegistry`**: O(1) indexed dispatch
   - Domain-based lookup for efficient matching with hundreds of matchers
-  - Both immutable (`with()`/`without()`) and mutable (`register()`/`unregister()`) APIs
+  - Immutable by design: `with()`, `without()` return new registries
+
+- **`RegistryStore`** (NEW): Mutable wrapper with reactivity
+  - `register()`, `unregister()` for runtime matcher changes
+  - Subscribe/notify pattern for reactive components (e.g., `<o-embed>`)
 
 - **`Result<T>` monad**: Explicit error handling replaces nullable returns
-  - Structured `MatchError` with codes: `NO_MATCH`, `INVALID_FORMAT`, `MISSING_ID`, `PARSE_ERROR`
+  - Structured `MatchError` with codes: `NO_MATCH`, `INVALID_FORMAT`, `MISSING_ID`, `PARSE_ERROR`, `UNSUPPORTED_PRIVACY`
 
-- **`EmbedOutput` structured model**: SSR-safe output
-  - Separates `nodes`, `scripts`, `styles` for flexibility
-  - Future-proofs for script-hydrated embeds (Twitter, Instagram)
+- **`Embed` class** (NEW): Rich output object
+  - Methods: `.toHtml()`, `.toUrl()`, `.toNodes()`
+  - Replaces direct `EmbedOutput` manipulation
 
 - **Privacy-by-default**: YouTube uses `youtube-nocookie.com` by default
   - Opt out with `{ privacy: false }`
 
 - **Core/Browser split**: SSR-safe core, optional browser module
-  - `import { mount } from "@social-embed/lib/browser"` for DOM execution
+  - Core: `import { MatcherRegistry } from "@social-embed/lib"`
+  - Browser: `import { toEmbedUrl, register } from "@social-embed/lib/browser"`
 
-- **Factory pattern**: `defineIframeMatcher()` for creating config-driven matchers
+- **Factory pattern**: `defineMatcher({ type: "iframe" })` for config-driven matchers
+
+### Tiered API
+
+| Tier | Audience | API |
+|------|----------|-----|
+| **1** | CDN/JSFiddle users | `toEmbedUrl(url)` from browser module |
+| **1.5** | Runtime extension | `register(matcher)` from browser module |
+| **2** | HTML authors | `<o-embed url="...">` web component |
+| **3** | Framework integrators | `MatcherRegistry` class directly |
 
 See individual package CHANGES.md for migration details.
 

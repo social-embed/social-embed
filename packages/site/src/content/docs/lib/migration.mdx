@@ -14,11 +14,12 @@ Version 2.0 is a **complete API redesign**. This guide covers all breaking chang
 | v1 | v2 | Notes |
 |----|-----|-------|
 | `EmbedProvider` | `UrlMatcher` | Generic interface with type inference |
-| `EmbedProviderRegistry` | `MatcherRegistry` | O(1) indexed dispatch |
+| `EmbedProviderRegistry` | `MatcherRegistry` | O(1) indexed dispatch, **immutable** |
+| _(none)_ | `RegistryStore` | **NEW**: Mutable wrapper with reactivity |
 | `getProviderFromUrl()` | `registry.match()` | Returns `Result<MatchOk>` |
 | `getIdFromUrl()` | `matcher.parse()` | Returns `Result<TData>` |
 | `getEmbedUrlFromId()` | `matcher.toEmbedUrl()` | Takes typed data, not string |
-| _(none)_ | `matcher.toOutput()` | **NEW**: Structured output model |
+| _(none)_ | `Embed` class | **NEW**: `.toHtml()`, `.toUrl()`, `.toNodes()` |
 | _(none)_ | Privacy-by-default | YouTube uses `youtube-nocookie.com` |
 
 ---
@@ -169,12 +170,13 @@ const MyProvider: EmbedProvider = {
 defaultRegistry.providers.set("MyService", MyProvider);
 ```
 
-### v2: UrlMatcher with defineIframeMatcher
+### v2: UrlMatcher with defineMatcher
 
 ```typescript
-import { defineIframeMatcher, MatcherRegistry } from "@social-embed/lib";
+import { defineMatcher, MatcherRegistry } from "@social-embed/lib";
 
-const MyMatcher = defineIframeMatcher({
+const MyMatcher = defineMatcher({
+  type: "iframe",
   name: "MyService",
   domains: ["myservice.com"],
   patterns: [/myservice\.com\/v\/(\w+)/],
@@ -182,17 +184,20 @@ const MyMatcher = defineIframeMatcher({
   defaultDimensions: { width: 640, height: 360 },
 });
 
-// Register with registry
+// Option 1: Immutable composition (SSR-safe)
 const registry = MatcherRegistry.withDefaults().with(MyMatcher);
-// Or mutate existing registry
-registry.register(MyMatcher);
+
+// Option 2: Runtime registration (browser only)
+import { register } from "@social-embed/lib/browser";
+register(MyMatcher);
 ```
 
 **Key differences:**
-- Use `defineIframeMatcher()` factory for simple iframe embeds
+- Use `defineMatcher({ type: "iframe" })` factory for simple iframe embeds
 - Specify `domains` for O(1) indexed lookup
 - Patterns use regex capture groups
 - Default dimensions are part of the config
+- For mutable operations, use browser module's `register()` (not on registry)
 
 ---
 
@@ -210,31 +215,49 @@ defaultRegistry.providers.set("MyService", MyProvider);
 const registry = new EmbedProviderRegistry([MyProvider]);
 ```
 
-### v2: Immutable + mutable patterns
+### v2: Immutable Registry + Mutable Store
+
+The v2 API separates concerns:
+- **`MatcherRegistry`** is immutable (SSR-safe, no side effects)
+- **`RegistryStore`** provides mutable operations with reactivity
+- **Browser module** exports convenience functions for runtime registration
 
 ```typescript
+// SSR-safe: MatcherRegistry is immutable
 import { MatcherRegistry } from "@social-embed/lib";
 
-// Create with defaults
 const registry = MatcherRegistry.withDefaults();
 
-// Immutable extension (returns new registry)
+// Immutable composition (returns NEW registry)
 const extended = registry.with(MyMatcher);
-
-// Mutable modification
-registry.register(MyMatcher);  // Modifies in place
-
-// Remove a matcher
 const noSpotify = registry.without("Spotify");
 
 // Create from scratch
 const custom = MatcherRegistry.create([MyMatcher1, MyMatcher2]);
 ```
 
+```typescript
+// Browser: Use register() for mutable operations
+import { register, unregister, defaultStore } from "@social-embed/lib/browser";
+
+// Register at runtime (modifies defaultStore, notifies <o-embed>)
+register(MyMatcher);
+unregister("YouTube");
+
+// Access current registry
+const result = defaultStore.match(url);
+
+// Subscribe to changes (for custom components)
+const unsub = defaultStore.subscribe((registry) => {
+  console.log("Registry changed:", registry.list());
+});
+```
+
 **Key differences:**
-- `MatcherRegistry.withDefaults()` instead of importing `defaultRegistry`
-- Both immutable (`with()`, `without()`) and mutable (`register()`, `unregister()`) APIs
+- `MatcherRegistry` is **immutable** - no `register()`/`unregister()` methods
+- Use `RegistryStore` or browser module's `register()` for mutable operations
 - Indexed dispatch for O(1) domain lookup
+- Subscribe/notify pattern for reactive components
 
 ---
 
@@ -260,7 +283,37 @@ To maintain v1 behavior (no privacy enhancement), pass `{ privacy: false }` to a
 
 ## New Features in v2
 
-### Structured Output
+### The Embed Class
+
+The `Embed` class provides a rich object with rendering methods:
+
+```typescript
+import { toEmbed } from "@social-embed/lib/browser";
+
+const embed = toEmbed("https://youtu.be/abc123");
+
+if (embed) {
+  // Render to HTML string (SSR-safe)
+  const html = embed.toHtml();
+  // => '<iframe src="https://www.youtube-nocookie.com/embed/abc123" ...></iframe>'
+
+  // Get just the embed URL
+  const url = embed.toUrl();
+  // => "https://www.youtube-nocookie.com/embed/abc123"
+
+  // Get raw nodes for custom rendering (JSX, Vue, etc.)
+  const nodes = embed.toNodes();
+  // => [{ type: "iframe", src: "...", attributes: {...} }]
+
+  // Access metadata
+  console.log(embed.provider);  // "YouTube"
+  console.log(embed.data);      // { videoId: "abc123" }
+}
+```
+
+### Structured Output (Low-Level)
+
+For advanced use cases, access the raw output model:
 
 ```typescript
 const result = registry.match("https://youtu.be/abc123");
@@ -285,14 +338,16 @@ if (result.ok) {
 ### SSR-Safe HTML Rendering
 
 ```typescript
-import { MatcherRegistry, renderOutput } from "@social-embed/lib";
+import { MatcherRegistry } from "@social-embed/lib";
+import { Embed } from "@social-embed/lib/browser";
 
 const registry = MatcherRegistry.withDefaults();
 const result = registry.match("https://youtu.be/abc123");
 
 if (result.ok) {
   const output = result.matcher.toOutput(result.data);
-  const html = renderOutput(output);
+  const embed = new Embed(result.matcher.name, result.data, output);
+  const html = embed.toHtml();
   // Returns HTML string, safe for SSR
 }
 ```
@@ -387,11 +442,12 @@ const output: EmbedOutput = {
 
 ## Summary Checklist
 
-- [ ] Replace `getProviderFromUrl()` with `registry.match()`
-- [ ] Replace `convertUrlToEmbedUrl()` with `registry.toEmbedUrl()`
+- [ ] Replace `getProviderFromUrl()` with `registry.match()` or browser's `match()`
+- [ ] Replace `convertUrlToEmbedUrl()` with `toEmbedUrl()` from browser module
 - [ ] Replace provider-specific `get*IdFromUrl()` functions with `registry.match()`
 - [ ] Update error handling to use `Result\<T\>` pattern
-- [ ] Migrate custom providers to `defineIframeMatcher()` or `UrlMatcher` interface
-- [ ] Replace registry imports with `MatcherRegistry.withDefaults()`
+- [ ] Migrate custom providers to `defineMatcher({ type: "iframe" })` or `UrlMatcher` interface
+- [ ] Replace mutable registry operations with browser module's `register()`/`unregister()`
+- [ ] Use `MatcherRegistry.withDefaults()` for SSR, browser module for runtime
 - [ ] Test privacy-enhanced URLs (or add `{ privacy: false }` to maintain v1 behavior)
-- [ ] Update any code that uses structured output (`toOutput()` instead of direct HTML)
+- [ ] Consider using `Embed` class for rendering (`.toHtml()`, `.toUrl()`, `.toNodes()`)

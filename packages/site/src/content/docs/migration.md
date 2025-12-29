@@ -13,18 +13,28 @@ Version 2.0 introduces a completely redesigned API with type-safe generics and p
 ### Breaking Changes Summary
 
 - `EmbedProvider` → `UrlMatcher<TName, TData, TOptions>`
-- `EmbedProviderRegistry` → `MatcherRegistry`
-- `getProviderFromUrl()` → `registry.match()`
-- `convertUrlToEmbedUrl()` → `registry.toEmbedUrl()`
+- `EmbedProviderRegistry` → `MatcherRegistry` (immutable)
+- _(new)_ `RegistryStore` for mutable operations with reactivity
+- `getProviderFromUrl()` → `registry.match()` or browser's `match()`
+- `convertUrlToEmbedUrl()` → `toEmbedUrl()` from browser module
 - Provider-specific functions removed (use registry pattern instead)
 - Returns `Result<T>` instead of nullable values
 - Privacy-enhanced mode enabled by default
+- _(new)_ `Embed` class with `.toHtml()`, `.toUrl()`, `.toNodes()` methods
+
+### Architecture Split
+
+| Layer | Purpose | API |
+|-------|---------|-----|
+| **Core** | SSR-safe, immutable | `MatcherRegistry`, `defineMatcher()` |
+| **Browser** | Mutable, reactive | `register()`, `toEmbedUrl()`, `defaultStore` |
+| **WC** | HTML authors | `<o-embed url="...">` |
 
 ### Web Component Changes
 
 - **HTML interface unchanged** - `<o-embed url="...">` still works
 - **New attribute**: `privacy` - Enable/disable privacy-enhanced mode (default: `true`)
-- **Internal refactor**: Now uses `MatcherRegistry` from lib
+- **Reactive**: Subscribes to `defaultStore` - auto-updates when you call `register()`
 
 ---
 

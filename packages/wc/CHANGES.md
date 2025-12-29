@@ -13,7 +13,8 @@ The web component has been completely rewritten to use the new `@social-embed/li
 
 #### What Changed
 
-- **Internal implementation**: Now uses `MatcherRegistry` instead of provider-specific imports
+- **Internal implementation**: Now uses `MatcherRegistry` via `defaultStore` from `@social-embed/lib/browser`
+- **Reactive updates**: Subscribes to `defaultStore` - when you call `register()`, `<o-embed>` auto-updates
 - **Reduced bundle size**: ~550 lines → ~160 lines by delegating to lib
 - **New attribute**: `privacy` - Enable/disable privacy-enhanced mode (default: `true`)
 
