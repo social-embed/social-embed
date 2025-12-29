@@ -16,6 +16,7 @@ import {
   renderOutput,
   SPOTIFY_HEIGHTS,
   SpotifyMatcher,
+  YouTubeMatcher,
 } from "../src";
 
 // Note: defaultRegistry was removed in v2 - use MatcherRegistry.withDefaults()
@@ -55,6 +56,47 @@ describe("MatcherRegistry", () => {
     expect(matchers).toBeInstanceOf(Array);
     expect(matchers.length).toBeGreaterThan(0);
     expect(matchers.some((m) => m.name === "YouTube")).toBe(true);
+  });
+});
+
+describe("registry.isMatch", () => {
+  const registry = MatcherRegistry.withDefaults();
+
+  it("should return true when result matches the specified matcher", () => {
+    const result = registry.match("https://youtu.be/FTQbiNvZqaY");
+    expect(registry.isMatch(result, YouTubeMatcher)).toBe(true);
+  });
+
+  it("should narrow result type allowing access to typed data", () => {
+    const result = registry.match("https://youtu.be/FTQbiNvZqaY");
+    if (registry.isMatch(result, YouTubeMatcher)) {
+      // After isMatch, result.data should be accessible
+      expect(result.data.videoId).toBe("FTQbiNvZqaY");
+    } else {
+      throw new Error("Expected isMatch to return true");
+    }
+  });
+
+  it("should return false when result is from a different matcher", () => {
+    const result = registry.match("https://youtu.be/FTQbiNvZqaY");
+    expect(registry.isMatch(result, SpotifyMatcher)).toBe(false);
+  });
+
+  it("should return false when match fails", () => {
+    const result = registry.match("https://example.com/unknown");
+    expect(registry.isMatch(result, YouTubeMatcher)).toBe(false);
+    expect(registry.isMatch(result, SpotifyMatcher)).toBe(false);
+  });
+
+  it("should work with Spotify matcher", () => {
+    const result = registry.match(
+      "https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs",
+    );
+    expect(registry.isMatch(result, SpotifyMatcher)).toBe(true);
+    if (registry.isMatch(result, SpotifyMatcher)) {
+      expect(result.data.contentType).toBe("track");
+      expect(result.data.id).toBe("7Ca8EuTCyU3pjJR4TNOXqs");
+    }
   });
 });
 
@@ -679,6 +721,43 @@ describe("renderOutput", () => {
     expect(html).toContain("<iframe");
     expect(html).toContain("youtube-nocookie.com/embed/FTQbiNvZqaY");
     expect(html).toContain("</iframe>");
+  });
+
+  it("should render dangerouslySetHtml content directly", () => {
+    const output = {
+      nodes: [
+        {
+          content: "<blockquote>Test</blockquote>",
+          type: "dangerouslySetHtml" as const,
+        },
+      ],
+    };
+    expect(renderOutput(output)).toBe("<blockquote>Test</blockquote>");
+  });
+
+  it("should handle mixed iframe and dangerouslySetHtml nodes", () => {
+    const output = {
+      nodes: [
+        {
+          attributes: { height: "315", width: "560" },
+          src: "https://example.com/embed",
+          type: "iframe" as const,
+        },
+        {
+          content: "<div>Extra content</div>",
+          type: "dangerouslySetHtml" as const,
+        },
+      ],
+    };
+    const html = renderOutput(output);
+    expect(html).toContain("<iframe");
+    expect(html).toContain("example.com/embed");
+    expect(html).toContain("<div>Extra content</div>");
+  });
+
+  it("should return empty string for empty nodes array", () => {
+    const output = { nodes: [] };
+    expect(renderOutput(output)).toBe("");
   });
 });
 
