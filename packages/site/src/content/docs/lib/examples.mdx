@@ -79,7 +79,49 @@ if (result.ok) {
 
 ---
 
-## 2. Privacy Mode
+## 2. Type-Safe Matching with `isMatch()`
+
+When you need type-safe access to matcher-specific data, use `isMatch()`:
+
+```ts
+import { MatcherRegistry, YouTubeMatcher, SpotifyMatcher } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+const result = registry.match(url);
+
+// Type guard narrows result to specific matcher
+if (registry.isMatch(result, YouTubeMatcher)) {
+  // TypeScript knows result.data is YouTubeData
+  console.log(result.data.videoId);  // Fully typed!
+}
+
+if (registry.isMatch(result, SpotifyMatcher)) {
+  // TypeScript knows result.data is SpotifyData
+  console.log(result.data.contentType);  // "track", "album", etc.
+  console.log(result.data.id);
+}
+```
+
+This is especially useful when you need matcher-specific behavior:
+
+```ts
+const result = registry.match(userInput);
+
+if (registry.isMatch(result, SpotifyMatcher)) {
+  // Apply Spotify-specific options
+  const output = result.matcher.toOutput(result.data, {
+    size: "compact",
+    theme: "dark",
+  });
+} else if (result.ok) {
+  // Generic handling for other matchers
+  const output = result.matcher.toOutput(result.data);
+}
+```
+
+---
+
+## 4. Privacy Mode
 
 Privacy-enhanced mode is **enabled by default** for matchers that support it:
 
@@ -100,7 +142,7 @@ Privacy mode is supported for:
 
 ---
 
-## 3. Built-in Matchers
+## 5. Built-in Matchers
 
 ### YouTube
 
@@ -186,7 +228,7 @@ registry.toEmbedUrl("https://edpuzzle.com/media/606b413369971e424ec6021e");
 
 ---
 
-## 4. Error Handling
+## 6. Error Handling
 
 All parsing operations return a `Result<T>` type for explicit error handling:
 
@@ -227,7 +269,7 @@ if (result.ok) {
 
 ---
 
-## 5. Custom Matchers
+## 7. Custom Matchers
 
 ### Using `defineIframeMatcher` (Recommended)
 
@@ -308,7 +350,7 @@ const MyServiceMatcher: UrlMatcher<"MyService", MyServiceData> = {
 
 ---
 
-## 6. Registry Patterns
+## 8. Registry Patterns
 
 ### Create with Defaults
 
@@ -339,6 +381,28 @@ const registry = MatcherRegistry.withDefaults();
 registry.register(MyCustomMatcher);  // Modifies in place
 ```
 
+### Register with Priority
+
+Higher priority matchers are checked first, useful when overriding built-in behavior:
+
+```ts
+const registry = MatcherRegistry.withDefaults();
+
+// Register with priority (higher = matches first)
+registry.register(MyCustomMatcher, { priority: 10 });
+
+// Override built-in YouTube with custom implementation
+const CustomYouTubeMatcher = defineIframeMatcher({
+  name: "CustomYouTube",
+  domains: ["youtube.com", "youtu.be"],
+  patterns: [/youtu\.be\/(\w+)/, /youtube\.com\/watch\?v=(\w+)/],
+  embedUrl: (id) => `https://my-proxy.example.com/youtube/${id}`,
+});
+
+registry.register(CustomYouTubeMatcher, { priority: 100 });
+// Now CustomYouTubeMatcher matches before the built-in YouTubeMatcher
+```
+
 ### Remove Matchers
 
 ```ts
@@ -360,7 +424,7 @@ console.log(registry.get("YouTube"));  // YouTubeMatcher
 
 ---
 
-## 7. SSR Usage
+## 9. SSR Usage
 
 All core APIs are SSR-safe (no DOM dependencies):
 
