@@ -23,12 +23,13 @@ import { renderIframe } from "./escape";
  * @remarks
  * Two types:
  * - `iframe`: Standard iframe embed (YouTube, Vimeo, Spotify)
- * - `rawHtml`: Pre-escaped HTML content (Twitter blockquotes, Instagram)
+ * - `dangerouslySetHtml`: Pre-escaped HTML content (Twitter blockquotes, Instagram)
  *
- * The `rawHtml` type requires careful escaping - only use for
- * trusted, pre-sanitized content from built-in matchers.
+ * The `dangerouslySetHtml` type requires careful escaping - only use for
+ * trusted, pre-sanitized content. The "dangerous" name is intentional:
+ * if you put unsanitized user data here, XSS is YOUR responsibility.
  */
-export type EmbedNode = IframeNode | RawHtmlNode;
+export type EmbedNode = IframeNode | DangerousHtmlNode;
 
 /**
  * An iframe node with structured attributes.
@@ -61,16 +62,18 @@ export interface IframeNode {
 }
 
 /**
- * Raw HTML content node.
+ * Dangerous HTML content node.
  *
  * @remarks
- * Renamed from `HtmlNode` to `RawHtmlNode` for clarity.
- * Only use with trusted, pre-escaped content.
+ * Named to emphasize security responsibility - if you put unsanitized
+ * user input in `content`, you WILL have XSS vulnerabilities.
+ *
+ * Use only with trusted, pre-escaped content from built-in matchers.
  */
-export interface RawHtmlNode {
-  type: "rawHtml";
+export interface DangerousHtmlNode {
+  type: "dangerouslySetHtml";
 
-  /** Pre-escaped HTML content */
+  /** Pre-escaped HTML content - MUST be sanitized */
   content: string;
 }
 
@@ -217,7 +220,7 @@ export class Embed {
         if (node.type === "iframe") {
           return renderIframe(node.src, node.attributes);
         }
-        if (node.type === "rawHtml") {
+        if (node.type === "dangerouslySetHtml") {
           return node.content;
         }
         return "";
@@ -333,9 +336,13 @@ export function createIframeEmbed(
  *
  * @param provider - The provider name
  * @param data - The parsed URL data
- * @param content - Pre-escaped HTML content
+ * @param content - Pre-escaped HTML content (MUST be sanitized)
  * @param script - Optional script for hydration
  * @returns A new Embed instance
+ *
+ * @remarks
+ * ⚠️ SECURITY: The `content` parameter is inserted as raw HTML.
+ * You MUST sanitize any user input before passing it here.
  */
 export function createHtmlEmbed(
   provider: string,
@@ -344,7 +351,7 @@ export function createHtmlEmbed(
   script?: ScriptRequest,
 ): Embed {
   const embedData: EmbedData = {
-    nodes: [{ content, type: "rawHtml" }],
+    nodes: [{ content, type: "dangerouslySetHtml" }],
   };
   if (script) {
     embedData.scripts = [script];
@@ -364,9 +371,16 @@ export function createHtmlEmbed(
 export type EmbedOutput = EmbedData;
 
 /**
+ * Legacy type alias for backward compatibility.
+ *
+ * @deprecated Use `DangerousHtmlNode` instead.
+ */
+export type RawHtmlNode = DangerousHtmlNode;
+
+/**
  * Legacy node type for backward compatibility.
  *
- * @deprecated Use `RawHtmlNode` instead.
+ * @deprecated Use `DangerousHtmlNode` instead.
  */
 export interface HtmlNode {
   type: "html";
@@ -374,13 +388,13 @@ export interface HtmlNode {
 }
 
 /**
- * Convert legacy HtmlNode to RawHtmlNode.
+ * Convert legacy HtmlNode to DangerousHtmlNode.
  *
  * @internal
  */
 export function normalizeNode(node: EmbedNode | HtmlNode): EmbedNode {
   if ("type" in node && node.type === "html") {
-    return { content: (node as HtmlNode).content, type: "rawHtml" };
+    return { content: (node as HtmlNode).content, type: "dangerouslySetHtml" };
   }
   return node as EmbedNode;
 }
