@@ -50,6 +50,23 @@ Complete API redesign of `@social-embed/lib` with new type-safe architecture:
 | **2** | HTML authors | `<o-embed url="...">` web component |
 | **3** | Framework integrators | `MatcherRegistry` class directly |
 
+### Documentation
+
+- **Migration guide**: New comprehensive guide at `/lib/migration/`
+  - v1 → v2 migration examples for all API changes
+  - Custom matcher migration with `defineMatcher()`
+  - Registry vs RegistryStore usage patterns
+  - Embed class usage examples
+
+- **Examples refresh**: Updated `/lib/examples/` for v2 API
+  - Embed class with `.toHtml()`, `.toUrl()`, `.toNodes()`
+  - Browser module convenience functions
+  - RegistryStore subscription patterns
+  - `isMatch()` type guards
+
+- **Provider docs**: All provider pages updated with v2 examples
+  - YouTube, Vimeo, Spotify, DailyMotion, Loom, Wistia, EdPuzzle
+
 See individual package CHANGES.md for migration details.
 
 ---
