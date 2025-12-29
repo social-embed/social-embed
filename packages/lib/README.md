@@ -20,11 +20,20 @@ All with **zero server-side dependencies** - everything runs in the browser.
 ## Quick Start
 
 ```typescript
-import { convertUrlToEmbedUrl } from "@social-embed/lib";
+import { MatcherRegistry } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
 
 // Convert ANY supported URL to its embed form
-const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
-console.log(embedUrl); // "https://www.youtube.com/embed/Bd8_vO5zrjo"
+const embedUrl = registry.toEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
+console.log(embedUrl); // "https://www.youtube-nocookie.com/embed/Bd8_vO5zrjo"
+
+// Match and get structured data
+const result = registry.match("https://youtu.be/Bd8_vO5zrjo");
+if (result.ok) {
+  console.log(result.matcher.name); // "YouTube"
+  console.log(result.data.videoId); // "Bd8_vO5zrjo"
+}
 ```
 
 ## Installation
@@ -196,6 +205,50 @@ console.log(unknownResult.ok); // false
 if (youtubeResult.ok) {
   console.log(youtubeResult.matcher.name); // "YouTube"
 }
+```
+
+### Type-Safe Matching with `isMatch()`
+
+Use `isMatch()` for type-safe access to matcher-specific data:
+
+```typescript
+import { MatcherRegistry, YouTubeMatcher, SpotifyMatcher } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+const result = registry.match(url);
+
+// Type guard narrows result to specific matcher
+if (registry.isMatch(result, YouTubeMatcher)) {
+  console.log(result.data.videoId);  // TypeScript knows this is YouTubeData
+}
+
+if (registry.isMatch(result, SpotifyMatcher)) {
+  console.log(result.data.contentType);  // "track", "album", etc.
+  console.log(result.data.id);
+}
+```
+
+### Custom Matchers with Priority
+
+Register custom matchers with priority to control match order:
+
+```typescript
+import { MatcherRegistry, defineIframeMatcher } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+
+// Higher priority = matches first
+registry.register(MyCustomMatcher, { priority: 10 });
+
+// Override built-in matcher with custom implementation
+const CustomYouTubeMatcher = defineIframeMatcher({
+  name: "CustomYouTube",
+  domains: ["youtube.com", "youtu.be"],
+  patterns: [/youtu\.be\/(\w+)/, /youtube\.com\/watch\?v=(\w+)/],
+  embedUrl: (id) => `https://my-proxy.example.com/youtube/${id}`,
+});
+
+registry.register(CustomYouTubeMatcher, { priority: 100 });
 ```
 
 ## Try It Out
