@@ -1,147 +1,38 @@
 /**
- * Structured output that describes an embed without executing it.
+ * Output types and options for embed generation.
  *
  * @remarks
- * SSR-safe: Contains no DOM APIs, just pure data.
- * Can be rendered to HTML string for SSR, or mounted to DOM in browser.
+ * This module re-exports core types from `./embed.ts` for backward
+ * compatibility while providing output options for matchers.
  *
- * The separation of `nodes`, `scripts`, and `styles` enables:
- * - Deferred script loading (Twitter, Instagram embeds)
- * - Style deduplication across multiple embeds
- * - SSR with progressive enhancement
+ * For the new Embed class API, import directly from `./embed.ts`.
  */
-export interface EmbedOutput {
-  /**
-   * HTML nodes to render (typically one iframe or blockquote).
-   * Ordered array - render in sequence.
-   */
-  nodes: EmbedNode[];
 
-  /**
-   * External scripts that need loading.
-   * Used by script-hydrated embeds (future: Twitter, Instagram).
-   */
-  scripts?: ScriptRequest[];
+import type { EmbedData, ScriptRequest } from "./embed";
 
-  /**
-   * Inline styles or CSS URLs.
-   * Used for embeds that need custom styling (future).
-   */
-  styles?: StyleChunk[];
-}
+// Re-export core types from embed.ts for backward compatibility
+export type {
+  EmbedData,
+  EmbedNode,
+  EmbedOutput,
+  HtmlNode,
+  IframeNode,
+  RawHtmlNode,
+  ScriptRequest,
+  StyleChunk,
+} from "./embed";
 
-/**
- * A renderable HTML node in the embed output.
- *
- * @remarks
- * Two types:
- * - `iframe`: Standard iframe embed (YouTube, Vimeo, Spotify)
- * - `html`: Raw HTML content (Twitter blockquotes, Instagram embeds)
- *
- * The `html` type requires careful escaping - only use for
- * trusted, pre-sanitized content from built-in matchers.
- */
-export type EmbedNode = IframeNode | HtmlNode;
-
-/**
- * An iframe node with structured attributes.
- *
- * @remarks
- * Attributes are key-value strings. Boolean attributes like
- * `allowfullscreen` use empty string as value.
- */
-export interface IframeNode {
-  type: "iframe";
-
-  /** The iframe src URL */
-  src: string;
-
-  /**
-   * HTML attributes for the iframe.
-   * Keys are attribute names, values are attribute values.
-   *
-   * @example
-   * ```typescript
-   * {
-   *   width: "560",
-   *   height: "315",
-   *   allowfullscreen: "",  // Boolean attribute
-   *   frameborder: "0",
-   *   allow: "encrypted-media",
-   * }
-   * ```
-   */
-  attributes: Record<string, string>;
-}
-
-/**
- * Raw HTML content node.
- *
- * @remarks
- * ⚠️ Security warning: Only use with trusted, pre-escaped content.
- * This is for blockquote-based embeds where scripts will hydrate
- * the content after loading.
- *
- * @example
- * Twitter embed placeholder:
- * ```typescript
- * {
- *   type: "html",
- *   content: '<blockquote class="twitter-tweet">...</blockquote>'
- * }
- * ```
- */
-export interface HtmlNode {
-  type: "html";
-
-  /** Pre-escaped HTML content */
-  content: string;
-}
-
-/**
- * External script request for embed hydration.
- *
- * @remarks
- * Some embeds (Twitter, Instagram) require loading external scripts
- * to hydrate blockquote placeholders into rich embeds.
- *
- * The `dedupeKey` enables loading a script once for multiple embeds.
- */
-export interface ScriptRequest {
-  /** Script URL */
-  src: string;
-
-  /** Load script asynchronously (default: true) */
-  async?: boolean;
-
-  /** Defer script execution (default: false) */
-  defer?: boolean;
-
-  /**
-   * Key for deduplication across multiple embeds.
-   * If two embeds have the same dedupeKey, script loads once.
-   *
-   * @example "twitter-widgets" for all Twitter embeds
-   */
-  dedupeKey?: string;
-}
-
-/**
- * CSS styling chunk for embeds.
- *
- * @remarks
- * Future use for embeds that need custom styling.
- */
-export interface StyleChunk {
-  /** Type of style chunk */
-  type: "inline" | "url";
-
-  /** CSS content (if inline) or URL (if url type) */
-  content: string;
-}
+// Re-export Embed class (value export includes the type)
+export {
+  createEmbed,
+  createHtmlEmbed,
+  createIframeEmbed,
+  Embed,
+  normalizeNode,
+} from "./embed";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Output Options (passed to toOutput())
+// Output Options (passed to toOutput() / toEmbed())
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -177,39 +68,51 @@ export interface PrivacyOptions {
   privacy?: boolean;
 }
 
+/**
+ * Combined options for embed generation.
+ *
+ * @remarks
+ * Combines OutputOptions and PrivacyOptions for convenience.
+ */
+export type EmbedOptions = OutputOptions & PrivacyOptions;
+
 // ─────────────────────────────────────────────────────────────────────────────
-// Output Helpers
+// Output Helpers (legacy)
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Create an iframe-based EmbedOutput.
+ * Create an iframe-based EmbedData.
  *
  * @param src - The iframe src URL
  * @param attributes - HTML attributes for the iframe
- * @returns EmbedOutput with a single iframe node
+ * @returns EmbedData with a single iframe node
+ *
+ * @deprecated Use `createIframeEmbed()` from `./embed.ts` instead.
  */
 export function createIframeOutput(
   src: string,
   attributes: Record<string, string> = {},
-): EmbedOutput {
+): EmbedData {
   return {
     nodes: [{ attributes, src, type: "iframe" }],
   };
 }
 
 /**
- * Create an HTML-based EmbedOutput with optional script.
+ * Create an HTML-based EmbedData with optional script.
  *
  * @param content - Pre-escaped HTML content
  * @param script - Optional script to load for hydration
- * @returns EmbedOutput with HTML node and optional script
+ * @returns EmbedData with rawHtml node and optional script
+ *
+ * @deprecated Use `createHtmlEmbed()` from `./embed.ts` instead.
  */
 export function createHtmlOutput(
   content: string,
   script?: ScriptRequest,
-): EmbedOutput {
-  const output: EmbedOutput = {
-    nodes: [{ content, type: "html" }],
+): EmbedData {
+  const output: EmbedData = {
+    nodes: [{ content, type: "rawHtml" }],
   };
   if (script) {
     output.scripts = [script];
