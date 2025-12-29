@@ -121,7 +121,7 @@ if (registry.isMatch(result, SpotifyMatcher)) {
 
 ---
 
-## 4. Privacy Mode
+## 3. Privacy Mode
 
 Privacy-enhanced mode is **enabled by default** for matchers that support it:
 
@@ -142,7 +142,7 @@ Privacy mode is supported for:
 
 ---
 
-## 5. Built-in Matchers
+## 4. Built-in Matchers
 
 ### YouTube
 
@@ -228,7 +228,7 @@ registry.toEmbedUrl("https://edpuzzle.com/media/606b413369971e424ec6021e");
 
 ---
 
-## 6. Error Handling
+## 5. Error Handling
 
 All parsing operations return a `Result<T>` type for explicit error handling:
 
@@ -269,7 +269,7 @@ if (result.ok) {
 
 ---
 
-## 7. Custom Matchers
+## 6. Custom Matchers
 
 ### Using `defineIframeMatcher` (Recommended)
 
@@ -350,7 +350,7 @@ const MyServiceMatcher: UrlMatcher<"MyService", MyServiceData> = {
 
 ---
 
-## 8. Registry Patterns
+## 7. Registry Patterns
 
 ### Create with Defaults
 
@@ -424,7 +424,7 @@ console.log(registry.get("YouTube"));  // YouTubeMatcher
 
 ---
 
-## 9. SSR Usage
+## 8. SSR Usage
 
 All core APIs are SSR-safe (no DOM dependencies):
 
