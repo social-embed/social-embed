@@ -20,7 +20,14 @@ export type ProviderType =
 export const URL_POOLS: Record<ProviderType, readonly string[]> = {
   dailymotion: [
     "https://www.dailymotion.com/video/x7znrd0",
-    // TODO: Add more DailyMotion URLs
+    "https://www.dailymotion.com/video/x8qlyry",
+    "https://www.dailymotion.com/video/x8sglem",
+    "https://www.dailymotion.com/video/x8reryh",
+    "https://www.dailymotion.com/video/x8wipy8",
+    "https://www.dailymotion.com/video/x8canb1",
+    "https://www.dailymotion.com/video/x92viaw",
+    "https://www.dailymotion.com/video/x4tuvv",
+    "https://www.dailymotion.com/video/x4tuox",
   ],
   loom: [
     "https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075",
