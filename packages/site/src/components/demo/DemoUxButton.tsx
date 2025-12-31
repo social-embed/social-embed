@@ -2,17 +2,17 @@ import { RerollButton } from "../playground/RerollButton";
 import { DemoSection } from "./DemoSection";
 
 /**
- * Demo page showcasing UI components.
+ * Button demo page showcasing the RerollButton component.
  */
-export function Demo() {
+export function DemoUxButton() {
   return (
     <div className="space-y-8 p-6 max-w-4xl mx-auto">
       <div>
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
-          UI Components
+          Button
         </h2>
         <p className="mt-2 text-slate-600 dark:text-slate-400">
-          Reusable components for the social-embed playground and documentation.
+          Button styles for actions, including animated action buttons.
         </p>
       </div>
 
@@ -51,6 +51,16 @@ export function Demo() {
           <div className="space-y-1">
             <span className="text-xs text-slate-500">sm (full)</span>
             <RerollButton variant="full" />
+          </div>
+          <div className="space-y-1">
+            <span className="text-xs text-slate-500">md</span>
+            <button
+              className="flex cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 px-4 py-2 text-base font-bold text-white shadow-md transition-all hover:from-indigo-600 hover:to-purple-600 active:scale-95 dark:from-indigo-400 dark:to-purple-400"
+              type="button"
+            >
+              <span>🎲</span>
+              Reroll
+            </button>
           </div>
         </div>
       </DemoSection>
