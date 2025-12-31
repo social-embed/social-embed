@@ -24,7 +24,7 @@ export const PRESETS: Preset[] = [
 </head>
 <body>
   <h2>YouTube Video</h2>
-  <o-embed url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"></o-embed>
+  <o-embed url="https://www.youtube.com/watch?v=EJxwWpaGoJs"></o-embed>
 </body>
 </html>`,
     description: "Embed a YouTube video with the <o-embed> component",
@@ -197,7 +197,7 @@ export const PRESETS: Preset[] = [
 <body>
   <h2>Multiple Embeds</h2>
   <div class="grid">
-    <o-embed url="https://www.youtube.com/watch?v=dQw4w9WgXcQ"></o-embed>
+    <o-embed url="https://www.youtube.com/watch?v=EJxwWpaGoJs"></o-embed>
     <o-embed url="https://vimeo.com/134668506"></o-embed>
   </div>
 </body>
