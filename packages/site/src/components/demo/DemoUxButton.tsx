@@ -59,6 +59,25 @@ export function DemoUxButton() {
         </div>
       </DemoSection>
 
+      {/* Animate on Mount */}
+      <DemoSection
+        description="Use animateOnMount to play the animation when the component first renders."
+        title="Animate on Mount"
+      >
+        <div className="flex flex-wrap items-end gap-4">
+          <div className="space-y-1">
+            <span className="text-xs text-slate-500">
+              default (no animation)
+            </span>
+            <RerollButton variant="full" />
+          </div>
+          <div className="space-y-1">
+            <span className="text-xs text-slate-500">animateOnMount</span>
+            <RerollButton animateOnMount variant="full" />
+          </div>
+        </div>
+      </DemoSection>
+
       {/* Animation Details */}
       <DemoSection title="Animation CSS">
         <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700">

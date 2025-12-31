@@ -3,6 +3,8 @@ import { useState } from "react";
 export type RerollButtonProps = {
   /** 'compact' = icon only (xs), 'full' = icon + label (sm), 'md' = medium with label */
   variant?: "compact" | "full" | "md";
+  /** Whether to play the animation on initial mount (default: false) */
+  animateOnMount?: boolean;
   onClick?: () => void;
   className?: string;
 };
@@ -18,14 +20,19 @@ const mdClasses =
 
 export function RerollButton({
   variant = "compact",
+  animateOnMount = false,
   onClick,
   className = "",
 }: RerollButtonProps) {
-  const [rerollKey, setRerollKey] = useState(0);
+  // null = not yet clicked (no animation unless animateOnMount)
+  // 0+ = clicked, animate on each increment
+  const [rerollKey, setRerollKey] = useState<number | null>(
+    animateOnMount ? 0 : null,
+  );
 
   const handleClick = () => {
     onClick?.();
-    setRerollKey((k) => k + 1);
+    setRerollKey((k) => (k ?? 0) + 1);
   };
 
   const baseClasses =
@@ -35,15 +42,19 @@ export function RerollButton({
         ? fullClasses
         : compactClasses;
 
+  const shouldAnimate = rerollKey !== null;
+  const bounceClass = shouldAnimate ? "animate-[bounce-pop_0.3s_ease-out]" : "";
+  const spinClass = shouldAnimate ? "animate-[spin-dice_0.3s_ease-out]" : "";
+
   return (
     <button
-      className={`${baseClasses} animate-[bounce-pop_0.3s_ease-out] ${className}`}
-      key={rerollKey}
+      className={`${baseClasses} ${bounceClass} ${className}`}
+      key={rerollKey ?? "initial"}
       onClick={handleClick}
       title="Reroll"
       type="button"
     >
-      <span className="inline-block animate-[spin-dice_0.3s_ease-out]">🎲</span>
+      <span className={`inline-block ${spinClass}`}>🎲</span>
       {(variant === "full" || variant === "md") && "Reroll"}
     </button>
   );
