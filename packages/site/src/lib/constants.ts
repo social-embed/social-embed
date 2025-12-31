@@ -9,6 +9,10 @@ export type ProviderType =
   | "vimeo"
   | "spotify-track"
   | "spotify-playlist"
+  | "spotify-album"
+  | "spotify-artist"
+  | "spotify-show"
+  | "spotify-episode"
   | "dailymotion"
   | "loom"
   | "wistia";
@@ -33,14 +37,16 @@ export const URL_POOLS: Record<ProviderType, readonly string[]> = {
     "https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075",
     // TODO: Add more Loom URLs
   ],
+  "spotify-album": ["https://open.spotify.com/album/4hg4cR8QMbE0xuvoxoA6DX"],
+  "spotify-artist": ["https://open.spotify.com/artist/16s0YTFcyjP4kgFwt7ktrY"],
+  "spotify-episode": [
+    "https://open.spotify.com/episode/0Bx6gWK755bUoM238X2Ma1",
+  ],
   "spotify-playlist": [
     "https://open.spotify.com/playlist/37i9dQZF1DZ06evO0AI4xi",
-    // TODO: Add more Spotify playlist URLs
   ],
-  "spotify-track": [
-    "https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs",
-    // TODO: Add more Spotify track URLs
-  ],
+  "spotify-show": ["https://open.spotify.com/show/2MAi0BvDc6GTFvKFPXnkCL"],
+  "spotify-track": ["https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs"],
   vimeo: [
     "https://vimeo.com/134668506",
     "https://vimeo.com/283977617",
@@ -56,6 +62,7 @@ export const URL_POOLS: Record<ProviderType, readonly string[]> = {
     // TODO: Add more Wistia URLs
   ],
   youtube: [
+    "https://youtu.be/FTQbiNvZqaY",
     "https://www.youtube.com/watch?v=EJxwWpaGoJs",
     // NASA videos
     "https://www.youtube.com/watch?v=S9HdPi9Ikhk",
@@ -94,7 +101,11 @@ export const URL_POOLS: Record<ProviderType, readonly string[]> = {
 export const PROVIDER_PATTERNS: Record<ProviderType, RegExp> = {
   dailymotion: /dailymotion\.com\/video\//i,
   loom: /loom\.com\/share\//i,
+  "spotify-album": /open\.spotify\.com\/album\//i,
+  "spotify-artist": /open\.spotify\.com\/artist\//i,
+  "spotify-episode": /open\.spotify\.com\/episode\//i,
   "spotify-playlist": /open\.spotify\.com\/playlist\//i,
+  "spotify-show": /open\.spotify\.com\/show\//i,
   "spotify-track": /open\.spotify\.com\/track\//i,
   vimeo: /vimeo\.com\/\d+/i,
   wistia: /wistia\.com\/medias\//i,
@@ -109,8 +120,12 @@ export const PROVIDER_CHECK_ORDER: readonly ProviderType[] = [
   "youtube-shorts",
   "youtube",
   "vimeo",
-  "spotify-track",
+  "spotify-album",
+  "spotify-artist",
+  "spotify-episode",
   "spotify-playlist",
+  "spotify-show",
+  "spotify-track",
   "dailymotion",
   "loom",
   "wistia",
