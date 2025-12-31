@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type CdnSource, getCdnUrls } from "../../lib/cdnSources";
 import {
   DEFAULT_STATE,
@@ -6,11 +6,22 @@ import {
   type PlaygroundState,
   updateUrlWithState,
 } from "../../lib/playgroundState";
+import { generateSeed } from "../../lib/seededRng";
 import { CdnSourcePicker } from "./CdnSourcePicker";
 import { CodeEditor } from "./CodeEditor";
 import { ConsoleOutput } from "./ConsoleOutput";
-import { type ConsoleEntry, PreviewPane } from "./PreviewPane";
+import {
+  type ConsoleEntry,
+  PreviewPane,
+  type PreviewPaneHandle,
+} from "./PreviewPane";
 import { DEFAULT_PRESET, getPresetById, PRESETS, type Preset } from "./presets";
+import { RerollButton } from "./RerollButton";
+import {
+  applySeededUrls,
+  canRandomize,
+  generateReactiveUpdates,
+} from "./urlReplacer";
 
 /**
  * Main playground component that orchestrates all playground features.
@@ -36,6 +47,7 @@ export function Playground() {
 
   const [consoleLogs, setConsoleLogs] = useState<ConsoleEntry[]>([]);
   const [stableCode, setStableCode] = useState(state.code);
+  const previewRef = useRef<PreviewPaneHandle>(null);
   const [isConsoleOpen, setIsConsoleOpen] = useState(() => {
     // Default: open on desktop (md: 768px+), closed on mobile
     if (typeof window !== "undefined") {
@@ -87,6 +99,28 @@ export function Playground() {
     setConsoleLogs([]);
   }, []);
 
+  // Reroll handler - generates new seed and updates URLs
+  const handleReroll = useCallback(() => {
+    const newSeed = generateSeed();
+    const updates = generateReactiveUpdates(state.code, newSeed);
+
+    // Reactive update via postMessage (no iframe reload)
+    for (const update of updates) {
+      previewRef.current?.updateAttribute(
+        update.selector,
+        update.attribute,
+        update.value,
+      );
+    }
+
+    // Update code in editor (for copy/share)
+    const result = applySeededUrls(state.code, newSeed);
+    setState((prev) => ({ ...prev, code: result.html, seed: newSeed }));
+  }, [state.code]);
+
+  // Check if current code can be randomized
+  const canReroll = useMemo(() => canRandomize(state.code), [state.code]);
+
   return (
     <div className="flex flex-col h-full min-h-[600px] overflow-hidden">
       {/* Toolbar */}
@@ -112,6 +146,9 @@ export function Playground() {
             ))}
           </select>
         </div>
+
+        {/* Reroll button */}
+        {canReroll && <RerollButton onClick={handleReroll} variant="compact" />}
 
         {/* CDN source picker */}
         <div className="flex-1 min-w-[300px]">
@@ -143,6 +180,7 @@ export function Playground() {
               className="h-full"
               code={stableCode}
               onConsoleMessage={handleConsoleMessage}
+              ref={previewRef}
               wcUrl={cdnUrls.wc}
             />
           </div>
