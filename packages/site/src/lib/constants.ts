@@ -44,7 +44,22 @@ export const URL_POOLS: Record<ProviderType, readonly string[]> = {
   ],
   youtube: [
     "https://www.youtube.com/watch?v=EJxwWpaGoJs",
-    // TODO: Add more YouTube URLs
+    // NASA videos
+    "https://www.youtube.com/watch?v=S9HdPi9Ikhk",
+    "https://www.youtube.com/watch?v=4czjS9h4Fpg",
+    "https://www.youtube.com/watch?v=SvaG0xDdP8g",
+    "https://www.youtube.com/watch?v=DydmaedDIhE",
+    "https://www.youtube.com/watch?v=p0xBhGLLnbQ",
+    "https://www.youtube.com/watch?v=2mHsTKvAuZc",
+    "https://www.youtube.com/watch?v=EI_4QDByiW4",
+    "https://www.youtube.com/watch?v=qE0g4wgqKbQ",
+    "https://www.youtube.com/watch?v=mwnvrkNzdeQ",
+    "https://www.youtube.com/watch?v=myPMtuk_XSI",
+    "https://www.youtube.com/watch?v=yjpYzFtxfjU",
+    "https://www.youtube.com/watch?v=FV-0f4NfQ60",
+    "https://www.youtube.com/watch?v=-po6WQ-wDd0",
+    "https://www.youtube.com/watch?v=nDZGL1xsqzs",
+    "https://www.youtube.com/watch?v=91OmO2YMiDM",
   ],
   "youtube-shorts": [
     "https://www.youtube.com/shorts/abc123",
