@@ -176,7 +176,7 @@ export const PRESETS: Preset[] = [
 </head>
 <body>
   <h2>Wistia Video</h2>
-  <o-embed url="https://home.wistia.com/medias/abc123"></o-embed>
+  <o-embed url="https://support.wistia.com/medias/26sk4lmiix"></o-embed>
 </body>
 </html>`,
     description: "Embed a Wistia video",
