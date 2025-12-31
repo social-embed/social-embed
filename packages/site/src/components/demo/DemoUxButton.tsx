@@ -54,13 +54,7 @@ export function DemoUxButton() {
           </div>
           <div className="space-y-1">
             <span className="text-xs text-slate-500">md</span>
-            <button
-              className="flex cursor-pointer items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 px-4 py-2 text-base font-bold text-white shadow-md transition-all hover:from-indigo-600 hover:to-purple-600 active:scale-95 dark:from-indigo-400 dark:to-purple-400"
-              type="button"
-            >
-              <span>🎲</span>
-              Reroll
-            </button>
+            <RerollButton variant="md" />
           </div>
         </div>
       </DemoSection>

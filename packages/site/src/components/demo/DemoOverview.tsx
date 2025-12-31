@@ -1,3 +1,4 @@
+import { RerollButton } from "../playground/RerollButton";
 import { DemoCard } from "./DemoCard";
 
 /**
@@ -21,13 +22,8 @@ export function DemoOverview() {
           href="/demo/ux"
           preview={
             <div className="flex items-center gap-2">
-              <span className="flex items-center gap-1 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 px-2 py-1 text-xs font-bold text-white">
-                <span>🎲</span>
-              </span>
-              <span className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 px-3 py-1.5 text-sm font-bold text-white">
-                <span>🎲</span>
-                Reroll
-              </span>
+              <RerollButton variant="compact" />
+              <RerollButton variant="full" />
             </div>
           }
           title="UX Components"
