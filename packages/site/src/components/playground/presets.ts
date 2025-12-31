@@ -62,7 +62,7 @@ export const PRESETS: Preset[] = [
 </head>
 <body>
   <h2>Spotify Track</h2>
-  <o-embed url="https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT"></o-embed>
+  <o-embed url="https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs"></o-embed>
 </body>
 </html>`,
     description: "Embed a Spotify track",
@@ -81,7 +81,7 @@ export const PRESETS: Preset[] = [
 </head>
 <body>
   <h2>Spotify Playlist</h2>
-  <o-embed url="https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M"></o-embed>
+  <o-embed url="https://open.spotify.com/playlist/37i9dQZF1DZ06evO0AI4xi"></o-embed>
 </body>
 </html>`,
     description: "Embed a Spotify playlist",
