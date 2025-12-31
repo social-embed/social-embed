@@ -9,6 +9,13 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+### Refactoring
+
+- **Decorator-free Lit syntax**: Converted from `@property` decorators to static properties pattern ([#50](https://github.com/social-embed/social-embed/pull/50))
+  - Fixes esm.sh GitHub CDN source which failed with "Unsupported decorator location: field"
+  - Uses `static properties = { ... }` and `customElements.define()` instead of decorators
+  - No functional changes - same component API and behavior
+
 ### Development
 
 - **Testing Infrastructure**: Migrated from Web Test Runner to Vitest with Browser testing:
