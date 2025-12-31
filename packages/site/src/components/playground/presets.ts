@@ -119,7 +119,7 @@ export const PRESETS: Preset[] = [
 </head>
 <body>
   <h2>DailyMotion Video</h2>
-  <o-embed url="https://www.dailymotion.com/video/x8m8jnf"></o-embed>
+  <o-embed url="https://www.dailymotion.com/video/x7znrd0"></o-embed>
 </body>
 </html>`,
     description: "Embed a DailyMotion video",
