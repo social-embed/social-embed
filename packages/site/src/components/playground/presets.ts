@@ -138,7 +138,7 @@ export const PRESETS: Preset[] = [
 </head>
 <body>
   <h2>Loom Video</h2>
-  <o-embed url="https://www.loom.com/share/abc123"></o-embed>
+  <o-embed url="https://www.loom.com/share/6670e3eba3c84dc09ada8306c7138075"></o-embed>
 </body>
 </html>`,
     description: "Embed a Loom screen recording",
