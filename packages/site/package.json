@@ -11,7 +11,8 @@
     "astro": "astro",
     "check": "astro check",
     "type-check": "astro check",
-    "test": "echo 'NOOP'",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "ncu": "ncu",
     "update": "ncu",
     "lint": "biome lint .",
@@ -47,6 +48,7 @@
     "@astrojs/check": "^0.9.6",
     "@biomejs/biome": "^2.3.10",
     "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3"
+    "@types/react-dom": "^19.2.3",
+    "vitest": "^3.2.4"
   }
 }
