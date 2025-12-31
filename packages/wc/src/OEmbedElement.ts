@@ -24,7 +24,6 @@ import {
   isValidUrl,
 } from "@social-embed/lib";
 import { html, LitElement, type TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
 import { ifDefined } from "lit/directives/if-defined.js";
 
 /**
@@ -67,13 +66,23 @@ interface Dimensions {
  * <o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
  * ```
  */
-@customElement("o-embed")
 export class OEmbedElement extends LitElement {
+  /**
+   * Reactive properties for the component.
+   * Using static properties instead of decorators for CDN compatibility.
+   */
+  static properties = {
+    allowfullscreen: { type: String },
+    frameborder: { type: String },
+    height: { type: String },
+    url: { type: String },
+    width: { type: String },
+  };
+
   /**
    * The URL or ID (if supported) for the embedded media.
    * Commonly points to a YouTube, Vimeo, or other recognized service link.
    */
-  @property({ type: String })
   public url!: string;
 
   /**
@@ -81,7 +90,6 @@ export class OEmbedElement extends LitElement {
    *
    * @defaultValue `"560"`
    */
-  @property({ type: String })
   public width = "560";
 
   /**
@@ -89,7 +97,6 @@ export class OEmbedElement extends LitElement {
    *
    * @defaultValue `"315"`
    */
-  @property({ type: String })
   public height = "315";
 
   /**
@@ -97,7 +104,6 @@ export class OEmbedElement extends LitElement {
    *
    * @defaultValue `"0"`
    */
-  @property({ type: String })
   public frameborder = "0";
 
   /**
@@ -106,7 +112,6 @@ export class OEmbedElement extends LitElement {
    *
    * @defaultValue `"true"`
    */
-  @property({ type: String })
   public allowfullscreen: string | boolean | undefined = "true";
 
   /**
@@ -530,6 +535,9 @@ export class OEmbedElement extends LitElement {
       : undefined;
   }
 }
+
+// Register the custom element (decorator-free for CDN compatibility)
+customElements.define("o-embed", OEmbedElement);
 
 declare global {
   interface HTMLElementTagNameMap {
