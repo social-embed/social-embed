@@ -9,6 +9,7 @@ export type CdnSourceType =
   | "jsdelivr"
   | "unpkg"
   | "esm-sh"
+  | "esm-sh-gh"
   | "custom";
 
 export type CdnSource =
@@ -17,12 +18,14 @@ export type CdnSource =
   | { type: "jsdelivr" }
   | { type: "unpkg" }
   | { type: "esm-sh" }
+  | { type: "esm-sh-gh" }
   | { type: "custom"; url: string };
 
 export const CDN_SOURCE_LABELS: Record<CdnSourceType, string> = {
   "cdn-dev": "cdn.social-embed.org",
   custom: "Custom URL",
-  "esm-sh": "esm.sh",
+  "esm-sh": "esm.sh (npm)",
+  "esm-sh-gh": "esm.sh (GitHub)",
   jsdelivr: "jsDelivr",
   local: "Local Build",
   unpkg: "unpkg",
@@ -31,7 +34,8 @@ export const CDN_SOURCE_LABELS: Record<CdnSourceType, string> = {
 export const CDN_SOURCE_DESCRIPTIONS: Record<CdnSourceType, string> = {
   "cdn-dev": "Preview CDN (canary/master/latest)",
   custom: "Enter a custom URL",
-  "esm-sh": "esm.sh (on-demand ESM)",
+  "esm-sh": "esm.sh from npm (requires publish)",
+  "esm-sh-gh": `esm.sh from GitHub (branch: ${__GIT_BRANCH__})`,
   jsdelivr: "cdn.jsdelivr.net (popular, fast)",
   local: "Serve from local Vite plugin",
   unpkg: "unpkg.com (npm-based)",
@@ -67,6 +71,15 @@ export function getCdnUrls(source: CdnSource): { lib: string; wc: string } {
         lib: "https://esm.sh/@social-embed/lib",
         wc: "https://esm.sh/@social-embed/wc",
       };
+    case "esm-sh-gh": {
+      // Use ?alias to redirect bare @social-embed/* imports to GitHub paths
+      const base = `gh/social-embed/social-embed@${__GIT_BRANCH__}/packages`;
+      const aliases = [`@social-embed/lib:${base}/lib/src/index.ts`].join(",");
+      return {
+        lib: `https://esm.sh/${base}/lib/src/index.ts?alias=${aliases}`,
+        wc: `https://esm.sh/${base}/wc/src/OEmbedElement.ts?alias=${aliases}`,
+      };
+    }
     case "custom": {
       // For custom URLs, assume a base URL and append standard paths
       // User can provide full URL for wc by separating with comma
@@ -91,7 +104,8 @@ export function parseCdnSource(value: string): CdnSource {
     value === "cdn-dev" ||
     value === "jsdelivr" ||
     value === "unpkg" ||
-    value === "esm-sh"
+    value === "esm-sh" ||
+    value === "esm-sh-gh"
   ) {
     return { type: value };
   }

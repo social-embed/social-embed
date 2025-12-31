@@ -1,3 +1,4 @@
+import { execFileSync } from "node:child_process";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import starlightDocSearch from "@astrojs/starlight-docsearch";
@@ -5,6 +6,20 @@ import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
 import { defineConfig } from "astro/config";
 import { localCdnPlugin } from "./plugins/vite-plugin-local-cdn";
+
+/**
+ * Get current git branch for esm.sh GitHub URLs.
+ * Safe: uses execFileSync (no shell), no user input.
+ */
+function getGitBranch(): string {
+  try {
+    return execFileSync("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
+      encoding: "utf-8",
+    }).trim();
+  } catch {
+    return "master";
+  }
+}
 
 type VitePlugin = NonNullable<ViteUserConfig["plugins"]>[number];
 const tailwindPlugin = tailwindcss() as unknown as VitePlugin;
@@ -158,6 +173,9 @@ export default defineConfig({
   ],
   site: "https://social-embed.org",
   vite: {
+    define: {
+      __GIT_BRANCH__: JSON.stringify(getGitBranch()),
+    },
     // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
     plugins: [tailwindPlugin, localCdn],
   },

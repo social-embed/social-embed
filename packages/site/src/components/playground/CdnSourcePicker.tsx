@@ -19,6 +19,7 @@ const SOURCE_TYPES: CdnSourceType[] = [
   "jsdelivr",
   "unpkg",
   "esm-sh",
+  "esm-sh-gh",
   "custom",
 ];
 
