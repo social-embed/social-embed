@@ -21,6 +21,8 @@ export interface PlaygroundState {
   cdnSource: CdnSource;
   /** The active preset ID (if any) */
   presetId?: string;
+  /** The random seed for URL selection (reroll) */
+  seed?: string;
 }
 
 interface SerializedState {
@@ -30,6 +32,8 @@ interface SerializedState {
   cdn?: string;
   /** Preset ID */
   p?: string;
+  /** Random seed for reroll */
+  s?: string;
 }
 
 const DEFAULT_CODE = `<!DOCTYPE html>
@@ -81,6 +85,11 @@ export function encodePlaygroundState(state: PlaygroundState): string {
     serialized.cdn = serializeCdnSource(state.cdnSource);
   }
 
+  // Store seed if present
+  if (state.seed) {
+    serialized.s = state.seed;
+  }
+
   // If nothing to encode, return empty string
   if (Object.keys(serialized).length === 0) {
     return "";
@@ -106,6 +115,7 @@ export function decodePlaygroundState(encoded: string): PlaygroundState {
         : DEFAULT_CDN_SOURCE,
       code: serialized.c ? atob(serialized.c) : DEFAULT_CODE,
       presetId: serialized.p,
+      seed: serialized.s,
     };
   } catch {
     return { ...DEFAULT_STATE };

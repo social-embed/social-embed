@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
 
 export interface ConsoleEntry {
   type: "log" | "warn" | "error" | "info";
@@ -11,6 +18,11 @@ export interface PreviewPaneProps {
   wcUrl: string;
   onConsoleMessage?: (entry: ConsoleEntry) => void;
   className?: string;
+}
+
+export interface PreviewPaneHandle {
+  /** Update an attribute on elements matching the selector without full reload */
+  updateAttribute: (selector: string, attribute: string, value: string) => void;
 }
 
 /**
@@ -70,6 +82,15 @@ function getConsoleCaptureScript(): string {
       timestamp: Date.now(),
     }, '*');
   };
+
+  // Listen for reactive attribute updates from parent
+  window.addEventListener('message', (e) => {
+    if (e.data?.type === 'social-embed:updateAttribute') {
+      const { selector, attribute, value } = e.data;
+      const elements = document.querySelectorAll(selector);
+      elements.forEach(el => el.setAttribute(attribute, value));
+    }
+  });
 })();
 </script>`;
 }
@@ -105,51 +126,66 @@ function generateSrcdoc(code: string, wcUrl: string): string {
 /**
  * Sandboxed iframe preview for the playground.
  */
-export function PreviewPane({
-  code,
-  wcUrl,
-  onConsoleMessage,
-  className = "",
-}: PreviewPaneProps) {
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+export const PreviewPane = forwardRef<PreviewPaneHandle, PreviewPaneProps>(
+  function PreviewPane({ code, wcUrl, onConsoleMessage, className = "" }, ref) {
+    const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  // Generate srcdoc from inputs
-  const srcdoc = useMemo(() => generateSrcdoc(code, wcUrl), [code, wcUrl]);
+    // Expose updateAttribute method to parent via ref
+    const updateAttribute = useCallback(
+      (selector: string, attribute: string, value: string) => {
+        iframeRef.current?.contentWindow?.postMessage(
+          {
+            attribute,
+            selector,
+            type: "social-embed:updateAttribute",
+            value,
+          },
+          "*",
+        );
+      },
+      [],
+    );
 
-  // Listen for postMessage from iframe
-  const handleMessage = useCallback(
-    (event: MessageEvent) => {
-      // Only accept messages from our iframe
-      if (event.source !== iframeRef.current?.contentWindow) {
-        return;
-      }
+    useImperativeHandle(ref, () => ({ updateAttribute }), [updateAttribute]);
 
-      const data = event.data;
-      if (data?.type === "console" && onConsoleMessage) {
-        onConsoleMessage({
-          args: data.args,
-          timestamp: data.timestamp,
-          type: data.method,
-        });
-      }
-    },
-    [onConsoleMessage],
-  );
+    // Generate srcdoc from inputs
+    const srcdoc = useMemo(() => generateSrcdoc(code, wcUrl), [code, wcUrl]);
 
-  useEffect(() => {
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, [handleMessage]);
+    // Listen for postMessage from iframe
+    const handleMessage = useCallback(
+      (event: MessageEvent) => {
+        // Only accept messages from our iframe
+        if (event.source !== iframeRef.current?.contentWindow) {
+          return;
+        }
 
-  return (
-    <div className={`relative h-full bg-white ${className}`}>
-      <iframe
-        className="h-full w-full border-0"
-        ref={iframeRef}
-        sandbox="allow-scripts allow-same-origin"
-        srcDoc={srcdoc}
-        title="Preview"
-      />
-    </div>
-  );
-}
+        const data = event.data;
+        if (data?.type === "console" && onConsoleMessage) {
+          onConsoleMessage({
+            args: data.args,
+            timestamp: data.timestamp,
+            type: data.method,
+          });
+        }
+      },
+      [onConsoleMessage],
+    );
+
+    useEffect(() => {
+      window.addEventListener("message", handleMessage);
+      return () => window.removeEventListener("message", handleMessage);
+    }, [handleMessage]);
+
+    return (
+      <div className={`relative h-full bg-white ${className}`}>
+        <iframe
+          className="h-full w-full border-0"
+          ref={iframeRef}
+          sandbox="allow-scripts allow-same-origin"
+          srcDoc={srcdoc}
+          title="Preview"
+        />
+      </div>
+    );
+  },
+);
