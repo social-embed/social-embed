@@ -36,7 +36,13 @@ export const URL_POOLS: Record<ProviderType, readonly string[]> = {
   ],
   vimeo: [
     "https://vimeo.com/134668506",
-    // TODO: Add more Vimeo URLs
+    "https://vimeo.com/283977617",
+    "https://vimeo.com/277797585",
+    "https://vimeo.com/276237823",
+    "https://vimeo.com/261536886",
+    "https://vimeo.com/237573550",
+    "https://vimeo.com/229279077",
+    "https://vimeo.com/185938462",
   ],
   wistia: [
     "https://support.wistia.com/medias/26sk4lmiix",
