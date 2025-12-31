@@ -60,10 +60,18 @@ export const URL_POOLS: Record<ProviderType, readonly string[]> = {
     "https://www.youtube.com/watch?v=-po6WQ-wDd0",
     "https://www.youtube.com/watch?v=nDZGL1xsqzs",
     "https://www.youtube.com/watch?v=91OmO2YMiDM",
+    "https://www.youtube.com/watch?v=Ok3sKLa0-qA",
+    "https://www.youtube.com/watch?v=FVaADXhnxuE",
   ],
   "youtube-shorts": [
-    "https://www.youtube.com/shorts/abc123",
-    // TODO: Add more YouTube Shorts URLs
+    "https://www.youtube.com/shorts/eWasNsSa42s",
+    "https://www.youtube.com/shorts/y6J0q7yl1_k",
+    "https://www.youtube.com/shorts/wVO0dvjAiFk",
+    "https://www.youtube.com/shorts/OuLpkNLNg04",
+    "https://www.youtube.com/shorts/DEhuoSFiYl8",
+    "https://www.youtube.com/shorts/4N4RKIvEi88",
+    "https://www.youtube.com/shorts/w-r97Y7wqMc",
+    "https://www.youtube.com/shorts/1FdAfMD5ffE",
   ],
 };
 
