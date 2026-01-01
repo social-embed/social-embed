@@ -43,7 +43,7 @@ export const PRESETS: Preset[] = [
 </head>
 <body>
   <h2>YouTube Shorts</h2>
-  <o-embed url="https://www.youtube.com/shorts/abc123"></o-embed>
+  <o-embed url="https://www.youtube.com/shorts/eWasNsSa42s"></o-embed>
 </body>
 </html>`,
     description: "Embed a YouTube Shorts video",
