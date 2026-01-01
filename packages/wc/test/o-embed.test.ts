@@ -599,6 +599,21 @@ describe("o-embed", () => {
       expect(iframe?.getAttribute("height")).toBe("616");
     });
 
+    it("uses Shorts dimensions in CSS fallback for Shorts URLs", async () => {
+      const youtubeShortsUrl = "https://www.youtube.com/shorts/eWasNsSa42s";
+      const el = await fixture(
+        html`<o-embed url=${youtubeShortsUrl}></o-embed>`,
+      );
+
+      // Check the style tag in shadow DOM has correct CSS fallbacks
+      const styleTag = el.shadowRoot?.querySelector("style");
+      expect(styleTag?.textContent).toContain("347px");
+      expect(styleTag?.textContent).toContain("616px");
+      // Should NOT have the default landscape dimensions
+      expect(styleTag?.textContent).not.toContain("560px");
+      expect(styleTag?.textContent).not.toContain("315px");
+    });
+
     it("gracefully handles undefined URL", async () => {
       // Test with empty string instead of undefined
       const el = await fixture(html`<o-embed url=""></o-embed>`);
