@@ -6,6 +6,7 @@
  */
 
 import {
+  defaultStore,
   getSpotifyHeight,
   isYouTubeShortsUrl,
   type MatcherRegistry,
@@ -20,7 +21,6 @@ import {
   type Unsubscribe,
   YOUTUBE_SHORTS_DIMENSIONS,
 } from "@social-embed/lib";
-import { defaultStore } from "@social-embed/lib/browser";
 import { html, LitElement, type TemplateResult } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
@@ -31,7 +31,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
  * This is a module-level singleton that all `<o-embed>` elements subscribe to.
  * When `defaultStore.register()` is called, all components re-render.
  *
- * Re-exported from `@social-embed/lib/browser` to ensure a single shared singleton.
+ * Re-exported from `@social-embed/lib` to ensure a single shared singleton.
  */
 export { defaultStore };
 
