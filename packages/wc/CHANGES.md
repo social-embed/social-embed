@@ -9,6 +9,8 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.13 (2026-01-01)
+
 ### Enhancements
 
 - **YouTube Shorts support**: Auto-detects Shorts URLs and applies portrait dimensions ([#51](https://github.com/social-embed/social-embed/pull/51))
@@ -53,7 +55,6 @@ sidebar:
 
 - **Migration Notes**: Added detailed documentation on the migration from Web Test Runner to Vitest, including completed tasks and remaining items.
 
-_Additional details on the next release will go here._
 
 ## 0.1.0-next.12 (2025-01-05)
 
