@@ -6,7 +6,7 @@ order: 5
 
 ## 0.2.0 - Complete API Redesign
 
-Version 2.0 introduces a completely redesigned API with type-safe generics and privacy-by-default.
+Version 0.2 introduces a completely redesigned API with type-safe generics and privacy-by-default.
 
 **For detailed migration instructions, see the [Library Migration Guide](/lib/migration/).**
 
