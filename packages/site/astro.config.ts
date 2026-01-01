@@ -27,6 +27,20 @@ function getGitBranch(): string {
   }
 }
 
+/**
+ * Get current git commit SHA for cache-busting esm.sh URLs.
+ * Safe: uses execFileSync (no shell), no user input.
+ */
+function getGitSha(): string {
+  try {
+    return execFileSync("git", ["rev-parse", "HEAD"], {
+      encoding: "utf-8",
+    }).trim();
+  } catch {
+    return "";
+  }
+}
+
 type VitePlugin = NonNullable<ViteUserConfig["plugins"]>[number];
 const tailwindPlugin = tailwindcss() as unknown as VitePlugin;
 const localCdn = localCdnPlugin() as unknown as VitePlugin;
@@ -151,6 +165,7 @@ export default defineConfig({
   vite: {
     define: {
       __GIT_BRANCH__: JSON.stringify(getGitBranch()),
+      __GIT_SHA__: JSON.stringify(getGitSha()),
     },
     // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
     plugins: [tailwindPlugin, localCdn, mdxMergeHeadings],
