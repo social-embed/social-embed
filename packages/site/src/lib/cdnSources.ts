@@ -77,7 +77,10 @@ export function getCdnUrls(source: CdnSource): { lib: string; wc: string } {
     case "esm-sh-gh": {
       // Use ?alias to redirect bare @social-embed/* imports to GitHub paths
       const base = `gh/social-embed/social-embed@${__GIT_BRANCH__}/packages`;
-      const aliases = [`@social-embed/lib:${base}/lib/src/index.ts`].join(",");
+      const aliases = [
+        `@social-embed/lib:${base}/lib/src/index.ts`,
+        `@social-embed/lib/browser:${base}/lib/src/browser/index.ts`,
+      ].join(",");
       return {
         lib: `https://esm.sh/${base}/lib/src/index.ts?alias=${aliases}`,
         wc: `https://esm.sh/${base}/wc/src/OEmbedElement.ts?alias=${aliases}`,
