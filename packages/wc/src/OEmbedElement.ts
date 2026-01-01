@@ -22,6 +22,8 @@ import {
   getYouTubeEmbedUrlFromId,
   getYouTubeIdFromUrl,
   isValidUrl,
+  isYouTubeShortsUrl,
+  YOUTUBE_SHORTS_DIMENSIONS,
 } from "@social-embed/lib";
 import { html, LitElement, type TemplateResult } from "lit";
 import { ifDefined } from "lit/directives/if-defined.js";
@@ -274,6 +276,18 @@ export class OEmbedElement extends LitElement {
         return this.calculateDefaultDimensions({
           defaults: OEmbedElement.spotifyDefaultDimensions,
         });
+      case "YouTube":
+        // Use portrait dimensions for Shorts URLs (unless user explicitly set dimensions)
+        if (
+          isYouTubeShortsUrl(this.url) &&
+          !this.getAttribute("width") &&
+          !this.getAttribute("height")
+        ) {
+          return this.calculateDefaultDimensions({
+            defaults: OEmbedElement.youTubeShortsDefaultDimensions,
+          });
+        }
+        return this.calculateDefaultDimensions();
       default:
         return this.calculateDefaultDimensions();
     }
@@ -367,7 +381,18 @@ export class OEmbedElement extends LitElement {
   }
 
   /**
+   * Default dimension overrides for YouTube Shorts (9:16 portrait aspect ratio).
+   */
+  public static youTubeShortsDefaultDimensions: Dimensions = {
+    height: String(YOUTUBE_SHORTS_DIMENSIONS.height),
+    heightWithUnits: `${YOUTUBE_SHORTS_DIMENSIONS.height}px`,
+    width: String(YOUTUBE_SHORTS_DIMENSIONS.width),
+    widthWithUnits: `${YOUTUBE_SHORTS_DIMENSIONS.width}px`,
+  };
+
+  /**
    * Renders a YouTube `<iframe>` from a recognized YouTube URL.
+   * Automatically uses 9:16 portrait dimensions for YouTube Shorts URLs.
    * Returns an empty template if no ID can be extracted.
    */
   public renderYouTube(): TemplateResult {
@@ -377,10 +402,22 @@ export class OEmbedElement extends LitElement {
     }
     const youtubeUrl = getYouTubeEmbedUrlFromId(youtubeId);
 
+    // Use Shorts dimensions if this is a Shorts URL and user hasn't explicitly set dimensions
+    const isShorts = isYouTubeShortsUrl(this.url);
+    const useShortsDimensions =
+      isShorts && !this.getAttribute("width") && !this.getAttribute("height");
+
+    const width = useShortsDimensions
+      ? OEmbedElement.youTubeShortsDefaultDimensions.width
+      : this.width;
+    const height = useShortsDimensions
+      ? OEmbedElement.youTubeShortsDefaultDimensions.height
+      : this.height;
+
     return html`
       <iframe
-        width="${this.width}"
-        height="${this.height}"
+        width="${width}"
+        height="${height}"
         src="${youtubeUrl}"
         frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}

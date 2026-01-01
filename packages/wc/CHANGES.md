@@ -9,6 +9,13 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+### Enhancements
+
+- **YouTube Shorts support**: Auto-detects Shorts URLs and applies portrait dimensions ([#51](https://github.com/social-embed/social-embed/pull/51))
+  - Automatically uses 9:16 portrait dimensions (347×616) for Shorts URLs
+  - Respects user-specified dimensions when explicitly set via attributes
+  - Uses `getAttribute()` to distinguish between default and user-set values
+
 ### Refactoring
 
 - **Decorator-free Lit syntax**: Converted from `@property` decorators to static properties pattern ([#50](https://github.com/social-embed/social-embed/pull/50))
