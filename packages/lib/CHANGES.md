@@ -9,6 +9,14 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+### Enhancements
+
+- **YouTube Shorts support**: Added detection and handling for YouTube Shorts URLs ([#51](https://github.com/social-embed/social-embed/pull/51))
+  - New `isYouTubeShortsUrl()` helper to detect `/shorts/VIDEO_ID` patterns
+  - New `YOUTUBE_SHORTS_DIMENSIONS` constant for portrait aspect ratio (347×616)
+  - Updated `youTubeUrlRegex` to capture Shorts video IDs
+  - Fixed regex to properly handle URL fragments (`#`) in addition to query parameters
+
 ### Development
 
 - **Type Safety**: Improved test suite with built-in type checking (#42)
