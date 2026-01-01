@@ -7,6 +7,7 @@
 
 import {
   getSpotifyHeight,
+  isYouTubeShortsUrl,
   type MatcherRegistry,
   type OutputOptions,
   type RegistryStore,
@@ -17,6 +18,7 @@ import {
   type SpotifyTheme,
   type SpotifyView,
   type Unsubscribe,
+  YOUTUBE_SHORTS_DIMENSIONS,
 } from "@social-embed/lib";
 import { defaultStore } from "@social-embed/lib/browser";
 import { html, LitElement, type TemplateResult } from "lit";
@@ -358,13 +360,12 @@ export class OEmbedElement extends LitElement {
     // Collect data-opt-* attributes for provider options
     const dataOptAttrs = this.getDataOptAttributes();
 
-    // Build base output options
+    // Build base output options (width/height added conditionally below)
     const options: OutputOptions &
       SpotifyOutputOptions &
       Record<string, unknown> = {
       attributes: this.allowfullscreen ? { allowfullscreen: "" } : {},
       privacy: this.privacy,
-      width: this.width,
       ...dataOptAttrs, // data-opt-* attributes (lower priority)
       ...this.providerOptions, // Escape hatch (higher priority)
     };
@@ -375,6 +376,7 @@ export class OEmbedElement extends LitElement {
 
     // Add Spotify-specific options when provider is Spotify
     if (this.providerName === "Spotify") {
+      options.width = this.width; // Spotify always uses user's width
       if (this.spotifySize) options.size = this.spotifySize;
       if (this.spotifyTheme) options.theme = this.spotifyTheme;
       if (this.spotifyView) options.view = this.spotifyView;
@@ -400,20 +402,23 @@ export class OEmbedElement extends LitElement {
           video: data.video,
         });
       }
-    } else if (this.providerName === "YouTube") {
-      const isShorts = /youtube\.com\/shorts\//i.test(this.url);
-      const widthExplicit = this.hasAttribute("width");
-      const heightExplicit = this.hasAttribute("height");
-      if (isShorts && !widthExplicit && !heightExplicit) {
-        effectiveWidth = 347;
-        effectiveHeight = 616;
-        options.width = 347;
-        options.height = 616;
-      } else {
+    } else if (
+      this.providerName === "YouTube" &&
+      isYouTubeShortsUrl(this.url)
+    ) {
+      // YouTube Shorts: portrait dimensions unless user explicitly set them
+      const userSetWidth = this.getAttribute("width") !== null;
+      const userSetHeight = this.getAttribute("height") !== null;
+
+      if (userSetWidth || userSetHeight) {
+        options.width = this.width;
         options.height = this.height;
+      } else {
+        effectiveWidth = YOUTUBE_SHORTS_DIMENSIONS.width;
+        effectiveHeight = YOUTUBE_SHORTS_DIMENSIONS.height;
       }
     } else {
-      // For other non-Spotify providers, pass height from attributes
+      options.width = this.width;
       options.height = this.height;
     }
 
@@ -431,7 +436,7 @@ export class OEmbedElement extends LitElement {
   /**
    * Creates a `<style>` block for the component.
    *
-   * @param width - Effective width for CSS fallbacks (may differ for YouTube Shorts / Spotify)
+   * @param width - Effective width for CSS fallbacks (Shorts / Spotify / user overrides)
    * @param height - Effective height for CSS fallbacks
    */
   private instanceStyle(
