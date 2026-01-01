@@ -5,7 +5,11 @@ import { LoomProvider } from "./providers/loom";
 import { SpotifyProvider } from "./providers/spotify";
 import { VimeoProvider } from "./providers/vimeo";
 import { WistiaProvider } from "./providers/wistia";
-import { YouTubeProvider } from "./providers/youtube";
+import {
+  isYouTubeShortsUrl,
+  YOUTUBE_SHORTS_DIMENSIONS,
+  YouTubeProvider,
+} from "./providers/youtube";
 import { EmbedProviderRegistry } from "./registry";
 
 describe("EdPuzzleProvider", () => {
@@ -376,5 +380,109 @@ describe("YouTubeProvider", () => {
     const provider = registry.findProviderByUrl(unknownUrl);
 
     expect(provider).toBeUndefined();
+  });
+
+  describe("YouTube Shorts support", () => {
+    it("should detect and parse YouTube Shorts URLs", () => {
+      const registry = new EmbedProviderRegistry();
+      registry.register(YouTubeProvider);
+
+      const url = "https://www.youtube.com/shorts/eWasNsSa42s";
+      const provider = registry.findProviderByUrl(url);
+
+      expect(provider).toBeDefined();
+      expect(provider?.name).toBe("YouTube");
+
+      const id = provider?.getIdFromUrl(url);
+      expect(id).toBe("eWasNsSa42s");
+
+      const embedUrl = provider?.getEmbedUrlFromId("eWasNsSa42s");
+      expect(embedUrl).toBe("https://www.youtube.com/embed/eWasNsSa42s");
+    });
+
+    it("should detect Shorts URL without www prefix", () => {
+      const registry = new EmbedProviderRegistry();
+      registry.register(YouTubeProvider);
+
+      const url = "https://youtube.com/shorts/eWasNsSa42s";
+      const provider = registry.findProviderByUrl(url);
+
+      expect(provider).toBeDefined();
+      expect(provider?.getIdFromUrl(url)).toBe("eWasNsSa42s");
+    });
+
+    it("should detect Shorts URL with query parameters", () => {
+      const registry = new EmbedProviderRegistry();
+      registry.register(YouTubeProvider);
+
+      const url = "https://www.youtube.com/shorts/eWasNsSa42s?feature=share";
+      const provider = registry.findProviderByUrl(url);
+
+      expect(provider).toBeDefined();
+      expect(provider?.getIdFromUrl(url)).toBe("eWasNsSa42s");
+    });
+
+    it("should detect Shorts URL with youtube-nocookie domain", () => {
+      const registry = new EmbedProviderRegistry();
+      registry.register(YouTubeProvider);
+
+      const url = "https://www.youtube-nocookie.com/shorts/eWasNsSa42s";
+      const provider = registry.findProviderByUrl(url);
+
+      expect(provider).toBeDefined();
+      expect(provider?.getIdFromUrl(url)).toBe("eWasNsSa42s");
+    });
+  });
+
+  describe("isYouTubeShortsUrl helper", () => {
+    it("should return true for Shorts URLs", () => {
+      expect(
+        isYouTubeShortsUrl("https://www.youtube.com/shorts/eWasNsSa42s"),
+      ).toBe(true);
+      expect(isYouTubeShortsUrl("https://youtube.com/shorts/abc123def45")).toBe(
+        true,
+      );
+      expect(
+        isYouTubeShortsUrl(
+          "https://www.youtube.com/shorts/eWasNsSa42s?feature=share",
+        ),
+      ).toBe(true);
+    });
+
+    it("should return false for regular YouTube URLs", () => {
+      expect(
+        isYouTubeShortsUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ"),
+      ).toBe(false);
+      expect(isYouTubeShortsUrl("https://youtu.be/dQw4w9WgXcQ")).toBe(false);
+      expect(
+        isYouTubeShortsUrl("https://www.youtube.com/embed/dQw4w9WgXcQ"),
+      ).toBe(false);
+    });
+
+    it("should return false for undefined or empty input", () => {
+      expect(isYouTubeShortsUrl(undefined)).toBe(false);
+      expect(isYouTubeShortsUrl("")).toBe(false);
+    });
+
+    it("should be case-insensitive", () => {
+      expect(
+        isYouTubeShortsUrl("https://www.YOUTUBE.com/shorts/eWasNsSa42s"),
+      ).toBe(true);
+      expect(
+        isYouTubeShortsUrl("https://www.youtube.com/SHORTS/eWasNsSa42s"),
+      ).toBe(true);
+    });
+  });
+
+  describe("YOUTUBE_SHORTS_DIMENSIONS constant", () => {
+    it("should have correct portrait aspect ratio dimensions (9:16)", () => {
+      expect(YOUTUBE_SHORTS_DIMENSIONS.width).toBe(347);
+      expect(YOUTUBE_SHORTS_DIMENSIONS.height).toBe(616);
+
+      // Verify approximate 9:16 aspect ratio
+      const aspectRatio =
+        YOUTUBE_SHORTS_DIMENSIONS.width / YOUTUBE_SHORTS_DIMENSIONS.height;
+      expect(aspectRatio).toBeCloseTo(9 / 16, 1);
+    });
   });
 });
