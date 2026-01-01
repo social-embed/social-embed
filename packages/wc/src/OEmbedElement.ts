@@ -276,6 +276,18 @@ export class OEmbedElement extends LitElement {
         return this.calculateDefaultDimensions({
           defaults: OEmbedElement.spotifyDefaultDimensions,
         });
+      case "YouTube":
+        // Use portrait dimensions for Shorts URLs (unless user explicitly set dimensions)
+        if (
+          isYouTubeShortsUrl(this.url) &&
+          !this.getAttribute("width") &&
+          !this.getAttribute("height")
+        ) {
+          return this.calculateDefaultDimensions({
+            defaults: OEmbedElement.youTubeShortsDefaultDimensions,
+          });
+        }
+        return this.calculateDefaultDimensions();
       default:
         return this.calculateDefaultDimensions();
     }
