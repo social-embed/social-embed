@@ -75,9 +75,9 @@ export function getCdnUrls(source: CdnSource): { lib: string; wc: string } {
         wc: "https://esm.sh/@social-embed/wc",
       };
     case "esm-sh-gh": {
-      // Use commit SHA instead of branch name for reliable cache-busting
+      // Use short commit SHA (7 chars) for reliable cache-busting
       // esm.sh caches branch references and doesn't auto-update
-      const ref = __GIT_SHA__ || __GIT_BRANCH__;
+      const ref = __GIT_SHA__?.slice(0, 7) || __GIT_BRANCH__;
       const base = `gh/social-embed/social-embed@${ref}/packages`;
       const alias = `@social-embed/lib:${base}/lib/src/index.ts`;
       return {
