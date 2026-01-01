@@ -10,6 +10,40 @@ import { noMatch, ok, type Result } from "../result";
 import type { YouTubeData } from "./types";
 
 /**
+ * Default dimensions for YouTube Shorts embeds (9:16 portrait aspect ratio).
+ *
+ * @remarks
+ * YouTube Shorts are vertical videos with a 9:16 aspect ratio.
+ * These dimensions provide a good default for embedding Shorts.
+ */
+export const YOUTUBE_SHORTS_DIMENSIONS = {
+  height: 616,
+  width: 347,
+} as const;
+
+/**
+ * Regex to detect YouTube Shorts URLs specifically.
+ */
+export const youTubeShortsRegex = /youtube\.com\/shorts\//i;
+
+/**
+ * Checks if a URL is a YouTube Shorts URL.
+ *
+ * @param url - The URL to check.
+ * @returns `true` if the URL is a YouTube Shorts URL, `false` otherwise.
+ *
+ * @example
+ * ```ts
+ * isYouTubeShortsUrl("https://www.youtube.com/shorts/eWasNsSa42s"); // true
+ * isYouTubeShortsUrl("https://www.youtube.com/watch?v=abc123"); // false
+ * ```
+ */
+export const isYouTubeShortsUrl = (url: string | undefined): boolean => {
+  if (!url) return false;
+  return youTubeShortsRegex.test(url);
+};
+
+/**
  * YouTube-specific output options.
  *
  * @remarks
@@ -139,7 +173,8 @@ export const YouTubeMatcher: UrlMatcher<"YouTube", YouTubeData> = {
     for (const pattern of YOUTUBE_PATTERNS) {
       const match = ctx.raw.match(pattern);
       if (match?.[1]) {
-        return ok({ videoId: match[1] });
+        const isShorts = isYouTubeShortsUrl(ctx.raw);
+        return ok({ isShorts: isShorts || undefined, videoId: match[1] });
       }
     }
     return noMatch("No valid YouTube URL pattern matched");
@@ -194,6 +229,11 @@ export const YouTubeMatcher: UrlMatcher<"YouTube", YouTubeData> = {
   ): EmbedOutput {
     const src = this.toEmbedUrl(data, options);
 
+    // Use portrait dimensions for Shorts URLs (9:16 aspect ratio)
+    const defaultDimensions = data.isShorts
+      ? YOUTUBE_SHORTS_DIMENSIONS
+      : { height: 315, width: 560 };
+
     const attrs = mergeOutputOptions(
       {
         allow:
@@ -201,7 +241,7 @@ export const YouTubeMatcher: UrlMatcher<"YouTube", YouTubeData> = {
         frameborder: "0",
       },
       options,
-      { height: 315, width: 560 },
+      defaultDimensions,
     );
 
     return {

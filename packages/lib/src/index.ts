@@ -182,13 +182,16 @@ export {
   getSpotifyDefaultSize,
   getSpotifyHeight,
   getSpotifyWidth,
+  isYouTubeShortsUrl,
   LoomMatcher,
   SPOTIFY_HEIGHTS,
   SPOTIFY_TYPES,
   SpotifyMatcher,
   VimeoMatcher,
   WistiaMatcher,
+  YOUTUBE_SHORTS_DIMENSIONS,
   YouTubeMatcher,
+  youTubeShortsRegex,
 } from "./matchers";
 
 // ─────────────────────────────────────────────────────────────────────────────

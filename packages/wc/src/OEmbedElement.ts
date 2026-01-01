@@ -7,6 +7,7 @@
 
 import {
   getSpotifyHeight,
+  isYouTubeShortsUrl,
   type MatcherRegistry,
   type OutputOptions,
   type RegistryStore,
@@ -17,6 +18,7 @@ import {
   type SpotifyTheme,
   type SpotifyView,
   type Unsubscribe,
+  YOUTUBE_SHORTS_DIMENSIONS,
 } from "@social-embed/lib";
 import { defaultStore } from "@social-embed/lib/browser";
 import { html, LitElement, type TemplateResult } from "lit";
@@ -358,22 +360,23 @@ export class OEmbedElement extends LitElement {
     // Collect data-opt-* attributes for provider options
     const dataOptAttrs = this.getDataOptAttributes();
 
-    // Build base output options
+    // Build base output options (width/height added conditionally below)
     const options: OutputOptions &
       SpotifyOutputOptions &
       Record<string, unknown> = {
       attributes: this.allowfullscreen ? { allowfullscreen: "" } : {},
       privacy: this.privacy,
-      width: this.width,
       ...dataOptAttrs, // data-opt-* attributes (lower priority)
       ...this.providerOptions, // Escape hatch (higher priority)
     };
 
-    // Track the effective height for CSS styling
+    // Track the effective dimensions for CSS styling
+    let effectiveWidth: string | number = this.width;
     let effectiveHeight: string | number = this.height;
 
     // Add Spotify-specific options when provider is Spotify
     if (this.providerName === "Spotify") {
+      options.width = this.width; // Spotify always uses user's width
       if (this.spotifySize) options.size = this.spotifySize;
       if (this.spotifyTheme) options.theme = this.spotifyTheme;
       if (this.spotifyView) options.view = this.spotifyView;
@@ -399,8 +402,26 @@ export class OEmbedElement extends LitElement {
           video: data.video,
         });
       }
+    } else if (
+      this.providerName === "YouTube" &&
+      isYouTubeShortsUrl(this.url)
+    ) {
+      // YouTube Shorts: use portrait dimensions (9:16) unless user explicitly set them
+      const userSetWidth = this.getAttribute("width") !== null;
+      const userSetHeight = this.getAttribute("height") !== null;
+
+      if (userSetWidth || userSetHeight) {
+        // User explicitly set at least one dimension - use their values
+        options.width = this.width;
+        options.height = this.height;
+      } else {
+        // Use Shorts portrait dimensions (matcher handles the actual values)
+        effectiveWidth = YOUTUBE_SHORTS_DIMENSIONS.width;
+        effectiveHeight = YOUTUBE_SHORTS_DIMENSIONS.height;
+      }
     } else {
-      // For non-Spotify providers, always pass height
+      // For non-Spotify, non-Shorts providers, always pass width/height
+      options.width = this.width;
       options.height = this.height;
     }
 
@@ -409,7 +430,7 @@ export class OEmbedElement extends LitElement {
     const embedHtml = renderOutput(output);
 
     return html`
-      ${this.instanceStyle(effectiveHeight)}
+      ${this.instanceStyle(effectiveWidth, effectiveHeight)}
       ${unsafeHTML(embedHtml)}
       <slot></slot>
     `;
@@ -418,9 +439,13 @@ export class OEmbedElement extends LitElement {
   /**
    * Creates a `<style>` block for the component.
    *
-   * @param height - The effective height to use (may differ from this.height for Spotify)
+   * @param width - The effective width to use (may differ from this.width for Shorts)
+   * @param height - The effective height to use (may differ from this.height for Spotify/Shorts)
    */
-  private instanceStyle(height: string | number = this.height): TemplateResult {
+  private instanceStyle(
+    width: string | number = this.width,
+    height: string | number = this.height,
+  ): TemplateResult {
     // Ensure dimensions have units - numeric values and numeric strings need "px"
     const formatDimension = (value: string | number): string => {
       if (typeof value === "number") return `${value}px`;
@@ -429,7 +454,7 @@ export class OEmbedElement extends LitElement {
       return value;
     };
 
-    const widthStyle = formatDimension(this.width);
+    const widthStyle = formatDimension(width);
     const heightStyle = formatDimension(height);
 
     return html`

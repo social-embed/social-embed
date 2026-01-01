@@ -50,7 +50,12 @@ export type { WistiaOutputOptions } from "./wistia";
 export { WistiaMatcher } from "./wistia";
 // Export all matchers
 export type { YouTubeOutputOptions } from "./youtube";
-export { YouTubeMatcher } from "./youtube";
+export {
+  isYouTubeShortsUrl,
+  YOUTUBE_SHORTS_DIMENSIONS,
+  YouTubeMatcher,
+  youTubeShortsRegex,
+} from "./youtube";
 
 import { DailyMotionMatcher } from "./dailymotion";
 import { EdPuzzleMatcher } from "./edpuzzle";
