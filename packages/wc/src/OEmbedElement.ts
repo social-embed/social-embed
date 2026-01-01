@@ -390,10 +390,10 @@ export class OEmbedElement extends LitElement {
     }
     const youtubeUrl = getYouTubeEmbedUrlFromId(youtubeId);
 
-    // Use Shorts dimensions if this is a Shorts URL and user hasn't overridden dimensions
+    // Use Shorts dimensions if this is a Shorts URL and user hasn't explicitly set dimensions
     const isShorts = isYouTubeShortsUrl(this.url);
     const useShortsDimensions =
-      isShorts && this.width === "560" && this.height === "315";
+      isShorts && !this.getAttribute("width") && !this.getAttribute("height");
 
     const width = useShortsDimensions
       ? OEmbedElement.youTubeShortsDefaultDimensions.width

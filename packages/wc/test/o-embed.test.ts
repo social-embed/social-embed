@@ -536,8 +536,8 @@ describe("o-embed", () => {
       const youtubeShortsUrl = "https://www.youtube.com/shorts/eWasNsSa42s";
       const el = document.createElement("o-embed") as OEmbedElement;
       el.url = youtubeShortsUrl;
-      el.width = "400";
-      el.height = "700";
+      el.setAttribute("width", "400");
+      el.setAttribute("height", "700");
       document.body.appendChild(el);
 
       // Wait for component to render
@@ -551,6 +551,31 @@ describe("o-embed", () => {
       // User-specified dimensions should be used even for Shorts
       expect(iframe?.getAttribute("width")).toBe("400");
       expect(iframe?.getAttribute("height")).toBe("700");
+
+      document.body.removeChild(el);
+    });
+
+    it("respects explicitly-set default dimensions for Shorts URL", async () => {
+      // Edge case: user explicitly sets 560x315 (the default) on a Shorts URL
+      // Their explicit choice should be respected, not overridden with Shorts dimensions
+      const youtubeShortsUrl = "https://www.youtube.com/shorts/eWasNsSa42s";
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = youtubeShortsUrl;
+      el.setAttribute("width", "560");
+      el.setAttribute("height", "315");
+      document.body.appendChild(el);
+
+      // Wait for component to render
+      await expectShadowDomEventually(el, (shadow) => {
+        return shadow.querySelector("iframe") !== null;
+      });
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe).toBeTruthy();
+
+      // User explicitly set 560x315, so those should be used even for Shorts
+      expect(iframe?.getAttribute("width")).toBe("560");
+      expect(iframe?.getAttribute("height")).toBe("315");
 
       document.body.removeChild(el);
     });
