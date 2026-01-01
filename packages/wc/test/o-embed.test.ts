@@ -713,9 +713,9 @@ describe("o-embed", () => {
       const iframe = el.shadowRoot?.querySelector("iframe");
       expect(iframe).toBeTruthy();
 
-      // Check that the correct video ID was extracted
+      // Check that the correct video ID was extracted (privacy mode uses -nocookie domain)
       const src = iframe?.getAttribute("src");
-      expect(src).toContain("youtube.com/embed/eWasNsSa42s");
+      expect(src).toContain("youtube-nocookie.com/embed/eWasNsSa42s");
 
       // Shorts should use portrait dimensions (347x616)
       expect(iframe?.getAttribute("width")).toBe("347");
@@ -794,9 +794,9 @@ describe("o-embed", () => {
       const iframe = el.shadowRoot?.querySelector("iframe");
       expect(iframe).toBeTruthy();
 
-      // Check that the correct video ID was extracted despite query params
+      // Check that the correct video ID was extracted despite query params (privacy mode uses -nocookie)
       const src = iframe?.getAttribute("src");
-      expect(src).toContain("youtube.com/embed/eWasNsSa42s");
+      expect(src).toContain("youtube-nocookie.com/embed/eWasNsSa42s");
 
       // Should still use Shorts dimensions
       expect(iframe?.getAttribute("width")).toBe("347");
