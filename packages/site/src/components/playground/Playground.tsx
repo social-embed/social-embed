@@ -30,12 +30,57 @@ export function Playground() {
   const [state, setState] = useState<PlaygroundState>(() => {
     // Initialize from URL or default
     const urlState = getStateFromUrl();
+
+    // Case 1: Preset + seed → compute display code from preset + seed
+    if (urlState.presetId && urlState.seed) {
+      const preset = getPresetById(urlState.presetId);
+      if (preset) {
+        const { html } = applySeededUrls(preset.code, urlState.seed);
+        return {
+          ...urlState,
+          code: html, // Display code (seeded)
+          templateCode: preset.code, // Template = preset code
+        };
+      }
+    }
+
+    // Case 1b: Seed only (no presetId) → assume default preset + seed
+    // This happens when default preset was rerolled (we don't store presetId for default)
+    if (
+      urlState.seed &&
+      !urlState.presetId &&
+      urlState.code === DEFAULT_STATE.code
+    ) {
+      const { html } = applySeededUrls(DEFAULT_PRESET.code, urlState.seed);
+      return {
+        ...urlState,
+        code: html, // Display code (seeded)
+        presetId: DEFAULT_PRESET.id, // Set the preset ID
+        templateCode: DEFAULT_PRESET.code, // Template = default preset code
+      };
+    }
+
+    // Case 2: Template (custom code) + seed → compute display from template + seed
+    if (urlState.seed && urlState.code !== DEFAULT_STATE.code) {
+      // urlState.code here is the template (stored as 'c' in URL)
+      const template = urlState.code;
+      const { html } = applySeededUrls(template, urlState.seed);
+      return {
+        ...urlState,
+        code: html, // Display code (seeded)
+        templateCode: template, // Preserve original template
+      };
+    }
+
+    // Case 3: Preset without seed
     if (urlState.presetId) {
       const preset = getPresetById(urlState.presetId);
       if (preset) {
         return { ...urlState, code: preset.code };
       }
     }
+
+    // Case 4: Custom code or default
     return urlState.code !== DEFAULT_STATE.code
       ? urlState
       : {
@@ -74,7 +119,14 @@ export function Playground() {
 
   // Handlers
   const handleCodeChange = useCallback((code: string) => {
-    setState((prev) => ({ ...prev, code, presetId: undefined }));
+    // User edited the display code - clear seed, their edit becomes the template
+    setState((prev) => ({
+      ...prev,
+      code,
+      presetId: undefined,
+      seed: undefined, // Clear seed - manual edit takes precedence
+      templateCode: undefined, // Their edit IS the new template
+    }));
   }, []);
 
   const handleCdnSourceChange = useCallback((cdnSource: CdnSource) => {
@@ -87,6 +139,8 @@ export function Playground() {
       ...prev,
       code: preset.code,
       presetId: preset.id,
+      seed: undefined, // Clear any previous seed
+      templateCode: undefined, // Will be derived from presetId
     }));
     setConsoleLogs([]); // Clear console on preset change
   }, []);
@@ -102,9 +156,15 @@ export function Playground() {
   // Reroll handler - generates new seed and updates URLs
   const handleReroll = useCallback(() => {
     const newSeed = generateSeed();
-    const updates = generateReactiveUpdates(state.code, newSeed);
+
+    // Get template (preset code, existing template, or current code)
+    const template =
+      state.templateCode ??
+      (state.presetId ? getPresetById(state.presetId)?.code : undefined) ??
+      state.code;
 
     // Reactive update via postMessage (no iframe reload)
+    const updates = generateReactiveUpdates(template, newSeed);
     for (const update of updates) {
       previewRef.current?.updateAttribute(
         update.selector,
@@ -113,10 +173,16 @@ export function Playground() {
       );
     }
 
-    // Update code in editor (for copy/share)
-    const result = applySeededUrls(state.code, newSeed);
-    setState((prev) => ({ ...prev, code: result.html, seed: newSeed }));
-  }, [state.code]);
+    // Compute display code from template + seed
+    const { html } = applySeededUrls(template, newSeed);
+
+    setState((prev) => ({
+      ...prev,
+      code: html, // Display code for editor
+      seed: newSeed,
+      templateCode: template, // Preserve template for URL encoding
+    }));
+  }, [state.code, state.templateCode, state.presetId]);
 
   // Check if current code can be randomized
   const canReroll = useMemo(() => canRandomize(state.code), [state.code]);

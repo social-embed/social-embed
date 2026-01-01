@@ -15,8 +15,10 @@ import {
 } from "./cdnSources";
 
 export interface PlaygroundState {
-  /** The HTML/JS code in the editor */
+  /** The HTML/JS code in the editor (display code, may be seeded) */
   code: string;
+  /** The template code before URL randomization (for seed-based reconstruction) */
+  templateCode?: string;
   /** The CDN source to use */
   cdnSource: CdnSource;
   /** The active preset ID (if any) */
@@ -55,15 +57,29 @@ export const DEFAULT_STATE: PlaygroundState = {
 /**
  * Encode state to a URL-safe string.
  * Optimized to avoid storing redundant data:
- * - If preset is selected and code matches preset exactly, only store preset ID
- * - If code matches default preset, don't store code
+ * - If preset + seed: store just presetId + seed (NOT the display code)
+ * - If custom + seed: store template code + seed
+ * - If code matches preset/default: don't store code
  * - Only store CDN if not the default
  */
 export function encodePlaygroundState(state: PlaygroundState): string {
   const serialized: SerializedState = {};
 
-  // Handle preset and code together to avoid redundancy
-  if (state.presetId) {
+  // Handle preset + seed case: store just presetId + seed (NOT the display code)
+  if (state.presetId && state.seed) {
+    if (state.presetId !== DEFAULT_PRESET.id) {
+      serialized.p = state.presetId;
+    }
+    serialized.s = state.seed;
+    // Don't store code - it will be regenerated from preset + seed
+  }
+  // Handle custom code + seed: store template + seed
+  else if (state.seed && state.templateCode) {
+    serialized.c = btoa(state.templateCode); // Store template, not display
+    serialized.s = state.seed;
+  }
+  // Handle preset without seed
+  else if (state.presetId) {
     const preset = getPresetById(state.presetId);
     if (preset && state.code === preset.code) {
       // Code matches preset - only store preset ID if not default
@@ -75,19 +91,15 @@ export function encodePlaygroundState(state: PlaygroundState): string {
       serialized.p = state.presetId;
       serialized.c = btoa(state.code);
     }
-  } else if (state.code !== DEFAULT_PRESET.code) {
-    // No preset, and code differs from default - store custom code
+  }
+  // No preset, no seed - store custom code if different from default
+  else if (state.code !== DEFAULT_PRESET.code) {
     serialized.c = btoa(state.code);
   }
 
   // Only store CDN if not default
   if (state.cdnSource.type !== DEFAULT_CDN_SOURCE.type) {
     serialized.cdn = serializeCdnSource(state.cdnSource);
-  }
-
-  // Store seed if present
-  if (state.seed) {
-    serialized.s = state.seed;
   }
 
   // If nothing to encode, return empty string
