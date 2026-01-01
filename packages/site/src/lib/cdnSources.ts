@@ -76,15 +76,11 @@ export function getCdnUrls(source: CdnSource): { lib: string; wc: string } {
       };
     case "esm-sh-gh": {
       // Use ?alias to redirect bare @social-embed/* imports to GitHub paths
-      // NOTE: More specific alias (/browser) must come FIRST to avoid prefix matching
       const base = `gh/social-embed/social-embed@${__GIT_BRANCH__}/packages`;
-      const aliases = [
-        `@social-embed/lib/browser:${base}/lib/src/browser/index.ts`,
-        `@social-embed/lib:${base}/lib/src/index.ts`,
-      ].join(",");
+      const alias = `@social-embed/lib:${base}/lib/src/index.ts`;
       return {
-        lib: `https://esm.sh/${base}/lib/src/index.ts?alias=${aliases}`,
-        wc: `https://esm.sh/${base}/wc/src/OEmbedElement.ts?alias=${aliases}`,
+        lib: `https://esm.sh/${base}/lib/src/index.ts?alias=${alias}`,
+        wc: `https://esm.sh/${base}/wc/src/OEmbedElement.ts?alias=${alias}`,
       };
     }
     case "custom": {
