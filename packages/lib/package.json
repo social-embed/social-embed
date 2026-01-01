@@ -1,7 +1,7 @@
 {
   "name": "@social-embed/lib",
   "description": "URL detection and parsing for embed providers (YouTube, other OEmbed compatible providers),",
-  "version": "0.1.0-next.10",
+  "version": "0.1.0-next.11",
   "main": "dist/lib.umd.cjs",
   "module": "dist/lib.js",
   "typings": "dist/index.d.ts",

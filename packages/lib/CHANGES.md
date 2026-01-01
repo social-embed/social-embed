@@ -9,6 +9,8 @@ sidebar:
 
 <!-- _Enter the most recent changes here_ -->
 
+## 0.1.0-next.11 (2026-01-01)
+
 ### Enhancements
 
 - **YouTube Shorts support**: Added detection and handling for YouTube Shorts URLs ([#51](https://github.com/social-embed/social-embed/pull/51))
