@@ -10,6 +10,12 @@
  * YouTube video data.
  */
 export interface YouTubeData {
+  /**
+   * Whether this is a YouTube Shorts URL.
+   * Used for applying portrait (9:16) dimensions.
+   */
+  isShorts?: boolean;
+
   /** 11-character YouTube video ID */
   videoId: string;
 }
