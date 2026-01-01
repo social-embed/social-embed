@@ -1,0 +1,98 @@
+---
+title: "v0.1 → v0.2"
+description: Migrating from @social-embed/wc v0.1 to v0.2
+sidebar:
+  order: 2
+  label: "v0.1 → v0.2"
+---
+
+## Overview
+
+Version 0.2 of `@social-embed/wc` brings privacy-enhanced mode by default and reactive store integration. **The HTML interface is unchanged** - your existing `<o-embed>` elements will continue to work.
+
+## What's New
+
+| Feature | v0.1 | v0.2 |
+|---------|------|------|
+| Privacy mode | Not available | **Default: enabled** |
+| Store subscription | Manual refresh needed | Auto-updates on `register()` |
+| YouTube embeds | `youtube.com` | `youtube-nocookie.com` (privacy) |
+
+## Breaking Changes
+
+### Privacy-Enhanced Mode (Default: On)
+
+YouTube embeds now use `youtube-nocookie.com` by default:
+
+```html
+<!-- v0.1: youtube.com -->
+<o-embed url="https://youtu.be/abc123"></o-embed>
+<!-- Rendered: https://www.youtube.com/embed/abc123 -->
+
+<!-- v0.2: youtube-nocookie.com (privacy mode) -->
+<o-embed url="https://youtu.be/abc123"></o-embed>
+<!-- Rendered: https://www.youtube-nocookie.com/embed/abc123 -->
+```
+
+**To restore v0.1 behavior:**
+
+```html
+<o-embed url="https://youtu.be/abc123" privacy="false"></o-embed>
+```
+
+## New Features
+
+### The `privacy` Attribute
+
+Control privacy-enhanced mode per element:
+
+```html
+<!-- Privacy enabled (default) -->
+<o-embed url="https://youtu.be/abc123"></o-embed>
+<o-embed url="https://youtu.be/abc123" privacy></o-embed>
+<o-embed url="https://youtu.be/abc123" privacy="true"></o-embed>
+
+<!-- Privacy disabled -->
+<o-embed url="https://youtu.be/abc123" privacy="false"></o-embed>
+```
+
+### Reactive Store Subscription
+
+Components now automatically re-render when you register custom matchers:
+
+```typescript
+import { register } from "@social-embed/lib/browser";
+
+// All <o-embed> elements automatically update
+register(MyCustomMatcher);
+```
+
+In v0.1, you needed to manually call `element.refresh()` after registration.
+
+### Spotify Attributes
+
+New attributes for Spotify embeds:
+
+```html
+<o-embed
+  url="spotify:album:1234"
+  spotify-size="large"
+  spotify-theme="light"
+  spotify-view="coverart"
+></o-embed>
+```
+
+### YouTube Shorts Support
+
+Shorts URLs are automatically detected and rendered with portrait dimensions (347×616):
+
+```html
+<o-embed url="https://youtube.com/shorts/abc123"></o-embed>
+```
+
+## Migration Checklist
+
+- [ ] Test that YouTube embeds use privacy-enhanced URLs (or add `privacy="false"`)
+- [ ] Remove any manual `element.refresh()` calls after `register()`
+- [ ] Consider using new Spotify attributes if applicable
+- [ ] Test YouTube Shorts URLs if used
