@@ -1,17 +1,17 @@
 ---
 title: Migration Guide
-description: Migrating from @social-embed/lib v1 to v2
+description: Migrating from @social-embed/lib v0.1 to v0.2
 sidebar:
   order: 80
 ---
 
-## Migrating from v1 to v2
+## Migrating from v0.1 to v0.2
 
-Version 2.0 is a **complete API redesign**. This guide covers all breaking changes and how to update your code.
+Version 0.2 is a **complete API redesign**. This guide covers all breaking changes and how to update your code.
 
 ### Overview of Changes
 
-| v1 | v2 | Notes |
+| v0.1 | v0.2 | Notes |
 |----|-----|-------|
 | `EmbedProvider` | `UrlMatcher` | Generic interface with type inference |
 | `EmbedProviderRegistry` | `MatcherRegistry` | O(1) indexed dispatch, **immutable** |
@@ -26,7 +26,7 @@ Version 2.0 is a **complete API redesign**. This guide covers all breaking chang
 
 ## Basic Usage Migration
 
-### v1: Provider-based approach
+### v0.1: Provider-based approach
 
 ```typescript
 import { getProviderFromUrl, convertUrlToEmbedUrl } from "@social-embed/lib";
@@ -45,7 +45,7 @@ if (provider) {
 }
 ```
 
-### v2: Registry-based approach
+### v0.2: Registry-based approach
 
 ```typescript
 import { MatcherRegistry } from "@social-embed/lib";
@@ -73,7 +73,7 @@ if (result.ok) {
 
 ## Provider-Specific Functions
 
-### v1: Individual function imports
+### v0.1: Individual function imports
 
 ```typescript
 import {
@@ -89,7 +89,7 @@ const youtubeId = getYouTubeIdFromUrl("https://youtu.be/abc123");
 const embedUrl = getYouTubeEmbedUrlFromId(youtubeId);
 ```
 
-### v2: Unified registry API
+### v0.2: Unified registry API
 
 ```typescript
 import { MatcherRegistry } from "@social-embed/lib";
@@ -113,7 +113,7 @@ if (result.ok) {
 
 ## Error Handling
 
-### v1: Nullable returns
+### v0.1: Nullable returns
 
 ```typescript
 const provider = getProviderFromUrl(url);
@@ -127,7 +127,7 @@ if (!id) {
 }
 ```
 
-### v2: Result\<T\> monad
+### v0.2: Result\<T\> monad
 
 ```typescript
 const result = registry.match(url);
@@ -148,7 +148,7 @@ if (!result.ok) {
 
 ## Custom Provider Migration
 
-### v1: EmbedProvider interface
+### v0.1: EmbedProvider interface
 
 ```typescript
 import type { EmbedProvider } from "@social-embed/lib";
@@ -170,7 +170,7 @@ const MyProvider: EmbedProvider = {
 defaultRegistry.providers.set("MyService", MyProvider);
 ```
 
-### v2: UrlMatcher with defineMatcher
+### v0.2: UrlMatcher with defineMatcher
 
 ```typescript
 import { defineMatcher, MatcherRegistry } from "@social-embed/lib";
@@ -203,7 +203,7 @@ register(MyMatcher);
 
 ## Registry Migration
 
-### v1: Direct registry manipulation
+### v0.1: Direct registry manipulation
 
 ```typescript
 import { defaultRegistry, EmbedProviderRegistry } from "@social-embed/lib";
@@ -215,9 +215,9 @@ defaultRegistry.providers.set("MyService", MyProvider);
 const registry = new EmbedProviderRegistry([MyProvider]);
 ```
 
-### v2: Immutable Registry + Mutable Store
+### v0.2: Immutable Registry + Mutable Store
 
-The v2 API separates concerns:
+The v0.2 API separates concerns:
 - **`MatcherRegistry`** is immutable (SSR-safe, no side effects)
 - **`RegistryStore`** provides mutable operations with reactivity
 - **Browser module** exports convenience functions for runtime registration
@@ -263,7 +263,7 @@ const unsub = defaultStore.subscribe((registry) => {
 
 ## Privacy-Enhanced Mode
 
-**New in v2:** Privacy mode is enabled by default.
+**New in v0.2:** Privacy mode is enabled by default.
 
 ```typescript
 const registry = MatcherRegistry.withDefaults();
@@ -277,11 +277,11 @@ registry.toEmbedUrl("https://youtu.be/abc123", { privacy: false });
 // => "https://www.youtube.com/embed/abc123"
 ```
 
-To maintain v1 behavior (no privacy enhancement), pass `{ privacy: false }` to all calls.
+To maintain v0.1 behavior (no privacy enhancement), pass `{ privacy: false }` to all calls.
 
 ---
 
-## New Features in v2
+## New Features in v0.2
 
 ### The Embed Class
 
@@ -370,9 +370,9 @@ const youtube = registry.get("YouTube");
 
 ---
 
-## New APIs (Post v2.0)
+## New APIs (Post v0.2.0)
 
-These features were added after the initial v2 release:
+These features were added after the initial v0.2 release:
 
 ### Type-Safe Matching with `isMatch()`
 
@@ -449,5 +449,5 @@ const output: EmbedOutput = {
 - [ ] Migrate custom providers to `defineMatcher({ type: "iframe" })` or `UrlMatcher` interface
 - [ ] Replace mutable registry operations with browser module's `register()`/`unregister()`
 - [ ] Use `MatcherRegistry.withDefaults()` for SSR, browser module for runtime
-- [ ] Test privacy-enhanced URLs (or add `{ privacy: false }` to maintain v1 behavior)
+- [ ] Test privacy-enhanced URLs (or add `{ privacy: false }` to maintain v0.1 behavior)
 - [ ] Consider using `Embed` class for rendering (`.toHtml()`, `.toUrl()`, `.toNodes()`)
