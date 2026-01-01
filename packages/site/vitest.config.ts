@@ -7,6 +7,7 @@ export default getViteConfig({
   define: {
     // Build-time globals needed by cdnSources.ts
     __GIT_BRANCH__: JSON.stringify("test-branch"),
+    __GIT_SHA__: JSON.stringify("abc1234567890"),
   },
   // Vite 8: Astro 6 still sets esbuild.jsx via @vitejs/plugin-react, but
   // Vite 8 uses Oxc instead. Explicitly configure Oxc JSX for test files.
