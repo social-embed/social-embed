@@ -6,13 +6,48 @@ import type { EmbedProvider } from "../provider";
  * @remarks
  * This pattern captures the 11-character YouTube video ID from multiple formats:
  * - `https://www.youtube.com/watch?v=...`
+ * - `https://www.youtube.com/shorts/...` (YouTube Shorts)
  * - `https://youtu.be/...`
  * - Variants with or without `www.` / `-nocookie`
  *
- * **Credit**: [Stack Overflow](https://stackoverflow.com/a/42442074)
+ * **Credit**: [Stack Overflow](https://stackoverflow.com/a/42442074) (modified to support Shorts)
  */
 export const youTubeUrlRegex =
-  /^(?:(?:https?):)?(?:\/\/)?(?:www\.)?(?:youtube(?:-nocookie)?.com|youtu.be)(?:\/watch\?v)?[=/]([a-zA-Z0-9_-]{11})(?:\\?|=|&|$)/;
+  /^(?:(?:https?):)?(?:\/\/)?(?:www\.)?(?:youtube(?:-nocookie)?\.com|youtu\.be)(?:\/(?:watch\?v=|shorts\/)?)?([a-zA-Z0-9_-]{11})(?:[?&#]|$)/;
+
+/**
+ * Regex to detect YouTube Shorts URLs specifically.
+ */
+export const youTubeShortsRegex = /youtube\.com\/shorts\//i;
+
+/**
+ * Checks if a URL is a YouTube Shorts URL.
+ *
+ * @param url - The URL to check.
+ * @returns `true` if the URL is a YouTube Shorts URL, `false` otherwise.
+ *
+ * @example
+ * ```ts
+ * isYouTubeShortsUrl("https://www.youtube.com/shorts/eWasNsSa42s"); // true
+ * isYouTubeShortsUrl("https://www.youtube.com/watch?v=abc123"); // false
+ * ```
+ */
+export const isYouTubeShortsUrl = (url: string | undefined): boolean => {
+  if (!url) return false;
+  return youTubeShortsRegex.test(url);
+};
+
+/**
+ * Default dimensions for YouTube Shorts embeds (9:16 portrait aspect ratio).
+ *
+ * @remarks
+ * YouTube Shorts are vertical videos with a 9:16 aspect ratio.
+ * These dimensions provide a good default for embedding Shorts.
+ */
+export const YOUTUBE_SHORTS_DIMENSIONS = {
+  height: 616,
+  width: 347,
+} as const;
 
 /**
  * Extracts an 11-character YouTube video ID from a given URL string.
@@ -23,12 +58,13 @@ export const youTubeUrlRegex =
  * @example
  * ```ts
  * // With a watch URL:
- * const videoId = getYouTubeIdFromUrl("https://www.youtube.com/watch?v=FTQbiNvZqaY");
- * console.log(videoId); // "FTQbiNvZqaY"
+ * getYouTubeIdFromUrl("https://www.youtube.com/watch?v=FTQbiNvZqaY"); // "FTQbiNvZqaY"
  *
  * // With a shortlink:
- * const shortId = getYouTubeIdFromUrl("https://youtu.be/FTQbiNvZqaY");
- * console.log(shortId); // "FTQbiNvZqaY"
+ * getYouTubeIdFromUrl("https://youtu.be/FTQbiNvZqaY"); // "FTQbiNvZqaY"
+ *
+ * // With a Shorts URL:
+ * getYouTubeIdFromUrl("https://www.youtube.com/shorts/eWasNsSa42s"); // "eWasNsSa42s"
  * ```
  *
  * @remarks
