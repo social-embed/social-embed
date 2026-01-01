@@ -135,6 +135,21 @@ export type { RegisterOptions, RegistryListener, Unsubscribe } from "./store";
 export { RegistryStore } from "./store";
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Default Store (Re-exported for CDN compatibility)
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Default registry store singleton.
+ *
+ * @remarks
+ * Re-exported from `@social-embed/lib/browser` for CDN compatibility.
+ * This allows esm.sh GitHub imports to work without subpath alias issues.
+ *
+ * For SSR contexts, use `MatcherRegistry.withDefaults()` instead.
+ */
+export { defaultStore } from "./browser";
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Factories
 // ─────────────────────────────────────────────────────────────────────────────
 
