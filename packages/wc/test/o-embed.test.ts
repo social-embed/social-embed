@@ -495,6 +495,85 @@ describe("o-embed", () => {
       expect(src).toContain("youtube.com/embed/dQw4w9WgXcQ");
     });
 
+    it("handles YouTube Shorts URL and uses portrait dimensions", async () => {
+      const youtubeShortsUrl = "https://www.youtube.com/shorts/eWasNsSa42s";
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = youtubeShortsUrl;
+      document.body.appendChild(el);
+
+      // Wait for component to render
+      await expectShadowDomEventually(el, (shadow) => {
+        return shadow.querySelector("iframe") !== null;
+      });
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe).toBeTruthy();
+
+      // Check that the correct video ID was extracted
+      const src = iframe?.getAttribute("src");
+      expect(src).toContain("youtube.com/embed/eWasNsSa42s");
+
+      // Shorts should use portrait dimensions (347x616)
+      expect(iframe?.getAttribute("width")).toBe("347");
+      expect(iframe?.getAttribute("height")).toBe("616");
+
+      document.body.removeChild(el);
+    });
+
+    it("uses default landscape dimensions for regular YouTube videos", async () => {
+      const youtubeUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+      const el = await fixture(html`<o-embed url=${youtubeUrl}></o-embed>`);
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe).toBeTruthy();
+
+      // Regular YouTube should use landscape dimensions (560x315)
+      expect(iframe?.getAttribute("width")).toBe("560");
+      expect(iframe?.getAttribute("height")).toBe("315");
+    });
+
+    it("respects user-specified dimensions for Shorts URL", async () => {
+      const youtubeShortsUrl = "https://www.youtube.com/shorts/eWasNsSa42s";
+      const el = document.createElement("o-embed") as OEmbedElement;
+      el.url = youtubeShortsUrl;
+      el.width = "400";
+      el.height = "700";
+      document.body.appendChild(el);
+
+      // Wait for component to render
+      await expectShadowDomEventually(el, (shadow) => {
+        return shadow.querySelector("iframe") !== null;
+      });
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe).toBeTruthy();
+
+      // User-specified dimensions should be used even for Shorts
+      expect(iframe?.getAttribute("width")).toBe("400");
+      expect(iframe?.getAttribute("height")).toBe("700");
+
+      document.body.removeChild(el);
+    });
+
+    it("handles Shorts URL with query parameters", async () => {
+      const youtubeShortsUrl =
+        "https://www.youtube.com/shorts/eWasNsSa42s?feature=share";
+      const el = await fixture(
+        html`<o-embed url=${youtubeShortsUrl}></o-embed>`,
+      );
+
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe).toBeTruthy();
+
+      // Check that the correct video ID was extracted despite query params
+      const src = iframe?.getAttribute("src");
+      expect(src).toContain("youtube.com/embed/eWasNsSa42s");
+
+      // Should still use Shorts dimensions
+      expect(iframe?.getAttribute("width")).toBe("347");
+      expect(iframe?.getAttribute("height")).toBe("616");
+    });
+
     it("gracefully handles undefined URL", async () => {
       // Test with empty string instead of undefined
       const el = await fixture(html`<o-embed url=""></o-embed>`);
