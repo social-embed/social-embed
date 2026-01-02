@@ -180,6 +180,14 @@
     --sl-color-red-high: var(--color-mv-red-light);
   }
 
+  /* Preserve success badge styling when sidebar item is selected */
+  .sidebar-content a[aria-current="page"] > .sl-badge.success {
+    --sl-color-bg-badge: var(--sl-badge-success-bg);
+    --sl-color-border-badge: var(--sl-badge-success-border);
+    --sl-color-text-badge: var(--sl-badge-success-text);
+    color: var(--sl-color-text-badge);
+  }
+
   /* Light mode: -low = light bg, -high = dark text */
   [data-theme="light"] {
     --sl-color-green-low: var(--color-mv-cyan-light);
