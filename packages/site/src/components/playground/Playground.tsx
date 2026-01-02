@@ -223,6 +223,29 @@ export function Playground() {
             value={state.cdnSource}
           />
         </div>
+
+        {/* More sandboxes link */}
+        <a
+          className="h-[26px] px-2 py-1 text-xs rounded border transition-colors cursor-pointer select-none inline-flex items-center gap-1 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500 no-underline"
+          href="/wc/playground/external"
+        >
+          More sandboxes
+          <svg
+            aria-hidden="true"
+            className="w-3 h-3"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" x2="21" y1="14" y2="3" />
+          </svg>
+        </a>
       </div>
 
       {/* Main content - responsive layout */}

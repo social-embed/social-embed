@@ -1,0 +1,64 @@
+---
+import { Aside, LinkButton } from "@astrojs/starlight/components";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "External Sandboxes",
+    description: "Try @social-embed/wc in external code playgrounds",
+    tableOfContents: true,
+  }}
+>
+  <div class="sandbox-content">
+    <p>
+      Try the <code>&lt;o-embed&gt;</code> web component in your favorite online code editor.
+    </p>
+
+    <LinkButton
+      href="/wc/playground/"
+      variant="primary"
+      icon="rocket"
+      iconPlacement="start"
+    >
+      Interactive Playground
+    </LinkButton>
+
+    <hr />
+
+    <Aside type="tip">
+      Loading issues with external playgrounds? Enable third-party cookies or disable AdBlockers.
+    </Aside>
+
+    <h2 id="codepen">CodePen</h2>
+
+    <LinkButton
+      href="https://codepen.io/attachment/pen/poRRwdy"
+      variant="secondary"
+      icon="external"
+      iconPlacement="start"
+    >
+      Launch on CodePen
+    </LinkButton>
+
+    <p class="codepen" data-height="600" data-default-tab="html,result" data-slug-hash="poRRwdy" data-pen-title="Example of @social-embed/wc" data-preview="true" data-editable="true" data-user="attachment" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+      <span>See the Pen <a href="https://codepen.io/attachment/pen/poRRwdy">
+      Example of @social-embed/wc</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
+      on <a href="https://codepen.io">CodePen</a>.</span>
+    </p>
+    <script is:inline async src="https://public.codepenassets.com/embed/index.js"></script>
+
+    <h2 id="jsfiddle">JSFiddle</h2>
+
+    <LinkButton
+      href="https://jsfiddle.net/gitpull/vc13Lhkz/"
+      variant="secondary"
+      icon="external"
+      iconPlacement="start"
+    >
+      Launch on JSFiddle
+    </LinkButton>
+
+    <iframe width="100%" height="600" src="//jsfiddle.net/gitpull/vc13Lhkz/embedded/result,html/" style="border: 0" loading="lazy" allowfullscreen="true"></iframe>
+  </div>
+</StarlightPage>

@@ -128,19 +128,28 @@ export default defineConfig({
       sidebar: [
         "getting-started",
         {
-          badge: { text: "try it", variant: "success" },
-          label: "Playground",
-          link: "/playground",
-        },
-        {
           autogenerate: { directory: "lib" },
           badge: { text: "lib", variant: "note" },
           label: "Library",
         },
         {
+          badge: { text: "try it", variant: "success" },
+          label: "Lib Playground",
+          link: "/lib/playground/external",
+        },
+        {
           autogenerate: { directory: "wc" },
           badge: { text: "wc", variant: "tip" },
           label: "Web Component",
+        },
+        {
+          badge: { text: "try it", variant: "success" },
+          collapsed: false,
+          items: [
+            { label: "Interactive", link: "/wc/playground/" },
+            { label: "More Sandboxes", link: "/wc/playground/external" },
+          ],
+          label: "WC Playground",
         },
         "migration",
         "news",
@@ -171,6 +180,9 @@ export default defineConfig({
       indexName: "social-embed",
     }),
   ],
+  redirects: {
+    "/playground": "/wc/playground/",
+  },
   site: "https://social-embed.org",
   vite: {
     define: {
