@@ -214,7 +214,7 @@ export function Playground() {
         </div>
 
         {/* Reroll button */}
-        {canReroll && <RerollButton onClick={handleReroll} variant="compact" />}
+        {canReroll && <RerollButton onClick={handleReroll} variant="sm" />}
 
         {/* CDN source picker */}
         <div className="flex-1 min-w-[300px]">

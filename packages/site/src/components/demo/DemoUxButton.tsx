@@ -6,7 +6,7 @@ import { DemoSection } from "./DemoSection";
  */
 export function DemoUxButton() {
   return (
-    <div className="space-y-8 p-6 max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl space-y-8 p-6">
       <div>
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
           Button
@@ -16,45 +16,108 @@ export function DemoUxButton() {
         </p>
       </div>
 
-      {/* Reroll Button - Icon Only */}
+      {/* Reroll Button Variants */}
       <DemoSection
-        description="Compact icon-only button with spin animation on click."
-        title="Reroll Button (Icon Only)"
+        description="All RerollButton size variants. Each supports icon-only or icon+label via showLabel prop."
+        title="Reroll Button Variants"
       >
-        <div className="flex flex-wrap items-center gap-4">
-          <RerollButton />
-          <span className="text-xs text-slate-500">Click to see animation</span>
-        </div>
-      </DemoSection>
-
-      {/* Reroll Button - Icon + Text */}
-      <DemoSection
-        description="Full button with icon and label."
-        title="Reroll Button (Icon + Text)"
-      >
-        <div className="flex flex-wrap items-center gap-4">
-          <RerollButton variant="full" />
-          <span className="text-xs text-slate-500">Click to see animation</span>
-        </div>
-      </DemoSection>
-
-      {/* Size Variants */}
-      <DemoSection
-        description="Reroll buttons in different sizes for various contexts."
-        title="Sizes"
-      >
-        <div className="flex flex-wrap items-end gap-4">
-          <div className="space-y-1">
-            <span className="text-xs text-slate-500">xs (compact)</span>
-            <RerollButton variant="compact" />
+        <div className="space-y-6">
+          {/* Icon only row */}
+          <div>
+            <div className="mb-2 text-xs font-medium text-slate-500">
+              Icon only
+            </div>
+            <div className="flex flex-wrap items-end gap-4">
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xxs</span>
+                <div className="text-[10px] text-slate-400">20px</div>
+                <RerollButton showLabel={false} variant="xxs" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xs</span>
+                <div className="text-[10px] text-slate-400">22px</div>
+                <RerollButton showLabel={false} variant="xs" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">sm</span>
+                <div className="text-[10px] text-slate-400">24px</div>
+                <RerollButton showLabel={false} variant="sm" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">md</span>
+                <div className="text-[10px] text-slate-400">32px</div>
+                <RerollButton showLabel={false} variant="md" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">lg</span>
+                <div className="text-[10px] text-slate-400">36px</div>
+                <RerollButton showLabel={false} variant="lg" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xl</span>
+                <div className="text-[10px] text-slate-400">40px</div>
+                <RerollButton showLabel={false} variant="xl" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xxl</span>
+                <div className="text-[10px] text-slate-400">44px</div>
+                <RerollButton showLabel={false} variant="xxl" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xxxl</span>
+                <div className="text-[10px] text-slate-400">48px</div>
+                <RerollButton showLabel={false} variant="xxxl" />
+              </div>
+            </div>
           </div>
-          <div className="space-y-1">
-            <span className="text-xs text-slate-500">sm (full)</span>
-            <RerollButton variant="full" />
-          </div>
-          <div className="space-y-1">
-            <span className="text-xs text-slate-500">md</span>
-            <RerollButton variant="md" />
+
+          {/* Icon + label row */}
+          <div>
+            <div className="mb-2 text-xs font-medium text-slate-500">
+              Icon + label
+            </div>
+            <div className="flex flex-wrap items-end gap-4">
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xxs</span>
+                <div className="text-[10px] text-slate-400">20px</div>
+                <RerollButton showLabel variant="xxs" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xs</span>
+                <div className="text-[10px] text-slate-400">22px</div>
+                <RerollButton showLabel variant="xs" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">sm</span>
+                <div className="text-[10px] text-slate-400">24px</div>
+                <RerollButton showLabel variant="sm" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">md</span>
+                <div className="text-[10px] text-slate-400">32px</div>
+                <RerollButton showLabel variant="md" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">lg</span>
+                <div className="text-[10px] text-slate-400">36px</div>
+                <RerollButton showLabel variant="lg" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xl</span>
+                <div className="text-[10px] text-slate-400">40px</div>
+                <RerollButton showLabel variant="xl" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xxl</span>
+                <div className="text-[10px] text-slate-400">44px</div>
+                <RerollButton showLabel variant="xxl" />
+              </div>
+              <div className="space-y-1 text-center">
+                <span className="text-xs text-slate-500">xxxl</span>
+                <div className="text-[10px] text-slate-400">48px</div>
+                <RerollButton showLabel variant="xxxl" />
+              </div>
+            </div>
           </div>
         </div>
       </DemoSection>
@@ -69,11 +132,11 @@ export function DemoUxButton() {
             <span className="text-xs text-slate-500">
               default (no animation)
             </span>
-            <RerollButton variant="full" />
+            <RerollButton variant="sm" />
           </div>
           <div className="space-y-1">
             <span className="text-xs text-slate-500">animateOnMount</span>
-            <RerollButton animateOnMount variant="full" />
+            <RerollButton animateOnMount variant="sm" />
           </div>
         </div>
       </DemoSection>

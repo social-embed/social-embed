@@ -22,8 +22,8 @@ export function DemoOverview() {
           href="/demo/ux"
           preview={
             <div className="flex items-center gap-2">
-              <RerollButton variant="compact" />
-              <RerollButton variant="full" />
+              <RerollButton variant="xs" />
+              <RerollButton variant="sm" />
             </div>
           }
           title="UX Components"
