@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { copyToClipboard } from "../../lib/clipboard";
 import { getProviderDisplayInfo, type ProviderType } from "./constants";
 
@@ -39,11 +39,17 @@ interface OutputRowProps {
 function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
 
+  // Reset copied state after 1500ms with proper cleanup
+  useEffect(() => {
+    if (!copied) return;
+    const timeoutId = setTimeout(() => setCopied(false), 1500);
+    return () => clearTimeout(timeoutId);
+  }, [copied]);
+
   const handleCopy = async () => {
     const result = await copyToClipboard(value);
     if (result.success) {
       setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
     }
   };
 
