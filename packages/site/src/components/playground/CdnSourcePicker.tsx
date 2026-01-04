@@ -16,10 +16,10 @@ export interface CdnSourcePickerProps {
 const SOURCE_TYPES: CdnSourceType[] = [
   "local",
   "cdn-dev",
-  "jsdelivr",
-  "unpkg",
-  "esm-sh",
   "esm-sh-gh",
+  "esm-sh",
+  "unpkg",
+  "jsdelivr",
   "custom",
 ];
 
