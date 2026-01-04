@@ -28,6 +28,18 @@ export function DemoOverview() {
           }
           title="UX Components"
         />
+        <DemoCard
+          description="Embeddable playground widgets for testing embeds"
+          href="/demo/widgets"
+          preview={
+            <div className="flex items-center gap-3 text-3xl">
+              <span>🎮</span>
+              <span className="text-slate-400">+</span>
+              <span>📝</span>
+            </div>
+          }
+          title="Widgets"
+        />
       </div>
     </div>
   );

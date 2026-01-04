@@ -19,7 +19,96 @@ const navigation: DemoNavItem[] = [
     items: [{ href: "/demo/ux/button", label: "Button" }],
     label: "UX Components",
   },
+  {
+    href: "/demo/widgets",
+    items: [
+      {
+        href: "/demo/widgets/playground",
+        items: [
+          { href: "/demo/widgets/playground/wc", label: "WC Playground" },
+          { href: "/demo/widgets/playground/lib", label: "Lib Playground" },
+        ],
+        label: "Playground",
+      },
+    ],
+    label: "Widgets",
+  },
 ];
+
+function NavItem({
+  item,
+  normalizedPath,
+  depth = 0,
+}: {
+  item: DemoNavItem;
+  normalizedPath: string;
+  depth?: number;
+}): ReactNode {
+  const itemPath = item.href.replace(/\/$/, "");
+  const isActive =
+    normalizedPath === itemPath || normalizedPath.startsWith(`${itemPath}/`);
+  const isExactMatch = normalizedPath === itemPath;
+
+  // Top-level items
+  if (depth === 0) {
+    return (
+      <div key={item.href}>
+        <a
+          className={`block rounded-md px-3 py-2 text-sm no-underline transition ${
+            isActive
+              ? "bg-slate-200 font-medium text-slate-900 dark:bg-slate-800 dark:text-white"
+              : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+          }`}
+          href={item.href}
+        >
+          {item.label}
+        </a>
+        {item.items && isActive && (
+          <div className="ml-3 mt-1 space-y-1 border-l border-slate-200 pl-3 dark:border-slate-700">
+            {item.items.map((subItem) => (
+              <NavItem
+                depth={depth + 1}
+                item={subItem}
+                key={subItem.href}
+                normalizedPath={normalizedPath}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Nested items
+  return (
+    <div key={item.href}>
+      <a
+        className={`block rounded-md px-2 py-1.5 text-xs no-underline transition ${
+          isExactMatch
+            ? "font-medium text-slate-900 dark:text-white"
+            : isActive
+              ? "font-medium text-slate-700 dark:text-slate-300"
+              : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+        }`}
+        href={item.href}
+      >
+        {item.label}
+      </a>
+      {item.items && isActive && (
+        <div className="ml-2 mt-1 space-y-1 border-l border-slate-200 pl-2 dark:border-slate-700">
+          {item.items.map((subItem) => (
+            <NavItem
+              depth={depth + 1}
+              item={subItem}
+              key={subItem.href}
+              normalizedPath={normalizedPath}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function DemoLayout({
   title = "Demo",
@@ -38,47 +127,13 @@ export function DemoLayout({
             {title}
           </h1>
           <nav className="space-y-1">
-            {navigation.map((item) => {
-              const itemPath = item.href.replace(/\/$/, "");
-              const isActive =
-                normalizedPath === itemPath ||
-                normalizedPath.startsWith(`${itemPath}/`);
-              return (
-                <div key={item.href}>
-                  <a
-                    className={`block rounded-md px-3 py-2 text-sm no-underline transition ${
-                      isActive
-                        ? "bg-slate-200 font-medium text-slate-900 dark:bg-slate-800 dark:text-white"
-                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
-                    }`}
-                    href={item.href}
-                  >
-                    {item.label}
-                  </a>
-                  {item.items && isActive && (
-                    <div className="ml-3 mt-1 space-y-1 border-l border-slate-200 pl-3 dark:border-slate-700">
-                      {item.items.map((subItem) => {
-                        const subItemPath = subItem.href.replace(/\/$/, "");
-                        const isSubActive = normalizedPath === subItemPath;
-                        return (
-                          <a
-                            className={`block rounded-md px-2 py-1.5 text-xs no-underline transition ${
-                              isSubActive
-                                ? "font-medium text-slate-900 dark:text-white"
-                                : "text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                            }`}
-                            href={subItem.href}
-                            key={subItem.href}
-                          >
-                            {subItem.label}
-                          </a>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {navigation.map((item) => (
+              <NavItem
+                item={item}
+                key={item.href}
+                normalizedPath={normalizedPath}
+              />
+            ))}
           </nav>
         </div>
       </aside>

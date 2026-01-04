@@ -18,7 +18,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     o-embed { max-width: 560px; }
   </style>
 </head>
@@ -37,7 +37,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     o-embed { max-width: 560px; }
   </style>
 </head>
@@ -56,7 +56,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     o-embed { max-width: 400px; }
   </style>
 </head>
@@ -75,7 +75,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     o-embed { max-width: 400px; }
   </style>
 </head>
@@ -94,7 +94,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     o-embed { max-width: 560px; }
   </style>
 </head>
@@ -113,7 +113,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     o-embed { max-width: 560px; }
   </style>
 </head>
@@ -132,7 +132,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     o-embed { max-width: 560px; }
   </style>
 </head>
@@ -151,7 +151,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     o-embed { max-width: 560px; }
   </style>
 </head>
@@ -170,7 +170,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     o-embed { max-width: 560px; }
   </style>
 </head>
@@ -189,7 +189,7 @@ export const PRESETS: Preset[] = [
 <head>
   ${WC_SCRIPT}
   <style>
-    body { font-family: system-ui; padding: 20px; }
+    body { font-family: system-ui; }
     .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
     o-embed { max-width: 100%; }
   </style>

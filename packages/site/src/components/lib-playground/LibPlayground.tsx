@@ -140,13 +140,14 @@ export function LibPlayground({
     }
   }, [state.url]);
 
-  // Sync state to URL (debounced)
+  // Sync state to URL (debounced) - only in full mode
   useEffect(() => {
+    if (mode === "mini") return; // Don't sync URL in mini mode
     const timeout = setTimeout(() => {
       updateLibUrlWithState(state);
     }, 300);
     return () => clearTimeout(timeout);
-  }, [state]);
+  }, [state, mode]);
 
   const handleUrlChange = useCallback((url: string) => {
     setState((prev) => ({ ...prev, seed: undefined, url }));
@@ -178,6 +179,19 @@ export function LibPlayground({
 
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
+      {/* Mini mode header */}
+      {isMini && (
+        <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
+          Library playground{" "}
+          <a
+            className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 no-underline"
+            href={createShareableUrl(state)}
+          >
+            (full size)
+          </a>
+        </span>
+      )}
+
       {/* Header controls - full mode only */}
       {!isMini && (
         <div className="flex flex-wrap items-center gap-2">
@@ -193,24 +207,23 @@ export function LibPlayground({
         </div>
       )}
 
-      {/* URL Input */}
-      <UrlInput
-        onChange={handleUrlChange}
-        onSubmit={handleSubmit}
-        placeholder={
-          isMini
-            ? "Paste a URL..."
-            : "Paste a video URL (YouTube, Vimeo, Spotify, etc.)"
-        }
-        value={state.url}
-      />
-
-      {/* Reroll in mini mode - inline with input */}
-      {isMini && canReroll && (
-        <div className="flex justify-end -mt-2">
-          <RerollButton onClick={handleReroll} variant="xxs" />
-        </div>
-      )}
+      {/* URL Input with reroll */}
+      <div className={isMini ? "flex items-center gap-2" : ""}>
+        <UrlInput
+          className={isMini ? "flex-1" : ""}
+          onChange={handleUrlChange}
+          onSubmit={handleSubmit}
+          placeholder={
+            isMini
+              ? "Paste a URL..."
+              : "Paste a video URL (YouTube, Vimeo, Spotify, etc.)"
+          }
+          value={state.url}
+        />
+        {isMini && canReroll && (
+          <RerollButton onClick={handleReroll} variant="md" />
+        )}
+      </div>
 
       {/* Output Display */}
       <OutputDisplay compact={isMini} output={output} />
