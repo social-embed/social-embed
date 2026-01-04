@@ -20,6 +20,8 @@ import { Code } from "@astrojs/starlight/components";
 import { Icon } from '@astrojs/starlight/components';
 import { LinkButton } from '@astrojs/starlight/components';
 import ReactLive from "../../components/ReactLive";
+import { MiniPlayground } from "../../components/playground/MiniPlayground";
+import { LibPlayground } from "../../components/lib-playground/LibPlayground";
 
 <div class="grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6">
 
@@ -57,13 +59,9 @@ import ReactLive from "../../components/ReactLive";
   </ul>
 
   <p>Try it live:</p>
-  <ReactLive
-    initialCode={`<o-embed
-    url="https://youtu.be/FTQbiNvZqaY"
-    width="100%"
-/>`}
-    client:only="react"
-  />
+  <div data-widget="wc-playground" class="not-content">
+    <MiniPlayground client:only="react" />
+  </div>
 
   <p>
     <strong>Playground:</strong>
@@ -107,46 +105,9 @@ import ReactLive from "../../components/ReactLive";
       <li>Normalizing or validating incoming URLs.</li>
     </ul>
 
-    <Code
-      lang="ts"
-      wrap
-      code={`import {
-    getProviderFromUrl,
-    getYouTubeIdFromUrl,
-    youTubeUrlRegex,
-} from "@social-embed/lib";
-
-"https://youtu.be/watch?v=Bd8_vO5zrjo".match(
-    youTubeUrlRegex
-);
-// => [
-//   "https://youtu.be/watch?v=Bd8_vO5zrjo","Bd8_vO5zrjo"
-// ]
-
-getYouTubeIdFromUrl(
-    "https://youtu.be/watch?v=Bd8_vO5zrjo"
-);
-// => "Bd8_vO5zrjo"
-
-const provider = getProviderFromUrl(
-    "https://youtu.be/watch?v=Bd8_vO5zrjo"
-);
-// => {
-//   name: "YouTube",
-//   canParseUrl: [Function],
-//   getIdFromUrl: [Function],
-//   getEmbedUrlFromId: [Function]
-// }
-
-provider.getIdFromUrl(
-    "https://youtu.be/watch?v=Bd8_vO5zrjo"
-);
-// => "Bd8_vO5zrjo"
-
-provider.getEmbedUrlFromId("Bd8_vO5zrjo");
-// => "https://www.youtube.com/embed/Bd8_vO5zrjo"
-`}
-/>
+    <div data-widget="lib-playground" class="not-content">
+      <LibPlayground client:only="react" mode="mini" className="rounded-lg border border-slate-200 dark:border-slate-700" />
+    </div>
 
     <p>
       <strong>Playground:</strong>
