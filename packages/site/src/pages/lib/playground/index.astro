@@ -27,14 +27,31 @@ import { LibPlayground } from "../../../components/lib-playground/LibPlayground"
 </StarlightPage>
 
 <style is:global>
-  /* Hide pagination and footer on playground page */
+  /* Reset Starlight wrappers for lib playground page */
   body:has([data-page="lib-playground"]) {
+    /* Hide pagination/footer */
     .pagination-links,
     footer.sl-flex {
       display: none !important;
     }
 
-    /* Hide page title from Starlight */
+    /* Reset all Starlight container wrappers */
+    main,
+    .content-panel,
+    .main-pane,
+    .sl-container,
+    .sl-markdown-content {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: 100% !important;
+    }
+
+    /* Remove the content-panel sibling border-top */
+    .content-panel + .content-panel {
+      border-top: none !important;
+    }
+
+    /* Hide page title */
     h1[id="_top"] {
       display: none !important;
     }
