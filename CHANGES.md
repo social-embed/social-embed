@@ -77,6 +77,14 @@ Here you can find project-wide changes. For more detailed changes:
 
 ### Docs / Site
 
+- **Library Playground**: Add interactive playground at `/lib/playground` (#52)
+  - Test `@social-embed/lib` URL transformations in real-time
+  - Shows provider detection, ID extraction, and embed URL generation
+  - Provider-scoped URL reroll with seeded RNG for shareable states
+  - Library source picker: local build, esm.sh (GitHub/npm), unpkg, jsDelivr
+  - Copy buttons for ID and embed URL output
+  - URL state serialization for shareable playground links
+
 - **Playground**: Add interactive playground at `/playground` (#49)
   - Live code editor with syntax highlighting (CodeMirror 6)
   - Real-time preview with sandboxed iframe execution
