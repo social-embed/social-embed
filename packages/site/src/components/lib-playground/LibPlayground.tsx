@@ -6,13 +6,13 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createRng, generateSeed } from "../../lib/seededRng";
 import { RerollButton } from "../playground/RerollButton";
+import { detectProvider } from "../playground/urlReplacer";
 import { CopyLinkButton } from "./CopyLinkButton";
 import {
   getProviderFilterOptions,
   getUrlPoolForFilter,
   type LibSourceType,
   type ProviderFilter,
-  type ProviderType,
 } from "./constants";
 import { LibSourcePicker } from "./LibSourcePicker";
 import {
@@ -74,7 +74,7 @@ function transformUrl(url: string): LibOutput {
       input: url,
       isShorts,
       isValid: true,
-      provider: provider.name.toLowerCase() as ProviderType,
+      provider: detectProvider(url),
       providerId,
     };
   } catch (err) {
