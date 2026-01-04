@@ -207,7 +207,7 @@ export function LibPlayground({
           value={state.url}
         />
         {isMini && canReroll && (
-          <RerollButton onClick={handleReroll} variant="xs" />
+          <RerollButton onClick={handleReroll} variant="md" />
         )}
       </div>
 
