@@ -12,6 +12,9 @@ export type CdnSourceType =
   | "esm-sh-gh"
   | "custom";
 
+/** CDN source types that don't require additional properties (excludes "custom") */
+export type SimpleCdnSourceType = Exclude<CdnSourceType, "custom">;
+
 export type CdnSource =
   | { type: "local" }
   | { type: "cdn-dev" }

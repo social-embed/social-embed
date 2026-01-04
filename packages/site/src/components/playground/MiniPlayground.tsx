@@ -2,8 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   CDN_SOURCE_LABELS,
   type CdnSource,
-  type CdnSourceType,
   getCdnUrls,
+  type SimpleCdnSourceType,
 } from "../../lib/cdnSources";
 import { encodePlaygroundState } from "../../lib/playgroundState";
 import { generateSeed } from "../../lib/seededRng";
@@ -23,7 +23,7 @@ import {
 } from "./urlReplacer";
 
 // CDN options for the select (same order as full playground, excluding custom)
-const CDN_OPTIONS: CdnSourceType[] = [
+const CDN_OPTIONS: SimpleCdnSourceType[] = [
   "local",
   "cdn-dev",
   "esm-sh-gh",
@@ -154,8 +154,8 @@ export function MiniPlayground({
     }
   }, []);
 
-  const handleCdnSourceChange = useCallback((type: CdnSourceType) => {
-    setCdnSource({ type } as CdnSource);
+  const handleCdnSourceChange = useCallback((type: SimpleCdnSourceType) => {
+    setCdnSource({ type });
     setConsoleLogs([]); // Clear console on CDN change
   }, []);
 
@@ -246,7 +246,7 @@ export function MiniPlayground({
         <select
           className="h-7 px-2 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-indigo-500 cursor-pointer"
           onChange={(e) =>
-            handleCdnSourceChange(e.target.value as CdnSourceType)
+            handleCdnSourceChange(e.target.value as SimpleCdnSourceType)
           }
           title="Select CDN source"
           value={cdnSource.type}
