@@ -5,6 +5,7 @@ import {
   type CdnSourceType,
   getCdnUrls,
 } from "../../lib/cdnSources";
+import { encodePlaygroundState } from "../../lib/playgroundState";
 import { generateSeed } from "../../lib/seededRng";
 import { CodeEditor } from "./CodeEditor";
 import { ConsoleOutput } from "./ConsoleOutput";
@@ -181,6 +182,17 @@ export function MiniPlayground({
   // Check if current code can be randomized
   const canReroll = useMemo(() => canRandomize(code), [code]);
 
+  // Generate full size playground URL with current state
+  const fullSizeUrl = useMemo(() => {
+    const encoded = encodePlaygroundState({
+      cdnSource,
+      code,
+      presetId,
+      templateCode,
+    });
+    return encoded ? `/wc/playground/?state=${encoded}` : "/wc/playground/";
+  }, [code, cdnSource, presetId, templateCode]);
+
   return (
     <div
       className={`flex flex-col h-full min-h-[400px] overflow-hidden bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 ${className}`}
@@ -192,7 +204,7 @@ export function MiniPlayground({
           <code>&lt;o-embed&gt;</code> playground{" "}
           <a
             className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 no-underline"
-            href="/wc/playground/"
+            href={fullSizeUrl}
           >
             (full size)
           </a>
