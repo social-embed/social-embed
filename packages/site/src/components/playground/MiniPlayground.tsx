@@ -106,6 +106,9 @@ export function MiniPlayground({
     undefined,
   );
 
+  // Seed for URL randomization (enables compact share links)
+  const [seed, setSeed] = useState<string | undefined>(undefined);
+
   const [consoleLogs, setConsoleLogs] = useState<ConsoleEntry[]>([]);
   const [stableCode, setStableCode] = useState(code);
   const [activeTab, setActiveTab] = useState<TabId>("preview");
@@ -126,9 +129,10 @@ export function MiniPlayground({
   // Handle code changes from editor
   const handleCodeChange = useCallback((newCode: string) => {
     setCode(newCode);
-    // User edited - clear template and preset, their edit becomes the source of truth
+    // User edited - clear template, preset, and seed; their edit becomes the source of truth
     setTemplateCode(undefined);
     setPresetId(undefined);
+    setSeed(undefined);
   }, []);
 
   // Handle console messages from preview
@@ -151,6 +155,7 @@ export function MiniPlayground({
       setCode(preset.code);
       setPresetId(id);
       setTemplateCode(undefined);
+      setSeed(undefined);
       setConsoleLogs([]);
     }
   }, []);
@@ -177,6 +182,7 @@ export function MiniPlayground({
 
     setCode(html);
     setTemplateCode(template); // Preserve template for future rerolls
+    setSeed(newSeed); // Store seed for compact share links
   }, [code, templateCode]);
 
   // Check if current code can be randomized
@@ -188,10 +194,11 @@ export function MiniPlayground({
       cdnSource,
       code,
       presetId,
+      seed,
       templateCode,
     });
     return encoded ? `/wc/playground/?state=${encoded}` : "/wc/playground/";
-  }, [code, cdnSource, presetId, templateCode]);
+  }, [code, cdnSource, presetId, seed, templateCode]);
 
   return (
     <div
