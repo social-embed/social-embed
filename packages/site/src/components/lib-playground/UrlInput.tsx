@@ -1,4 +1,9 @@
-import { type ClipboardEvent, type KeyboardEvent, useRef } from "react";
+import {
+  type ClipboardEvent,
+  type KeyboardEvent,
+  useEffect,
+  useRef,
+} from "react";
 
 export interface UrlInputProps {
   /** Current URL value */
@@ -28,13 +33,23 @@ export function UrlInput({
   disabled = false,
 }: UrlInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const submitTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Cleanup timeout on unmount to prevent memory leak
+  useEffect(() => {
+    return () => {
+      if (submitTimeoutRef.current) {
+        clearTimeout(submitTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
     // Get pasted text and update value
     const pastedText = e.clipboardData.getData("text");
     if (pastedText) {
       // Let the paste happen naturally, then trigger submit
-      setTimeout(() => {
+      submitTimeoutRef.current = setTimeout(() => {
         onSubmit?.();
       }, 0);
     }
