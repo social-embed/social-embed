@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { getProviderDisplayInfo, type ProviderType } from "./constants";
 
 export interface LibOutput {
@@ -30,14 +31,71 @@ interface OutputRowProps {
   label: string;
   value: string | null | undefined;
   isCode?: boolean;
-  isCopyable?: boolean;
+  copyable?: boolean;
   colorClass?: string;
+}
+
+function CopyButton({ value }: { value: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // Silently fail if clipboard is not available
+    }
+  };
+
+  return (
+    <button
+      aria-label={copied ? "Copied!" : "Copy to clipboard"}
+      className="shrink-0 p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+      onClick={handleCopy}
+      title={copied ? "Copied!" : "Copy"}
+      type="button"
+    >
+      {copied ? (
+        <svg
+          aria-hidden="true"
+          className="w-3.5 h-3.5 text-green-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M5 13l4 4L19 7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+          />
+        </svg>
+      ) : (
+        <svg
+          aria-hidden="true"
+          className="w-3.5 h-3.5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+          />
+        </svg>
+      )}
+    </button>
+  );
 }
 
 function OutputRow({
   label,
   value,
   isCode = false,
+  copyable = false,
   colorClass,
 }: OutputRowProps) {
   if (value === null || value === undefined) {
@@ -45,19 +103,22 @@ function OutputRow({
   }
 
   return (
-    <div className="flex flex-col gap-0.5 sm:flex-row sm:items-start sm:gap-2">
+    <div className="flex flex-col gap-0.5 sm:flex-row sm:items-start sm:gap-2 group">
       <span className="text-xs font-medium text-slate-500 dark:text-slate-400 min-w-[80px] shrink-0">
         {label}:
       </span>
-      <span
-        className={`text-sm break-all ${
-          isCode
-            ? "font-mono text-slate-700 dark:text-slate-300"
-            : colorClass || "text-slate-900 dark:text-slate-100"
-        }`}
-      >
-        {value}
-      </span>
+      <div className="flex items-start gap-1 min-w-0 flex-1">
+        <span
+          className={`text-sm break-all ${
+            isCode
+              ? "font-mono text-slate-700 dark:text-slate-300"
+              : colorClass || "text-slate-900 dark:text-slate-100"
+          }`}
+        >
+          {value}
+        </span>
+        {copyable && <CopyButton value={value} />}
+      </div>
     </div>
   );
 }
@@ -141,10 +202,10 @@ export function OutputDisplay({
         )}
 
         {/* ID */}
-        <OutputRow isCode label="ID" value={formattedId} />
+        <OutputRow copyable isCode label="ID" value={formattedId} />
 
         {/* Embed URL */}
-        <OutputRow isCode label="Embed URL" value={output.embedUrl} />
+        <OutputRow copyable isCode label="Embed URL" value={output.embedUrl} />
 
         {/* Original URL (only in non-compact mode) */}
         {!compact && <OutputRow isCode label="Input" value={output.input} />}

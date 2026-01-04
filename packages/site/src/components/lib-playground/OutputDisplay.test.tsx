@@ -193,4 +193,23 @@ describe("OutputDisplay", () => {
       expect(wrapper).toBeTruthy();
     });
   });
+
+  describe("copy buttons", () => {
+    test("shows copy buttons for ID and Embed URL", () => {
+      const output: LibOutput = {
+        embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        input: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        isValid: true,
+        provider: "youtube",
+        providerId: "dQw4w9WgXcQ",
+      };
+      renderDisplay({ output });
+
+      // Should have copy buttons for ID and Embed URL
+      const copyButtons = container?.querySelectorAll(
+        'button[aria-label="Copy to clipboard"]',
+      );
+      expect(copyButtons?.length).toBe(2);
+    });
+  });
 });
