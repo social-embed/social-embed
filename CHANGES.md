@@ -23,6 +23,7 @@ Here you can find project-wide changes. For more detailed changes:
   - Updated ignore patterns to use new glob syntax (`/**` instead of `/`)
   - Fixed TypeScript module resolution for Vite 5+ compatibility
   - Applied new sorting rules for imports and object properties
+- **Tooling**: Fix biome.jsonc `$schema` URL typo (`hchema.json` → `schema.json`)
 
 ### Breaking changes
 
