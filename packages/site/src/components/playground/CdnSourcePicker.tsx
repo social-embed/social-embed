@@ -92,9 +92,11 @@ export function CdnSourcePicker({
       )}
 
       {/* Resolved URL display */}
-      <span className="text-[10px] text-slate-400 dark:text-slate-500 font-mono truncate ml-2">
-        {urls.wc}
-      </span>
+      <div className="flex min-w-0 flex-1 items-center justify-end ml-2">
+        <code className="truncate rounded bg-slate-100 px-1.5 py-0.5 text-[10px] text-slate-500 dark:bg-slate-700 dark:text-slate-400 font-mono">
+          {urls.wc}
+        </code>
+      </div>
     </div>
   );
 }
