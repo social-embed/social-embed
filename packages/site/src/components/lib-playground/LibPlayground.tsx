@@ -140,13 +140,14 @@ export function LibPlayground({
     }
   }, [state.url]);
 
-  // Sync state to URL (debounced)
+  // Sync state to URL (debounced) - only in full mode
   useEffect(() => {
+    if (mode === "mini") return; // Don't sync URL in mini mode
     const timeout = setTimeout(() => {
       updateLibUrlWithState(state);
     }, 300);
     return () => clearTimeout(timeout);
-  }, [state]);
+  }, [state, mode]);
 
   const handleUrlChange = useCallback((url: string) => {
     setState((prev) => ({ ...prev, seed: undefined, url }));
@@ -178,6 +179,19 @@ export function LibPlayground({
 
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
+      {/* Mini mode header */}
+      {isMini && (
+        <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
+          Library playground{" "}
+          <a
+            className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 no-underline"
+            href={createShareableUrl(state)}
+          >
+            (full size)
+          </a>
+        </span>
+      )}
+
       {/* Header controls - full mode only */}
       {!isMini && (
         <div className="flex flex-wrap items-center gap-2">
