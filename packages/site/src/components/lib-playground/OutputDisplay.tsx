@@ -212,7 +212,11 @@ export function OutputDisplay({
             </span>
             <div className="flex items-start gap-1 min-w-0 flex-1 flex-wrap">
               {(output.providerId as string[]).map((id, index) => (
-                <span className="inline-flex items-center gap-0.5" key={id}>
+                // biome-ignore lint/suspicious/noArrayIndexKey: IDs can be duplicates (e.g., ["id1", "id1"])
+                <span
+                  className="inline-flex items-center gap-0.5"
+                  key={`${id}-${index}`}
+                >
                   <span className="text-sm font-mono text-slate-700 dark:text-slate-300">
                     {id}
                   </span>
