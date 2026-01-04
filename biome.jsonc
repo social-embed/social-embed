@@ -78,16 +78,6 @@
           }
         }
       }
-    },
-    {
-      "includes": ["packages/site/vitest.config.ts"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noExplicitAny": "off"
-          }
-        }
-      }
     }
   ]
 }
