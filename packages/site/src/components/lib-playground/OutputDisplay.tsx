@@ -51,7 +51,11 @@ function CopyButton({ value }: { value: string }) {
   return (
     <button
       aria-label={copied ? "Copied!" : "Copy to clipboard"}
-      className="shrink-0 p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+      className={`shrink-0 self-center p-1 rounded transition-colors cursor-pointer select-none ${
+        copied
+          ? "text-green-600 dark:text-green-400"
+          : "text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
+      }`}
       onClick={handleCopy}
       title={copied ? "Copied!" : "Copy"}
       type="button"
@@ -59,7 +63,7 @@ function CopyButton({ value }: { value: string }) {
       {copied ? (
         <svg
           aria-hidden="true"
-          className="w-3.5 h-3.5 text-green-500"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -68,13 +72,13 @@ function CopyButton({ value }: { value: string }) {
             d="M5 13l4 4L19 7"
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
+            strokeWidth={2.5}
           />
         </svg>
       ) : (
         <svg
           aria-hidden="true"
-          className="w-3.5 h-3.5"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -83,7 +87,7 @@ function CopyButton({ value }: { value: string }) {
             d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
+            strokeWidth={2.5}
           />
         </svg>
       )}

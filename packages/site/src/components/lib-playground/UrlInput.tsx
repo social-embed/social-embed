@@ -85,9 +85,10 @@ export function UrlInput({
       {value && !disabled && (
         <button
           aria-label="Clear URL"
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-0.5 rounded transition-colors cursor-pointer text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
           onClick={handleClear}
           tabIndex={-1}
+          title="Clear"
           type="button"
         >
           <svg

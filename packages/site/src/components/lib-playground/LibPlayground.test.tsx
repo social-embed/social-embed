@@ -1,6 +1,7 @@
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, describe, expect, test, vi } from "vitest";
+import type { ProviderFilter } from "./constants";
 import { LibPlayground } from "./LibPlayground";
 
 // Mock the URL state functions
@@ -30,7 +31,7 @@ afterEach(async () => {
 interface RenderProps {
   mode?: "mini" | "full";
   initialUrl?: string;
-  initialProvider?: string;
+  initialProvider?: ProviderFilter;
   className?: string;
 }
 

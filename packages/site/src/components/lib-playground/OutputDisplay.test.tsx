@@ -18,12 +18,12 @@ afterEach(async () => {
 });
 
 interface RenderProps {
-  output?: LibOutput | null;
+  output: LibOutput | null;
   className?: string;
   compact?: boolean;
 }
 
-function renderDisplay(props: RenderProps = {}) {
+function renderDisplay(props: RenderProps) {
   container = document.createElement("div");
   document.body.appendChild(container);
   root = createRoot(container);
