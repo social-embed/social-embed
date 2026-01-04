@@ -85,7 +85,7 @@ export function UrlInput({
       {value && !disabled && (
         <button
           aria-label="Clear URL"
-          className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 inline-flex items-center justify-center rounded transition-colors cursor-pointer text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
+          className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 inline-flex items-center justify-center rounded border-0 bg-transparent transition-colors cursor-pointer text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300"
           onClick={handleClear}
           tabIndex={-1}
           title="Clear"

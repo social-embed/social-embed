@@ -51,10 +51,10 @@ function CopyButton({ value }: { value: string }) {
   return (
     <button
       aria-label={copied ? "Copied!" : "Copy to clipboard"}
-      className={`shrink-0 h-6 w-6 inline-flex items-center justify-center rounded transition-colors cursor-pointer select-none ${
+      className={`shrink-0 h-6 w-6 inline-flex items-center justify-center rounded border-0 bg-transparent transition-colors cursor-pointer select-none ${
         copied
           ? "text-green-600 dark:text-green-400"
-          : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
+          : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700"
       }`}
       onClick={handleCopy}
       title={copied ? "Copied!" : "Copy"}
