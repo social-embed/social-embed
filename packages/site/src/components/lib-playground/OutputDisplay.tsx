@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { copyToClipboard } from "../../lib/clipboard";
 import { getProviderDisplayInfo, type ProviderType } from "./constants";
 
 export interface LibOutput {
@@ -39,12 +40,10 @@ function CopyButton({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(value);
+    const result = await copyToClipboard(value);
+    if (result.success) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
-    } catch {
-      // Silently fail if clipboard is not available
     }
   };
 
@@ -212,9 +211,9 @@ export function OutputDisplay({
             </span>
             <div className="flex items-start gap-1 min-w-0 flex-1 flex-wrap">
               {(output.providerId as string[]).map((id, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: IDs can be duplicates (e.g., ["id1", "id1"])
                 <span
                   className="inline-flex items-center gap-0.5"
+                  // biome-ignore lint/suspicious/noArrayIndexKey: IDs can be duplicates
                   key={`${id}-${index}`}
                 >
                   <span className="text-sm font-mono text-slate-700 dark:text-slate-300">
