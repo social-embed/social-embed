@@ -144,6 +144,16 @@ export function MiniPlayground({
     setConsoleLogs([]);
   }, []);
 
+  // Mobile-aware console toggle: on mobile, switch tabs; on desktop, collapse/expand
+  const handleConsoleToggle = useCallback(() => {
+    const isMobile = window.matchMedia("(max-width: 639px)").matches;
+    if (isMobile) {
+      setActiveTab((prev) => (prev === "console" ? "preview" : "console"));
+    } else {
+      setIsConsoleOpen((prev) => !prev);
+    }
+  }, []);
+
   const handleCdnSourceChange = useCallback((type: CdnSourceType) => {
     setCdnSource({ type } as CdnSource);
     setConsoleLogs([]); // Clear console on CDN change
@@ -328,7 +338,7 @@ export function MiniPlayground({
               isOpen={activeTab === "console" || isConsoleOpen}
               logs={consoleLogs}
               onClear={handleClearConsole}
-              onToggle={() => setIsConsoleOpen((prev) => !prev)}
+              onToggle={handleConsoleToggle}
             />
           </div>
         </div>
