@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { type CdnSource, getCdnUrls } from "../../lib/cdnSources";
+import {
+  CDN_SOURCE_LABELS,
+  type CdnSource,
+  type CdnSourceType,
+  getCdnUrls,
+} from "../../lib/cdnSources";
 import { generateSeed } from "../../lib/seededRng";
 import { CodeEditor } from "./CodeEditor";
 import { ConsoleOutput } from "./ConsoleOutput";
@@ -8,13 +13,23 @@ import {
   PreviewPane,
   type PreviewPaneHandle,
 } from "./PreviewPane";
-import { DEFAULT_PRESET, getPresetById } from "./presets";
+import { DEFAULT_PRESET, getPresetById, PRESETS } from "./presets";
 import { RerollButton } from "./RerollButton";
 import {
   applySeededUrls,
   canRandomize,
   generateReactiveUpdates,
 } from "./urlReplacer";
+
+// CDN options for the select (excluding custom for simplicity)
+const CDN_OPTIONS: CdnSourceType[] = [
+  "unpkg",
+  "jsdelivr",
+  "esm-sh",
+  "esm-sh-gh",
+  "cdn-dev",
+  "local",
+];
 
 type TabId = "code" | "console" | "preview";
 
@@ -69,7 +84,13 @@ export function MiniPlayground({
   initialCode,
   initialPreset,
 }: MiniPlaygroundProps) {
-  // Determine initial code
+  // Determine initial preset and code
+  const [presetId, setPresetId] = useState(() => {
+    if (initialCode) return undefined; // Custom code, no preset
+    if (initialPreset) return initialPreset;
+    return DEFAULT_PRESET.id;
+  });
+
   const [code, setCode] = useState(() => {
     if (initialCode) return initialCode;
     if (initialPreset) {
@@ -88,10 +109,9 @@ export function MiniPlayground({
   const [stableCode, setStableCode] = useState(code);
   const [activeTab, setActiveTab] = useState<TabId>("preview");
   const [isConsoleOpen, setIsConsoleOpen] = useState(false);
+  const [cdnSource, setCdnSource] = useState<CdnSource>({ type: "unpkg" });
   const previewRef = useRef<PreviewPaneHandle>(null);
 
-  // Use unpkg as default CDN (reliable, no CORS issues)
-  const cdnSource: CdnSource = useMemo(() => ({ type: "unpkg" }), []);
   const cdnUrls = useMemo(() => getCdnUrls(cdnSource), [cdnSource]);
 
   // Debounce code changes for preview
@@ -105,8 +125,9 @@ export function MiniPlayground({
   // Handle code changes from editor
   const handleCodeChange = useCallback((newCode: string) => {
     setCode(newCode);
-    // User edited - clear template, their edit becomes the source of truth
+    // User edited - clear template and preset, their edit becomes the source of truth
     setTemplateCode(undefined);
+    setPresetId(undefined);
   }, []);
 
   // Handle console messages from preview
@@ -116,6 +137,21 @@ export function MiniPlayground({
 
   const handleClearConsole = useCallback(() => {
     setConsoleLogs([]);
+  }, []);
+
+  const handleCdnSourceChange = useCallback((type: CdnSourceType) => {
+    setCdnSource({ type } as CdnSource);
+    setConsoleLogs([]); // Clear console on CDN change
+  }, []);
+
+  const handlePresetChange = useCallback((id: string) => {
+    const preset = getPresetById(id);
+    if (preset) {
+      setCode(preset.code);
+      setPresetId(id);
+      setTemplateCode(undefined);
+      setConsoleLogs([]);
+    }
   }, []);
 
   // Reroll handler - generates new seed and updates URLs
@@ -150,12 +186,50 @@ export function MiniPlayground({
       className={`flex flex-col h-full min-h-[400px] overflow-hidden bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-700 ${className}`}
     >
       {/* Compact toolbar */}
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
-        <span className="text-xs font-medium text-slate-500 dark:text-slate-400 select-none">
-          Mini Playground
+      <div className="flex flex-wrap items-center gap-2 px-3 py-2 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+        {/* Title with link to full playground */}
+        <span className="text-xs font-medium text-slate-600 dark:text-slate-300 shrink-0">
+          <code>&lt;o-embed&gt;</code> playground{" "}
+          <a
+            className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 no-underline"
+            href="/wc/playground/"
+          >
+            (full size)
+          </a>
         </span>
-        <div className="flex-1" />
-        {canReroll && <RerollButton onClick={handleReroll} variant="xs" />}
+
+        {/* Preset selector */}
+        <select
+          className="h-7 px-2 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-indigo-500 cursor-pointer"
+          onChange={(e) => handlePresetChange(e.target.value)}
+          title="Select a preset"
+          value={presetId ?? ""}
+        >
+          <option value="">Custom</option>
+          {PRESETS.map((preset) => (
+            <option key={preset.id} value={preset.id}>
+              {preset.name}
+            </option>
+          ))}
+        </select>
+
+        {/* CDN selector */}
+        <select
+          className="h-7 px-2 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-indigo-500 cursor-pointer"
+          onChange={(e) =>
+            handleCdnSourceChange(e.target.value as CdnSourceType)
+          }
+          title="Select CDN source"
+          value={cdnSource.type}
+        >
+          {CDN_OPTIONS.map((type) => (
+            <option key={type} value={type}>
+              {CDN_SOURCE_LABELS[type]}
+            </option>
+          ))}
+        </select>
+
+        {canReroll && <RerollButton onClick={handleReroll} variant="sm" />}
       </div>
 
       {/* Mobile tabs - visible only on small screens */}
