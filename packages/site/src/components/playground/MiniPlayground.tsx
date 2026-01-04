@@ -22,14 +22,14 @@ import {
   generateReactiveUpdates,
 } from "./urlReplacer";
 
-// CDN options for the select (excluding custom for simplicity)
+// CDN options for the select (same order as full playground, excluding custom)
 const CDN_OPTIONS: CdnSourceType[] = [
+  "local",
+  "cdn-dev",
+  "esm-sh-gh",
+  "esm-sh",
   "unpkg",
   "jsdelivr",
-  "esm-sh",
-  "esm-sh-gh",
-  "cdn-dev",
-  "local",
 ];
 
 type TabId = "code" | "console" | "preview";
@@ -110,7 +110,7 @@ export function MiniPlayground({
   const [stableCode, setStableCode] = useState(code);
   const [activeTab, setActiveTab] = useState<TabId>("preview");
   const [isConsoleOpen, setIsConsoleOpen] = useState(false);
-  const [cdnSource, setCdnSource] = useState<CdnSource>({ type: "unpkg" });
+  const [cdnSource, setCdnSource] = useState<CdnSource>({ type: "local" });
   const previewRef = useRef<PreviewPaneHandle>(null);
 
   const cdnUrls = useMemo(() => getCdnUrls(cdnSource), [cdnSource]);
