@@ -134,8 +134,12 @@ export default defineConfig({
         },
         {
           badge: { text: "try it", variant: "success" },
+          collapsed: false,
+          items: [
+            { label: "Interactive", link: "/lib/playground/" },
+            { label: "More Sandboxes", link: "/lib/playground/external" },
+          ],
           label: "Lib Playground",
-          link: "/lib/playground/external",
         },
         {
           autogenerate: { directory: "wc" },
