@@ -14,13 +14,6 @@ import { LibPlayground } from "../../../components/lib-playground/LibPlayground"
 >
   <div data-page="lib-playground" class="not-content">
     <div class="playground-container">
-      <header class="playground-header">
-        <h1 class="playground-title">@social-embed/lib Playground</h1>
-        <p class="playground-subtitle">
-          Test URL transformations: paste a video URL to see provider detection,
-          ID extraction, and embed URL generation.
-        </p>
-      </header>
       <LibPlayground client:only="react" mode="full" className="playground-content" />
     </div>
   </div>
@@ -64,24 +57,6 @@ import { LibPlayground } from "../../../components/lib-playground/LibPlayground"
     padding: 2rem 1rem;
   }
 
-  .playground-header {
-    text-align: center;
-    margin-bottom: 2rem;
-  }
-
-  .playground-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem;
-    color: var(--sl-color-white);
-  }
-
-  .playground-subtitle {
-    font-size: 0.875rem;
-    color: var(--sl-color-gray-3);
-    margin: 0;
-  }
-
   .playground-content {
     background: var(--sl-color-gray-6);
     border-radius: 0.5rem;
@@ -92,14 +67,6 @@ import { LibPlayground } from "../../../components/lib-playground/LibPlayground"
   /* Light mode adjustments */
   :root:not([data-theme="dark"]) {
     .playground-container {
-      .playground-title {
-        color: var(--sl-color-black);
-      }
-
-      .playground-subtitle {
-        color: var(--sl-color-gray-2);
-      }
-
       .playground-content {
         background: var(--sl-color-gray-7);
         border-color: var(--sl-color-gray-5);
