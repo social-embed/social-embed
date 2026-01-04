@@ -1,4 +1,8 @@
-import { convertUrlToEmbedUrl, getProviderFromUrl } from "@social-embed/lib";
+import {
+  convertUrlToEmbedUrl,
+  getProviderFromUrl,
+  isYouTubeShortsUrl,
+} from "@social-embed/lib";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createRng, generateSeed } from "../../lib/seededRng";
 import { RerollButton } from "../playground/RerollButton";
@@ -63,9 +67,7 @@ function transformUrl(url: string): LibOutput {
     const providerId = provider.getIdFromUrl(url);
     const embedUrl = convertUrlToEmbedUrl(url);
 
-    // Detect YouTube Shorts
-    const isShorts =
-      provider.name.toLowerCase() === "youtube" && url.includes("/shorts/");
+    const isShorts = isYouTubeShortsUrl(url);
 
     return {
       embedUrl: embedUrl || null,
