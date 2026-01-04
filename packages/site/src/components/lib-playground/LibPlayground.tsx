@@ -2,6 +2,7 @@ import { convertUrlToEmbedUrl, getProviderFromUrl } from "@social-embed/lib";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createRng, generateSeed } from "../../lib/seededRng";
 import { RerollButton } from "../playground/RerollButton";
+import { CopyLinkButton } from "./CopyLinkButton";
 import {
   getProviderFilterOptions,
   getUrlPoolForFilter,
@@ -11,6 +12,7 @@ import {
 } from "./constants";
 import { LibSourcePicker } from "./LibSourcePicker";
 import {
+  createShareableUrl,
   getLibStateFromUrl,
   type LibPlaygroundState,
   updateLibUrlWithState,
@@ -184,6 +186,8 @@ export function LibPlayground({
           {canReroll && (
             <RerollButton onClick={handleReroll} showLabel variant="xs" />
           )}
+          <div className="flex-1" />
+          <CopyLinkButton getUrl={() => createShareableUrl(state)} />
         </div>
       )}
 
