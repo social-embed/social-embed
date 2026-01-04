@@ -1,0 +1,92 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { LibPlayground } from "../../../components/lib-playground/LibPlayground";
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "Library Playground",
+    description: "Interactive playground for testing @social-embed/lib functions",
+    template: "splash",
+    tableOfContents: false,
+  }}
+  hasSidebar={false}
+>
+  <div data-page="lib-playground" class="not-content">
+    <div class="playground-container">
+      <header class="playground-header">
+        <h1 class="playground-title">@social-embed/lib Playground</h1>
+        <p class="playground-subtitle">
+          Test URL transformations: paste a video URL to see provider detection,
+          ID extraction, and embed URL generation.
+        </p>
+      </header>
+      <LibPlayground client:only="react" mode="full" className="playground-content" />
+    </div>
+  </div>
+</StarlightPage>
+
+<style is:global>
+  /* Hide pagination and footer on playground page */
+  body:has([data-page="lib-playground"]) {
+    .pagination-links,
+    footer.sl-flex {
+      display: none !important;
+    }
+
+    /* Hide page title from Starlight */
+    h1[id="_top"] {
+      display: none !important;
+    }
+  }
+
+  /* Playground container styling */
+  .playground-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .playground-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .playground-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: var(--sl-color-white);
+  }
+
+  .playground-subtitle {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3);
+    margin: 0;
+  }
+
+  .playground-content {
+    background: var(--sl-color-gray-6);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--sl-color-gray-5);
+  }
+
+  /* Light mode adjustments */
+  :root:not([data-theme="dark"]) {
+    .playground-container {
+      .playground-title {
+        color: var(--sl-color-black);
+      }
+
+      .playground-subtitle {
+        color: var(--sl-color-gray-2);
+      }
+
+      .playground-content {
+        background: var(--sl-color-gray-7);
+        border-color: var(--sl-color-gray-5);
+      }
+    }
+  }
+</style>

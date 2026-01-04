@@ -1,6 +1,6 @@
 import { convertUrlToEmbedUrl, getProviderFromUrl } from "@social-embed/lib";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { createSeededRng, generateSeed } from "../../lib/seededRng";
+import { createRng, generateSeed } from "../../lib/seededRng";
 import { RerollButton } from "../playground/RerollButton";
 import {
   getProviderFilterOptions,
@@ -94,7 +94,7 @@ function selectRandomUrl(filter: ProviderFilter, seed: string): string {
     return "";
   }
 
-  const rng = createSeededRng(seed);
+  const rng = createRng(seed);
   const index = Math.floor(rng() * pool.length);
   return pool[index];
 }
