@@ -169,7 +169,7 @@ describe("OutputDisplay", () => {
   });
 
   describe("array IDs", () => {
-    test("joins array IDs with comma", () => {
+    test("displays each array ID with comma separator", () => {
       const output: LibOutput = {
         embedUrl: "https://example.com/embed/123",
         input: "https://example.com/playlist/123",
@@ -182,7 +182,44 @@ describe("OutputDisplay", () => {
       const display = container?.querySelector(
         '[data-testid="output-display"]',
       );
-      expect(display?.textContent).toContain("id1, id2, id3");
+      // Each ID should be present
+      expect(display?.textContent).toContain("id1");
+      expect(display?.textContent).toContain("id2");
+      expect(display?.textContent).toContain("id3");
+    });
+
+    test("shows individual copy buttons for each array ID", () => {
+      const output: LibOutput = {
+        embedUrl: "https://example.com/embed/123",
+        input: "https://example.com/playlist/123",
+        isValid: true,
+        provider: "youtube",
+        providerId: ["id1", "id2"],
+      };
+      renderDisplay({ output });
+
+      // Should have copy buttons for each ID (2) + Embed URL (1) = 3 total
+      const copyButtons = container?.querySelectorAll(
+        'button[aria-label="Copy to clipboard"]',
+      );
+      expect(copyButtons?.length).toBe(3);
+    });
+
+    test("single array ID uses regular OutputRow", () => {
+      const output: LibOutput = {
+        embedUrl: "https://example.com/embed/123",
+        input: "https://example.com/playlist/123",
+        isValid: true,
+        provider: "youtube",
+        providerId: ["single-id"],
+      };
+      renderDisplay({ output });
+
+      // Single array ID should use regular row (2 copy buttons: ID + Embed URL)
+      const copyButtons = container?.querySelectorAll(
+        'button[aria-label="Copy to clipboard"]',
+      );
+      expect(copyButtons?.length).toBe(2);
     });
   });
 

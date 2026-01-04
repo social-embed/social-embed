@@ -175,10 +175,9 @@ export function OutputDisplay({
     ? getProviderDisplayInfo(output.provider)
     : null;
 
-  // Format providerId for display
-  const formattedId = Array.isArray(output.providerId)
-    ? output.providerId.join(", ")
-    : output.providerId;
+  // Check if providerId is an array with multiple values
+  const isArrayId =
+    Array.isArray(output.providerId) && output.providerId.length > 1;
 
   return (
     <div
@@ -205,8 +204,40 @@ export function OutputDisplay({
           </div>
         )}
 
-        {/* ID */}
-        <OutputRow copyable isCode label="ID" value={formattedId} />
+        {/* ID - with individual copy buttons for array values */}
+        {isArrayId ? (
+          <div className="flex flex-col gap-0.5 sm:flex-row sm:items-start sm:gap-2 group">
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400 min-w-[80px] shrink-0">
+              ID:
+            </span>
+            <div className="flex items-start gap-1 min-w-0 flex-1 flex-wrap">
+              {(output.providerId as string[]).map((id, index) => (
+                <span className="inline-flex items-center gap-0.5" key={id}>
+                  <span className="text-sm font-mono text-slate-700 dark:text-slate-300">
+                    {id}
+                  </span>
+                  <CopyButton value={id} />
+                  {index < (output.providerId as string[]).length - 1 && (
+                    <span className="text-slate-400 dark:text-slate-500 mr-1">
+                      ,
+                    </span>
+                  )}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <OutputRow
+            copyable
+            isCode
+            label="ID"
+            value={
+              Array.isArray(output.providerId)
+                ? output.providerId[0]
+                : output.providerId
+            }
+          />
+        )}
 
         {/* Embed URL */}
         <OutputRow copyable isCode label="Embed URL" value={output.embedUrl} />
