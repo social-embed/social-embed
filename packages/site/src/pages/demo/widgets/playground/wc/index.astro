@@ -1,0 +1,61 @@
+---
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { DemoLayout } from "../../../../../components/demo/DemoLayout";
+import { MiniPlayground } from "../../../../../components/playground/MiniPlayground";
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "WC Playground Widget",
+    description: "Compact web component playground with code editor, preview, and console",
+    template: "splash",
+    tableOfContents: false,
+  }}
+  hasSidebar={false}
+>
+  <div data-page="demo" class="not-content">
+    <DemoLayout currentPath="/demo/widgets/playground/wc" client:only="react">
+      <div class="h-full p-4">
+        <MiniPlayground client:only="react" className="h-full" />
+      </div>
+    </DemoLayout>
+  </div>
+</StarlightPage>
+
+<style is:global>
+  /* Reset Starlight layout for demo pages */
+  body:has([data-page="demo"]) {
+    .pagination-links,
+    footer.sl-flex {
+      display: none !important;
+    }
+
+    main,
+    .content-panel,
+    .main-pane,
+    .sl-container,
+    .sl-markdown-content {
+      padding: 0 !important;
+      margin: 0 !important;
+      max-width: 100% !important;
+    }
+
+    .content-panel + .content-panel {
+      border-top: none !important;
+    }
+
+    h1[id="_top"] {
+      display: none !important;
+    }
+  }
+
+  /* Demo fills viewport below header */
+  [data-page="demo"] {
+    position: fixed;
+    top: calc(var(--sl-nav-height, 3.5rem) + 1px);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+</style>

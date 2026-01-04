@@ -193,24 +193,23 @@ export function LibPlayground({
         </div>
       )}
 
-      {/* URL Input */}
-      <UrlInput
-        onChange={handleUrlChange}
-        onSubmit={handleSubmit}
-        placeholder={
-          isMini
-            ? "Paste a URL..."
-            : "Paste a video URL (YouTube, Vimeo, Spotify, etc.)"
-        }
-        value={state.url}
-      />
-
-      {/* Reroll in mini mode - inline with input */}
-      {isMini && canReroll && (
-        <div className="flex justify-end -mt-2">
-          <RerollButton onClick={handleReroll} variant="xxs" />
-        </div>
-      )}
+      {/* URL Input with reroll */}
+      <div className={isMini ? "flex items-center gap-2" : ""}>
+        <UrlInput
+          className={isMini ? "flex-1" : ""}
+          onChange={handleUrlChange}
+          onSubmit={handleSubmit}
+          placeholder={
+            isMini
+              ? "Paste a URL..."
+              : "Paste a video URL (YouTube, Vimeo, Spotify, etc.)"
+          }
+          value={state.url}
+        />
+        {isMini && canReroll && (
+          <RerollButton onClick={handleReroll} variant="xs" />
+        )}
+      </div>
 
       {/* Output Display */}
       <OutputDisplay compact={isMini} output={output} />
