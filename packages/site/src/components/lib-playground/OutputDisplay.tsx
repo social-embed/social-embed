@@ -63,7 +63,7 @@ function CopyButton({ value }: { value: string }) {
       {copied ? (
         <svg
           aria-hidden="true"
-          className="w-3.5 h-3.5"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -78,7 +78,7 @@ function CopyButton({ value }: { value: string }) {
       ) : (
         <svg
           aria-hidden="true"
-          className="w-3.5 h-3.5"
+          className="w-4 h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
