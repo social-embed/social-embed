@@ -2,7 +2,7 @@ name: Deploy Site
 
 on:
   push:
-    branches: [master]
+    branches: [master, refactor-registry]
   workflow_dispatch:
 
 permissions:

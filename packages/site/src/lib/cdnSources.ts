@@ -38,7 +38,7 @@ export const CDN_SOURCE_DESCRIPTIONS: Record<CdnSourceType, string> = {
   "cdn-dev": "Preview CDN (canary/master/latest)",
   custom: "Enter a custom URL",
   "esm-sh": "esm.sh from npm (requires publish)",
-  "esm-sh-gh": `esm.sh from GitHub (branch: ${__GIT_BRANCH__})`,
+  "esm-sh-gh": `esm.sh from GitHub (${__GIT_SHA__?.slice(0, 7) || __GIT_BRANCH__})`,
   jsdelivr: "cdn.jsdelivr.net (popular, fast)",
   local: "Serve from local Vite plugin",
   unpkg: "unpkg.com (npm-based)",
@@ -75,12 +75,14 @@ export function getCdnUrls(source: CdnSource): { lib: string; wc: string } {
         wc: "https://esm.sh/@social-embed/wc",
       };
     case "esm-sh-gh": {
-      // Use ?alias to redirect bare @social-embed/* imports to GitHub paths
-      const base = `gh/social-embed/social-embed@${__GIT_BRANCH__}/packages`;
-      const aliases = [`@social-embed/lib:${base}/lib/src/index.ts`].join(",");
+      // Use short commit SHA (7 chars) for reliable cache-busting
+      // esm.sh caches branch references and doesn't auto-update
+      const ref = __GIT_SHA__?.slice(0, 7) || __GIT_BRANCH__;
+      const base = `gh/social-embed/social-embed@${ref}/packages`;
+      const alias = `@social-embed/lib:${base}/lib/src/index.ts`;
       return {
-        lib: `https://esm.sh/${base}/lib/src/index.ts?alias=${aliases}`,
-        wc: `https://esm.sh/${base}/wc/src/OEmbedElement.ts?alias=${aliases}`,
+        lib: `https://esm.sh/${base}/lib/src/index.ts?alias=${alias}`,
+        wc: `https://esm.sh/${base}/wc/src/OEmbedElement.ts?alias=${alias}`,
       };
     }
     case "custom": {

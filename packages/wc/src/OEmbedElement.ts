@@ -6,60 +6,43 @@
  */
 
 import {
-  getDailyMotionEmbedFromId,
-  getDailyMotionIdFromUrl,
-  getEdPuzzleEmbedUrlFromId,
-  getEdPuzzleIdFromUrl,
-  getLoomEmbedUrlFromId,
-  getLoomIdFromUrl,
-  getProviderFromUrl, // returns an object with `.name` or undefined
-  getSpotifyEmbedUrlFromIdAndType,
-  getSpotifyIdAndTypeFromUrl,
-  getVimeoEmbedUrlFromId,
-  getVimeoIdFromUrl,
-  getWistiaEmbedUrlFromId,
-  getWistiaIdFromUrl,
-  getYouTubeEmbedUrlFromId,
-  getYouTubeIdFromUrl,
-  isValidUrl,
+  defaultStore,
+  getSpotifyHeight,
   isYouTubeShortsUrl,
+  type MatcherRegistry,
+  type OutputOptions,
+  type RegistryStore,
+  renderOutput,
+  type SpotifyData,
+  type SpotifyOutputOptions,
+  type SpotifySize,
+  type SpotifyTheme,
+  type SpotifyView,
+  type Unsubscribe,
   YOUTUBE_SHORTS_DIMENSIONS,
 } from "@social-embed/lib";
 import { html, LitElement, type TemplateResult } from "lit";
-import { ifDefined } from "lit/directives/if-defined.js";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
 /**
- * Represents dimension properties (width, height) as well as their unit-infused variations.
+ * Default store for reactive matcher updates.
+ *
+ * @remarks
+ * This is a module-level singleton that all `<o-embed>` elements subscribe to.
+ * When `defaultStore.register()` is called, all components re-render.
+ *
+ * Re-exported from `@social-embed/lib` to ensure a single shared singleton.
  */
-interface Dimensions {
-  /**
-   * The raw width setting (e.g. "560" or "100%").
-   */
-  width: string;
-
-  /**
-   * The raw height setting (e.g. "315" or "100%").
-   */
-  height: string;
-
-  /**
-   * The width with explicit units (e.g. "560px"), if needed.
-   */
-  widthWithUnits?: string;
-
-  /**
-   * The height with explicit units (e.g. "315px"), if needed.
-   */
-  heightWithUnits?: string;
-}
+export { defaultStore };
 
 /**
  * `<o-embed>` is a LitElement-based web component that automatically detects and
  * renders embeddable `<iframe>`s for media URLs, including YouTube, Vimeo, Spotify, etc.
  *
  * @remarks
- * - If the provided `url` is unrecognized, it falls back to a generic `<iframe>` if valid.
- * - If the `url` is syntactically invalid, it displays a short message: "No provider found."
+ * - Uses `MatcherRegistry` from `@social-embed/lib` for URL matching
+ * - If the URL is unrecognized, displays "No provider found"
+ * - Supports privacy-enhanced mode (default: enabled)
  *
  * @slot - Optional slot for passing child content (rendered after the iframe).
  *
@@ -74,69 +57,406 @@ export class OEmbedElement extends LitElement {
    * Using static properties instead of decorators for CDN compatibility.
    */
   static properties = {
-    allowfullscreen: { type: String },
-    frameborder: { type: String },
+    allowfullscreen: { type: Boolean },
     height: { type: String },
+    privacy: { type: Boolean },
+    providerOptions: {
+      attribute: "provider-options",
+      converter: {
+        fromAttribute(
+          value: string | null,
+        ): Record<string, unknown> | undefined {
+          if (!value) return undefined;
+          try {
+            return JSON.parse(value) as Record<string, unknown>;
+          } catch {
+            return undefined;
+          }
+        },
+        toAttribute(value: Record<string, unknown> | undefined): string | null {
+          return value ? JSON.stringify(value) : null;
+        },
+      },
+      type: String,
+    },
+    spotifySize: { attribute: "spotify-size", type: String },
+    spotifyStart: { attribute: "spotify-start", type: Number },
+    spotifyTheme: { attribute: "spotify-theme", type: String },
+    spotifyView: { attribute: "spotify-view", type: String },
     url: { type: String },
     width: { type: String },
   };
 
   /**
-   * The URL or ID (if supported) for the embedded media.
-   * Commonly points to a YouTube, Vimeo, or other recognized service link.
+   * The URL for the embedded media.
+   * Commonly points to a YouTube, Vimeo, Spotify, or other recognized service link.
    */
-  public url!: string;
+  public url = "";
 
   /**
-   * A pass-through of the `width` attribute for the `<iframe>`.
-   *
+   * Width for the iframe. Can be a number (pixels) or string (e.g., "100%").
    * @defaultValue `"560"`
    */
-  public width = "560";
+  public width: string | number = "560";
 
   /**
-   * A pass-through of the `height` attribute for the `<iframe>`.
-   *
+   * Height for the iframe. Can be a number (pixels) or string (e.g., "100%").
    * @defaultValue `"315"`
    */
-  public height = "315";
+  public height: string | number = "315";
 
   /**
-   * A pass-through of the `frameborder` attribute, only used in certain embeds.
+   * Controls the "allowfullscreen" attribute on iframes.
    *
-   * @defaultValue `"0"`
-   */
-  public frameborder = "0";
-
-  /**
-   * Controls the "allowfullscreen" attribute on certain iframes (e.g. YouTube).
-   * Passing anything other than `1`/`true` causes the attribute to be omitted.
+   * @remarks
+   * Uses Lit's `type: Boolean` which handles standard HTML attribute patterns:
+   * - `<o-embed allowfullscreen>` → true
+   * - `<o-embed allowfullscreen="true">` → true
+   * - `<o-embed allowfullscreen="1">` → true (truthy string)
    *
-   * @defaultValue `"true"`
+   * **Known regression from v1**: The explicit empty string `allowfullscreen=""`
+   * now coerces to `false` instead of `true`. This edge case is unlikely in
+   * practice since the standard HTML pattern uses presence, not empty string.
+   *
+   * @defaultValue `true`
    */
-  public allowfullscreen: string | boolean | undefined = "true";
+  public allowfullscreen = true;
 
   /**
-   * The matched provider object, determined by calling `getProviderFromUrl(this.url)`.
-   * If the URL is recognized, `.name` will be a string like `"YouTube"`.
+   * Enable privacy-enhanced mode (e.g., YouTube uses youtube-nocookie.com).
+   * @defaultValue `true`
    */
-  public provider:
-    | {
-        /** The recognized provider name (e.g., "YouTube", "Vimeo", "Spotify"). */
-        name: string;
+  public privacy = true;
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Spotify-specific attributes
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Spotify embed size tier.
+   *
+   * @remarks
+   * Controls the height of the Spotify embed player:
+   * - `"compact"`: Minimal player (80px for tracks, 152px for others)
+   * - `"normal"`: Standard player (default, 152-352px based on content type)
+   * - `"large"`: Full-featured player with more details (352-500px)
+   *
+   * If not specified, the size is auto-detected based on content type
+   * (e.g., tracks default to "compact", albums to "normal").
+   *
+   * Only applies to Spotify URLs; ignored for other providers.
+   *
+   * @example
+   * ```html
+   * <o-embed url="spotify:track:..." spotify-size="large"></o-embed>
+   * ```
+   */
+  public spotifySize?: SpotifySize;
+
+  /**
+   * Spotify embed theme.
+   *
+   * @remarks
+   * Controls the visual theme of the Spotify embed:
+   * - `"dark"`: Dark background (maps to `theme=0`)
+   * - `"light"`: Light background (maps to `theme=1`)
+   *
+   * If not specified, uses Spotify's default (usually dark).
+   * Only applies to Spotify URLs; ignored for other providers.
+   *
+   * @example
+   * ```html
+   * <o-embed url="spotify:album:..." spotify-theme="light"></o-embed>
+   * ```
+   */
+  public spotifyTheme?: SpotifyTheme;
+
+  /**
+   * Spotify embed view mode.
+   *
+   * @remarks
+   * Controls the display mode:
+   * - `"list"`: Standard view with track listings (default)
+   * - `"coverart"`: Minimal view emphasizing album/track artwork
+   *
+   * Only applies to Spotify URLs; ignored for other providers.
+   *
+   * @example
+   * ```html
+   * <o-embed url="spotify:album:..." spotify-view="coverart"></o-embed>
+   * ```
+   */
+  public spotifyView?: SpotifyView;
+
+  /**
+   * Spotify podcast start time in seconds.
+   *
+   * @remarks
+   * Sets the start position for podcast playback.
+   * Only works with podcast content (shows and episodes).
+   * Ignored for other content types (tracks, albums, etc.)
+   *
+   * Only applies to Spotify URLs; ignored for other providers.
+   *
+   * @example
+   * ```html
+   * <o-embed url="spotify:episode:..." spotify-start="120"></o-embed>
+   * ```
+   */
+  public spotifyStart?: number;
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // Escape hatch
+  // ─────────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Provider-specific options as a JSON object.
+   *
+   * @remarks
+   * Escape hatch for passing arbitrary options to the matcher's toOutput method.
+   * Useful for future Spotify parameters or other provider-specific options.
+   *
+   * @example
+   * ```html
+   * <o-embed
+   *   url="spotify:album:..."
+   *   provider-options='{"utm_source": "my-site"}'
+   * ></o-embed>
+   * ```
+   */
+  public providerOptions?: Record<string, unknown>;
+
+  /**
+   * The matched provider name, available after matching.
+   * Internal state - not a reactive property.
+   */
+  private providerName: string | undefined;
+
+  /**
+   * Store instance for URL matching.
+   * Defaults to the module-level `defaultStore`.
+   * Can be replaced with a custom store for testing or isolation.
+   */
+  public store: RegistryStore = defaultStore;
+
+  /**
+   * @deprecated Use `store.current` instead.
+   * Registry instance for URL matching (legacy compatibility).
+   */
+  public get registry(): MatcherRegistry {
+    return this.store.current;
+  }
+
+  /**
+   * @deprecated Use `store` property instead.
+   */
+  public set registry(value: MatcherRegistry) {
+    this.store.setRegistry(value);
+  }
+
+  /**
+   * Unsubscribe function for store subscription.
+   */
+  private storeUnsubscribe?: Unsubscribe;
+
+  /**
+   * LitElement lifecycle: called when element is added to DOM.
+   * Subscribes to the store for reactive updates.
+   */
+  override connectedCallback(): void {
+    super.connectedCallback();
+
+    // Subscribe to store changes
+    this.storeUnsubscribe = this.store.subscribe(() => {
+      this.requestUpdate();
+    });
+  }
+
+  /**
+   * LitElement lifecycle: called when element is removed from DOM.
+   * Cleans up store subscription.
+   */
+  override disconnectedCallback(): void {
+    super.disconnectedCallback();
+
+    // Unsubscribe from store
+    if (this.storeUnsubscribe) {
+      this.storeUnsubscribe();
+      this.storeUnsubscribe = undefined;
+    }
+  }
+
+  /**
+   * Force re-render (useful after late matcher registration).
+   *
+   * @remarks
+   * Normally not needed since the component subscribes to store changes.
+   * Use this if you have a custom store or need manual control.
+   */
+  public refresh(): void {
+    this.requestUpdate();
+  }
+
+  /**
+   * Collect `data-opt-*` attributes as provider options.
+   *
+   * @remarks
+   * Provides a universal escape hatch for provider-specific options.
+   * Attributes are converted from kebab-case to camelCase.
+   *
+   * @example
+   * ```html
+   * <o-embed url="..." data-opt-start="120" data-opt-hide-top-bar="true"></o-embed>
+   * ```
+   *
+   * @returns Object with camelCase keys and string values
+   */
+  private getDataOptAttributes(): Record<string, unknown> {
+    const opts: Record<string, unknown> = {};
+
+    for (const attr of Array.from(this.attributes)) {
+      if (attr.name.startsWith("data-opt-")) {
+        // Convert data-opt-hide-top-bar -> hideTopBar
+        const key = attr.name
+          .slice(9) // Remove "data-opt-"
+          .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+
+        // Parse value: try boolean, number, or keep as string
+        const value = attr.value;
+        if (value === "true") {
+          opts[key] = true;
+        } else if (value === "false") {
+          opts[key] = false;
+        } else if (/^-?\d+(?:\.\d+)?$/.test(value)) {
+          opts[key] = Number(value);
+        } else {
+          opts[key] = value;
+        }
       }
-    | undefined;
+    }
+
+    return opts;
+  }
 
   /**
-   * Creates a `<style>` block that sets width and height for the iframe based on
-   * computed defaults. Called within the main `render()` logic.
-   *
-   * @returns The lit `<style>` template that sets up the container and iframe dimensions.
+   * Main LitElement render cycle method.
+   * Uses MatcherRegistry to match the URL and generate embed output.
    */
-  public instanceStyle(): TemplateResult {
-    const { widthWithUnits, heightWithUnits } = this.getDefaultDimensions(
-      this.provider,
-    );
+  public render(): TemplateResult {
+    // Return early if no URL
+    if (!this.url) {
+      return html``;
+    }
+
+    const result = this.store.match(this.url);
+
+    if (!result.ok) {
+      this.providerName = undefined;
+      return html`No provider found for ${this.url}`;
+    }
+
+    this.providerName = result.matcher.name;
+
+    // Collect data-opt-* attributes for provider options
+    const dataOptAttrs = this.getDataOptAttributes();
+
+    // Build base output options (width/height added conditionally below)
+    const options: OutputOptions &
+      SpotifyOutputOptions &
+      Record<string, unknown> = {
+      attributes: this.allowfullscreen ? { allowfullscreen: "" } : {},
+      privacy: this.privacy,
+      ...dataOptAttrs, // data-opt-* attributes (lower priority)
+      ...this.providerOptions, // Escape hatch (higher priority)
+    };
+
+    // Track the effective dimensions for CSS styling
+    let effectiveWidth: string | number = this.width;
+    let effectiveHeight: string | number = this.height;
+
+    // Add Spotify-specific options when provider is Spotify
+    if (this.providerName === "Spotify") {
+      options.width = this.width; // Spotify always uses user's width
+      if (this.spotifySize) options.size = this.spotifySize;
+      if (this.spotifyTheme) options.theme = this.spotifyTheme;
+      if (this.spotifyView) options.view = this.spotifyView;
+      if (this.spotifyStart !== undefined) options.start = this.spotifyStart;
+
+      const data = result.data as SpotifyData;
+
+      // Calculate effective height for CSS styling
+      if (this.height !== "315") {
+        // User explicitly set height - use it
+        effectiveHeight = this.height;
+        options.height = this.height;
+      } else if (this.spotifySize || this.spotifyView) {
+        // Use calculated height from lib based on size/view
+        effectiveHeight = getSpotifyHeight(data.contentType, this.spotifySize, {
+          video: data.video,
+          view: this.spotifyView,
+        });
+        // Don't pass height to options - let lib calculate it
+      } else {
+        // Auto-detect: let lib calculate, but also get height for CSS
+        effectiveHeight = getSpotifyHeight(data.contentType, undefined, {
+          video: data.video,
+        });
+      }
+    } else if (
+      this.providerName === "YouTube" &&
+      isYouTubeShortsUrl(this.url)
+    ) {
+      // YouTube Shorts: use portrait dimensions (9:16) unless user explicitly set them
+      const userSetWidth = this.getAttribute("width") !== null;
+      const userSetHeight = this.getAttribute("height") !== null;
+
+      if (userSetWidth || userSetHeight) {
+        // User explicitly set at least one dimension - use their values
+        options.width = this.width;
+        options.height = this.height;
+      } else {
+        // Use Shorts portrait dimensions (matcher handles the actual values)
+        effectiveWidth = YOUTUBE_SHORTS_DIMENSIONS.width;
+        effectiveHeight = YOUTUBE_SHORTS_DIMENSIONS.height;
+      }
+    } else {
+      // For non-Spotify, non-Shorts providers, always pass width/height
+      options.width = this.width;
+      options.height = this.height;
+    }
+
+    const output = result.matcher.toOutput(result.data, options);
+
+    const embedHtml = renderOutput(output);
+
+    return html`
+      ${this.instanceStyle(effectiveWidth, effectiveHeight)}
+      ${unsafeHTML(embedHtml)}
+      <slot></slot>
+    `;
+  }
+
+  /**
+   * Creates a `<style>` block for the component.
+   *
+   * @param width - The effective width to use (may differ from this.width for Shorts)
+   * @param height - The effective height to use (may differ from this.height for Spotify/Shorts)
+   */
+  private instanceStyle(
+    width: string | number = this.width,
+    height: string | number = this.height,
+  ): TemplateResult {
+    // Ensure dimensions have units - numeric values and numeric strings need "px"
+    const formatDimension = (value: string | number): string => {
+      if (typeof value === "number") return `${value}px`;
+      // If string is purely numeric, add px
+      if (/^\d+$/.test(value)) return `${value}px`;
+      return value;
+    };
+
+    const widthStyle = formatDimension(width);
+    const heightStyle = formatDimension(height);
+
     return html`
       <style>
         :host {
@@ -145,431 +465,18 @@ export class OEmbedElement extends LitElement {
           border: 0;
         }
         iframe {
-          width: var(--social-embed-iframe-width, ${widthWithUnits});
-          height: var(--social-embed-iframe-height, ${heightWithUnits});
+          width: var(--social-embed-iframe-width, ${widthStyle});
+          height: var(--social-embed-iframe-height, ${heightStyle});
         }
       </style>
     `;
   }
 
   /**
-   * Main LitElement render cycle method.
-   * 1. Determines `provider` via `getProviderFromUrl(this.url)`.
-   * 2. Chooses a specialized rendering function or fallback logic.
-   *
-   * @returns A lit template containing the correct `<iframe>` or an error message.
+   * Get the matched provider name (for testing/introspection).
    */
-  public render(): TemplateResult {
-    this.provider = getProviderFromUrl(this.url);
-
-    // Return early if no URL was provided at all
-    if (!this.url || this.url === "") {
-      return html``;
-    }
-
-    let embedResult: TemplateResult;
-
-    // If no recognized provider, fallback to a generic iframe or error message
-    if (!this.provider) {
-      embedResult = isValidUrl(this.url)
-        ? this.renderIframe() // fallback if the URL is syntactically valid
-        : html`No provider found for ${this.url}`;
-    } else {
-      // Switch on provider.name to call the appropriate embed rendering method
-      switch (this.provider.name) {
-        case "YouTube":
-          embedResult = this.renderYouTube();
-          break;
-        case "Spotify":
-          embedResult = this.renderSpotify();
-          break;
-        case "Vimeo":
-          embedResult = this.renderVimeo();
-          break;
-        case "DailyMotion":
-          embedResult = this.renderDailyMotion();
-          break;
-        case "EdPuzzle":
-          embedResult = this.renderEdPuzzle();
-          break;
-        case "Wistia":
-          embedResult = this.renderWistia();
-          break;
-        case "Loom":
-          embedResult = this.renderLoom();
-          break;
-        default:
-          embedResult = isValidUrl(this.url)
-            ? this.renderIframe()
-            : html`No provider found for ${this.url}`;
-          break;
-      }
-    }
-
-    return html`${this.instanceStyle()}${embedResult}`;
-  }
-
-  /**
-   * Default dimension overrides for Spotify content.
-   * Will be used if the user hasn't supplied their own `width`/`height`.
-   */
-  public static spotifyDefaultDimensions: Dimensions = {
-    height: "352",
-    heightWithUnits: "352px",
-    width: "100%",
-    widthWithUnits: "100%",
-  };
-
-  /**
-   * Renders the `<iframe>` for a Spotify resource (track, album, playlist, artist, show, or episode).
-   *
-   * @returns A lit template containing a Spotify `<iframe>` with the correct dimensions.
-   */
-  public renderSpotify(): TemplateResult {
-    const [spotifyId, spotifyType] = getSpotifyIdAndTypeFromUrl(this.url);
-    const url = getSpotifyEmbedUrlFromIdAndType(spotifyId, spotifyType);
-
-    return html`
-      <iframe
-        src="${url}"
-        width="${this.width}"
-        frameborder=${ifDefined(
-          this.frameborder ? this.frameborder : undefined,
-        )}
-        height="${this.height}"
-        allowtransparency="true"
-        allow="encrypted-media"
-      ></iframe>
-      <slot></slot>
-    `;
-  }
-
-  /**
-   * Computes dimension info for a recognized provider, possibly using specialized defaults
-   * (e.g. Vimeo default is 640x268, EdPuzzle 470x404, etc.).
-   *
-   * @param providerObj - The object with `.name` for the matched provider, if any.
-   * @returns A `Dimensions` object with `width`, `height`, and optional unit-converted fields.
-   */
-  public getDefaultDimensions(providerObj?: { name?: string }): Dimensions {
-    const providerName = providerObj?.name;
-    switch (providerName) {
-      case "Vimeo":
-        return this.calculateDefaultDimensions({
-          defaults: OEmbedElement.vimeoDefaultDimensions,
-        });
-      case "DailyMotion":
-        return this.calculateDefaultDimensions();
-      case "EdPuzzle":
-        return this.calculateDefaultDimensions({
-          defaults: OEmbedElement.edPuzzleDefaultDimensions,
-        });
-      case "Wistia":
-        return this.calculateDefaultDimensions({
-          defaults: OEmbedElement.wistiaDefaultDimensions,
-        });
-      case "Loom":
-        return this.calculateDefaultDimensions({
-          defaults: OEmbedElement.loomDefaultDimensions,
-        });
-      case "Spotify":
-        return this.calculateDefaultDimensions({
-          defaults: OEmbedElement.spotifyDefaultDimensions,
-        });
-      case "YouTube":
-        // Use portrait dimensions for Shorts URLs (unless user explicitly set dimensions)
-        if (
-          isYouTubeShortsUrl(this.url) &&
-          !this.getAttribute("width") &&
-          !this.getAttribute("height")
-        ) {
-          return this.calculateDefaultDimensions({
-            defaults: OEmbedElement.youTubeShortsDefaultDimensions,
-          });
-        }
-        return this.calculateDefaultDimensions();
-      default:
-        return this.calculateDefaultDimensions();
-    }
-  }
-
-  /**
-   * A helper that finalizes width & height, adding `px` if no unit is present.
-   *
-   * @param options - Optional `defaults` object specifying fallback width/height.
-   * @returns A new `Dimensions` object with `widthWithUnits` and `heightWithUnits`.
-   */
-  public calculateDefaultDimensions({
-    defaults,
-  }: {
-    defaults?: Dimensions;
-  } = {}): Dimensions {
-    const width = this.getAttribute("width") || defaults?.width || this.width;
-    const widthWithUnits = width.match(/(px|%)/) ? width : `${width}px`;
-    const height =
-      this.getAttribute("height") || defaults?.height || this.height;
-    const heightWithUnits = height.match(/(px|%)/) ? height : `${height}px`;
-
-    return { height, heightWithUnits, width, widthWithUnits };
-  }
-
-  /**
-   * Renders a DailyMotion `<iframe>` using the extracted ID from `getDailyMotionIdFromUrl`.
-   * Falls back with a short message if the ID can't be found in the URL.
-   *
-   * @returns A lit template containing the DailyMotion `<iframe>` or an error message.
-   */
-  public renderDailyMotion(): TemplateResult {
-    const dailyMotionId = getDailyMotionIdFromUrl(this.url);
-    if (!dailyMotionId) {
-      return html`Could not find dailyMotionId in ${this.url}`;
-    }
-    const url = getDailyMotionEmbedFromId(dailyMotionId);
-
-    const { width, height } = this.getDefaultDimensions(this.provider);
-
-    return html`
-      <iframe
-        allow="autoplay"
-        width="${width}"
-        height="${height}"
-        src="${url}"
-        frameborder=${ifDefined(this.frameborder)}
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
-        type="text/html"
-      ></iframe>
-      <slot></slot>
-    `;
-  }
-
-  /**
-   * Default dimension overrides for Vimeo content.
-   */
-  public static vimeoDefaultDimensions: Dimensions = {
-    height: "268",
-    heightWithUnits: "268px",
-    width: "640",
-    widthWithUnits: "640px",
-  };
-
-  /**
-   * Renders a Vimeo `<iframe>` from a recognized Vimeo URL.
-   *
-   * @returns A lit template containing a Vimeo `<iframe>` or an error message if no ID found.
-   */
-  public renderVimeo(): TemplateResult {
-    const vimeoId = getVimeoIdFromUrl(this.url);
-    if (!vimeoId) {
-      return html`Could not find vimeoId in ${this.url}`;
-    }
-    const url = getVimeoEmbedUrlFromId(vimeoId);
-
-    const { width, height } = this.getDefaultDimensions(this.provider);
-
-    return html`
-      <iframe
-        width="${width}"
-        height="${height}"
-        src="${url}"
-        frameborder=${ifDefined(this.frameborder)}
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
-      ></iframe>
-      <slot></slot>
-    `;
-  }
-
-  /**
-   * Default dimension overrides for YouTube Shorts (9:16 portrait aspect ratio).
-   */
-  public static youTubeShortsDefaultDimensions: Dimensions = {
-    height: String(YOUTUBE_SHORTS_DIMENSIONS.height),
-    heightWithUnits: `${YOUTUBE_SHORTS_DIMENSIONS.height}px`,
-    width: String(YOUTUBE_SHORTS_DIMENSIONS.width),
-    widthWithUnits: `${YOUTUBE_SHORTS_DIMENSIONS.width}px`,
-  };
-
-  /**
-   * Renders a YouTube `<iframe>` from a recognized YouTube URL.
-   * Automatically uses 9:16 portrait dimensions for YouTube Shorts URLs.
-   * Returns an empty template if no ID can be extracted.
-   */
-  public renderYouTube(): TemplateResult {
-    const youtubeId = getYouTubeIdFromUrl(this.url);
-    if (!youtubeId) {
-      return html``;
-    }
-    const youtubeUrl = getYouTubeEmbedUrlFromId(youtubeId);
-
-    // Use Shorts dimensions if this is a Shorts URL and user hasn't explicitly set dimensions
-    const isShorts = isYouTubeShortsUrl(this.url);
-    const useShortsDimensions =
-      isShorts && !this.getAttribute("width") && !this.getAttribute("height");
-
-    const width = useShortsDimensions
-      ? OEmbedElement.youTubeShortsDefaultDimensions.width
-      : this.width;
-    const height = useShortsDimensions
-      ? OEmbedElement.youTubeShortsDefaultDimensions.height
-      : this.height;
-
-    return html`
-      <iframe
-        width="${width}"
-        height="${height}"
-        src="${youtubeUrl}"
-        frameborder=${ifDefined(this.frameborder)}
-        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
-      ></iframe>
-      <slot></slot>
-    `;
-  }
-
-  /**
-   * Renders a generic `<iframe>` for valid but unrecognized URLs.
-   * If the URL is invalid, `render()` won't call this method.
-   */
-  public renderIframe(): TemplateResult {
-    const { width, height } = this.getDefaultDimensions(this.provider);
-    return html`
-      <iframe
-        width="${width}"
-        height="${height}"
-        src="${this.url}"
-        frameborder=${ifDefined(this.frameborder)}
-      ></iframe>
-      <slot></slot>
-    `;
-  }
-
-  /**
-   * Default dimension overrides for EdPuzzle content.
-   */
-  public static edPuzzleDefaultDimensions: Dimensions = {
-    height: "404",
-    heightWithUnits: "404px",
-    width: "470",
-    widthWithUnits: "470px",
-  };
-
-  /**
-   * Renders an EdPuzzle `<iframe>` from a recognized EdPuzzle URL.
-   * Displays an error message if no ID can be extracted.
-   */
-  public renderEdPuzzle(): TemplateResult {
-    if (!this.url) {
-      return html`No url found for embed`;
-    }
-    const embedId = getEdPuzzleIdFromUrl(this.url);
-    if (!embedId) {
-      return html`No ID found for ${this.url}`;
-    }
-
-    const embedUrl = getEdPuzzleEmbedUrlFromId(embedId);
-    const { width, height } = this.getDefaultDimensions(this.provider);
-
-    return html`
-      <iframe
-        width="${width}"
-        height="${height}"
-        src="${embedUrl}"
-        frameborder=${ifDefined(this.frameborder)}
-        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
-      ></iframe>
-      <slot></slot>
-    `;
-  }
-
-  /**
-   * Default dimension overrides for Wistia content.
-   */
-  public static wistiaDefaultDimensions: Dimensions = {
-    height: "404",
-    heightWithUnits: "404px",
-    width: "470",
-    widthWithUnits: "470px",
-  };
-
-  /**
-   * Renders a Wistia `<iframe>` from a recognized Wistia URL.
-   * Displays an error message if no ID can be extracted.
-   */
-  public renderWistia(): TemplateResult {
-    if (!this.url) {
-      return html`No url found for embed`;
-    }
-    const embedId = getWistiaIdFromUrl(this.url);
-    if (!embedId) {
-      return html`No ID found for ${this.url}`;
-    }
-
-    const embedUrl = getWistiaEmbedUrlFromId(embedId);
-    const { width, height } = this.getDefaultDimensions(this.provider);
-
-    return html`
-      <iframe
-        width="${width}"
-        height="${height}"
-        src="${embedUrl}"
-        frameborder=${ifDefined(this.frameborder)}
-        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
-      ></iframe>
-      <slot></slot>
-    `;
-  }
-
-  /**
-   * Default dimension overrides for Loom content.
-   */
-  public static loomDefaultDimensions: Dimensions = {
-    height: "404",
-    heightWithUnits: "404px",
-    width: "470",
-    widthWithUnits: "470px",
-  };
-
-  /**
-   * Renders a Loom `<iframe>` from a recognized Loom URL.
-   * Displays an error message if no ID can be extracted.
-   */
-  public renderLoom(): TemplateResult {
-    if (!this.url) {
-      return html`No url found for embed`;
-    }
-    const embedId = getLoomIdFromUrl(this.url);
-    if (!embedId) {
-      return html`No ID found for ${this.url}`;
-    }
-
-    const embedUrl = getLoomEmbedUrlFromId(embedId);
-    const { width, height } = this.getDefaultDimensions(this.provider);
-
-    return html`
-      <iframe
-        width="${width}"
-        height="${height}"
-        src="${embedUrl}"
-        frameborder=${ifDefined(this.frameborder)}
-        allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
-      ></iframe>
-      <slot></slot>
-    `;
-  }
-
-  /**
-   * Helper function to decide if `allowfullscreen="true"` should be set.
-   *
-   * @returns `true` if the user supplied `allowfullscreen` as `""`, `"true"`, `true`, or `"1"`;
-   * otherwise `undefined`.
-   */
-  private shouldAllowFullscreen(): true | undefined {
-    return this.allowfullscreen === "" ||
-      this.allowfullscreen === "true" ||
-      this.allowfullscreen === true ||
-      this.allowfullscreen === "1"
-      ? true
-      : undefined;
+  public get provider(): { name: string } | undefined {
+    return this.providerName ? { name: this.providerName } : undefined;
   }
 }
 

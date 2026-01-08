@@ -174,18 +174,167 @@ An “episode” is a single podcast installment.
 
 ---
 
-## Compact size
+## Spotify-specific Attributes
 
-### HTML
+The `<o-embed>` component supports several Spotify-specific attributes for customizing embed appearance and behavior.
 
-For any of the above combinations, add `height="152"` to the `<o-embed>` tag. Example:
+### Size Tiers (`spotify-size`)
+
+Control the embed height with predefined size tiers:
+
+- `compact` - Minimal player (80px for tracks, 152px for others)
+- `normal` - Standard player (default, 152-352px based on content type)
+- `large` - Full-featured player with more details (352-500px)
 
 ```html
-<o-embed url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi" height="152"></o-embed>
+<!-- Compact track player -->
+<o-embed
+  url="spotify:track:1w4etUoKfql47wtTFq031f"
+  spotify-size="compact"
+></o-embed>
+
+<!-- Large album player -->
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-size="large"
+></o-embed>
 ```
 
-<o-embed url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi" height="152"></o-embed>
+<o-embed
+  url="spotify:track:1w4etUoKfql47wtTFq031f"
+  spotify-size="compact"
+></o-embed>
 
 <br />
 
-This ensures a more compact player. You can also experiment with `width="300"` or other sizes to fit your site’s design.
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-size="large"
+></o-embed>
+
+<Aside type="tip">
+When no size is specified, the height is auto-detected based on content type:
+- Tracks default to `compact` (80px)
+- Albums, playlists, and artists default to `normal` (352px)
+- Podcasts (shows/episodes) default to `normal` (232px)
+</Aside>
+
+---
+
+### Theme (`spotify-theme`)
+
+Set the visual theme of the player:
+
+- `dark` - Dark background
+- `light` - Light background
+
+```html
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-theme="light"
+></o-embed>
+```
+
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-theme="light"
+></o-embed>
+
+---
+
+### View Mode (`spotify-view`)
+
+Control the display mode:
+
+- `list` - Standard view with track listings (default)
+- `coverart` - Minimal view emphasizing album/track artwork
+
+```html
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-view="coverart"
+></o-embed>
+```
+
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-view="coverart"
+></o-embed>
+
+---
+
+### Start Time (`spotify-start`)
+
+For podcast content (shows and episodes), set the playback start position in seconds:
+
+```html
+<!-- Start podcast at 2 minutes (120 seconds) -->
+<o-embed
+  url="spotify:episode:0Bx6gWK755bUoM238X2Ma1"
+  spotify-start="120"
+></o-embed>
+```
+
+<o-embed
+  url="spotify:episode:0Bx6gWK755bUoM238X2Ma1"
+  spotify-start="120"
+></o-embed>
+
+---
+
+### Combining Attributes
+
+Attributes can be combined for maximum customization:
+
+```html
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-size="compact"
+  spotify-theme="dark"
+  spotify-view="coverart"
+></o-embed>
+```
+
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  spotify-size="compact"
+  spotify-theme="dark"
+  spotify-view="coverart"
+></o-embed>
+
+---
+
+### Escape Hatch (`provider-options`)
+
+For advanced use cases or future Spotify parameters, use the `provider-options` attribute with a JSON object:
+
+```html
+<o-embed
+  url="spotify:album:4hg4cR8QMbE0xuvoxoA6DX"
+  provider-options='{"theme": "light", "size": "large"}'
+></o-embed>
+```
+
+---
+
+## Legacy Height/Width
+
+You can also set explicit dimensions using standard `height` and `width` attributes:
+
+```html
+<o-embed
+  url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi"
+  height="152"
+></o-embed>
+```
+
+<o-embed
+  url="spotify:playlist:37i9dQZF1DZ06evO0AI4xi"
+  height="152"
+></o-embed>
+
+<br />
+
+<Aside type="note">
+When `spotify-size` is set, it takes precedence over the default height. Explicit `height` attribute overrides both.
+</Aside>
