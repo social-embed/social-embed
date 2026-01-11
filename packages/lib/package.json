@@ -36,7 +36,7 @@
     "start": "pnpm vite",
     "watch": "vite start",
     "build": "vite build",
-    "prepare": "pnpm build",
+    "prepublishOnly": "pnpm build",
     "bootstrap": "echo 'NOOP'",
     "test": "vitest run",
     "test:watch": "vitest run",

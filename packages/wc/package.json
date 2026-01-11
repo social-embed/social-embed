@@ -15,7 +15,7 @@
   "scripts": {
     "prebuild": "pnpm clean && pnpm --filter @social-embed/lib build",
     "build": "vite build",
-    "prepare": "pnpm build",
+    "prepublishOnly": "pnpm build",
     "build:watch": "pnpm build --watch",
     "vite": "vite",
     "start": "pnpm vite",

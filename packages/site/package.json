@@ -20,7 +20,6 @@
     "format": "pnpm run biome check . --write; pnpm run biome format . --write",
     "prebuild": "pnpm docs:oembed",
     "prestart": "pnpm docs:oembed",
-    "prepare": "pnpm --filter @social-embed/wc build; mkdir -p public/js && cp ../wc/dist/OEmbedElement.umd.cjs public/js/o-embed.bundled.js",
     "docs:oembed": "[ ! -f ../wc/dist/OEmbedElement.umd.cjs ] && pnpm --filter @social-embed/wc build; mkdir -p public/js && cp ../wc/dist/OEmbedElement.umd.cjs public/js/o-embed.bundled.js"
   },
   "dependencies": {
