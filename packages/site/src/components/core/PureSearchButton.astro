@@ -26,9 +26,16 @@
   <dialog class="search-dialog" aria-label="Search">
     <div class="dialog-frame">
       <button data-close-modal class="close-btn">Cancel</button>
-      <div class="search-container">
-        <div id="pure__search"></div>
-      </div>
+      {import.meta.env.DEV ? (
+        <div class="dev-warning">
+          <p>Search is only available in production builds.</p>
+          <p>Run <code>pnpm build && pnpm preview</code> to test search.</p>
+        </div>
+      ) : (
+        <div class="search-container">
+          <div id="pure__search"></div>
+        </div>
+      )}
     </div>
   </dialog>
 </pure-search>
@@ -236,6 +243,19 @@
 
   .search-container {
     flex: 1;
+  }
+
+  .dev-warning {
+    margin: auto;
+    text-align: center;
+    color: var(--nav-text-muted);
+  }
+
+  .dev-warning code {
+    background-color: var(--search-kbd-bg);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
   }
 
   /* Pagefind UI theming */
