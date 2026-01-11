@@ -25,7 +25,7 @@ interface RenderProps {
   disabled?: boolean;
 }
 
-function renderPicker(props: RenderProps = {}) {
+async function renderPicker(props: RenderProps = {}) {
   container = document.createElement("div");
   document.body.appendChild(container);
   root = createRoot(container);
@@ -36,7 +36,7 @@ function renderPicker(props: RenderProps = {}) {
     ...props,
   };
 
-  act(() => {
+  await act(async () => {
     root?.render(<LibSourcePicker {...defaultProps} />);
   });
 
@@ -50,29 +50,29 @@ function renderPicker(props: RenderProps = {}) {
 
 describe("LibSourcePicker", () => {
   describe("rendering", () => {
-    test("renders all source buttons", () => {
-      const { buttons } = renderPicker();
+    test("renders all source buttons", async () => {
+      const { buttons } = await renderPicker();
       expect(buttons.length).toBe(LIB_SOURCE_ORDER.length);
     });
 
-    test("renders button labels correctly", () => {
-      const { buttons } = renderPicker();
+    test("renders button labels correctly", async () => {
+      const { buttons } = await renderPicker();
       for (let i = 0; i < LIB_SOURCE_ORDER.length; i++) {
         const sourceType = LIB_SOURCE_ORDER[i];
         expect(buttons[i].textContent).toBe(LIB_SOURCES[sourceType].label);
       }
     });
 
-    test("shows local as selected by default", () => {
-      const { buttons } = renderPicker({ value: "local" });
+    test("shows local as selected by default", async () => {
+      const { buttons } = await renderPicker({ value: "local" });
       const localButton = Array.from(buttons).find(
         (btn) => btn.textContent === "Local",
       );
       expect(localButton?.getAttribute("aria-pressed")).toBe("true");
     });
 
-    test("shows esm-sh as selected when value is esm-sh", () => {
-      const { buttons } = renderPicker({ value: "esm-sh" });
+    test("shows esm-sh as selected when value is esm-sh", async () => {
+      const { buttons } = await renderPicker({ value: "esm-sh" });
       // Find button with exact "esm.sh (npm)" label (not GitHub)
       const esmButton = Array.from(buttons).find(
         (btn) => btn.textContent === LIB_SOURCES["esm-sh"].label,
@@ -80,43 +80,43 @@ describe("LibSourcePicker", () => {
       expect(esmButton?.getAttribute("aria-pressed")).toBe("true");
     });
 
-    test("displays CDN URL when non-local source is selected", () => {
-      renderPicker({ value: "esm-sh" });
+    test("displays CDN URL when non-local source is selected", async () => {
+      await renderPicker({ value: "esm-sh" });
       const urlDisplay = container?.querySelector(".font-mono");
       expect(urlDisplay?.textContent).toContain("esm.sh");
     });
 
-    test("does not display URL when local source is selected", () => {
-      renderPicker({ value: "local" });
+    test("does not display URL when local source is selected", async () => {
+      await renderPicker({ value: "local" });
       const urlDisplay = container?.querySelector(".font-mono");
       expect(urlDisplay).toBeNull();
     });
   });
 
   describe("interaction", () => {
-    test("calls onChange when button is clicked", () => {
-      const { buttons, onChange } = renderPicker({ value: "local" });
+    test("calls onChange when button is clicked", async () => {
+      const { buttons, onChange } = await renderPicker({ value: "local" });
 
       const unpkgButton = Array.from(buttons).find(
         (btn) => btn.textContent === "unpkg",
       );
 
-      act(() => {
+      await act(async () => {
         unpkgButton?.click();
       });
 
       expect(onChange).toHaveBeenCalledWith("unpkg");
     });
 
-    test("calls onChange with correct source type", () => {
-      const { buttons, onChange } = renderPicker({ value: "local" });
+    test("calls onChange with correct source type", async () => {
+      const { buttons, onChange } = await renderPicker({ value: "local" });
 
       // Click through different sources
       const esmShButton = Array.from(buttons).find((btn) =>
         btn.textContent?.includes("esm.sh (npm)"),
       );
 
-      act(() => {
+      await act(async () => {
         esmShButton?.click();
       });
 
@@ -125,16 +125,16 @@ describe("LibSourcePicker", () => {
   });
 
   describe("disabled state", () => {
-    test("all buttons are disabled when disabled prop is true", () => {
-      const { buttons } = renderPicker({ disabled: true });
+    test("all buttons are disabled when disabled prop is true", async () => {
+      const { buttons } = await renderPicker({ disabled: true });
 
       for (const button of buttons) {
         expect(button.disabled).toBe(true);
       }
     });
 
-    test("buttons are enabled by default", () => {
-      const { buttons } = renderPicker();
+    test("buttons are enabled by default", async () => {
+      const { buttons } = await renderPicker();
 
       for (const button of buttons) {
         expect(button.disabled).toBe(false);
@@ -143,23 +143,23 @@ describe("LibSourcePicker", () => {
   });
 
   describe("styling", () => {
-    test("applies custom className", () => {
-      const { wrapper } = renderPicker({ className: "custom-class" });
+    test("applies custom className", async () => {
+      const { wrapper } = await renderPicker({ className: "custom-class" });
       expect(wrapper.className).toContain("custom-class");
     });
 
-    test("uses semantic fieldset element", () => {
-      const { wrapper } = renderPicker();
+    test("uses semantic fieldset element", async () => {
+      const { wrapper } = await renderPicker();
       expect(wrapper.tagName.toLowerCase()).toBe("fieldset");
     });
 
-    test("has aria-label for accessibility", () => {
-      const { wrapper } = renderPicker();
+    test("has aria-label for accessibility", async () => {
+      const { wrapper } = await renderPicker();
       expect(wrapper.getAttribute("aria-label")).toBe("Select library source");
     });
 
-    test("buttons have title tooltips", () => {
-      const { buttons } = renderPicker();
+    test("buttons have title tooltips", async () => {
+      const { buttons } = await renderPicker();
       for (let i = 0; i < LIB_SOURCE_ORDER.length; i++) {
         const sourceType = LIB_SOURCE_ORDER[i];
         expect(buttons[i].getAttribute("title")).toBe(

@@ -23,12 +23,12 @@ interface RenderProps {
   compact?: boolean;
 }
 
-function renderDisplay(props: RenderProps) {
+async function renderDisplay(props: RenderProps) {
   container = document.createElement("div");
   document.body.appendChild(container);
   root = createRoot(container);
 
-  act(() => {
+  await act(async () => {
     root?.render(<OutputDisplay {...props} />);
   });
 
@@ -37,21 +37,21 @@ function renderDisplay(props: RenderProps) {
 
 describe("OutputDisplay", () => {
   describe("empty state", () => {
-    test("shows placeholder when output is null", () => {
-      renderDisplay({ output: null });
+    test("shows placeholder when output is null", async () => {
+      await renderDisplay({ output: null });
       const placeholder = container?.querySelector("p");
       expect(placeholder?.textContent).toContain("Enter a URL");
     });
 
-    test("shows placeholder with dashed border", () => {
-      renderDisplay({ output: null });
+    test("shows placeholder with dashed border", async () => {
+      await renderDisplay({ output: null });
       const wrapper = container?.querySelector("div > div");
       expect(wrapper?.className).toContain("border-dashed");
     });
   });
 
   describe("error state", () => {
-    test("shows error when output is invalid", () => {
+    test("shows error when output is invalid", async () => {
       const output: LibOutput = {
         embedUrl: null,
         error: "Invalid URL format",
@@ -60,7 +60,7 @@ describe("OutputDisplay", () => {
         provider: null,
         providerId: null,
       };
-      renderDisplay({ output });
+      await renderDisplay({ output });
 
       const alert = container?.querySelector('[role="alert"]');
       expect(alert).toBeTruthy();
@@ -68,7 +68,7 @@ describe("OutputDisplay", () => {
       expect(alert?.textContent).toContain("Invalid URL format");
     });
 
-    test("shows default error message when no error text provided", () => {
+    test("shows default error message when no error text provided", async () => {
       const output: LibOutput = {
         embedUrl: null,
         input: "https://unknown.com/video",
@@ -76,7 +76,7 @@ describe("OutputDisplay", () => {
         provider: null,
         providerId: null,
       };
-      renderDisplay({ output });
+      await renderDisplay({ output });
 
       const alert = container?.querySelector('[role="alert"]');
       expect(alert?.textContent).toContain("No matching provider found");
@@ -92,8 +92,8 @@ describe("OutputDisplay", () => {
       providerId: "dQw4w9WgXcQ",
     };
 
-    test("displays provider icon and name", () => {
-      renderDisplay({ output: validOutput });
+    test("displays provider icon and name", async () => {
+      await renderDisplay({ output: validOutput });
       const display = container?.querySelector(
         '[data-testid="output-display"]',
       );
@@ -102,8 +102,8 @@ describe("OutputDisplay", () => {
       expect(display?.textContent).toContain("YouTube");
     });
 
-    test("displays extracted ID", () => {
-      renderDisplay({ output: validOutput });
+    test("displays extracted ID", async () => {
+      await renderDisplay({ output: validOutput });
       const display = container?.querySelector(
         '[data-testid="output-display"]',
       );
@@ -111,8 +111,8 @@ describe("OutputDisplay", () => {
       expect(display?.textContent).toContain("dQw4w9WgXcQ");
     });
 
-    test("displays embed URL", () => {
-      renderDisplay({ output: validOutput });
+    test("displays embed URL", async () => {
+      await renderDisplay({ output: validOutput });
       const display = container?.querySelector(
         '[data-testid="output-display"]',
       );
@@ -122,8 +122,8 @@ describe("OutputDisplay", () => {
       );
     });
 
-    test("displays input URL in non-compact mode", () => {
-      renderDisplay({ compact: false, output: validOutput });
+    test("displays input URL in non-compact mode", async () => {
+      await renderDisplay({ compact: false, output: validOutput });
       const display = container?.querySelector(
         '[data-testid="output-display"]',
       );
@@ -133,8 +133,8 @@ describe("OutputDisplay", () => {
       );
     });
 
-    test("hides input URL in compact mode", () => {
-      renderDisplay({ compact: true, output: validOutput });
+    test("hides input URL in compact mode", async () => {
+      await renderDisplay({ compact: true, output: validOutput });
       const display = container?.querySelector(
         '[data-testid="output-display"]',
       );
@@ -150,7 +150,7 @@ describe("OutputDisplay", () => {
   });
 
   describe("YouTube Shorts", () => {
-    test("shows Shorts badge when isShorts is true", () => {
+    test("shows Shorts badge when isShorts is true", async () => {
       const output: LibOutput = {
         embedUrl: "https://www.youtube.com/embed/abc123",
         input: "https://www.youtube.com/shorts/abc123",
@@ -159,7 +159,7 @@ describe("OutputDisplay", () => {
         provider: "youtube",
         providerId: "abc123",
       };
-      renderDisplay({ output });
+      await renderDisplay({ output });
 
       const display = container?.querySelector(
         '[data-testid="output-display"]',
@@ -169,7 +169,7 @@ describe("OutputDisplay", () => {
   });
 
   describe("array IDs", () => {
-    test("displays each array ID with comma separator", () => {
+    test("displays each array ID with comma separator", async () => {
       const output: LibOutput = {
         embedUrl: "https://example.com/embed/123",
         input: "https://example.com/playlist/123",
@@ -177,7 +177,7 @@ describe("OutputDisplay", () => {
         provider: "youtube",
         providerId: ["id1", "id2", "id3"],
       };
-      renderDisplay({ output });
+      await renderDisplay({ output });
 
       const display = container?.querySelector(
         '[data-testid="output-display"]',
@@ -188,7 +188,7 @@ describe("OutputDisplay", () => {
       expect(display?.textContent).toContain("id3");
     });
 
-    test("shows individual copy buttons for each array ID", () => {
+    test("shows individual copy buttons for each array ID", async () => {
       const output: LibOutput = {
         embedUrl: "https://example.com/embed/123",
         input: "https://example.com/playlist/123",
@@ -196,7 +196,7 @@ describe("OutputDisplay", () => {
         provider: "youtube",
         providerId: ["id1", "id2"],
       };
-      renderDisplay({ output });
+      await renderDisplay({ output });
 
       // Should have copy buttons for each ID (2) + Embed URL (1) = 3 total
       const copyButtons = container?.querySelectorAll(
@@ -205,7 +205,7 @@ describe("OutputDisplay", () => {
       expect(copyButtons?.length).toBe(3);
     });
 
-    test("single array ID uses regular OutputRow", () => {
+    test("single array ID uses regular OutputRow", async () => {
       const output: LibOutput = {
         embedUrl: "https://example.com/embed/123",
         input: "https://example.com/playlist/123",
@@ -213,7 +213,7 @@ describe("OutputDisplay", () => {
         provider: "youtube",
         providerId: ["single-id"],
       };
-      renderDisplay({ output });
+      await renderDisplay({ output });
 
       // Single array ID should use regular row (2 copy buttons: ID + Embed URL)
       const copyButtons = container?.querySelectorAll(
@@ -224,15 +224,15 @@ describe("OutputDisplay", () => {
   });
 
   describe("styling", () => {
-    test("applies custom className", () => {
-      renderDisplay({ className: "custom-class", output: null });
+    test("applies custom className", async () => {
+      await renderDisplay({ className: "custom-class", output: null });
       const wrapper = container?.querySelector(".custom-class");
       expect(wrapper).toBeTruthy();
     });
   });
 
   describe("copy buttons", () => {
-    test("shows copy buttons for ID and Embed URL", () => {
+    test("shows copy buttons for ID and Embed URL", async () => {
       const output: LibOutput = {
         embedUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
         input: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
@@ -240,7 +240,7 @@ describe("OutputDisplay", () => {
         provider: "youtube",
         providerId: "dQw4w9WgXcQ",
       };
-      renderDisplay({ output });
+      await renderDisplay({ output });
 
       // Should have copy buttons for ID and Embed URL
       const copyButtons = container?.querySelectorAll(
