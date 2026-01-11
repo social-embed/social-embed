@@ -1,0 +1,75 @@
+---
+/**
+ * Pure Astro equivalent of the custom Search.astro navigation ribbon.
+ * Provides 2 menu items (Web Component, Library) with sub-links.
+ *
+ * Since this is used on pure Astro pages (no Starlight), we can't use
+ * Starlight's search modal. The search button links to docs instead.
+ */
+const pathname = Astro.url.pathname;
+
+// Section-level active states
+const isWcSection = pathname.startsWith("/wc");
+const isLibSection = pathname.startsWith("/lib");
+
+// Sub-link active states
+const isWcPlayground = pathname.startsWith("/wc/playground");
+const isLibPlayground = pathname.startsWith("/lib/playground");
+
+// Styles
+const activeClass = "text-indigo-600 dark:text-indigo-400 font-medium";
+const inactiveClass =
+  "text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200";
+const ribbonActiveClass = "border-b-2 border-indigo-500 pb-1";
+const ribbonInactiveClass =
+  "border-b-2 border-transparent pb-1 hover:border-slate-300 dark:hover:border-slate-600";
+const headingActiveClass =
+  "text-indigo-600 dark:text-indigo-400 font-bold no-underline";
+const headingInactiveClass =
+  "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 font-bold no-underline";
+---
+
+<div class="flex flex-wrap items-start flex-start w-full gap-3 lg:gap-5">
+  <!-- Web Component -->
+  <div class:list={["flex flex-col items-start", isWcSection ? ribbonActiveClass : ribbonInactiveClass]}>
+    <a href="/wc" class:list={[isWcSection ? headingActiveClass : headingInactiveClass]}>
+      <span class="block md:hidden">wc</span>
+      <span class="hidden md:block lg:hidden">web component</span>
+      <span class="hidden lg:block"><code>&lt;o-embed&gt;</code> component</span>
+    </a>
+    <span class="text-sm text-slate-500 dark:text-slate-400 hidden md:block no-underline">
+      <a href="/wc/playground/" class:list={["no-underline hover:underline", isWcPlayground ? activeClass : inactiveClass]}>Playground</a>
+      <span class="text-slate-400 dark:text-slate-500 mx-1">·</span>
+      <a href="https://github.com/social-embed/social-embed/tree/master/packages/wc" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 no-underline hover:underline inline-flex items-center gap-0.5">
+        Source
+        <svg class="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+      <span class="text-slate-400 dark:text-slate-500 mx-1">·</span>
+      <a href="https://www.npmjs.com/package/@social-embed/wc" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 no-underline hover:underline inline-flex items-center gap-0.5">
+        NPM
+        <svg class="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+    </span>
+  </div>
+
+  <!-- Library -->
+  <div class:list={["flex flex-col items-start", isLibSection ? ribbonActiveClass : ribbonInactiveClass]}>
+    <a href="/lib" class:list={[isLibSection ? headingActiveClass : headingInactiveClass]}>
+      <span class="block lg:hidden">lib</span>
+      <span class="hidden lg:block">Library</span>
+    </a>
+    <span class="text-sm text-slate-500 dark:text-slate-400 hidden md:block">
+      <a href="/lib/playground/" class:list={["no-underline hover:underline", isLibPlayground ? activeClass : inactiveClass]}>Playground</a>
+      <span class="text-slate-400 dark:text-slate-500 mx-1">·</span>
+      <a href="https://github.com/social-embed/social-embed/tree/master/packages/lib" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 no-underline hover:underline inline-flex items-center gap-0.5">
+        Source
+        <svg class="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+      <span class="text-slate-400 dark:text-slate-500 mx-1">·</span>
+      <a href="https://www.npmjs.com/package/@social-embed/lib" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 no-underline hover:underline inline-flex items-center gap-0.5">
+        NPM
+        <svg class="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+      </a>
+    </span>
+  </div>
+</div>

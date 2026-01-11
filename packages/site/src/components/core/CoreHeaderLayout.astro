@@ -5,12 +5,16 @@
  * - Pure Astro pages (via index.astro with pure components)
  *
  * Provides consistent flexbox layout and CSS styling.
+ * Uses --nav-* variables (our source of truth).
  */
 ---
 
 <div class="header">
   <div class="title-wrapper">
     <slot name="logo" />
+  </div>
+  <div class="search-area">
+    <slot name="search" />
   </div>
   <div class="nav-area">
     <slot name="nav" />
@@ -24,7 +28,7 @@
 <style>
   .header {
     display: flex;
-    gap: var(--sl-nav-gap, 1rem);
+    gap: var(--nav-gap, 1rem);
     align-items: center;
     height: 100%;
   }
@@ -37,8 +41,14 @@
     flex-shrink: 0;
   }
 
-  .nav-area {
+  .search-area {
     flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .nav-area {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -55,7 +65,7 @@
   .right-group ::slotted([slot="social"])::after {
     content: "";
     height: 2rem;
-    border-inline-end: 1px solid var(--sl-color-gray-5, #334155);
+    border-inline-end: 1px solid var(--nav-border);
     margin-inline-start: 1rem;
   }
 

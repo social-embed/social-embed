@@ -5,14 +5,14 @@
  */
 import "../tailwind.css";
 import { Font } from "astro:assets";
-import { LibPlayground } from "../components/lib-playground/LibPlayground";
-import { MiniPlayground } from "../components/playground/MiniPlayground";
-
 // Core header components (pure Astro equivalents of Starlight's virtual components)
 import CoreHeaderLayout from "../components/core/CoreHeaderLayout.astro";
+import PureSearch from "../components/core/PureSearch.astro";
 import PureSiteTitle from "../components/core/PureSiteTitle.astro";
 import PureSocialIcons from "../components/core/PureSocialIcons.astro";
 import PureThemeSelect from "../components/core/PureThemeSelect.astro";
+import { LibPlayground } from "../components/lib-playground/LibPlayground";
+import { MiniPlayground } from "../components/playground/MiniPlayground";
 ---
 
 <html lang="en">
@@ -42,20 +42,10 @@ import PureThemeSelect from "../components/core/PureThemeSelect.astro";
   </head>
   <body class="min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans">
     <!-- Header using core components -->
-    <header class="sticky top-0 z-50 border-b border-slate-200 dark:border-slate-700" style="height: var(--sl-nav-height, 3.5rem); padding: var(--sl-nav-pad-y, 0.75rem) var(--sl-nav-pad-x, 1rem); background-color: var(--sl-color-bg-nav); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
+    <header class="sticky top-0 z-50" style="height: var(--nav-height); padding: var(--nav-pad-y) var(--nav-pad-x); background-color: var(--nav-bg); border-bottom: 1px solid var(--nav-border); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
       <CoreHeaderLayout>
         <PureSiteTitle slot="logo" />
-        <nav slot="nav" class="flex items-center gap-4 text-sm">
-          <a href="/wc/" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100">
-            <code class="text-xs">&lt;o-embed&gt;</code>
-          </a>
-          <a href="/lib/" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100">
-            Library
-          </a>
-          <a href="/getting-started/" class="hidden sm:block text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100">
-            Docs
-          </a>
-        </nav>
+        <PureSearch slot="search" />
         <PureSocialIcons slot="social" />
         <PureThemeSelect slot="theme" />
       </CoreHeaderLayout>

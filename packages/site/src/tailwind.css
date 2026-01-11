@@ -78,6 +78,38 @@
   --color-mv-green-dark: color-mix(in oklch, oklch(0.73 0.13 120), black 30%);
 }
 
+/**
+ * Core navigation variables - OUR source of truth.
+ * Starlight's --sl-* variables inherit from these.
+ */
+:root {
+  /* Navigation dimensions */
+  --nav-height: 3.5rem;
+  --nav-pad-x: 1rem;
+  --nav-pad-y: 0.75rem;
+  --nav-gap: 1rem;
+
+  /* Navigation colors (dark mode default) */
+  --nav-bg: rgba(15, 23, 42, 0.95); /* slate-900/95 */
+  --nav-border: var(--color-slate-700);
+  --nav-text: var(--color-slate-100);
+  --nav-text-muted: var(--color-slate-400);
+
+  /* Starlight inherits from our variables */
+  --sl-nav-height: var(--nav-height);
+  --sl-nav-pad-x: var(--nav-pad-x);
+  --sl-nav-pad-y: var(--nav-pad-y);
+  --sl-nav-gap: var(--nav-gap);
+  --sl-color-bg-nav: var(--nav-bg);
+}
+
+[data-theme="light"] {
+  --nav-bg: rgba(255, 255, 255, 0.95); /* white/95 */
+  --nav-border: var(--color-slate-200);
+  --nav-text: var(--color-slate-900);
+  --nav-text-muted: var(--color-slate-600);
+}
+
 /* Target small displays like phones */
 :root {
   --sl-content-width: 100%;
@@ -161,9 +193,6 @@
     --sl-color-gray-6: var(--color-slate-800);
     --sl-color-black: var(--color-slate-900);
 
-    /* Nav background to match homepage header (dark mode default) */
-    --sl-color-bg-nav: rgba(15, 23, 42, 0.95); /* slate-900 at 95% opacity */
-
     /* Override Starlight badge hues with microviz OKLCH colors */
     /* Dark mode (default): -low = dark bg, -high = light text */
     /* success variant uses cyan for "try it" badge */
@@ -198,9 +227,6 @@
 
   /* Light mode: -low = light bg, -high = dark text */
   [data-theme="light"] {
-    /* Nav background to match homepage header (light mode) */
-    --sl-color-bg-nav: rgba(255, 255, 255, 0.95); /* white at 95% opacity */
-
     --sl-color-green-low: var(--color-mv-cyan-light);
     --sl-color-green-high: var(--color-mv-cyan-dark);
 

@@ -15,19 +15,26 @@ import logoSrc from "../../assets/img/logo.svg";
   .site-title {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--nav-gap, 1rem);
     font-weight: 600;
-    color: var(--sl-color-white, #f8fafc);
+    color: var(--nav-text);
     text-decoration: none;
+    white-space: nowrap;
+    min-width: 0;
   }
 
   .logo {
-    width: 2rem;
-    height: 2rem;
+    /* Rectangular logo: fill nav height minus padding, auto width */
+    height: calc(var(--nav-height) - 2 * var(--nav-pad-y));
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: 0 50%;
   }
 
   .title {
-    font-size: var(--sl-text-h4, 1.125rem);
+    font-size: 1.125rem;
+    overflow: hidden;
   }
 
   /* Hide title on small screens */
