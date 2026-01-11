@@ -36,7 +36,9 @@
   .title-wrapper {
     overflow: clip;
     padding: 0.25rem;
+    padding-left: var(--nav-inner-pad, 1rem);
     margin: -0.25rem;
+    margin-left: 0;
     min-width: 0;
     flex-shrink: 0;
   }
@@ -59,6 +61,7 @@
     display: flex;
     gap: 1rem;
     align-items: center;
+    padding-right: var(--nav-inner-pad, 1rem);
   }
 
   /* Divider after social icons (before theme select) */

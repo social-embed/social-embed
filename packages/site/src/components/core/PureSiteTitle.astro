@@ -24,8 +24,8 @@ import logoSrc from "../../assets/img/logo.svg";
   }
 
   .logo {
-    /* Rectangular logo: fill nav height minus padding, auto width */
-    height: calc(var(--nav-height) - 2 * var(--nav-pad-y));
+    /* Fixed 32px height (Tailwind h-8 = 2rem) */
+    height: 2rem;
     width: auto;
     max-width: 100%;
     object-fit: contain;

@@ -2,9 +2,6 @@
 /**
  * Pure Astro equivalent of the custom Search.astro navigation ribbon.
  * Provides 2 menu items (Web Component, Library) with sub-links.
- *
- * Since this is used on pure Astro pages (no Starlight), we can't use
- * Starlight's search modal. The search button links to docs instead.
  */
 const pathname = Astro.url.pathname;
 
@@ -29,8 +26,10 @@ const headingInactiveClass =
   "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 font-bold no-underline";
 ---
 
-<div class="flex flex-wrap items-start flex-start w-full gap-3 lg:gap-5">
-  <!-- Web Component -->
+<div class="search-nav">
+  <!-- Navigation Ribbon -->
+  <div class="nav-ribbon">
+    <!-- Web Component -->
   <div class:list={["flex flex-col items-start", isWcSection ? ribbonActiveClass : ribbonInactiveClass]}>
     <a href="/wc" class:list={[isWcSection ? headingActiveClass : headingInactiveClass]}>
       <span class="block md:hidden">wc</span>
@@ -72,4 +71,26 @@ const headingInactiveClass =
       </a>
     </span>
   </div>
+  </div>
 </div>
+
+<style>
+  .search-nav {
+    display: flex;
+    flex: 1;
+    align-items: center;
+  }
+
+  .nav-ribbon {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 64rem) {
+    .nav-ribbon {
+      gap: 1.25rem;
+    }
+  }
+</style>

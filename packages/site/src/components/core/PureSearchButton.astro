@@ -1,0 +1,262 @@
+---
+/**
+ * Pure Astro search button with Pagefind modal.
+ * Mirrors Starlight's Search component but uses Tailwind styling.
+ */
+---
+
+<pure-search>
+  <button
+    data-open-modal
+    disabled
+    aria-label="Search"
+    aria-keyshortcuts="Control+K"
+    class="search-trigger"
+  >
+    <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.35-4.35"></path>
+    </svg>
+    <span class="search-label">Search</span>
+    <kbd class="search-kbd" style="display: none;">
+      <kbd class="platform-key">Ctrl</kbd><kbd>K</kbd>
+    </kbd>
+  </button>
+
+  <dialog class="search-dialog" aria-label="Search">
+    <div class="dialog-frame">
+      <button data-close-modal class="close-btn">Cancel</button>
+      <div class="search-container">
+        <div id="pure__search"></div>
+      </div>
+    </div>
+  </dialog>
+</pure-search>
+
+<!-- Platform detection for keyboard shortcut (inline to avoid flash) -->
+<script is:inline>
+  (() => {
+    const openBtn = document.querySelector('pure-search button[data-open-modal]');
+    const shortcut = openBtn?.querySelector('.search-kbd');
+    if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+    const platformKey = shortcut.querySelector('.platform-key');
+    if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+      platformKey.textContent = '⌘';
+      openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+    }
+    shortcut.style.display = '';
+  })();
+</script>
+
+<script>
+  class PureSearch extends HTMLElement {
+    constructor() {
+      super();
+      const openBtn = this.querySelector<HTMLButtonElement>('button[data-open-modal]')!;
+      const closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
+      const dialog = this.querySelector<HTMLDialogElement>('dialog')!;
+      const dialogFrame = this.querySelector('.dialog-frame')!;
+
+      const onClick = (event: MouseEvent) => {
+        const isLink = 'href' in (event.target || {});
+        if (
+          isLink ||
+          (document.body.contains(event.target as Node) &&
+            !dialogFrame.contains(event.target as Node))
+        ) {
+          closeModal();
+        }
+      };
+
+      const openModal = (event?: MouseEvent) => {
+        dialog.showModal();
+        document.body.toggleAttribute('data-search-modal-open', true);
+        this.querySelector('input')?.focus();
+        event?.stopPropagation();
+        window.addEventListener('click', onClick);
+      };
+
+      const closeModal = () => dialog.close();
+
+      openBtn.addEventListener('click', openModal);
+      openBtn.disabled = false;
+      closeBtn.addEventListener('click', closeModal);
+
+      dialog.addEventListener('close', () => {
+        document.body.toggleAttribute('data-search-modal-open', false);
+        window.removeEventListener('click', onClick);
+      });
+
+      // Keyboard shortcuts: Ctrl+K / Cmd+K
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey === true || e.ctrlKey === true) && e.key === 'k') {
+          dialog.open ? closeModal() : openModal();
+          e.preventDefault();
+        }
+      });
+
+      // Load Pagefind on demand
+      window.addEventListener('DOMContentLoaded', () => {
+        if (import.meta.env.DEV) return;
+        const onIdle = window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
+        onIdle(async () => {
+          // @ts-expect-error — Missing types for @pagefind/default-ui package.
+          const { PagefindUI } = await import('@pagefind/default-ui');
+          new PagefindUI({
+            element: '#pure__search',
+            baseUrl: import.meta.env.BASE_URL,
+            bundlePath: import.meta.env.BASE_URL.replace(/\/$/, '') + '/pagefind/',
+            showImages: false,
+            showSubResults: true,
+          });
+        });
+      });
+    }
+  }
+  customElements.define('pure-search', PureSearch);
+</script>
+
+<style>
+  pure-search {
+    display: contents;
+  }
+
+  .search-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 0;
+    background-color: transparent;
+    color: var(--nav-text-muted);
+    cursor: pointer;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+
+  .search-label,
+  .search-kbd {
+    display: none;
+  }
+
+  /* Desktop: show full search button */
+  @media (min-width: 50rem) {
+    .search-trigger {
+      border: 1px solid var(--nav-border);
+      border-radius: 0.5rem;
+      padding-inline-start: 0.75rem;
+      padding-inline-end: 0.5rem;
+      background-color: transparent;
+      color: var(--nav-text-muted);
+      font-size: 0.875rem;
+    }
+
+    .search-trigger:hover {
+      border-color: var(--nav-text-muted);
+      color: var(--nav-text);
+    }
+
+    .search-label {
+      display: block;
+    }
+
+    .search-kbd {
+      display: flex;
+      margin-inline-start: auto;
+    }
+  }
+
+  .search-kbd {
+    border-radius: 0.25rem;
+    font-size: 0.625rem;
+    gap: 0.25em;
+    padding-inline: 0.375rem;
+    border: 1px solid var(--nav-border);
+    font-family: inherit;
+  }
+
+  .search-kbd kbd {
+    font-family: inherit;
+  }
+
+  /* Dialog styles */
+  .search-dialog {
+    margin: 0;
+    padding: 0;
+    background-color: var(--nav-bg);
+    border: 1px solid var(--nav-border);
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  .search-dialog[open] {
+    display: flex;
+  }
+
+  .search-dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(0.25rem);
+  }
+
+  .dialog-frame {
+    position: relative;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .close-btn {
+    position: absolute;
+    z-index: 1;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    height: 64px;
+    padding: 0.25rem;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    color: var(--nav-text-muted);
+  }
+
+  .search-container {
+    flex: 1;
+  }
+
+  /* Pagefind UI theming */
+  #pure__search {
+    --pagefind-ui-primary: var(--nav-text);
+    --pagefind-ui-text: var(--nav-text-muted);
+    --pagefind-ui-font: var(--font-sans);
+    --pagefind-ui-background: transparent;
+    --pagefind-ui-border: var(--nav-border);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-tag: var(--nav-border);
+  }
+
+  /* Desktop dialog styling */
+  @media (min-width: 50rem) {
+    .search-dialog {
+      margin: 4rem auto auto;
+      border-radius: 0.5rem;
+      width: 90%;
+      max-width: 40rem;
+      height: max-content;
+      min-height: 15rem;
+      max-height: calc(100% - 8rem);
+    }
+
+    .dialog-frame {
+      padding: 1.5rem;
+    }
+
+    .close-btn {
+      display: none;
+    }
+  }
+</style>

@@ -1,6 +1,7 @@
 @layer base, starlight, theme, components, utilities;
 
 @import "@astrojs/starlight-tailwind";
+@import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
@@ -80,14 +81,16 @@
 
 /**
  * Core navigation variables - OUR source of truth.
- * Starlight's --sl-* variables inherit from these.
+ * Homepage uses zero header padding (inner elements handle spacing).
+ * Starlight overrides with its own padding values.
  */
 :root {
   /* Navigation dimensions */
   --nav-height: 3.5rem;
-  --nav-pad-x: 1rem;
-  --nav-pad-y: 0.75rem;
+  --nav-pad-x: 0;
+  --nav-pad-y: 0;
   --nav-gap: 1rem;
+  --nav-inner-pad: 1rem; /* Padding for inner elements (logo, right-group) */
 
   /* Navigation colors (dark mode default) */
   --nav-bg: rgba(15, 23, 42, 0.95); /* slate-900/95 */
@@ -95,10 +98,10 @@
   --nav-text: var(--color-slate-100);
   --nav-text-muted: var(--color-slate-400);
 
-  /* Starlight inherits from our variables */
+  /* Starlight uses its own padding values */
   --sl-nav-height: var(--nav-height);
-  --sl-nav-pad-x: var(--nav-pad-x);
-  --sl-nav-pad-y: var(--nav-pad-y);
+  --sl-nav-pad-x: 1rem;
+  --sl-nav-pad-y: 0.75rem;
   --sl-nav-gap: var(--nav-gap);
   --sl-color-bg-nav: var(--nav-bg);
 }
