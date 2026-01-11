@@ -81,8 +81,8 @@
 
 /**
  * Core navigation variables - OUR source of truth.
- * Homepage uses zero header padding (inner elements handle spacing).
- * Starlight overrides with its own padding values.
+ * Both homepage and Starlight use zero header padding.
+ * Inner elements (logo, right-group) handle their own spacing via --nav-inner-pad.
  */
 :root {
   /* Navigation dimensions */
@@ -107,10 +107,10 @@
   --search-hover-border: var(--color-slate-300);
   --search-hover-text: var(--color-slate-100);
 
-  /* Starlight uses its own padding values */
+  /* Starlight inherits from our nav variables */
   --sl-nav-height: var(--nav-height);
-  --sl-nav-pad-x: 1rem;
-  --sl-nav-pad-y: 0.75rem;
+  --sl-nav-pad-x: var(--nav-pad-x);
+  --sl-nav-pad-y: var(--nav-pad-y);
   --sl-nav-gap: var(--nav-gap);
   --sl-color-bg-nav: var(--nav-bg);
 }
