@@ -1,0 +1,94 @@
+---
+/**
+ * Homepage using StarlightPage for consistent header/theming,
+ * with CSS overrides for full-width content area.
+ */
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { LibPlayground } from "../components/lib-playground/LibPlayground";
+import { MiniPlayground } from "../components/playground/MiniPlayground";
+---
+
+<StarlightPage
+  frontmatter={{
+    title: "social-embed",
+    description: "Embed YouTube, Spotify, Vimeo with one tag",
+    template: "splash",
+    tableOfContents: false,
+    hero: {
+      tagline: "Embed YouTube, Spotify, Vimeo, and more with one tag",
+    },
+  }}
+  hasSidebar={false}
+>
+  <div data-page="homepage" class="not-content">
+    <!-- Two packages side-by-side -->
+    <section class="homepage-content grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 md:px-8 pb-16">
+      <!-- Web Component -->
+      <div class="flex flex-col gap-4">
+        <div>
+          <h2 class="text-2xl font-semibold mb-2">Web Component</h2>
+          <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
+            Drop <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm">&lt;o-embed&gt;</code> anywhere HTML works.
+          </p>
+        </div>
+        <div class="flex-1">
+          <MiniPlayground client:only="react" />
+        </div>
+        <a
+          href="/wc/"
+          class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
+        >
+          Get started
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Library -->
+      <div class="flex flex-col gap-4">
+        <div>
+          <h2 class="text-2xl font-semibold mb-2">Library</h2>
+          <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
+            Extract IDs, generate embed URLs, validate providers.
+          </p>
+        </div>
+        <div class="flex-1">
+          <LibPlayground client:only="react" mode="mini" />
+        </div>
+        <a
+          href="/lib/"
+          class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
+        >
+          Get started
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </section>
+  </div>
+</StarlightPage>
+
+<style is:global>
+  /* Homepage overrides - expand content to full width */
+  body:has([data-page="homepage"]) {
+    /* Reset Starlight container constraints */
+    main .content-panel,
+    main .sl-container {
+      max-width: 100% !important;
+      padding-inline: 0 !important;
+    }
+
+    /* Remove hero image area padding if present */
+    .hero {
+      padding-bottom: 1rem !important;
+    }
+  }
+
+  /* Homepage content area */
+  .homepage-content {
+    max-width: 90rem;
+    margin-inline: auto;
+  }
+</style>

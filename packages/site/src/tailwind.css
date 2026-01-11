@@ -145,31 +145,9 @@
   min-height: 600px;
 }
 
-/** Nuclear reset for embedded widgets - escape Starlight styling */
-[data-widget] {
-  /* Reset inherited Starlight styles */
-  all: revert;
-  display: block;
-}
-
-[data-widget],
-[data-widget] * {
-  /* Reset Starlight's aggressive content styling */
-  max-width: revert;
-  padding: revert;
-  /* Reset Starlight's aggressive content styling */
-  margin: revert;
-  font-size: revert;
-  line-height: revert;
-}
-
-[data-widget] iframe {
-  height: 100%;
+/* Fix iframe min-height inside .not-content widgets */
+.not-content iframe {
   min-height: unset;
-}
-
-[data-widget] p {
-  margin: 0;
 }
 
 @layer utilities {

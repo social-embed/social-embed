@@ -218,12 +218,12 @@ export function MiniPlayground({
       <div className="flex flex-wrap items-center gap-2 px-3 py-2 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
         {/* Title with link to full playground */}
         <span className="text-xs font-medium text-slate-600 dark:text-slate-300 shrink-0">
-          <code>&lt;o-embed&gt;</code> playground{" "}
+          <code>&lt;o-embed&gt;</code>{" "}
           <a
             className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 no-underline"
             href={fullSizeUrl}
           >
-            (full size)
+            (playground)
           </a>
         </span>
 
