@@ -11,6 +11,7 @@ import PureSearch from "../components/core/PureSearch.astro";
 import PureSiteTitle from "../components/core/PureSiteTitle.astro";
 import PureSocialIcons from "../components/core/PureSocialIcons.astro";
 import PureThemeSelect from "../components/core/PureThemeSelect.astro";
+import GitPullLogo from "../components/GitPullLogo.astro";
 import { LibPlayground } from "../components/lib-playground/LibPlayground";
 import { MiniPlayground } from "../components/playground/MiniPlayground";
 ---
@@ -97,8 +98,11 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
     </main>
 
     <!-- Footer -->
-    <footer class="mt-auto py-4 px-4 text-center text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700">
-      © 2021-{new Date().getFullYear()} <a href="https://tony.sh" class="hover:underline">Tony Narlock</a>
+    <footer class="mt-auto py-4 px-4 flex flex-col items-center gap-2 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700">
+      <div>
+        © 2021-{new Date().getFullYear()} <a href="https://tony.sh" class="hover:underline">Tony Narlock</a>
+      </div>
+      <GitPullLogo />
     </footer>
   </body>
 </html>
