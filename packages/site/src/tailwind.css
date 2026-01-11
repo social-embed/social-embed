@@ -98,6 +98,15 @@
   --nav-text: var(--color-slate-100);
   --nav-text-muted: var(--color-slate-400);
 
+  /* Search button colors (dark mode default) */
+  --search-icon: var(--color-slate-200);
+  --search-text: var(--color-slate-300);
+  --search-border: var(--color-slate-700);
+  --search-bg: var(--color-slate-900);
+  --search-kbd-bg: var(--color-slate-800);
+  --search-hover-border: var(--color-slate-300);
+  --search-hover-text: var(--color-slate-100);
+
   /* Starlight uses its own padding values */
   --sl-nav-height: var(--nav-height);
   --sl-nav-pad-x: 1rem;
@@ -111,6 +120,15 @@
   --nav-border: var(--color-slate-200);
   --nav-text: var(--color-slate-900);
   --nav-text-muted: var(--color-slate-600);
+
+  /* Search button colors (light mode) */
+  --search-icon: var(--color-slate-500);
+  --search-text: var(--color-slate-500);
+  --search-border: var(--color-slate-300);
+  --search-bg: var(--color-slate-50);
+  --search-kbd-bg: var(--color-slate-200);
+  --search-hover-border: var(--color-slate-400);
+  --search-hover-text: var(--color-slate-700);
 }
 
 /* Target small displays like phones */
