@@ -161,6 +161,9 @@
     --sl-color-gray-6: var(--color-slate-800);
     --sl-color-black: var(--color-slate-900);
 
+    /* Nav background to match homepage header (dark mode default) */
+    --sl-color-bg-nav: rgba(15, 23, 42, 0.95); /* slate-900 at 95% opacity */
+
     /* Override Starlight badge hues with microviz OKLCH colors */
     /* Dark mode (default): -low = dark bg, -high = light text */
     /* success variant uses cyan for "try it" badge */
@@ -195,6 +198,9 @@
 
   /* Light mode: -low = light bg, -high = dark text */
   [data-theme="light"] {
+    /* Nav background to match homepage header (light mode) */
+    --sl-color-bg-nav: rgba(255, 255, 255, 0.95); /* white at 95% opacity */
+
     --sl-color-green-low: var(--color-mv-cyan-light);
     --sl-color-green-high: var(--color-mv-cyan-dark);
 
@@ -209,5 +215,11 @@
 
     --sl-color-red-low: var(--color-mv-red-light);
     --sl-color-red-high: var(--color-mv-red-dark);
+  }
+
+  /* Add backdrop blur to Starlight header to match homepage */
+  header:has(.header) {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
   }
 }

@@ -1,0 +1,39 @@
+---
+/**
+ * Pure Astro equivalent of Starlight's SiteTitle component.
+ * Displays logo and site name, links to homepage.
+ */
+import logoSrc from "../../assets/img/logo.svg";
+---
+
+<a href="/" class="site-title">
+  <img src={logoSrc.src} alt="" class="logo" />
+  <span class="title">social-embed</span>
+</a>
+
+<style>
+  .site-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--sl-color-white, #f8fafc);
+    text-decoration: none;
+  }
+
+  .logo {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .title {
+    font-size: var(--sl-text-h4, 1.125rem);
+  }
+
+  /* Hide title on small screens */
+  @media (max-width: 23rem) {
+    .title {
+      display: none;
+    }
+  }
+</style>

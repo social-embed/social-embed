@@ -1,0 +1,162 @@
+---
+/**
+ * Pure Astro equivalent of Starlight's ThemeSelect component.
+ * Simple toggle that cycles through light/auto/dark themes.
+ * Uses same localStorage key as Starlight for consistency.
+ */
+
+const btnBase =
+  "px-2 py-1 mx-0.5 inline-flex items-center justify-center rounded-sm cursor-pointer bg-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-100/70 dark:hover:bg-slate-700/40";
+const activeState =
+  "[&[data-active='true']]:bg-slate-200 [&[data-active='true']]:text-slate-900 dark:[&[data-active='true']]:bg-slate-700 dark:[&[data-active='true']]:text-slate-100";
+---
+
+<pure-theme-select>
+  <!-- Desktop: Icon button group -->
+  <div class="hidden lg:block">
+    <div
+      role="group"
+      aria-label="Select theme"
+      class="inline-flex items-center justify-center p-0.5 h-8 rounded-md bg-slate-50/95 dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-sm"
+    >
+      <button
+        data-theme-value="light"
+        type="button"
+        aria-label="Light"
+        class:list={[btnBase, activeState]}
+      >
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </button>
+      <button
+        data-theme-value="auto"
+        type="button"
+        aria-label="System"
+        class:list={[btnBase, activeState]}
+      >
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+      </button>
+      <button
+        data-theme-value="dark"
+        type="button"
+        aria-label="Dark"
+        class:list={[btnBase, activeState]}
+      >
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile: Cycle toggle -->
+  <div class="block lg:hidden">
+    <button
+      data-theme-toggle
+      type="button"
+      aria-label="Toggle theme"
+      class="flex items-center justify-center h-8 w-8 rounded-md cursor-pointer bg-slate-50/95 dark:bg-slate-800/95 border border-slate-200 dark:border-slate-700 shadow-sm text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700/50"
+    >
+      <svg data-icon="light" class="h-4 w-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+      <svg data-icon="auto" class="h-4 w-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+        <line x1="8" y1="21" x2="16" y2="21"></line>
+        <line x1="12" y1="17" x2="12" y2="21"></line>
+      </svg>
+      <svg data-icon="dark" class="h-4 w-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      </svg>
+    </button>
+  </div>
+</pure-theme-select>
+
+<script>
+  type Theme = "auto" | "dark" | "light";
+  const storageKey = "starlight-theme";
+  const THEMES: Theme[] = ["light", "auto", "dark"];
+
+  const parseTheme = (theme: unknown): Theme =>
+    theme === "auto" || theme === "dark" || theme === "light" ? theme : "auto";
+
+  const loadTheme = (): Theme =>
+    parseTheme(typeof localStorage !== "undefined" && localStorage.getItem(storageKey));
+
+  function storeTheme(theme: Theme): void {
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem(storageKey, theme === "light" || theme === "dark" ? theme : "");
+    }
+  }
+
+  const getPreferredColorScheme = (): Theme =>
+    matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+
+  function onThemeChange(theme: Theme): void {
+    document.documentElement.dataset.theme = theme === "auto" ? getPreferredColorScheme() : theme;
+    storeTheme(theme);
+    updateButtonStates(theme);
+  }
+
+  function updateButtonStates(theme: Theme): void {
+    document.querySelectorAll("pure-theme-select").forEach((picker) => {
+      picker.querySelectorAll("[data-theme-value]").forEach((btn) => {
+        const isActive = btn.getAttribute("data-theme-value") === theme;
+        btn.setAttribute("data-active", isActive ? "true" : "false");
+      });
+      picker.querySelectorAll("[data-icon]").forEach((icon) => {
+        const show = icon.getAttribute("data-icon") === theme;
+        icon.classList.toggle("hidden", !show);
+        icon.classList.toggle("block", show);
+      });
+    });
+  }
+
+  matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => {
+    if (loadTheme() === "auto") onThemeChange("auto");
+  });
+
+  class PureThemeSelect extends HTMLElement {
+    constructor() {
+      super();
+      const currentTheme = loadTheme();
+      onThemeChange(currentTheme);
+
+      this.querySelectorAll("[data-theme-value]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const theme = parseTheme(btn.getAttribute("data-theme-value"));
+          onThemeChange(theme);
+        });
+      });
+
+      this.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
+        const current = loadTheme();
+        const idx = THEMES.indexOf(current);
+        const next = THEMES[(idx + 1) % THEMES.length];
+        onThemeChange(next);
+      });
+    }
+  }
+  customElements.define("pure-theme-select", PureThemeSelect);
+</script>

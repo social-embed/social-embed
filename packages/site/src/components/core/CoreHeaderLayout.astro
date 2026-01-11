@@ -1,0 +1,68 @@
+---
+/**
+ * Shared header layout skeleton used by both:
+ * - Starlight pages (via Header.astro with virtual components)
+ * - Pure Astro pages (via index.astro with pure components)
+ *
+ * Provides consistent flexbox layout and CSS styling.
+ */
+---
+
+<div class="header">
+  <div class="title-wrapper">
+    <slot name="logo" />
+  </div>
+  <div class="nav-area">
+    <slot name="nav" />
+  </div>
+  <div class="right-group">
+    <slot name="social" />
+    <slot name="theme" />
+  </div>
+</div>
+
+<style>
+  .header {
+    display: flex;
+    gap: var(--sl-nav-gap, 1rem);
+    align-items: center;
+    height: 100%;
+  }
+
+  .title-wrapper {
+    overflow: clip;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    min-width: 0;
+    flex-shrink: 0;
+  }
+
+  .nav-area {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .right-group {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  /* Divider after social icons (before theme select) */
+  .right-group ::slotted([slot="social"])::after {
+    content: "";
+    height: 2rem;
+    border-inline-end: 1px solid var(--sl-color-gray-5, #334155);
+    margin-inline-start: 1rem;
+  }
+
+  /* Hide nav on mobile, show on md+ */
+  @media (max-width: 49.99rem) {
+    .nav-area {
+      display: none;
+    }
+  }
+</style>
