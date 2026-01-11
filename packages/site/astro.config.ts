@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { resolve } from "node:path";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import starlightDocSearch from "@astrojs/starlight-docsearch";
@@ -116,7 +117,7 @@ export default defineConfig({
         {
           attrs: {
             client: "load",
-            src: "/js/o-embed.bundled.js",
+            src: "/cdn/o-embed.js",
             type: "module",
           },
           tag: "script",
@@ -194,5 +195,13 @@ export default defineConfig({
     },
     // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
     plugins: [tailwindPlugin, localCdn],
+    resolve: {
+      alias: {
+        "@social-embed/lib": resolve(
+          import.meta.dirname,
+          "../lib/src/index.ts",
+        ),
+      },
+    },
   },
 });
