@@ -108,23 +108,19 @@ export function CdnSourcePicker({
   }, [urls.wc]);
 
   return (
-    <div className={`flex flex-wrap items-center gap-1 ${className}`}>
-      {/* Source type buttons */}
-      {SOURCE_TYPES.map((type) => (
-        <button
-          className={`h-[26px] px-2 py-1 text-xs rounded border transition-colors cursor-pointer select-none ${
-            value.type === type
-              ? "bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 border-slate-800 dark:border-slate-200"
-              : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500"
-          }`}
-          key={type}
-          onClick={() => handleSourceChange(type)}
-          title={CDN_SOURCE_DESCRIPTIONS[type]}
-          type="button"
-        >
-          {CDN_SOURCE_LABELS[type]}
-        </button>
-      ))}
+    <div className={`flex flex-wrap items-center gap-2 ${className}`}>
+      {/* Source type dropdown */}
+      <select
+        className="h-[26px] px-2 py-1 text-xs border rounded bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 focus:outline-none focus:border-slate-500 dark:focus:border-slate-400 cursor-pointer select-none"
+        onChange={(e) => handleSourceChange(e.target.value as CdnSourceType)}
+        value={value.type}
+      >
+        {SOURCE_TYPES.map((type) => (
+          <option key={type} title={CDN_SOURCE_DESCRIPTIONS[type]} value={type}>
+            {CDN_SOURCE_LABELS[type]}
+          </option>
+        ))}
+      </select>
 
       {/* Custom URL input */}
       {value.type === "custom" && (
