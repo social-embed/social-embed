@@ -1,94 +1,123 @@
 ---
 /**
- * Homepage using StarlightPage for consistent header/theming,
- * with CSS overrides for full-width content area.
+ * Pure Astro homepage - NO Starlight components or classes.
+ * Uses Font component for fonts, Tailwind for styling.
  */
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import "../tailwind.css";
+import { Font } from "astro:assets";
 import { LibPlayground } from "../components/lib-playground/LibPlayground";
 import { MiniPlayground } from "../components/playground/MiniPlayground";
+import logoSrc from "../assets/img/logo.svg";
 ---
 
-<StarlightPage
-  frontmatter={{
-    title: "social-embed",
-    description: "Embed YouTube, Spotify, Vimeo with one tag",
-    template: "splash",
-    tableOfContents: false,
-    hero: {
-      tagline: "Embed YouTube, Spotify, Vimeo, and more with one tag",
-    },
-  }}
-  hasSidebar={false}
->
-  <div data-page="homepage" class="not-content">
-    <!-- Two packages side-by-side -->
-    <section class="homepage-content grid grid-cols-1 lg:grid-cols-2 gap-8 px-4 md:px-8 pb-16">
-      <!-- Web Component -->
-      <div class="flex flex-col gap-4">
-        <div>
-          <h2 class="text-2xl font-semibold mb-2">Web Component</h2>
-          <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
-            Drop <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-sm">&lt;o-embed&gt;</code> anywhere HTML works.
-          </p>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="One tag to rule all embeds. Store URLs, not embed code." />
+    <title>social-embed</title>
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Load fonts via Astro experimental fonts API -->
+    <Font cssVariable="--font-ibm-plex-sans" preload />
+    <Font cssVariable="--font-ibm-plex-mono" preload />
+
+    <!-- Theme script (inline to prevent flash) -->
+    <script is:inline>
+      (() => {
+        const theme = localStorage.getItem('starlight-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const resolved = theme === 'light' ? 'light' : theme === 'dark' ? 'dark' : (prefersDark ? 'dark' : 'light');
+        document.documentElement.dataset.theme = resolved;
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 h-14 px-4 border-b border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm">
+      <nav class="h-full max-w-7xl mx-auto flex items-center justify-between gap-4">
+        <a href="/" class="flex items-center gap-2 font-semibold shrink-0">
+          <img src={logoSrc.src} alt="" class="w-8 h-8" />
+          <span class="hidden sm:inline">social-embed</span>
+        </a>
+
+        <div class="flex items-center gap-4 text-sm">
+          <a href="/wc/" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100">
+            <code class="text-xs">&lt;o-embed&gt;</code>
+          </a>
+          <a href="/lib/" class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100">
+            Library
+          </a>
+          <a href="/getting-started/" class="hidden sm:block text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100">
+            Docs
+          </a>
         </div>
-        <div class="flex-1">
+
+        <div class="flex items-center gap-3">
+          <a href="https://github.com/social-embed/social-embed" target="_blank" rel="noopener" aria-label="GitHub" class="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+          <button id="theme-toggle" type="button" class="p-1.5 rounded text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Toggle theme">
+            <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="px-4 md:px-8 py-6 max-w-7xl mx-auto">
+      <!-- Compact hero -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold mb-1">social-embed</h1>
+        <p class="text-slate-600 dark:text-slate-400">
+          One tag to rule all embeds. Store URLs, not embed code.
+        </p>
+      </div>
+
+      <!-- Two packages -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Web Component -->
+        <section>
+          <div class="mb-3">
+            <h2 class="text-lg font-semibold">Web Component</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">
+              Drop <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded text-xs">&lt;o-embed&gt;</code> anywhere.
+            </p>
+          </div>
           <MiniPlayground client:only="react" />
-        </div>
-        <a
-          href="/wc/"
-          class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
-        >
-          Get started
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
-      </div>
+          <a href="/wc/" class="inline-flex items-center gap-1 mt-3 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium">
+            Get started <span aria-hidden="true">→</span>
+          </a>
+        </section>
 
-      <!-- Library -->
-      <div class="flex flex-col gap-4">
-        <div>
-          <h2 class="text-2xl font-semibold mb-2">Library</h2>
-          <p class="text-slate-600 dark:text-slate-400 text-sm mb-4">
-            Extract IDs, generate embed URLs, validate providers.
-          </p>
-        </div>
-        <div class="flex-1">
+        <!-- Library -->
+        <section>
+          <div class="mb-3">
+            <h2 class="text-lg font-semibold">Library</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">
+              Extract IDs, generate embed URLs, detect providers.
+            </p>
+          </div>
           <LibPlayground client:only="react" mode="mini" />
-        </div>
-        <a
-          href="/lib/"
-          class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
-        >
-          Get started
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </a>
+          <a href="/lib/" class="inline-flex items-center gap-1 mt-3 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium">
+            Get started <span aria-hidden="true">→</span>
+          </a>
+        </section>
       </div>
-    </section>
-  </div>
-</StarlightPage>
+    </main>
 
-<style is:global>
-  /* Homepage overrides - expand content to full width */
-  body:has([data-page="homepage"]) {
-    /* Reset Starlight container constraints */
-    main .content-panel,
-    main .sl-container {
-      max-width: 100% !important;
-      padding-inline: 0 !important;
-    }
+    <!-- Footer -->
+    <footer class="mt-auto py-4 px-4 text-center text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700">
+      © 2021-{new Date().getFullYear()} <a href="https://tony.sh" class="hover:underline">Tony Narlock</a>
+    </footer>
 
-    /* Remove hero image area padding if present */
-    .hero {
-      padding-bottom: 1rem !important;
-    }
-  }
-
-  /* Homepage content area */
-  .homepage-content {
-    max-width: 90rem;
-    margin-inline: auto;
-  }
-</style>
+    <script>
+      document.getElementById('theme-toggle')?.addEventListener('click', () => {
+        const html = document.documentElement;
+        const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+        html.dataset.theme = next;
+        localStorage.setItem('starlight-theme', next);
+      });
+    </script>
+  </body>
+</html>
