@@ -4,6 +4,9 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
+/* Configure dark: variant to use data-theme attribute instead of prefers-color-scheme */
+@custom-variant dark (&:is([data-theme="dark"] *));
+
 /* Reroll button animations */
 @keyframes spin-dice {
   from {
