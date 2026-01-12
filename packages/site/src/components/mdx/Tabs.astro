@@ -1,0 +1,243 @@
+---
+/**
+ * Tabs container component.
+ * Replaces @astrojs/starlight/components Tabs.
+ *
+ * Usage:
+ * <Tabs syncKey="pkg">
+ *   <TabItem label="npm">content</TabItem>
+ *   <TabItem label="yarn">content</TabItem>
+ * </Tabs>
+ */
+interface Props {
+  syncKey?: string;
+}
+
+const { syncKey } = Astro.props;
+const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
+---
+
+<div class="tabs-container" data-tabs-id={tabsId} data-sync-key={syncKey}>
+  <div class="tabs-list" role="tablist">
+    <slot name="tabs" />
+  </div>
+  <div class="tabs-panels">
+    <slot />
+  </div>
+</div>
+
+<script>
+  class TabsManager {
+    private static syncGroups = new Map<string, Set<Element>>();
+
+    static init() {
+      document.querySelectorAll("[data-tabs-id]").forEach((container) => {
+        TabsManager.initTabs(container as HTMLElement);
+      });
+    }
+
+    private static initTabs(container: HTMLElement) {
+      const tabsId = container.dataset.tabsId;
+      const syncKey = container.dataset.syncKey;
+
+      // Find all tab panels (TabItem components)
+      const panels = container.querySelectorAll("[data-tab-panel]");
+      const tabList = container.querySelector(".tabs-list");
+
+      if (!tabList || panels.length === 0) return;
+
+      // Create tab buttons from panels
+      panels.forEach((panel, index) => {
+        const label = (panel as HTMLElement).dataset.tabLabel || `Tab ${index + 1}`;
+        const panelId = `${tabsId}-panel-${index}`;
+        const tabId = `${tabsId}-tab-${index}`;
+
+        // Set panel attributes
+        panel.setAttribute("id", panelId);
+        panel.setAttribute("role", "tabpanel");
+        panel.setAttribute("aria-labelledby", tabId);
+        if (index !== 0) panel.setAttribute("hidden", "");
+
+        // Create tab button
+        const tab = document.createElement("button");
+        tab.setAttribute("id", tabId);
+        tab.setAttribute("role", "tab");
+        tab.setAttribute("aria-controls", panelId);
+        tab.setAttribute("aria-selected", index === 0 ? "true" : "false");
+        tab.setAttribute("tabindex", index === 0 ? "0" : "-1");
+        tab.className = "tab-button";
+        tab.textContent = label;
+
+        tab.addEventListener("click", () => {
+          TabsManager.selectTab(container, index, syncKey);
+        });
+
+        tab.addEventListener("keydown", (e) => {
+          TabsManager.handleKeydown(e, container, index, panels.length);
+        });
+
+        tabList.appendChild(tab);
+      });
+
+      // Register for sync
+      if (syncKey) {
+        if (!TabsManager.syncGroups.has(syncKey)) {
+          TabsManager.syncGroups.set(syncKey, new Set());
+        }
+        TabsManager.syncGroups.get(syncKey)!.add(container);
+
+        // Restore saved selection
+        const saved = localStorage.getItem(`tabs-sync-${syncKey}`);
+        if (saved) {
+          const savedIndex = Number.parseInt(saved, 10);
+          if (savedIndex < panels.length) {
+            TabsManager.selectTab(container, savedIndex, null);
+          }
+        }
+      }
+    }
+
+    private static selectTab(
+      container: Element,
+      index: number,
+      syncKey: string | null | undefined,
+    ) {
+      const tabs = container.querySelectorAll("[role='tab']");
+      const panels = container.querySelectorAll("[role='tabpanel']");
+
+      tabs.forEach((tab, i) => {
+        const isSelected = i === index;
+        tab.setAttribute("aria-selected", String(isSelected));
+        tab.setAttribute("tabindex", isSelected ? "0" : "-1");
+      });
+
+      panels.forEach((panel, i) => {
+        if (i === index) {
+          panel.removeAttribute("hidden");
+        } else {
+          panel.setAttribute("hidden", "");
+        }
+      });
+
+      // Sync other tabs with same key
+      if (syncKey) {
+        localStorage.setItem(`tabs-sync-${syncKey}`, String(index));
+        TabsManager.syncGroups.get(syncKey)?.forEach((otherContainer) => {
+          if (otherContainer !== container) {
+            TabsManager.selectTab(otherContainer, index, null);
+          }
+        });
+      }
+    }
+
+    private static handleKeydown(
+      e: KeyboardEvent,
+      container: Element,
+      currentIndex: number,
+      total: number,
+    ) {
+      const tabs = container.querySelectorAll("[role='tab']");
+      let newIndex = currentIndex;
+
+      switch (e.key) {
+        case "ArrowLeft":
+          newIndex = currentIndex > 0 ? currentIndex - 1 : total - 1;
+          break;
+        case "ArrowRight":
+          newIndex = currentIndex < total - 1 ? currentIndex + 1 : 0;
+          break;
+        case "Home":
+          newIndex = 0;
+          break;
+        case "End":
+          newIndex = total - 1;
+          break;
+        default:
+          return;
+      }
+
+      e.preventDefault();
+      (tabs[newIndex] as HTMLElement).focus();
+      (tabs[newIndex] as HTMLElement).click();
+    }
+  }
+
+  // Initialize on load and after view transitions
+  TabsManager.init();
+  document.addEventListener("astro:after-swap", () => TabsManager.init());
+</script>
+
+<style>
+  .tabs-container {
+    margin: 1.5rem 0;
+  }
+
+  .tabs-list {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--color-slate-200);
+    margin-bottom: 1rem;
+  }
+
+  [data-theme="dark"] .tabs-list {
+    border-bottom-color: var(--color-slate-700);
+  }
+
+  .tabs-list :global(.tab-button) {
+    padding: 0.75rem 1rem;
+    border: none;
+    background: transparent;
+    color: var(--color-slate-600);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition:
+      color 0.15s,
+      border-color 0.15s;
+  }
+
+  [data-theme="dark"] .tabs-list :global(.tab-button) {
+    color: var(--color-slate-400);
+  }
+
+  .tabs-list :global(.tab-button:hover) {
+    color: var(--color-slate-900);
+  }
+
+  [data-theme="dark"] .tabs-list :global(.tab-button:hover) {
+    color: var(--color-slate-200);
+  }
+
+  .tabs-list :global(.tab-button[aria-selected="true"]) {
+    color: var(--color-mv-blue);
+    border-bottom-color: var(--color-mv-blue);
+  }
+
+  [data-theme="dark"] .tabs-list :global(.tab-button[aria-selected="true"]) {
+    color: color-mix(in oklch, var(--color-mv-blue), white 20%);
+    border-bottom-color: color-mix(in oklch, var(--color-mv-blue), white 20%);
+  }
+
+  .tabs-list :global(.tab-button:focus-visible) {
+    outline: 2px solid var(--color-mv-blue);
+    outline-offset: -2px;
+    border-radius: 2px;
+  }
+
+  .tabs-panels :global([data-tab-panel]) {
+    animation: fade-in 0.2s ease-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

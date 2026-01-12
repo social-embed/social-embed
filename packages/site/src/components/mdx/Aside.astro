@@ -1,0 +1,111 @@
+---
+/**
+ * Aside component for callouts and admonitions.
+ * Replaces @astrojs/starlight/components Aside.
+ */
+interface Props {
+  type?: "note" | "tip" | "caution" | "danger";
+  title?: string;
+}
+
+const { type = "note", title } = Astro.props;
+
+const icons: Record<string, string> = {
+  caution: "M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z",
+  danger:
+    "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z",
+  note: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z",
+  tip: "M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z",
+};
+
+const defaultTitles: Record<string, string> = {
+  caution: "Caution",
+  danger: "Danger",
+  note: "Note",
+  tip: "Tip",
+};
+---
+
+<aside class:list={["aside", `aside-${type}`]} role="note">
+  <p class="aside-title">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d={icons[type]} />
+    </svg>
+    <span>{title || defaultTitles[type]}</span>
+  </p>
+  <div class="aside-content">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .aside {
+    --aside-color: var(--color-mv-blue);
+    --aside-bg: var(--color-mv-blue-light);
+    border-left: 4px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: var(--aside-bg);
+  }
+
+  [data-theme="dark"] .aside {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+  }
+
+  .aside-note {
+    --aside-color: var(--color-mv-blue);
+    --aside-bg: var(--color-mv-blue-light);
+  }
+
+  .aside-tip {
+    --aside-color: var(--color-mv-green);
+    --aside-bg: var(--color-mv-green-light);
+  }
+
+  .aside-caution {
+    --aside-color: var(--color-mv-yellow);
+    --aside-bg: var(--color-mv-yellow-light);
+  }
+
+  .aside-danger {
+    --aside-color: var(--color-mv-red);
+    --aside-bg: var(--color-mv-red-light);
+  }
+
+  .aside-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--aside-color);
+  }
+
+  [data-theme="dark"] .aside-title {
+    color: color-mix(in oklch, var(--aside-color), white 30%);
+  }
+
+  .aside-content {
+    color: var(--color-slate-700);
+  }
+
+  [data-theme="dark"] .aside-content {
+    color: var(--color-slate-300);
+  }
+
+  .aside-content :global(p) {
+    margin: 0;
+  }
+
+  .aside-content :global(p + p) {
+    margin-top: 0.75rem;
+  }
+</style>

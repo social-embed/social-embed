@@ -1,0 +1,144 @@
+---
+/**
+ * LinkButton component for CTA buttons.
+ * Replaces @astrojs/starlight/components LinkButton.
+ *
+ * Usage:
+ * <LinkButton href="/playground" variant="primary" icon="rocket">
+ *   Try it
+ * </LinkButton>
+ */
+interface Props {
+  href: string;
+  variant?: "primary" | "secondary" | "minimal";
+  icon?: string;
+  iconPlacement?: "start" | "end";
+}
+
+const { href, variant = "primary", icon, iconPlacement = "end" } = Astro.props;
+
+// Simple icon paths for common icons
+const icons: Record<string, string> = {
+  arrow: "M5 12h14M12 5l7 7-7 7",
+  external:
+    "M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3",
+  github:
+    "M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z",
+  rocket:
+    "M12 2.5c1.1 0 2.1.4 2.8 1.2L19 8c.6.6 1 1.5 1 2.4v3.2c0 .9-.4 1.8-1 2.4l-4.2 4.3c-.7.8-1.7 1.2-2.8 1.2s-2.1-.4-2.8-1.2L5 16c-.6-.6-1-1.5-1-2.4v-3.2c0-.9.4-1.8 1-2.4l4.2-4.3c.7-.8 1.7-1.2 2.8-1.2zm0 2c-.5 0-1 .2-1.4.6L6.4 9.4c-.3.3-.4.7-.4 1.2v3.2c0 .4.1.8.4 1.2l4.2 4.3c.4.4.9.6 1.4.6s1-.2 1.4-.6l4.2-4.3c.3-.3.4-.7.4-1.2v-3.2c0-.4-.1-.8-.4-1.2l-4.2-4.3c-.4-.4-.9-.6-1.4-.6zm0 3a2.5 2.5 0 110 5 2.5 2.5 0 010-5z",
+};
+
+const iconPath = icon ? icons[icon] || icons.arrow : null;
+---
+
+<a href={href} class:list={["link-button", `link-button-${variant}`]}>
+  {
+    iconPath && iconPlacement === "start" && (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d={iconPath} />
+      </svg>
+    )
+  }
+  <slot />
+  {
+    iconPath && iconPlacement === "end" && (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d={iconPath} />
+      </svg>
+    )
+  }
+</a>
+
+<style>
+  .link-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition:
+      background-color 0.15s,
+      color 0.15s,
+      box-shadow 0.15s;
+  }
+
+  .link-button-primary {
+    background: var(--color-mv-blue);
+    color: white;
+  }
+
+  .link-button-primary:hover {
+    background: color-mix(in oklch, var(--color-mv-blue), black 15%);
+  }
+
+  [data-theme="dark"] .link-button-primary {
+    background: color-mix(in oklch, var(--color-mv-blue), white 10%);
+  }
+
+  [data-theme="dark"] .link-button-primary:hover {
+    background: color-mix(in oklch, var(--color-mv-blue), white 20%);
+  }
+
+  .link-button-secondary {
+    background: transparent;
+    color: var(--color-mv-blue);
+    border: 1px solid var(--color-mv-blue);
+  }
+
+  .link-button-secondary:hover {
+    background: color-mix(in oklch, var(--color-mv-blue), transparent 90%);
+  }
+
+  [data-theme="dark"] .link-button-secondary {
+    color: color-mix(in oklch, var(--color-mv-blue), white 20%);
+    border-color: color-mix(in oklch, var(--color-mv-blue), white 20%);
+  }
+
+  .link-button-minimal {
+    background: transparent;
+    color: var(--color-slate-700);
+    padding: 0.5rem 0.75rem;
+  }
+
+  .link-button-minimal:hover {
+    color: var(--color-mv-blue);
+  }
+
+  [data-theme="dark"] .link-button-minimal {
+    color: var(--color-slate-300);
+  }
+
+  [data-theme="dark"] .link-button-minimal:hover {
+    color: color-mix(in oklch, var(--color-mv-blue), white 20%);
+  }
+
+  .link-button:focus-visible {
+    outline: 2px solid var(--color-mv-blue);
+    outline-offset: 2px;
+  }
+</style>
