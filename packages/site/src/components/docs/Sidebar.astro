@@ -1,0 +1,75 @@
+---
+/**
+ * Documentation sidebar navigation.
+ * Renders sections with badges and links from content collection.
+ */
+import { getSidebarItems, isSection, type SidebarItem } from "../../lib/getSidebarItems";
+import SidebarLink from "./SidebarLink.astro";
+import SidebarSection from "./SidebarSection.astro";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+let sidebarItems: SidebarItem[] = [];
+
+try {
+  sidebarItems = await getSidebarItems();
+} catch (e) {
+  // During build, collection might not be ready yet
+  console.warn("Could not load sidebar items:", e);
+}
+---
+
+<nav class="sidebar-nav" aria-label="Documentation">
+  {
+    sidebarItems.map((item) => {
+      if (isSection(item)) {
+        return (
+          <SidebarSection
+            label={item.label}
+            badge={item.badge}
+            items={item.items}
+            currentPath={currentPath}
+            collapsed={item.collapsed}
+          />
+        );
+      }
+      const itemPath = item.href.replace(/\/$/, "");
+      const current = currentPath.replace(/\/$/, "");
+      const isActive = itemPath === current;
+
+      return <SidebarLink href={item.href} label={item.label} isActive={isActive} />;
+    })
+  }
+</nav>
+
+<style>
+  .sidebar-nav {
+    position: sticky;
+    top: calc(var(--nav-height) + 1rem);
+    max-height: calc(100vh - var(--nav-height) - 2rem);
+    overflow-y: auto;
+    padding-bottom: 2rem;
+  }
+
+  /* Custom scrollbar */
+  .sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb {
+    background: var(--color-slate-300);
+    border-radius: 2px;
+  }
+
+  [data-theme="dark"] .sidebar-nav::-webkit-scrollbar-thumb {
+    background: var(--color-slate-600);
+  }
+</style>

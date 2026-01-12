@@ -1,0 +1,62 @@
+---
+/**
+ * Individual sidebar navigation link.
+ */
+interface Props {
+  href: string;
+  label: string;
+  isActive?: boolean;
+  level?: number;
+}
+
+const { href, label, isActive = false, level = 0 } = Astro.props;
+---
+
+<a
+  href={href}
+  class:list={["sidebar-link", { active: isActive }]}
+  aria-current={isActive ? "page" : undefined}
+  style={level > 0 ? `padding-left: ${0.75 + level * 0.75}rem` : undefined}
+>
+  {label}
+</a>
+
+<style>
+  .sidebar-link {
+    display: block;
+    padding: 0.375rem 0.75rem;
+    margin: 0.125rem 0;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--color-slate-600);
+    text-decoration: none;
+    transition:
+      color 0.15s,
+      background-color 0.15s;
+  }
+
+  [data-theme="dark"] .sidebar-link {
+    color: var(--color-slate-400);
+  }
+
+  .sidebar-link:hover {
+    color: var(--color-slate-900);
+    background: var(--color-slate-100);
+  }
+
+  [data-theme="dark"] .sidebar-link:hover {
+    color: var(--color-slate-100);
+    background: var(--color-slate-800);
+  }
+
+  .sidebar-link.active {
+    color: var(--color-mv-blue);
+    background: color-mix(in oklch, var(--color-mv-blue), transparent 90%);
+    font-weight: 500;
+  }
+
+  [data-theme="dark"] .sidebar-link.active {
+    color: color-mix(in oklch, var(--color-mv-blue), white 20%);
+    background: color-mix(in oklch, var(--color-mv-blue), transparent 85%);
+  }
+</style>
