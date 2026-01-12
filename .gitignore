@@ -20,3 +20,6 @@ __screenshots__/
 # playwright
 playwright-report/
 .playwright-mcp/
+
+# astro
+.astro/
