@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
@@ -93,7 +94,7 @@ export default defineConfig({
       },
     ],
   },
-  integrations: [react()],
+  integrations: [mdx(), react()],
   // Markdown processing for pure Astro pages
   markdown: {
     rehypePlugins: [
