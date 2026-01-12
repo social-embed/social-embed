@@ -30,7 +30,7 @@ const headingInactiveClass =
   <!-- Navigation Ribbon -->
   <div class="nav-ribbon">
     <!-- Web Component -->
-  <div class:list={["flex flex-col items-start", isWcSection ? ribbonActiveClass : ribbonInactiveClass]}>
+  <div class:list={["nav-item flex flex-col items-start", isWcSection ? ribbonActiveClass : ribbonInactiveClass]}>
     <a href="/wc" class:list={[isWcSection ? headingActiveClass : headingInactiveClass]}>
       <span class="block md:hidden">wc</span>
       <span class="hidden md:block lg:hidden">web component</span>
@@ -52,7 +52,7 @@ const headingInactiveClass =
   </div>
 
   <!-- Library -->
-  <div class:list={["flex flex-col items-start", isLibSection ? ribbonActiveClass : ribbonInactiveClass]}>
+  <div class:list={["nav-item flex flex-col items-start", isLibSection ? ribbonActiveClass : ribbonInactiveClass]}>
     <a href="/lib" class:list={[isLibSection ? headingActiveClass : headingInactiveClass]}>
       <span class="block lg:hidden">lib</span>
       <span class="hidden lg:block">Library</span>
@@ -83,9 +83,27 @@ const headingInactiveClass =
 
   .nav-ribbon {
     display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
     gap: 0.75rem;
+  }
+
+  /* At phone width: no wrapping, no borders, compact display */
+  @media (max-width: 47.99rem) {
+    .nav-ribbon {
+      flex-wrap: nowrap;
+    }
+    .nav-item {
+      padding-bottom: 0 !important;
+      border-bottom: none !important;
+    }
+  }
+
+  /* Allow wrapping at tablet+ widths when sub-links appear */
+  @media (min-width: 48rem) {
+    .nav-ribbon {
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
   }
 
   /* Hide sub-links until 58rem (928px) to prevent header crowding */
