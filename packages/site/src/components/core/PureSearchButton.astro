@@ -102,9 +102,8 @@
         }
       });
 
-      // Load Pagefind on demand
-      window.addEventListener('DOMContentLoaded', () => {
-        if (import.meta.env.DEV) return;
+      // Load Pagefind when idle (no DOMContentLoaded wrapper to avoid race condition)
+      if (!import.meta.env.DEV) {
         const onIdle = window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
         onIdle(async () => {
           // @ts-expect-error — Missing types for @pagefind/default-ui package.
@@ -117,7 +116,7 @@
             showSubResults: true,
           });
         });
-      });
+      }
     }
   }
   customElements.define('pure-search', PureSearch);
