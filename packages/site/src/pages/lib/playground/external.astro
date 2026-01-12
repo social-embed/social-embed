@@ -1,112 +1,196 @@
 ---
-import { Aside, LinkButton } from "@astrojs/starlight/components";
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import { Aside, LinkButton } from "../../../components/mdx";
+/**
+ * Library External Sandboxes - Links to external code playgrounds.
+ * Uses BaseLayout instead of StarlightPage.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
 ---
 
-<StarlightPage
-  frontmatter={{
-    title: "External Sandboxes",
-    description: "Try @social-embed/lib in external code playgrounds",
-    tableOfContents: true,
-  }}
+<BaseLayout
+  title="External Sandboxes"
+  description="Try @social-embed/lib in external code playgrounds"
 >
-  <div class="sandbox-content">
-    <p>
-      Try the <code>@social-embed/lib</code> library in your favorite online code editor.
-    </p>
+  <main class="sandbox-page">
+    <article class="sandbox-content">
+      <h1>External Sandboxes</h1>
+      <p>
+        Try the <code>@social-embed/lib</code> library in your favorite online code editor.
+      </p>
 
-    <LinkButton
-      href="/wc/playground/"
-      variant="primary"
-      icon="rocket"
-      iconPlacement="start"
-    >
-      Interactive Playground
-    </LinkButton>
+      <LinkButton
+        href="/lib/playground/"
+        variant="primary"
+        icon="rocket"
+        iconPlacement="start"
+      >
+        Interactive Playground
+      </LinkButton>
 
-    <hr />
+      <hr />
 
-    <Aside type="tip">
-      Loading issues with external playgrounds? Enable third-party cookies or disable AdBlockers.
-    </Aside>
+      <Aside type="tip">
+        Loading issues with external playgrounds? Enable third-party cookies or disable AdBlockers.
+      </Aside>
 
-    <h2 id="stackblitz">StackBlitz</h2>
+      <h2 id="stackblitz">StackBlitz</h2>
 
-    <LinkButton
-      href="https://stackblitz.com/edit/vitejs-vite-utf8vxjo?file=index.html,src%2Fapp.ts&terminal=dev"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on StackBlitz
-    </LinkButton>
+      <LinkButton
+        href="https://stackblitz.com/edit/vitejs-vite-utf8vxjo?file=index.html,src%2Fapp.ts&terminal=dev"
+        variant="secondary"
+        icon="external"
+        iconPlacement="start"
+      >
+        Launch on StackBlitz
+      </LinkButton>
 
-    <iframe src="https://stackblitz.com/edit/vitejs-vite-utf8vxjo?ctl=1&embed=1&file=src%2Fapp.ts" width="100%" height="600"></iframe>
+      <iframe src="https://stackblitz.com/edit/vitejs-vite-utf8vxjo?ctl=1&embed=1&file=src%2Fapp.ts" width="100%" height="600" style="border: 0; margin-top: 1rem; border-radius: 0.5rem;"></iframe>
 
-    <h2 id="codesandbox">CodeSandbox</h2>
+      <h2 id="codesandbox">CodeSandbox</h2>
 
-    <LinkButton
-      href="https://codesandbox.io/p/sandbox/example-of-social-embed-lib-3gntvf"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on CodeSandbox
-    </LinkButton>
+      <LinkButton
+        href="https://codesandbox.io/p/sandbox/example-of-social-embed-lib-3gntvf"
+        variant="secondary"
+        icon="external"
+        iconPlacement="start"
+      >
+        Launch on CodeSandbox
+      </LinkButton>
 
-    <iframe src="https://codesandbox.io/embed/3gntvf?view=editor+%2B+preview&module=%2Fsrc%2FApp.tsx&hidenavigation=1"
-      style="width:100%; height: 500px; border:0; border-radius: 4px; overflow:hidden;"
-      title="Example of @social-embed/lib"
-      allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-      sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-    ></iframe>
+      <iframe src="https://codesandbox.io/embed/3gntvf?view=editor+%2B+preview&module=%2Fsrc%2FApp.tsx&hidenavigation=1"
+        style="width:100%; height: 500px; border:0; border-radius: 4px; overflow:hidden; margin-top: 1rem;"
+        title="Example of @social-embed/lib"
+        allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+        sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+      ></iframe>
 
-    <h2 id="codepen">CodePen</h2>
+      <h2 id="codepen">CodePen</h2>
 
-    <LinkButton
-      href="https://codepen.io/attachment/pen/VwPPrNq"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on CodePen
-    </LinkButton>
+      <LinkButton
+        href="https://codepen.io/attachment/pen/VwPPrNq"
+        variant="secondary"
+        icon="external"
+        iconPlacement="start"
+      >
+        Launch on CodePen
+      </LinkButton>
 
-    <p class="codepen" data-height="500" data-default-tab="js,result" data-slug-hash="VwPPrNq" data-pen-title="Example of @social-embed/lib" data-preview="true" data-editable="true" data-user="attachment" style="height: 500px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-      <span>See the Pen <a href="https://codepen.io/attachment/pen/VwPPrNq">
-      Example of @social-embed/lib</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
-      on <a href="https://codepen.io">CodePen</a>.</span>
-    </p>
-    <script is:inline async src="https://public.codepenassets.com/embed/index.js"></script>
+      <p class="codepen" data-height="500" data-default-tab="js,result" data-slug-hash="VwPPrNq" data-pen-title="Example of @social-embed/lib" data-preview="true" data-editable="true" data-user="attachment" style="height: 500px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+        <span>See the Pen <a href="https://codepen.io/attachment/pen/VwPPrNq">
+        Example of @social-embed/lib</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
+        on <a href="https://codepen.io">CodePen</a>.</span>
+      </p>
+      <script is:inline async src="https://public.codepenassets.com/embed/index.js"></script>
 
-    <h3>CodePen (with console)</h3>
+      <h3>CodePen (with console)</h3>
 
-    <LinkButton
-      href="https://codepen.io/attachment/pen/poRRpdp?editors=0010"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on CodePen
-    </LinkButton>
+      <LinkButton
+        href="https://codepen.io/attachment/pen/poRRpdp?editors=0010"
+        variant="secondary"
+        icon="external"
+        iconPlacement="start"
+      >
+        Launch on CodePen
+      </LinkButton>
 
-    <p class="codepen" data-height="500" data-default-tab="js,result" data-slug-hash="poRRpdp" data-pen-title="@social-embed/lib console" data-preview="true" data-editable="true" data-user="attachment" style="height: 500px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-      <span>See the Pen <a href="https://codepen.io/attachment/pen/poRRpdp">
-      @social-embed/lib console</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
-      on <a href="https://codepen.io">CodePen</a>.</span>
-    </p>
+      <p class="codepen" data-height="500" data-default-tab="js,result" data-slug-hash="poRRpdp" data-pen-title="@social-embed/lib console" data-preview="true" data-editable="true" data-user="attachment" style="height: 500px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+        <span>See the Pen <a href="https://codepen.io/attachment/pen/poRRpdp">
+        @social-embed/lib console</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
+        on <a href="https://codepen.io">CodePen</a>.</span>
+      </p>
 
-    <h2 id="jsfiddle">JSFiddle</h2>
+      <h2 id="jsfiddle">JSFiddle</h2>
 
-    <LinkButton
-      href="https://jsfiddle.net/gitpull/pcLagbsm/"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on JSFiddle
-    </LinkButton>
+      <LinkButton
+        href="https://jsfiddle.net/gitpull/pcLagbsm/"
+        variant="secondary"
+        icon="external"
+        iconPlacement="start"
+      >
+        Launch on JSFiddle
+      </LinkButton>
 
-    <iframe width="100%" height="600" src="//jsfiddle.net/gitpull/pcLagbsm/embedded/result,js/" style="border: 0" loading="lazy" allowfullscreen="true"></iframe>
-  </div>
-</StarlightPage>
+      <iframe width="100%" height="600" src="//jsfiddle.net/gitpull/pcLagbsm/embedded/result,js/" style="border: 0; margin-top: 1rem; border-radius: 0.5rem;" loading="lazy" allowfullscreen="true"></iframe>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .sandbox-page {
+    flex: 1;
+  }
+
+  .sandbox-content {
+    max-width: 65ch;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    line-height: 1.7;
+    color: var(--color-slate-700);
+  }
+
+  [data-theme="dark"] .sandbox-content {
+    color: var(--color-slate-300);
+  }
+
+  .sandbox-content h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--color-slate-900);
+  }
+
+  [data-theme="dark"] .sandbox-content h1 {
+    color: var(--color-slate-100);
+  }
+
+  .sandbox-content h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--color-slate-900);
+    scroll-margin-top: calc(var(--nav-height) + 1rem);
+  }
+
+  [data-theme="dark"] .sandbox-content h2 {
+    color: var(--color-slate-100);
+  }
+
+  .sandbox-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-slate-900);
+  }
+
+  [data-theme="dark"] .sandbox-content h3 {
+    color: var(--color-slate-100);
+  }
+
+  .sandbox-content p {
+    margin: 1rem 0;
+  }
+
+  .sandbox-content code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-slate-100);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+  }
+
+  [data-theme="dark"] .sandbox-content code {
+    background: var(--color-slate-800);
+  }
+
+  .sandbox-content hr {
+    border: none;
+    border-top: 1px solid var(--color-slate-200);
+    margin: 1.5rem 0;
+  }
+
+  [data-theme="dark"] .sandbox-content hr {
+    border-top-color: var(--color-slate-700);
+  }
+</style>
