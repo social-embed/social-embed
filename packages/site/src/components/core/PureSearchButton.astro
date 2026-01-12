@@ -123,10 +123,11 @@
   customElements.define('pure-search', PureSearch);
 </script>
 
-<style>
-  /* Import Pagefind's default UI styles */
+<style is:global>
   @import url('@pagefind/default-ui/css/ui.css');
+</style>
 
+<style>
   pure-search {
     display: contents;
   }
