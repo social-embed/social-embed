@@ -1,11 +1,13 @@
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
+import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import react from "@astrojs/react";
 import starlight from "@astrojs/starlight";
 import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
 import { defineConfig } from "astro/config";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { localCdnPlugin } from "./plugins/vite-plugin-local-cdn";
 
 /**
@@ -185,6 +187,21 @@ export default defineConfig({
       indexName: "social-embed",
     }),
   ],
+  // Markdown processing (for pure Astro pages, used after Starlight removal)
+  markdown: {
+    rehypePlugins: [
+      rehypeHeadingIds,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "wrap",
+          properties: {
+            className: ["anchor-link"],
+          },
+        },
+      ],
+    ],
+  },
   redirects: {
     "/playground": "/wc/playground/",
   },
