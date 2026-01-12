@@ -2,8 +2,6 @@ import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
 import { rehypeHeadingIds } from "@astrojs/markdown-remark";
 import react from "@astrojs/react";
-import starlight from "@astrojs/starlight";
-import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
 import { defineConfig } from "astro/config";
@@ -95,99 +93,8 @@ export default defineConfig({
       },
     ],
   },
-  integrations: [
-    starlight({
-      components: {
-        Footer: "./src/components/Footer.astro",
-        Head: "./src/components/Head.astro",
-        Header: "./src/components/Header.astro",
-        PageFrame: "./src/components/PageFrame.astro",
-        Search: "./src/components/Search.astro",
-        ThemeSelect: "./src/components/ThemeSelect.astro",
-      },
-      credits: true,
-      customCss: [
-        // Path to your Tailwind base styles:
-        "./src/tailwind.css",
-      ],
-      editLink: {
-        baseUrl:
-          "https://github.com/social-embed/social-embed/edit/master/packages/site/",
-      },
-      favicon: "/favicon.ico",
-      head: [
-        {
-          attrs: {
-            client: "load",
-            src: "/cdn/o-embed.js",
-            type: "module",
-          },
-          tag: "script",
-        },
-      ],
-      logo: {
-        src: "./src/assets/img/logo.svg",
-      },
-      sidebar: [
-        "getting-started",
-        {
-          autogenerate: { directory: "lib" },
-          badge: { text: "lib", variant: "note" },
-          label: "Library",
-        },
-        {
-          badge: { text: "try it", variant: "success" },
-          collapsed: false,
-          items: [
-            { label: "Interactive", link: "/lib/playground/" },
-            { label: "More Sandboxes", link: "/lib/playground/external" },
-          ],
-          label: "Lib Playground",
-        },
-        {
-          autogenerate: { directory: "wc" },
-          badge: { text: "wc", variant: "tip" },
-          label: "Web Component",
-        },
-        {
-          badge: { text: "try it", variant: "success" },
-          collapsed: false,
-          items: [
-            { label: "Interactive", link: "/wc/playground/" },
-            { label: "More Sandboxes", link: "/wc/playground/external" },
-          ],
-          label: "WC Playground",
-        },
-        "migration",
-        "news",
-      ],
-      social: [
-        {
-          href: "https://codeberg.org/social-embed/social-embed",
-          icon: "codeberg",
-          label: "Codeberg",
-        },
-        {
-          href: "https://github.com/social-embed/social-embed",
-          icon: "github",
-          label: "GitHub",
-        },
-        {
-          href: "https://gitlab.com/social-embed/social-embed",
-          icon: "gitlab",
-          label: "GitLab",
-        },
-      ],
-      title: "social-embed",
-    }),
-    react(),
-    starlightDocSearch({
-      apiKey: "a59a27c90979939bd097dcb51d8f22e3",
-      appId: "BIATGF4K4K",
-      indexName: "social-embed",
-    }),
-  ],
-  // Markdown processing (for pure Astro pages, used after Starlight removal)
+  integrations: [react()],
+  // Markdown processing for pure Astro pages
   markdown: {
     rehypePlugins: [
       rehypeHeadingIds,

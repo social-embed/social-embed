@@ -1,20 +1,17 @@
 ---
 /**
  * Dynamic route for documentation pages.
- * Uses pure-docs collection and MarkdownLayout.
- *
- * During migration: accessible at /pure/...
- * After Starlight removal: move to src/pages/[...slug].astro
+ * Uses docs collection and MarkdownLayout.
  */
 import type { CollectionEntry } from "astro:content";
 import { getCollection, render } from "astro:content";
-import Sidebar from "../../components/docs/Sidebar.astro";
-import MarkdownLayout from "../../layouts/MarkdownLayout.astro";
+import Sidebar from "../components/docs/Sidebar.astro";
+import MarkdownLayout from "../layouts/MarkdownLayout.astro";
 
-type DocsEntry = CollectionEntry<"pure-docs">;
+type DocsEntry = CollectionEntry<"docs">;
 
 export async function getStaticPaths() {
-  const docs = await getCollection("pure-docs");
+  const docs = await getCollection("docs");
 
   return docs.map((entry: DocsEntry) => {
     // Convert entry ID to URL slug

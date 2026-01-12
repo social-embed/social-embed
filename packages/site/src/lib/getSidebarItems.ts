@@ -4,7 +4,7 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 
-type DocsEntry = CollectionEntry<"pure-docs">;
+type DocsEntry = CollectionEntry<"docs">;
 
 export interface SidebarLink {
   label: string;
@@ -98,7 +98,7 @@ function getEntryLabel(entry: {
 async function getItemsFromDirectory(
   directory: string,
 ): Promise<SidebarLink[]> {
-  const docs = await getCollection("pure-docs");
+  const docs = await getCollection("docs");
 
   // Filter entries for this directory
   const dirEntries = docs.filter((entry: DocsEntry) => {
@@ -118,7 +118,7 @@ async function getItemsFromDirectory(
  * Get grouped items (e.g., wc/providers/*, wc/configuration/*).
  */
 async function getGroupedItems(directory: string): Promise<SidebarSection[]> {
-  const docs = await getCollection("pure-docs");
+  const docs = await getCollection("docs");
 
   // Find subdirectories
   const subdirs = new Set<string>();
@@ -158,7 +158,7 @@ async function getGroupedItems(directory: string): Promise<SidebarSection[]> {
  * Build the full sidebar structure.
  */
 export async function getSidebarItems(): Promise<SidebarItem[]> {
-  const docs = await getCollection("pure-docs");
+  const docs = await getCollection("docs");
 
   // Root level items
   const rootItems = docs

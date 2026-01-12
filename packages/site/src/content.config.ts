@@ -1,17 +1,8 @@
 import { defineCollection, z } from "astro:content";
-import { docsLoader } from "@astrojs/starlight/loaders";
-import { docsSchema } from "@astrojs/starlight/schema";
 import { glob } from "astro/loaders";
 
-// Starlight's docs collection (kept during migration)
-const docs = defineCollection({
-  loader: docsLoader(),
-  schema: docsSchema(),
-});
-
 // Pure Astro docs collection using glob() loader
-// This will replace Starlight's collection after migration
-const pureDocs = defineCollection({
+const docs = defineCollection({
   loader: glob({
     base: "./src/content/docs",
     pattern: "**/*.{md,mdx}",
@@ -60,5 +51,4 @@ const pureDocs = defineCollection({
 
 export const collections = {
   docs,
-  "pure-docs": pureDocs,
 };
