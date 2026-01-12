@@ -66,7 +66,12 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
         <!-- Web Component -->
         <section class="flex flex-col">
           <div class="mb-3">
-            <h2 class="text-lg font-semibold">Web Component</h2>
+            <div class="flex items-baseline justify-between gap-2">
+              <h2 class="text-lg font-semibold">Web Component</h2>
+              <a href="/wc/" class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium">
+                Get started <span aria-hidden="true">→</span>
+              </a>
+            </div>
             <p class="text-slate-500 dark:text-slate-400 text-sm">
               Drop <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded text-xs">&lt;o-embed&gt;</code> anywhere.
             </p>
@@ -74,15 +79,17 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
           <div class="flex-1 min-h-[500px]">
             <MiniPlayground client:only="react" className="h-full" />
           </div>
-          <a href="/wc/" class="inline-flex items-center gap-1 mt-3 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium">
-            Get started <span aria-hidden="true">→</span>
-          </a>
         </section>
 
         <!-- Library -->
         <section class="flex flex-col">
           <div class="mb-3">
-            <h2 class="text-lg font-semibold">Library</h2>
+            <div class="flex items-baseline justify-between gap-2">
+              <h2 class="text-lg font-semibold">Library</h2>
+              <a href="/lib/" class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium">
+                Get started <span aria-hidden="true">→</span>
+              </a>
+            </div>
             <p class="text-slate-500 dark:text-slate-400 text-sm">
               Extract IDs, generate embed URLs, detect providers.
             </p>
@@ -90,9 +97,6 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
           <div class="flex-1">
             <LibPlayground client:only="react" mode="mini" />
           </div>
-          <a href="/lib/" class="inline-flex items-center gap-1 mt-3 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium">
-            Get started <span aria-hidden="true">→</span>
-          </a>
         </section>
       </div>
     </main>
