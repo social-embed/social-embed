@@ -125,6 +125,80 @@
 
 <style is:global>
   @import url('@pagefind/default-ui/css/ui.css');
+
+  /* Prevent body scroll when modal is open */
+  [data-search-modal-open] {
+    overflow: hidden;
+  }
+
+  /* Pagefind UI customizations */
+  #pure__search {
+    --pagefind-ui-scale: 0.9;
+    --pagefind-ui-primary: var(--nav-text);
+    --pagefind-ui-text: var(--nav-text-muted);
+    --pagefind-ui-font: var(--font-sans);
+    --pagefind-ui-background: transparent;
+    --pagefind-ui-border: var(--nav-border);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-tag: var(--nav-border);
+  }
+
+  #pure__search .pagefind-ui__search-input {
+    color: var(--nav-text);
+    font-weight: 400;
+  }
+
+  #pure__search input:focus {
+    --pagefind-ui-border: var(--color-mv-blue);
+  }
+
+  #pure__search .pagefind-ui__results > * + * {
+    margin-top: 0.75rem;
+  }
+
+  #pure__search .pagefind-ui__result {
+    border: 0;
+    padding: 0;
+  }
+
+  #pure__search .pagefind-ui__result-nested {
+    padding: 0.5rem 1rem;
+  }
+
+  #pure__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)),
+  #pure__search .pagefind-ui__result-nested {
+    background-color: var(--search-bg);
+    border-radius: 0.25rem;
+  }
+
+  #pure__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):hover,
+  #pure__search .pagefind-ui__result-nested:hover {
+    outline: 1px solid var(--color-mv-blue);
+  }
+
+  #pure__search .pagefind-ui__result-link {
+    color: var(--nav-text);
+    font-weight: 600;
+  }
+
+  #pure__search .pagefind-ui__result-link:hover {
+    text-decoration: none;
+  }
+
+  #pure__search .pagefind-ui__result-excerpt {
+    font-size: 0.875rem;
+  }
+
+  #pure__search mark {
+    color: var(--nav-text);
+    background-color: transparent;
+    font-weight: 600;
+  }
+
+  #pure__search .pagefind-ui__search-clear {
+    background-color: transparent;
+    color: var(--nav-text-muted);
+  }
 </style>
 
 <style>
@@ -260,17 +334,6 @@
     padding: 0.125rem 0.375rem;
     border-radius: 0.25rem;
     font-size: 0.875rem;
-  }
-
-  /* Pagefind UI theming */
-  #pure__search {
-    --pagefind-ui-primary: var(--nav-text);
-    --pagefind-ui-text: var(--nav-text-muted);
-    --pagefind-ui-font: var(--font-sans);
-    --pagefind-ui-background: transparent;
-    --pagefind-ui-border: var(--nav-border);
-    --pagefind-ui-border-width: 1px;
-    --pagefind-ui-tag: var(--nav-border);
   }
 
   /* Desktop dialog styling */
