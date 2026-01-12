@@ -47,7 +47,8 @@
     const shortcut = openBtn?.querySelector('.search-kbd');
     if (!openBtn || !(shortcut instanceof HTMLElement)) return;
     const platformKey = shortcut.querySelector('.platform-key');
-    if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+    const isMac = navigator.userAgentData?.platform === 'macOS' || /Mac|iPhone|iPod|iPad/i.test(navigator.userAgent);
+    if (platformKey && isMac) {
       platformKey.textContent = '⌘';
       openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
     }
