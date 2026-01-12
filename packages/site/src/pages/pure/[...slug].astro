@@ -1,0 +1,65 @@
+---
+/**
+ * Dynamic route for documentation pages.
+ * Uses pure-docs collection and MarkdownLayout.
+ *
+ * During migration: accessible at /pure/...
+ * After Starlight removal: move to src/pages/[...slug].astro
+ */
+import type { CollectionEntry } from "astro:content";
+import { getCollection, render } from "astro:content";
+import Sidebar from "../../components/docs/Sidebar.astro";
+import MarkdownLayout from "../../layouts/MarkdownLayout.astro";
+
+type DocsEntry = CollectionEntry<"pure-docs">;
+
+export async function getStaticPaths() {
+  const docs = await getCollection("pure-docs");
+
+  return docs.map((entry: DocsEntry) => {
+    // Convert entry ID to URL slug
+    // e.g., "00-getting-started.mdx" -> "getting-started"
+    //       "lib/installation.mdx" -> "lib/installation"
+    let slug = entry.id
+      .replace(/\.(mdx?|md)$/, "") // Remove extension
+      .split("/")
+      .map((part: string) => part.replace(/^\d+-/, "")) // Remove numeric prefix
+      .join("/");
+
+    // Handle index files
+    if (slug.endsWith("/index") || slug.endsWith("/00-index")) {
+      slug = slug.replace(/\/?00-index$/, "").replace(/\/?index$/, "");
+    }
+
+    // Handle root index
+    if (slug === "00-index" || slug === "index") {
+      slug = "";
+    }
+
+    return {
+      params: { slug: slug || undefined },
+      props: { entry },
+    };
+  });
+}
+
+interface Props {
+  entry: DocsEntry;
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+// Build frontmatter for layout
+const frontmatter = {
+  description: entry.data.description,
+  head: entry.data.head,
+  tableOfContents: entry.data.tableOfContents,
+  title: entry.data.title,
+};
+---
+
+<MarkdownLayout frontmatter={frontmatter} headings={headings}>
+  <Sidebar slot="sidebar" currentPath={Astro.url.pathname} />
+  <Content />
+</MarkdownLayout>
