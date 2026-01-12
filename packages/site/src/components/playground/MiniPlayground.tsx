@@ -70,6 +70,10 @@ function TabButton({ active, badge, children, onClick }: TabButtonProps) {
 export interface MiniPlaygroundProps {
   /** Additional CSS classes */
   className?: string;
+  /** Height for the code editor section (e.g., "200px", "50%") */
+  codeHeight?: string;
+  /** Height for the iframe/preview section (e.g., "300px", "50%") */
+  iframeHeight?: string;
   /** Initial HTML code (overrides preset) */
   initialCode?: string;
   /** Initial preset ID */
@@ -82,6 +86,8 @@ export interface MiniPlaygroundProps {
  */
 export function MiniPlayground({
   className = "",
+  codeHeight,
+  iframeHeight,
   initialCode,
   initialPreset,
 }: MiniPlaygroundProps) {
@@ -290,9 +296,11 @@ export function MiniPlayground({
         <div
           className={`
             ${activeTab === "code" ? "flex" : "hidden"}
-            sm:flex flex-1 min-h-[150px]
+            sm:flex min-h-[150px]
             border-b border-slate-200 dark:border-slate-700
+            ${codeHeight ? "" : "flex-1"}
           `}
+          style={codeHeight ? { flexShrink: 0, height: codeHeight } : undefined}
         >
           <CodeEditor
             className="h-full w-full"
@@ -314,8 +322,12 @@ export function MiniPlayground({
           <div
             className={`
               ${activeTab === "preview" ? "flex" : "hidden"}
-              sm:flex flex-1 min-h-[100px]
+              sm:flex min-h-[100px]
+              ${iframeHeight ? "" : "flex-1"}
             `}
+            style={
+              iframeHeight ? { flexShrink: 0, height: iframeHeight } : undefined
+            }
           >
             <PreviewPane
               className="h-full w-full"
