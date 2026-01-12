@@ -1,6 +1,5 @@
-@layer base, starlight, theme, components, utilities;
+@layer base, theme, components, utilities;
 
-@import "@astrojs/starlight-tailwind";
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
@@ -80,8 +79,8 @@
 }
 
 /**
- * Core navigation variables - OUR source of truth.
- * Both homepage and Starlight use zero header padding.
+ * Core navigation variables - source of truth for layouts.
+ * Both homepage and doc layouts use zero header padding.
  * Inner elements (logo, right-group) handle their own spacing via --nav-inner-pad.
  */
 :root {
@@ -106,13 +105,6 @@
   --search-kbd-bg: var(--color-slate-800);
   --search-hover-border: var(--color-slate-300);
   --search-hover-text: var(--color-slate-100);
-
-  /* Starlight inherits from our nav variables */
-  --sl-nav-height: var(--nav-height);
-  --sl-nav-pad-x: var(--nav-pad-x);
-  --sl-nav-pad-y: var(--nav-pad-y);
-  --sl-nav-gap: var(--nav-gap);
-  --sl-color-bg-nav: var(--nav-bg);
 }
 
 [data-theme="light"] {
@@ -129,144 +121,4 @@
   --search-kbd-bg: var(--color-slate-200);
   --search-hover-border: var(--color-slate-400);
   --search-hover-text: var(--color-slate-700);
-}
-
-/* Target small displays like phones */
-:root {
-  --sl-content-width: 100%;
-}
-
-@media (min-width: 640px) {
-  /* Target small displays like tablets */
-  :root {
-    --sl-content-width: calc(
-      100% -
-      (var(--sl-content-pad-x) * 2)
-    ); /* Make it wider on small screens */
-  }
-}
-
-@media (min-width: 1024px) {
-  /* Target larger displays like desktops */
-  :root {
-    --sl-content-width: calc(100% - (var(--sl-content-pad-x) * 7));
-  }
-}
-
-/** Content regions: More room on smaller displays */
-.main-pane .sl-container {
-  max-width: 100%;
-  margin-inline: unset;
-}
-
-@media (min-width: 1024px) {
-  .main-pane .sl-container {
-    max-width: var(--sl-content-width);
-    margin-inline: var(--sl-content-margin-inline, auto);
-  }
-}
-
-/** <pre> Headers on READMEs **/
-.sl-markdown-content :is(h1, h2, h3, h4, h5, h6) code {
-  font-size: 40%; /* Base font size for extra-small screens (default) */
-}
-
-@media (min-width: 480px) {
-  /* Target small displays like phones */
-  .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) code {
-    font-size: 50%;
-  }
-}
-
-@media (min-width: 640px) {
-  /* Target medium displays like tablets */
-  .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) code {
-    font-size: 70%;
-  }
-}
-
-@media (min-width: 1024px) {
-  /* Target larger displays like desktops */
-  .sl-markdown-content :is(h1, h2, h3, h4, h5, h6) code {
-    font-size: inherit; /* Default or larger font size */
-  }
-}
-
-/** For code embeds on example pages **/
-.sl-markdown-content :is(video, iframe):not(:where(.not-content *)) {
-  height: revert-layer;
-  min-height: 600px;
-}
-
-/* Fix iframe min-height inside .not-content widgets */
-.not-content iframe {
-  min-height: unset;
-}
-
-@layer utilities {
-  /* Override gray colors with slate colors */
-  :root {
-    --sl-color-gray-1: var(--color-slate-200);
-    --sl-color-gray-2: var(--color-slate-300);
-    --sl-color-gray-3: var(--color-slate-400);
-    --sl-color-gray-4: var(--color-slate-600);
-    --sl-color-gray-5: var(--color-slate-700);
-    --sl-color-gray-6: var(--color-slate-800);
-    --sl-color-black: var(--color-slate-900);
-
-    /* Override Starlight badge hues with microviz OKLCH colors */
-    /* Dark mode (default): -low = dark bg, -high = light text */
-    /* success variant uses cyan for "try it" badge */
-    --sl-color-green: var(--color-mv-cyan);
-    --sl-color-green-low: var(--color-mv-cyan-dark);
-    --sl-color-green-high: var(--color-mv-cyan-light);
-
-    --sl-color-blue: var(--color-mv-blue);
-    --sl-color-blue-low: var(--color-mv-blue-dark);
-    --sl-color-blue-high: var(--color-mv-blue-light);
-
-    --sl-color-purple: var(--color-mv-purple);
-    --sl-color-purple-low: var(--color-mv-purple-dark);
-    --sl-color-purple-high: var(--color-mv-purple-light);
-
-    --sl-color-orange: var(--color-mv-orange);
-    --sl-color-orange-low: var(--color-mv-orange-dark);
-    --sl-color-orange-high: var(--color-mv-orange-light);
-
-    --sl-color-red: var(--color-mv-red);
-    --sl-color-red-low: var(--color-mv-red-dark);
-    --sl-color-red-high: var(--color-mv-red-light);
-  }
-
-  /* Preserve success badge styling when sidebar item is selected */
-  .sidebar-content a[aria-current="page"] > .sl-badge.success {
-    --sl-color-bg-badge: var(--sl-badge-success-bg);
-    --sl-color-border-badge: var(--sl-badge-success-border);
-    --sl-color-text-badge: var(--sl-badge-success-text);
-    color: var(--sl-color-text-badge);
-  }
-
-  /* Light mode: -low = light bg, -high = dark text */
-  [data-theme="light"] {
-    --sl-color-green-low: var(--color-mv-cyan-light);
-    --sl-color-green-high: var(--color-mv-cyan-dark);
-
-    --sl-color-blue-low: var(--color-mv-blue-light);
-    --sl-color-blue-high: var(--color-mv-blue-dark);
-
-    --sl-color-purple-low: var(--color-mv-purple-light);
-    --sl-color-purple-high: var(--color-mv-purple-dark);
-
-    --sl-color-orange-low: var(--color-mv-orange-light);
-    --sl-color-orange-high: var(--color-mv-orange-dark);
-
-    --sl-color-red-low: var(--color-mv-red-light);
-    --sl-color-red-high: var(--color-mv-red-dark);
-  }
-
-  /* Add backdrop blur to Starlight header to match homepage */
-  header:has(.header) {
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-  }
 }
