@@ -10,6 +10,9 @@
 ---
 
 <div class="header">
+  <div class="mobile-toggles">
+    <slot name="mobile-toggles" />
+  </div>
   <div class="title-wrapper">
     <slot name="logo" />
   </div>
@@ -33,6 +36,18 @@
     height: 100%;
   }
 
+  .mobile-toggles {
+    display: flex;
+    align-items: center;
+    padding-left: var(--nav-inner-pad, 1rem);
+    flex-shrink: 0;
+  }
+
+  .mobile-toggles:empty {
+    display: none;
+    padding: 0;
+  }
+
   .title-wrapper {
     overflow: clip;
     padding: 0.25rem;
@@ -41,6 +56,11 @@
     margin-left: 0;
     min-width: 0;
     flex-shrink: 0;
+  }
+
+  /* When mobile toggles present, reduce title padding */
+  .mobile-toggles:not(:empty) + .title-wrapper {
+    padding-left: 0.5rem;
   }
 
   .search-area {

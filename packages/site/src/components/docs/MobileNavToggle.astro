@@ -1,0 +1,105 @@
+---
+/**
+ * Mobile navigation toggle buttons for the header.
+ * - Hamburger icon for sidebar: visible below lg (1024px)
+ * - ToC icon: visible below xl (1280px), only when ToC has content
+ */
+interface Props {
+  showToC?: boolean;
+}
+
+const { showToC = false } = Astro.props;
+---
+
+<div class="mobile-nav-toggles">
+  <!-- Sidebar toggle (hamburger) - visible below lg -->
+  <button
+    id="mobile-sidebar-toggle"
+    type="button"
+    aria-label="Open navigation menu"
+    class="mobile-toggle sidebar-toggle"
+  >
+    <svg class="toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
+  <!-- ToC toggle - visible below xl, only if ToC exists -->
+  {showToC && (
+    <button
+      id="mobile-toc-toggle"
+      type="button"
+      aria-label="Open table of contents"
+      class="mobile-toggle toc-toggle"
+    >
+      <svg class="toggle-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h10M4 18h10" />
+      </svg>
+    </button>
+  )}
+</div>
+
+<style>
+  .mobile-nav-toggles {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.25rem;
+    width: 2.25rem;
+    border-radius: 0.375rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--nav-text-muted);
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .mobile-toggle:hover {
+    background: var(--color-slate-800);
+    color: var(--nav-text);
+  }
+
+  :global([data-theme="light"]) .mobile-toggle:hover {
+    background: var(--color-slate-100);
+  }
+
+  .toggle-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* Sidebar toggle: hide on lg+ (desktop sidebar visible) */
+  .sidebar-toggle {
+    display: flex;
+  }
+
+  @media (min-width: 1024px) {
+    .sidebar-toggle {
+      display: none;
+    }
+  }
+
+  /* ToC toggle: hide on xl+ (desktop ToC visible) */
+  .toc-toggle {
+    display: flex;
+  }
+
+  @media (min-width: 1280px) {
+    .toc-toggle {
+      display: none;
+    }
+  }
+
+  /* Hide entire container when no toggles visible */
+  @media (min-width: 1280px) {
+    .mobile-nav-toggles {
+      display: none;
+    }
+  }
+</style>

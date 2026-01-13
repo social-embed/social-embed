@@ -1,0 +1,252 @@
+---
+/**
+ * Mobile slide-out Table of Contents for small screens.
+ * Hidden on xl+ (1280px+) where desktop ToC is visible.
+ */
+import type { ToCItem } from "../../lib/generateToC";
+
+interface Props {
+  items: ToCItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<!-- Mobile ToC Overlay -->
+<div
+  id="mobile-toc-overlay"
+  class="mobile-toc-overlay"
+></div>
+
+<!-- Mobile ToC -->
+<aside id="mobile-toc" class="mobile-toc">
+  <div class="mobile-toc-inner">
+    <!-- Header with close button -->
+    <div class="mobile-toc-header">
+      <h2 class="mobile-toc-title">On this page</h2>
+      <button
+        id="mobile-toc-close"
+        type="button"
+        aria-label="Close table of contents"
+        class="mobile-toc-close"
+      >
+        <svg class="close-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Table of Contents -->
+    {items.length > 0 ? (
+      <nav class="mobile-toc-nav" aria-label="Table of contents">
+        <ul class="mobile-toc-list">
+          {items.map((item) => (
+            <li class="mobile-toc-item">
+              <a href={`#${item.slug}`} class="mobile-toc-link">
+                {item.text}
+              </a>
+              {item.children.length > 0 && (
+                <ul class="mobile-toc-sublist">
+                  {item.children.map((child) => (
+                    <li class="mobile-toc-subitem">
+                      <a href={`#${child.slug}`} class="mobile-toc-sublink">
+                        {child.text}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))}
+        </ul>
+      </nav>
+    ) : (
+      <p class="mobile-toc-empty">No sections on this page.</p>
+    )}
+  </div>
+</aside>
+
+<style>
+  .mobile-toc-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  .mobile-toc-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-toc {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 16rem;
+    max-width: 85vw;
+    background: var(--nav-bg);
+    z-index: 50;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    border-left: 1px solid var(--nav-border);
+  }
+
+  .mobile-toc.active {
+    transform: translateX(0);
+  }
+
+  /* Hide on desktop where ToC sidebar is visible */
+  @media (min-width: 1280px) {
+    .mobile-toc,
+    .mobile-toc-overlay {
+      display: none !important;
+    }
+  }
+
+  .mobile-toc-inner {
+    padding: 1rem;
+  }
+
+  .mobile-toc-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--nav-border);
+  }
+
+  .mobile-toc-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--nav-text-muted);
+    margin: 0;
+  }
+
+  .mobile-toc-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 0.375rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--nav-text-muted);
+    transition: background-color 0.15s, color 0.15s;
+  }
+
+  .mobile-toc-close:hover {
+    background: var(--color-slate-800);
+    color: var(--nav-text);
+  }
+
+  :global([data-theme="light"]) .mobile-toc-close:hover {
+    background: var(--color-slate-100);
+  }
+
+  .close-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .mobile-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-toc-item {
+    margin: 0;
+  }
+
+  .mobile-toc-link,
+  .mobile-toc-sublink {
+    display: block;
+    padding: 0.5rem 0;
+    color: var(--nav-text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.15s;
+  }
+
+  .mobile-toc-link:hover,
+  .mobile-toc-sublink:hover {
+    color: var(--nav-text);
+  }
+
+  .mobile-toc-sublist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding-left: 1rem;
+  }
+
+  .mobile-toc-sublink {
+    font-size: 0.8125rem;
+    padding: 0.375rem 0;
+  }
+
+  .mobile-toc-empty {
+    font-size: 0.875rem;
+    color: var(--nav-text-muted);
+    margin: 0;
+  }
+</style>
+
+<script>
+  function initMobileToC() {
+    const toggleButton = document.getElementById('mobile-toc-toggle');
+    const closeButton = document.getElementById('mobile-toc-close');
+    const toc = document.getElementById('mobile-toc');
+    const overlay = document.getElementById('mobile-toc-overlay');
+
+    function openToC() {
+      if (toc && overlay) {
+        toc.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeToC() {
+      if (toc && overlay) {
+        toc.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    // Event listeners
+    toggleButton?.addEventListener('click', openToC);
+    closeButton?.addEventListener('click', closeToC);
+    overlay?.addEventListener('click', closeToC);
+
+    // Close on escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && toc?.classList.contains('active')) {
+        closeToC();
+      }
+    });
+
+    // Close ToC when clicking on a link
+    toc?.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', closeToC);
+    });
+  }
+
+  // Initialize on first load
+  initMobileToC();
+
+  // Re-initialize after view transitions
+  document.addEventListener('astro:after-swap', initMobileToC);
+</script>

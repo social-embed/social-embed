@@ -1,9 +1,13 @@
 ---
+import MobileNavToggle from "../components/docs/MobileNavToggle.astro";
+import MobileSidebar from "../components/docs/MobileSidebar.astro";
+import MobileToC from "../components/docs/MobileToC.astro";
 import TableOfContents from "../components/docs/TableOfContents.astro";
 import { generateToC } from "../lib/generateToC";
 /**
  * Layout for documentation/markdown pages.
  * Provides 3-column layout: sidebar | content | table of contents
+ * Mobile: slide-out panels for sidebar and ToC
  */
 import BaseLayout from "./BaseLayout.astro";
 
@@ -33,6 +37,13 @@ const tocItems = showToC
   description={frontmatter.description}
   head={frontmatter.head}
 >
+  <!-- Mobile navigation toggles in header -->
+  <MobileNavToggle slot="mobile-toggles" showToC={tocItems.length > 0} />
+
+  <!-- Mobile slide-out panels -->
+  <MobileSidebar currentPath={Astro.url.pathname} />
+  {tocItems.length > 0 && <MobileToC items={tocItems} />}
+
   <div class="markdown-layout">
     <!-- Left sidebar (populated by page or parent) -->
     <aside class="sidebar-left">
@@ -120,7 +131,7 @@ const tocItems = showToC
 
   /* Prose styling for markdown content */
   .prose {
-    max-width: 65ch;
+    max-width: 75ch;
     color: var(--color-slate-700);
     line-height: 1.75;
   }

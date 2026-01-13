@@ -111,6 +111,7 @@ const fullTitle = title === "social-embed" ? title : `${title} | social-embed`;
           style="height: var(--nav-height); background-color: var(--nav-bg); border-bottom: 1px solid var(--nav-border); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);"
         >
           <CoreHeaderLayout>
+            <slot name="mobile-toggles" slot="mobile-toggles" />
             <PureSiteTitle slot="logo" />
             <PureSearch slot="search" />
             <PureSocialIcons slot="social" />
