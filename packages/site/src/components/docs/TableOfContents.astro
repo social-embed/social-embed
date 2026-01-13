@@ -146,7 +146,7 @@ const { items, title = "On this page" } = Astro.props;
     border-radius: 2px;
   }
 
-  [data-theme="dark"] .toc::-webkit-scrollbar-thumb {
+  :global([data-theme="dark"]) .toc::-webkit-scrollbar-thumb {
     background: var(--color-slate-600);
   }
 
@@ -159,7 +159,7 @@ const { items, title = "On this page" } = Astro.props;
     margin-bottom: 0.75rem;
   }
 
-  [data-theme="dark"] .toc-title {
+  :global([data-theme="dark"]) .toc-title {
     color: var(--color-slate-400);
   }
 
@@ -170,7 +170,7 @@ const { items, title = "On this page" } = Astro.props;
     border-left: 1px solid var(--color-slate-200);
   }
 
-  [data-theme="dark"] .toc-list {
+  :global([data-theme="dark"]) .toc-list {
     border-left-color: var(--color-slate-700);
   }
 
@@ -191,8 +191,8 @@ const { items, title = "On this page" } = Astro.props;
       border-color 0.15s;
   }
 
-  [data-theme="dark"] .toc-link,
-  [data-theme="dark"] .toc-sublink {
+  :global([data-theme="dark"]) .toc-link,
+  :global([data-theme="dark"]) .toc-sublink {
     color: var(--color-slate-400);
   }
 
@@ -201,8 +201,8 @@ const { items, title = "On this page" } = Astro.props;
     color: var(--color-slate-900);
   }
 
-  [data-theme="dark"] .toc-link:hover,
-  [data-theme="dark"] .toc-sublink:hover {
+  :global([data-theme="dark"]) .toc-link:hover,
+  :global([data-theme="dark"]) .toc-sublink:hover {
     color: var(--color-slate-100);
   }
 
@@ -212,8 +212,8 @@ const { items, title = "On this page" } = Astro.props;
     border-left-color: var(--color-mv-blue);
   }
 
-  [data-theme="dark"] .toc-link[data-active],
-  [data-theme="dark"] .toc-sublink[data-active] {
+  :global([data-theme="dark"]) .toc-link[data-active],
+  :global([data-theme="dark"]) .toc-sublink[data-active] {
     color: color-mix(in oklch, var(--color-mv-blue), white 20%);
     border-left-color: color-mix(in oklch, var(--color-mv-blue), white 20%);
   }

@@ -50,7 +50,7 @@ const { text, variant = "default", size = "small" } = Astro.props;
     color: var(--color-slate-700);
   }
 
-  [data-theme="dark"] .badge-default {
+  :global([data-theme="dark"]) .badge-default {
     background: var(--color-slate-700);
     color: var(--color-slate-200);
   }
@@ -60,7 +60,7 @@ const { text, variant = "default", size = "small" } = Astro.props;
     color: var(--color-mv-blue-dark);
   }
 
-  [data-theme="dark"] .badge-note {
+  :global([data-theme="dark"]) .badge-note {
     background: color-mix(in oklch, var(--color-mv-blue), transparent 80%);
     color: color-mix(in oklch, var(--color-mv-blue), white 30%);
   }
@@ -70,7 +70,7 @@ const { text, variant = "default", size = "small" } = Astro.props;
     color: var(--color-mv-teal-dark);
   }
 
-  [data-theme="dark"] .badge-tip {
+  :global([data-theme="dark"]) .badge-tip {
     background: color-mix(in oklch, var(--color-mv-teal), transparent 80%);
     color: color-mix(in oklch, var(--color-mv-teal), white 30%);
   }
@@ -80,7 +80,7 @@ const { text, variant = "default", size = "small" } = Astro.props;
     color: var(--color-mv-cyan-dark);
   }
 
-  [data-theme="dark"] .badge-success {
+  :global([data-theme="dark"]) .badge-success {
     background: color-mix(in oklch, var(--color-mv-cyan), transparent 80%);
     color: color-mix(in oklch, var(--color-mv-cyan), white 30%);
   }
@@ -90,7 +90,7 @@ const { text, variant = "default", size = "small" } = Astro.props;
     color: var(--color-mv-yellow-dark);
   }
 
-  [data-theme="dark"] .badge-caution {
+  :global([data-theme="dark"]) .badge-caution {
     background: color-mix(in oklch, var(--color-mv-yellow), transparent 80%);
     color: color-mix(in oklch, var(--color-mv-yellow), white 30%);
   }
@@ -100,7 +100,7 @@ const { text, variant = "default", size = "small" } = Astro.props;
     color: var(--color-mv-red-dark);
   }
 
-  [data-theme="dark"] .badge-danger {
+  :global([data-theme="dark"]) .badge-danger {
     background: color-mix(in oklch, var(--color-mv-red), transparent 80%);
     color: color-mix(in oklch, var(--color-mv-red), white 30%);
   }

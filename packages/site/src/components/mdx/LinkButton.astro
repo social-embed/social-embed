@@ -96,11 +96,11 @@ const iconPath = icon ? icons[icon] || icons.arrow : null;
     background: color-mix(in oklch, var(--color-mv-blue), black 15%);
   }
 
-  [data-theme="dark"] .link-button-primary {
+  :global([data-theme="dark"]) .link-button-primary {
     background: color-mix(in oklch, var(--color-mv-blue), white 10%);
   }
 
-  [data-theme="dark"] .link-button-primary:hover {
+  :global([data-theme="dark"]) .link-button-primary:hover {
     background: color-mix(in oklch, var(--color-mv-blue), white 20%);
   }
 
@@ -114,7 +114,7 @@ const iconPath = icon ? icons[icon] || icons.arrow : null;
     background: color-mix(in oklch, var(--color-mv-blue), transparent 90%);
   }
 
-  [data-theme="dark"] .link-button-secondary {
+  :global([data-theme="dark"]) .link-button-secondary {
     color: color-mix(in oklch, var(--color-mv-blue), white 20%);
     border-color: color-mix(in oklch, var(--color-mv-blue), white 20%);
   }
@@ -129,11 +129,11 @@ const iconPath = icon ? icons[icon] || icons.arrow : null;
     color: var(--color-mv-blue);
   }
 
-  [data-theme="dark"] .link-button-minimal {
+  :global([data-theme="dark"]) .link-button-minimal {
     color: var(--color-slate-300);
   }
 
-  [data-theme="dark"] .link-button-minimal:hover {
+  :global([data-theme="dark"]) .link-button-minimal:hover {
     color: color-mix(in oklch, var(--color-mv-blue), white 20%);
   }
 

@@ -58,7 +58,7 @@ const { label, badge, items, currentPath, collapsed = false } = Astro.props;
     color: var(--color-slate-500);
   }
 
-  [data-theme="dark"] .section-label {
+  :global([data-theme="dark"]) .section-label {
     color: var(--color-slate-400);
   }
 

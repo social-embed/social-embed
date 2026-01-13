@@ -179,7 +179,7 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
     margin-bottom: 1rem;
   }
 
-  [data-theme="dark"] .tabs-list {
+  :global([data-theme="dark"]) .tabs-list {
     border-bottom-color: var(--color-slate-700);
   }
 
@@ -198,7 +198,7 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
       border-color 0.15s;
   }
 
-  [data-theme="dark"] .tabs-list :global(.tab-button) {
+  :global([data-theme="dark"]) .tabs-list :global(.tab-button) {
     color: var(--color-slate-400);
   }
 
@@ -206,7 +206,7 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
     color: var(--color-slate-900);
   }
 
-  [data-theme="dark"] .tabs-list :global(.tab-button:hover) {
+  :global([data-theme="dark"]) .tabs-list :global(.tab-button:hover) {
     color: var(--color-slate-200);
   }
 
@@ -215,7 +215,7 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
     border-bottom-color: var(--color-mv-blue);
   }
 
-  [data-theme="dark"] .tabs-list :global(.tab-button[aria-selected="true"]) {
+  :global([data-theme="dark"]) .tabs-list :global(.tab-button[aria-selected="true"]) {
     color: color-mix(in oklch, var(--color-mv-blue), white 20%);
     border-bottom-color: color-mix(in oklch, var(--color-mv-blue), white 20%);
   }

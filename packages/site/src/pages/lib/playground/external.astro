@@ -128,7 +128,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     color: var(--color-slate-700);
   }
 
-  [data-theme="dark"] .sandbox-content {
+  :global([data-theme="dark"]) .sandbox-content {
     color: var(--color-slate-300);
   }
 
@@ -139,7 +139,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     color: var(--color-slate-900);
   }
 
-  [data-theme="dark"] .sandbox-content h1 {
+  :global([data-theme="dark"]) .sandbox-content h1 {
     color: var(--color-slate-100);
   }
 
@@ -152,7 +152,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     scroll-margin-top: calc(var(--nav-height) + 1rem);
   }
 
-  [data-theme="dark"] .sandbox-content h2 {
+  :global([data-theme="dark"]) .sandbox-content h2 {
     color: var(--color-slate-100);
   }
 
@@ -164,7 +164,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     color: var(--color-slate-900);
   }
 
-  [data-theme="dark"] .sandbox-content h3 {
+  :global([data-theme="dark"]) .sandbox-content h3 {
     color: var(--color-slate-100);
   }
 
@@ -180,7 +180,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     border-radius: 0.25rem;
   }
 
-  [data-theme="dark"] .sandbox-content code {
+  :global([data-theme="dark"]) .sandbox-content code {
     background: var(--color-slate-800);
   }
 
@@ -190,7 +190,7 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     margin: 1.5rem 0;
   }
 
-  [data-theme="dark"] .sandbox-content hr {
+  :global([data-theme="dark"]) .sandbox-content hr {
     border-top-color: var(--color-slate-700);
   }
 </style>

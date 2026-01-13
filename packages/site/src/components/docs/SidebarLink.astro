@@ -35,7 +35,7 @@ const { href, label, isActive = false, level = 0 } = Astro.props;
       background-color 0.15s;
   }
 
-  [data-theme="dark"] .sidebar-link {
+  :global([data-theme="dark"]) .sidebar-link {
     color: var(--color-slate-400);
   }
 
@@ -44,7 +44,7 @@ const { href, label, isActive = false, level = 0 } = Astro.props;
     background: var(--color-slate-100);
   }
 
-  [data-theme="dark"] .sidebar-link:hover {
+  :global([data-theme="dark"]) .sidebar-link:hover {
     color: var(--color-slate-100);
     background: var(--color-slate-800);
   }
@@ -55,7 +55,7 @@ const { href, label, isActive = false, level = 0 } = Astro.props;
     font-weight: 500;
   }
 
-  [data-theme="dark"] .sidebar-link.active {
+  :global([data-theme="dark"]) .sidebar-link.active {
     color: color-mix(in oklch, var(--color-mv-blue), white 20%);
     background: color-mix(in oklch, var(--color-mv-blue), transparent 85%);
   }

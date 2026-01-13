@@ -75,7 +75,7 @@ const tocItems = showToC
     padding: 1.5rem 1rem;
   }
 
-  [data-theme="dark"] .sidebar-left {
+  :global([data-theme="dark"]) .sidebar-left {
     border-right-color: var(--color-slate-700);
   }
 
@@ -125,7 +125,7 @@ const tocItems = showToC
     line-height: 1.75;
   }
 
-  [data-theme="dark"] .prose {
+  :global([data-theme="dark"]) .prose {
     color: var(--color-slate-300);
   }
 
@@ -137,7 +137,7 @@ const tocItems = showToC
     color: var(--color-slate-900);
   }
 
-  [data-theme="dark"] .prose :global(h1) {
+  :global([data-theme="dark"]) .prose :global(h1) {
     color: var(--color-slate-100);
   }
 
@@ -151,7 +151,7 @@ const tocItems = showToC
     scroll-margin-top: calc(var(--nav-height) + 1rem);
   }
 
-  [data-theme="dark"] .prose :global(h2) {
+  :global([data-theme="dark"]) .prose :global(h2) {
     color: var(--color-slate-100);
   }
 
@@ -165,7 +165,7 @@ const tocItems = showToC
     scroll-margin-top: calc(var(--nav-height) + 1rem);
   }
 
-  [data-theme="dark"] .prose :global(h3) {
+  :global([data-theme="dark"]) .prose :global(h3) {
     color: var(--color-slate-100);
   }
 
@@ -184,11 +184,11 @@ const tocItems = showToC
     color: color-mix(in oklch, var(--color-mv-blue), black 20%);
   }
 
-  [data-theme="dark"] .prose :global(a) {
+  :global([data-theme="dark"]) .prose :global(a) {
     color: color-mix(in oklch, var(--color-mv-blue), white 20%);
   }
 
-  [data-theme="dark"] .prose :global(a:hover) {
+  :global([data-theme="dark"]) .prose :global(a:hover) {
     color: color-mix(in oklch, var(--color-mv-blue), white 35%);
   }
 
@@ -200,7 +200,7 @@ const tocItems = showToC
     border-radius: 0.25rem;
   }
 
-  [data-theme="dark"] .prose :global(code) {
+  :global([data-theme="dark"]) .prose :global(code) {
     background: var(--color-slate-800);
   }
 
@@ -238,7 +238,7 @@ const tocItems = showToC
     font-style: italic;
   }
 
-  [data-theme="dark"] .prose :global(blockquote) {
+  :global([data-theme="dark"]) .prose :global(blockquote) {
     border-left-color: var(--color-slate-600);
     color: var(--color-slate-400);
   }
@@ -257,8 +257,8 @@ const tocItems = showToC
     text-align: left;
   }
 
-  [data-theme="dark"] .prose :global(th),
-  [data-theme="dark"] .prose :global(td) {
+  :global([data-theme="dark"]) .prose :global(th),
+  :global([data-theme="dark"]) .prose :global(td) {
     border-color: var(--color-slate-700);
   }
 
@@ -267,7 +267,7 @@ const tocItems = showToC
     font-weight: 600;
   }
 
-  [data-theme="dark"] .prose :global(th) {
+  :global([data-theme="dark"]) .prose :global(th) {
     background: var(--color-slate-800);
   }
 
@@ -277,7 +277,7 @@ const tocItems = showToC
     margin: 2rem 0;
   }
 
-  [data-theme="dark"] .prose :global(hr) {
+  :global([data-theme="dark"]) .prose :global(hr) {
     border-top-color: var(--color-slate-700);
   }
 
