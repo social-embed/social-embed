@@ -102,7 +102,13 @@ export default defineConfig({
       [
         rehypeAutolinkHeadings,
         {
-          behavior: "wrap",
+          behavior: "append",
+          content: {
+            children: [{ type: "text", value: "#" }],
+            properties: { ariaHidden: "true", className: ["anchor-icon"] },
+            tagName: "span",
+            type: "element",
+          },
           properties: {
             className: ["anchor-link"],
           },
