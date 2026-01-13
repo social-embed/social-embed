@@ -213,7 +213,8 @@ const tocItems = showToC
     color: var(--color-slate-100);
   }
 
-  .prose :global(pre code) {
+  .prose :global(pre code),
+  :global([data-theme="dark"]) .prose :global(pre code) {
     background: transparent;
     padding: 0;
     font-size: 0.875rem;
