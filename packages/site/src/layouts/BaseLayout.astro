@@ -100,7 +100,7 @@ const fullTitle = title === "social-embed" ? title : `${title} | social-embed`;
   <body
     class:list={[
       "min-h-screen flex flex-col bg-white text-slate-900 font-sans",
-      "[data-theme='dark']:bg-slate-900 [data-theme='dark']:text-slate-100",
+      "dark:bg-slate-900 dark:text-slate-100",
       bodyClass,
     ]}
   >
@@ -124,7 +124,7 @@ const fullTitle = title === "social-embed" ? title : `${title} | social-embed`;
 
     {
       !hideFooter && (
-        <footer class="mt-auto py-4 px-4 flex flex-col items-center gap-2 text-xs text-slate-500 border-t border-slate-200 [data-theme='dark']:text-slate-400 [data-theme='dark']:border-slate-700">
+        <footer class="mt-auto py-4 px-4 flex flex-col items-center gap-2 text-xs text-slate-500 border-t border-slate-200 dark:text-slate-400 dark:border-slate-700">
           <div>
             &copy; 2021-{new Date().getFullYear()}{" "}
             <a href="https://tony.sh" class="hover:underline">
