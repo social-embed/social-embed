@@ -39,9 +39,23 @@ import PureSearchButton from "./PureSearchButton.astro";
     gap: 1rem;
   }
 
+  /* Tighter gap on narrow mobile */
+  @media (max-width: 29.99rem) {
+    .social-icons {
+      gap: 0.25rem;
+    }
+  }
+
   a {
     color: var(--nav-text-muted);
-    display: flex;
+    display: none;  /* Hidden on narrow mobile */
+  }
+
+  /* Show social links at 30rem+ (480px) */
+  @media (min-width: 30rem) {
+    a {
+      display: flex;
+    }
   }
 
   a:hover {
