@@ -98,20 +98,20 @@ const headingInactiveClass =
     }
   }
 
-  /* Allow wrapping at tablet+ widths when sub-links appear */
+  /* Keep nav items in single row at all widths */
   @media (min-width: 48rem) {
     .nav-ribbon {
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       align-items: flex-start;
     }
   }
 
-  /* Hide sub-links until 58rem (928px) to prevent header crowding */
+  /* Hide sub-links until 75rem (1200px) - need enough space for all header items */
   .sub-links {
     display: none;
   }
 
-  @media (min-width: 58rem) {
+  @media (min-width: 75rem) {
     .sub-links {
       display: block;
     }
