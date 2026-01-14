@@ -1,141 +1,75 @@
 ---
+import Sidebar from "../../../components/docs/Sidebar.astro";
 import { Aside, LinkButton } from "../../../components/mdx";
 /**
  * WC External Sandboxes - Links to external code playgrounds.
- * Uses BaseLayout instead of StarlightPage.
+ * Uses MarkdownLayout for consistent styling and mobile navigation.
  */
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import MarkdownLayout from "../../../layouts/MarkdownLayout.astro";
+
+const headings = [
+  { depth: 2, slug: "codepen", text: "CodePen" },
+  { depth: 2, slug: "jsfiddle", text: "JSFiddle" },
+];
 ---
 
-<BaseLayout
-  title="External Sandboxes"
-  description="Try @social-embed/wc in external code playgrounds"
+<MarkdownLayout
+  frontmatter={{
+    title: "External Sandboxes",
+    description: "Try @social-embed/wc in external code playgrounds",
+    tableOfContents: true,
+  }}
+  headings={headings}
 >
-  <main class="sandbox-page">
-    <article class="sandbox-content">
-      <h1>External Sandboxes</h1>
-      <p>
-        Try the <code>&lt;o-embed&gt;</code> web component in your favorite online code editor.
-      </p>
+  <Sidebar slot="sidebar" currentPath={Astro.url.pathname} />
 
-      <LinkButton
-        href="/wc/playground/"
-        variant="primary"
-        icon="rocket"
-        iconPlacement="start"
-      >
-        Interactive Playground
-      </LinkButton>
+  <p>
+    Try the <code>&lt;o-embed&gt;</code> web component in your favorite online code editor.
+  </p>
 
-      <hr />
+  <LinkButton
+    href="/wc/playground/"
+    variant="primary"
+    icon="rocket"
+    iconPlacement="start"
+  >
+    Interactive Playground
+  </LinkButton>
 
-      <Aside type="tip">
-        Loading issues with external playgrounds? Enable third-party cookies or disable AdBlockers.
-      </Aside>
+  <hr />
 
-      <h2 id="codepen">CodePen</h2>
+  <Aside type="tip">
+    Loading issues with external playgrounds? Enable third-party cookies or disable AdBlockers.
+  </Aside>
 
-      <LinkButton
-        href="https://codepen.io/attachment/pen/poRRwdy"
-        variant="secondary"
-        icon="external"
-        iconPlacement="start"
-      >
-        Launch on CodePen
-      </LinkButton>
+  <h2 id="codepen">CodePen</h2>
 
-      <p class="codepen" data-height="600" data-default-tab="html,result" data-slug-hash="poRRwdy" data-pen-title="Example of @social-embed/wc" data-preview="true" data-editable="true" data-user="attachment" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-        <span>See the Pen <a href="https://codepen.io/attachment/pen/poRRwdy">
-        Example of @social-embed/wc</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
-        on <a href="https://codepen.io">CodePen</a>.</span>
-      </p>
-      <script is:inline async src="https://public.codepenassets.com/embed/index.js"></script>
+  <LinkButton
+    href="https://codepen.io/attachment/pen/poRRwdy"
+    variant="secondary"
+    icon="external"
+    iconPlacement="start"
+  >
+    Launch on CodePen
+  </LinkButton>
 
-      <h2 id="jsfiddle">JSFiddle</h2>
+  <p class="codepen" data-height="600" data-default-tab="html,result" data-slug-hash="poRRwdy" data-pen-title="Example of @social-embed/wc" data-preview="true" data-editable="true" data-user="attachment" style="height: 300px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+    <span>See the Pen <a href="https://codepen.io/attachment/pen/poRRwdy">
+    Example of @social-embed/wc</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
+    on <a href="https://codepen.io">CodePen</a>.</span>
+  </p>
+  <script is:inline async src="https://public.codepenassets.com/embed/index.js"></script>
 
-      <LinkButton
-        href="https://jsfiddle.net/gitpull/vc13Lhkz/"
-        variant="secondary"
-        icon="external"
-        iconPlacement="start"
-      >
-        Launch on JSFiddle
-      </LinkButton>
+  <h2 id="jsfiddle">JSFiddle</h2>
 
-      <iframe width="100%" height="600" src="//jsfiddle.net/gitpull/vc13Lhkz/embedded/result,html/" style="border: 0" loading="lazy" allowfullscreen="true"></iframe>
-    </article>
-  </main>
-</BaseLayout>
+  <LinkButton
+    href="https://jsfiddle.net/gitpull/vc13Lhkz/"
+    variant="secondary"
+    icon="external"
+    iconPlacement="start"
+  >
+    Launch on JSFiddle
+  </LinkButton>
 
-<style>
-  .sandbox-page {
-    flex: 1;
-  }
-
-  .sandbox-content {
-    max-width: 65ch;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-    line-height: 1.7;
-    color: var(--color-slate-700);
-  }
-
-  :global([data-theme="dark"]) .sandbox-content {
-    color: var(--color-slate-300);
-  }
-
-  .sandbox-content h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    color: var(--color-slate-900);
-  }
-
-  :global([data-theme="dark"]) .sandbox-content h1 {
-    color: var(--color-slate-100);
-  }
-
-  .sandbox-content h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: var(--color-slate-900);
-    scroll-margin-top: calc(var(--nav-height) + 1rem);
-  }
-
-  :global([data-theme="dark"]) .sandbox-content h2 {
-    color: var(--color-slate-100);
-  }
-
-  .sandbox-content p {
-    margin: 1rem 0;
-  }
-
-  .sandbox-content code {
-    font-family: var(--font-mono);
-    font-size: 0.875em;
-    background: var(--color-slate-100);
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
-  }
-
-  :global([data-theme="dark"]) .sandbox-content code {
-    background: var(--color-slate-800);
-  }
-
-  .sandbox-content hr {
-    border: none;
-    border-top: 1px solid var(--color-slate-200);
-    margin: 1.5rem 0;
-  }
-
-  :global([data-theme="dark"]) .sandbox-content hr {
-    border-top-color: var(--color-slate-700);
-  }
-
-  .sandbox-content iframe {
-    margin-top: 1rem;
-    border-radius: 0.5rem;
-  }
-</style>
+  <iframe width="100%" height="600" src="//jsfiddle.net/gitpull/vc13Lhkz/embedded/result,html/" style="border: 0; margin-top: 1rem; border-radius: 0.5rem;" loading="lazy" allowfullscreen="true"></iframe>
+</MarkdownLayout>
