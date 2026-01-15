@@ -7,6 +7,7 @@ import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
 import { defineConfig } from "astro/config";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import { pagefindIntegration } from "./plugins/astro-pagefind-integration";
 import { localCdnPlugin } from "./plugins/vite-plugin-local-cdn";
 
 /**
@@ -94,7 +95,7 @@ export default defineConfig({
       },
     ],
   },
-  integrations: [mdx(), react()],
+  integrations: [mdx(), react(), pagefindIntegration()],
   // Markdown processing for pure Astro pages
   markdown: {
     rehypePlugins: [
