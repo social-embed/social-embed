@@ -221,10 +221,13 @@ export async function getSidebarItems(): Promise<SidebarItem[]> {
       label: "WC Playground",
     },
 
-    // Other root items (migration, news)
+    // Other root items (migration, news) - exclude section indices already shown above
     ...sortItems(
       rootItems.filter(
-        (item: SidebarLink) => !item.href.includes("getting-started"),
+        (item: SidebarLink) =>
+          !item.href.includes("getting-started") &&
+          item.href !== "/lib/" &&
+          item.href !== "/wc/",
       ),
     ),
   ];
