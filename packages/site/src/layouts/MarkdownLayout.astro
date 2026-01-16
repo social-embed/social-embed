@@ -220,21 +220,16 @@ const tocItems = showToC
     background: var(--color-slate-800);
   }
 
-  .prose :global(pre) {
+  /* Expressive Code handles padding/bg/radius, keep margin only */
+  .prose :global(.expressive-code) {
     margin: 1.5rem 0;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    overflow-x: auto;
-    background: var(--color-slate-900);
-    color: var(--color-slate-100);
   }
 
-  .prose :global(pre code),
-  :global([data-theme="dark"]) .prose :global(pre code) {
-    background: transparent;
-    padding: 0;
-    font-size: 0.875rem;
-    line-height: 1.6;
+  /* Hide copy button when printing */
+  @media print {
+    .prose :global(.expressive-code .copy) {
+      display: none;
+    }
   }
 
   .prose :global(ul),

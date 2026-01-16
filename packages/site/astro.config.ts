@@ -6,6 +6,7 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
 import { defineConfig } from "astro/config";
+import expressiveCode from "astro-expressive-code";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { pagefindIntegration } from "./plugins/astro-pagefind-integration";
 import { localCdnPlugin } from "./plugins/vite-plugin-local-cdn";
@@ -95,7 +96,25 @@ export default defineConfig({
       },
     ],
   },
-  integrations: [mdx(), react(), pagefindIntegration()],
+  integrations: [
+    expressiveCode({
+      styleOverrides: {
+        borderRadius: "0.5rem",
+        codeFontFamily: "var(--font-mono)",
+        codeFontSize: "0.875rem",
+        codePaddingBlock: "1rem",
+        codePaddingInline: "1rem",
+        frames: {
+          shadowColor: "transparent",
+        },
+      },
+      themeCssSelector: (theme) => `[data-theme="${theme.type}"]`,
+      themes: ["github-dark", "github-light"],
+    }),
+    mdx(),
+    react(),
+    pagefindIntegration(),
+  ],
   // Markdown processing for pure Astro pages
   markdown: {
     rehypePlugins: [
