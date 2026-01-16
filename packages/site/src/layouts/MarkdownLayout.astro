@@ -208,7 +208,8 @@ const tocItems = showToC
     color: color-mix(in oklch, var(--color-mv-blue), white 35%);
   }
 
-  .prose :global(code) {
+  /* Inline code styling - exclude code blocks handled by Expressive Code */
+  .prose :global(code:not(.expressive-code *)) {
     font-family: var(--font-mono);
     font-size: 0.875em;
     background: var(--color-slate-100);
@@ -216,7 +217,7 @@ const tocItems = showToC
     border-radius: 0.25rem;
   }
 
-  :global([data-theme="dark"]) .prose :global(code) {
+  :global([data-theme="dark"]) .prose :global(code:not(.expressive-code *)) {
     background: var(--color-slate-800);
   }
 
