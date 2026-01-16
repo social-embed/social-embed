@@ -16,7 +16,10 @@ const navigation: DemoNavItem[] = [
   { href: "/demo", label: "Overview" },
   {
     href: "/demo/ux",
-    items: [{ href: "/demo/ux/button", label: "Button" }],
+    items: [
+      { href: "/demo/ux/button", label: "Button" },
+      { href: "/demo/ux/aside", label: "Aside" },
+    ],
     label: "UX Components",
   },
   {
