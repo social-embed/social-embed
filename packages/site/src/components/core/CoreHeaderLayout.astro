@@ -1,9 +1,6 @@
 ---
 /**
- * Shared header layout skeleton used by both:
- * - Starlight pages (via Header.astro with virtual components)
- * - Pure Astro pages (via index.astro with pure components)
- *
+ * Shared header layout skeleton for pure Astro pages.
  * Provides consistent flexbox layout and CSS styling.
  * Uses --nav-* variables (our source of truth).
  */
@@ -16,8 +13,8 @@
   <div class="title-wrapper">
     <slot name="logo" />
   </div>
-  <div class="search-area">
-    <slot name="search" />
+  <div class="package-nav-area">
+    <slot name="package-nav" />
   </div>
   <div class="nav-area">
     <slot name="nav" />
@@ -63,7 +60,7 @@
     padding-left: 0.25rem;
   }
 
-  .search-area {
+  .package-nav-area {
     flex: 1;
     display: flex;
     justify-content: flex-start;

@@ -5,9 +5,9 @@
  */
 import "../tailwind.css";
 import { Font } from "astro:assets";
-// Core header components (pure Astro equivalents of Starlight's virtual components)
+// Core header components
 import CoreHeaderLayout from "../components/core/CoreHeaderLayout.astro";
-import PureSearch from "../components/core/PureSearch.astro";
+import PurePackageNav from "../components/core/PurePackageNav.astro";
 import PureSiteTitle from "../components/core/PureSiteTitle.astro";
 import PureSocialIcons from "../components/core/PureSocialIcons.astro";
 import PureThemeSelect from "../components/core/PureThemeSelect.astro";
@@ -46,7 +46,7 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
     <header class="sticky top-0 z-50" style="height: var(--nav-height); background-color: var(--nav-bg); border-bottom: 1px solid var(--nav-border); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
       <CoreHeaderLayout>
         <PureSiteTitle slot="logo" />
-        <PureSearch slot="search" />
+        <PurePackageNav slot="package-nav" />
         <PureSocialIcons slot="social" />
         <PureThemeSelect slot="theme" />
       </CoreHeaderLayout>

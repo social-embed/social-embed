@@ -6,7 +6,7 @@
 import "../tailwind.css";
 import { Font } from "astro:assets";
 import CoreHeaderLayout from "../components/core/CoreHeaderLayout.astro";
-import PureSearch from "../components/core/PureSearch.astro";
+import PurePackageNav from "../components/core/PurePackageNav.astro";
 import PureSiteTitle from "../components/core/PureSiteTitle.astro";
 import PureSocialIcons from "../components/core/PureSocialIcons.astro";
 import PureThemeSelect from "../components/core/PureThemeSelect.astro";
@@ -113,7 +113,7 @@ const fullTitle = title === "social-embed" ? title : `${title} | social-embed`;
           <CoreHeaderLayout>
             <slot name="mobile-toggles" slot="mobile-toggles" />
             <PureSiteTitle slot="logo" />
-            <PureSearch slot="search" />
+            <PurePackageNav slot="package-nav" />
             <PureSocialIcons slot="social" />
             <PureThemeSelect slot="theme" />
           </CoreHeaderLayout>
