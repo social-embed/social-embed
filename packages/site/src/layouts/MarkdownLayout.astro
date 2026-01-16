@@ -190,21 +190,22 @@ const tocItems = showToC
     margin-bottom: 0.5rem;
   }
 
-  .prose :global(a) {
+  /* Link styling - exclude LinkButton which has its own styles */
+  .prose :global(a:not(.link-button)) {
     color: var(--color-mv-blue);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
-  .prose :global(a:hover) {
+  .prose :global(a:not(.link-button):hover) {
     color: color-mix(in oklch, var(--color-mv-blue), black 20%);
   }
 
-  :global([data-theme="dark"]) .prose :global(a) {
+  :global([data-theme="dark"]) .prose :global(a:not(.link-button)) {
     color: color-mix(in oklch, var(--color-mv-blue), white 20%);
   }
 
-  :global([data-theme="dark"]) .prose :global(a:hover) {
+  :global([data-theme="dark"]) .prose :global(a:not(.link-button):hover) {
     color: color-mix(in oklch, var(--color-mv-blue), white 35%);
   }
 
