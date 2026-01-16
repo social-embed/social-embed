@@ -184,6 +184,16 @@ export async function getSidebarItems(): Promise<SidebarItem[]> {
       ),
     ),
 
+    // Other root items (migration, news) - right after getting started
+    ...sortItems(
+      rootItems.filter(
+        (item: SidebarLink) =>
+          !item.href.includes("getting-started") &&
+          item.href !== "/lib/" &&
+          item.href !== "/wc/",
+      ),
+    ),
+
     // Library section
     {
       badge: { text: "lib", variant: "note" },
@@ -220,16 +230,6 @@ export async function getSidebarItems(): Promise<SidebarItem[]> {
       ],
       label: "WC Playground",
     },
-
-    // Other root items (migration, news) - exclude section indices already shown above
-    ...sortItems(
-      rootItems.filter(
-        (item: SidebarLink) =>
-          !item.href.includes("getting-started") &&
-          item.href !== "/lib/" &&
-          item.href !== "/wc/",
-      ),
-    ),
   ];
 
   return sidebar;
