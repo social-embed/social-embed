@@ -7,16 +7,17 @@
 interface Props {
   class?: string;
   title?: string;
+  fill?: string;
 }
 
-const { class: className, title = "npm" } = Astro.props;
+const { class: className, title = "npm", fill = "#cb3837" } = Astro.props;
 const titleId = `npm-icon-${Math.random().toString(36).slice(2, 9)}`;
 ---
 
 <svg
   class={className}
   viewBox="0 0 24 24"
-  fill="#cb3837"
+  fill={fill}
   xmlns="http://www.w3.org/2000/svg"
   role="img"
   aria-labelledby={titleId}
