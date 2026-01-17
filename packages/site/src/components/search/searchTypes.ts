@@ -39,6 +39,14 @@ export interface SearchResult {
 /** Current status of the search operation */
 export type SearchStatus = "idle" | "loading" | "success" | "error";
 
+/**
+ * Display mode for sub-results (sections within a page).
+ * - 'inline': Always show top N sub-results expanded (Pagefind-style)
+ * - 'toggle': Collapsible toggle, user clicks to expand (default)
+ * - 'breadcrumbs': Show path like "Lib > Providers > YouTube" (Algolia-style)
+ */
+export type SubResultsDisplay = "inline" | "toggle" | "breadcrumbs";
+
 /** State for the search modal */
 export interface SearchState {
   /** Current search query */
@@ -67,6 +75,14 @@ export interface SearchResultItemProps {
   onMouseEnter: () => void;
   /** Unique ID for accessibility (aria-activedescendant) */
   id: string;
+  /** Display mode for sub-results (default: 'toggle') */
+  subResultsDisplay?: SubResultsDisplay;
+  /** Index of selected sub-result when navigateSections is true (-1 = main result) */
+  selectedSubIndex?: number;
+  /** Called when mouse enters a sub-result */
+  onSubResultMouseEnter?: (subIndex: number) => void;
+  /** Called when a sub-result is clicked */
+  onSubResultClick?: (subIndex: number) => void;
 }
 
 /** Props for SearchResults component */
@@ -81,6 +97,14 @@ export interface SearchResultsProps {
   onNavigate: (url: string) => void;
   /** ID prefix for result items */
   idPrefix?: string;
+  /** Display mode for sub-results (default: 'toggle') */
+  subResultsDisplay?: SubResultsDisplay;
+  /** Whether arrow keys can navigate into sub-results (default: false) */
+  navigateSections?: boolean;
+  /** Index of selected sub-result when navigateSections is true (-1 = main result) */
+  selectedSubIndex?: number;
+  /** Called when sub-result selection changes */
+  onSubSelect?: (resultIndex: number, subIndex: number) => void;
 }
 
 /** Props for SearchInput component */
@@ -123,6 +147,10 @@ export interface SearchModalProps {
   onClose?: () => void;
   /** Whether the modal is controlled externally */
   isOpen?: boolean;
+  /** Display mode for sub-results (default: 'toggle') */
+  subResultsDisplay?: SubResultsDisplay;
+  /** Whether arrow keys can navigate into sub-results (default: false) */
+  navigateSections?: boolean;
 }
 
 /** Options for the usePagefindSearch hook */
