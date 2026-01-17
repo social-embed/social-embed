@@ -6,11 +6,36 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SearchEmptyState } from "./SearchEmptyState";
 import { SearchInput } from "./SearchInput";
+import { thinSubResults } from "./SearchResultItem";
 import { getResultItemId, SearchResults } from "./SearchResults";
-import type { SearchModalProps } from "./searchTypes";
+import type { SearchModalProps, SearchResult } from "./searchTypes";
 import { usePagefindSearch } from "./usePagefindSearch";
 
 const RESULT_ID_PREFIX = "search-result";
+
+/** Maximum sub-results shown in inline mode */
+const INLINE_SUBRESULTS_LIMIT = 3;
+
+/**
+ * Get the number of navigable sub-results for a result based on display mode.
+ * - 'inline': Limited to INLINE_SUBRESULTS_LIMIT
+ * - 'toggle': All sub-results (but only when toggled - handled separately)
+ * - 'breadcrumbs': No sub-results navigable
+ */
+function getNavigableSubResultCount(
+  result: SearchResult,
+  subResultsDisplay: "inline" | "toggle" | "breadcrumbs",
+): number {
+  if (subResultsDisplay === "breadcrumbs") {
+    return 0;
+  }
+  if (subResultsDisplay === "inline") {
+    return Math.min(result.sub_results.length, INLINE_SUBRESULTS_LIMIT);
+  }
+  // For toggle mode, sub-results are only navigable when expanded
+  // For simplicity in keyboard nav, we treat toggle same as inline for now
+  return Math.min(result.sub_results.length, INLINE_SUBRESULTS_LIMIT);
+}
 
 /**
  * Main search modal component.
@@ -21,6 +46,8 @@ export function SearchModal({
   initialQuery = "",
   onClose,
   isOpen: externalIsOpen,
+  subResultsDisplay = "toggle",
+  navigateSections = false,
 }: SearchModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [internalIsOpen, setInternalIsOpen] = useState(false);
@@ -35,11 +62,18 @@ export function SearchModal({
 
   const { query, results, status, error, selectedIndex } = state;
   const [localSelectedIndex, setLocalSelectedIndex] = useState(-1);
+  const [localSelectedSubIndex, setLocalSelectedSubIndex] = useState(-1);
 
   // Sync local selection with global state
   useEffect(() => {
     setLocalSelectedIndex(selectedIndex);
+    setLocalSelectedSubIndex(-1); // Reset sub-selection when results change
   }, [selectedIndex]);
+
+  // Reset sub-selection when main selection changes
+  useEffect(() => {
+    setLocalSelectedSubIndex(-1);
+  }, []);
 
   // Set initial query if provided (on mount or when modal opens)
   useEffect(() => {
@@ -68,6 +102,7 @@ export function SearchModal({
   const handleClose = useCallback(() => {
     clear();
     setLocalSelectedIndex(-1);
+    setLocalSelectedSubIndex(-1);
     if (onClose) {
       onClose();
     } else {
@@ -84,7 +119,16 @@ export function SearchModal({
     [handleClose],
   );
 
-  // Keyboard navigation
+  // Handle sub-result selection change from mouse
+  const handleSubSelect = useCallback(
+    (resultIndex: number, subIndex: number) => {
+      setLocalSelectedIndex(resultIndex);
+      setLocalSelectedSubIndex(subIndex);
+    },
+    [],
+  );
+
+  // Keyboard navigation with optional section navigation
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       const resultCount = results.length;
@@ -92,20 +136,82 @@ export function SearchModal({
       switch (e.key) {
         case "ArrowDown":
           e.preventDefault();
-          setLocalSelectedIndex((prev) =>
-            prev < resultCount - 1 ? prev + 1 : prev,
-          );
+          if (navigateSections && subResultsDisplay === "inline") {
+            // Section navigation mode
+            const currentResult = results[localSelectedIndex];
+            if (currentResult) {
+              const subCount = getNavigableSubResultCount(
+                currentResult,
+                subResultsDisplay,
+              );
+
+              if (localSelectedSubIndex === -1 && subCount > 0) {
+                // Move from main result to first sub-result
+                setLocalSelectedSubIndex(0);
+              } else if (localSelectedSubIndex < subCount - 1) {
+                // Move to next sub-result
+                setLocalSelectedSubIndex((prev) => prev + 1);
+              } else if (localSelectedIndex < resultCount - 1) {
+                // Move to next main result
+                setLocalSelectedIndex((prev) => prev + 1);
+                setLocalSelectedSubIndex(-1);
+              }
+            } else if (localSelectedIndex < resultCount - 1) {
+              setLocalSelectedIndex((prev) => prev + 1);
+            }
+          } else {
+            // Standard navigation (results only)
+            setLocalSelectedIndex((prev) =>
+              prev < resultCount - 1 ? prev + 1 : prev,
+            );
+          }
           break;
 
         case "ArrowUp":
           e.preventDefault();
-          setLocalSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+          if (navigateSections && subResultsDisplay === "inline") {
+            // Section navigation mode
+            if (localSelectedSubIndex > 0) {
+              // Move to previous sub-result
+              setLocalSelectedSubIndex((prev) => prev - 1);
+            } else if (localSelectedSubIndex === 0) {
+              // Move from first sub-result to main result
+              setLocalSelectedSubIndex(-1);
+            } else if (localSelectedIndex > 0) {
+              // Move to previous result (and its last sub-result)
+              const prevResult = results[localSelectedIndex - 1];
+              const prevSubCount = prevResult
+                ? getNavigableSubResultCount(prevResult, subResultsDisplay)
+                : 0;
+              setLocalSelectedIndex((prev) => prev - 1);
+              setLocalSelectedSubIndex(
+                prevSubCount > 0 ? prevSubCount - 1 : -1,
+              );
+            }
+          } else {
+            // Standard navigation (results only)
+            setLocalSelectedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+          }
           break;
 
         case "Enter":
           e.preventDefault();
           if (localSelectedIndex >= 0 && results[localSelectedIndex]) {
-            handleNavigate(results[localSelectedIndex].url);
+            const result = results[localSelectedIndex];
+            if (localSelectedSubIndex >= 0) {
+              // Navigate to sub-result
+              const subResults =
+                subResultsDisplay === "inline"
+                  ? thinSubResults(result.sub_results, INLINE_SUBRESULTS_LIMIT)
+                  : result.sub_results;
+              const subResult = subResults[localSelectedSubIndex];
+              if (subResult) {
+                handleNavigate(subResult.url);
+              }
+            } else {
+              // Navigate to main result
+              handleNavigate(result.url);
+            }
           }
           break;
 
@@ -118,6 +224,7 @@ export function SearchModal({
           if (e.ctrlKey || e.metaKey) {
             e.preventDefault();
             setLocalSelectedIndex(0);
+            setLocalSelectedSubIndex(-1);
           }
           break;
 
@@ -125,11 +232,20 @@ export function SearchModal({
           if (e.ctrlKey || e.metaKey) {
             e.preventDefault();
             setLocalSelectedIndex(resultCount - 1);
+            setLocalSelectedSubIndex(-1);
           }
           break;
       }
     },
-    [results, localSelectedIndex, handleNavigate, handleClose],
+    [
+      results,
+      localSelectedIndex,
+      localSelectedSubIndex,
+      navigateSections,
+      subResultsDisplay,
+      handleNavigate,
+      handleClose,
+    ],
   );
 
   // Get active descendant ID for accessibility
@@ -162,10 +278,14 @@ export function SearchModal({
         {hasResults ? (
           <SearchResults
             idPrefix={RESULT_ID_PREFIX}
+            navigateSections={navigateSections}
             onNavigate={handleNavigate}
             onSelect={setLocalSelectedIndex}
+            onSubSelect={handleSubSelect}
             results={results}
             selectedIndex={localSelectedIndex}
+            selectedSubIndex={localSelectedSubIndex}
+            subResultsDisplay={subResultsDisplay}
           />
         ) : (
           showEmptyState && (

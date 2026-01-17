@@ -4,8 +4,11 @@
  */
 
 import { useCallback, useEffect, useRef } from "react";
-import { SearchResultItem } from "./SearchResultItem";
+import { SearchResultItem, thinSubResults } from "./SearchResultItem";
 import type { SearchResultsProps } from "./searchTypes";
+
+/** Maximum sub-results shown in inline mode (must match SearchResultItem) */
+const INLINE_SUBRESULTS_LIMIT = 3;
 
 /**
  * Results list container with virtualized-like scroll behavior.
@@ -16,6 +19,10 @@ export function SearchResults({
   onSelect,
   onNavigate,
   idPrefix = "search-result",
+  subResultsDisplay = "toggle",
+  navigateSections = false,
+  selectedSubIndex = -1,
+  onSubSelect,
 }: SearchResultsProps) {
   const listRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Map<number, HTMLDivElement>>(new Map());
@@ -46,6 +53,33 @@ export function SearchResults({
       }
     },
     [results, onNavigate],
+  );
+
+  const handleSubResultClick = useCallback(
+    (resultIndex: number, subIndex: number) => {
+      const result = results[resultIndex];
+      if (result) {
+        // For inline mode, get the limited sub-results
+        const subResults =
+          subResultsDisplay === "inline"
+            ? thinSubResults(result.sub_results, INLINE_SUBRESULTS_LIMIT)
+            : result.sub_results;
+        const subResult = subResults[subIndex];
+        if (subResult) {
+          onNavigate(subResult.url);
+        }
+      }
+    },
+    [results, onNavigate, subResultsDisplay],
+  );
+
+  const handleSubResultMouseEnter = useCallback(
+    (resultIndex: number, subIndex: number) => {
+      if (navigateSections && onSubSelect) {
+        onSubSelect(resultIndex, subIndex);
+      }
+    },
+    [navigateSections, onSubSelect],
   );
 
   const setItemRef = useCallback(
@@ -79,7 +113,15 @@ export function SearchResults({
               isSelected={index === selectedIndex}
               onClick={() => handleItemClick(index)}
               onMouseEnter={() => onSelect(index)}
+              onSubResultClick={(subIndex) =>
+                handleSubResultClick(index, subIndex)
+              }
+              onSubResultMouseEnter={(subIndex) =>
+                handleSubResultMouseEnter(index, subIndex)
+              }
               result={result}
+              selectedSubIndex={index === selectedIndex ? selectedSubIndex : -1}
+              subResultsDisplay={subResultsDisplay}
             />
           </div>
         ))}
