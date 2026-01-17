@@ -8,14 +8,26 @@ import AsideVariant from "../../../components/mdx/AsideVariant.astro";
  */
 import BaseLayout from "../../../layouts/BaseLayout.astro";
 
-const variants = ["classic", "refined", "card", "minimal", "hybrid"] as const;
+const variants = [
+  "classic",
+  "refined",
+  "card",
+  "minimal",
+  "hybrid",
+  "hybrid-a",
+  "hybrid-b",
+  "hybrid-d",
+] as const;
 const types = ["note", "tip", "caution", "danger"] as const;
 
 const variantDescriptions: Record<(typeof variants)[number], string> = {
   card: "Option B - Full bordered card with colored icon badge, no left border",
   classic: "Current production style - simple left border with flat background",
   hybrid:
-    "Recommended - Left border + gradient + colored icon badge (best of refined + card)",
+    "Recommended - 24×24 icon + 0.25rem padding → ~32×32px badge (balanced size)",
+  "hybrid-a": "24×24 icon + 0.375rem padding → ~36×36px badge (larger badge)",
+  "hybrid-b": "20×20 icon + 0.25rem padding → ~28×28px badge (compact)",
+  "hybrid-d": "28×28 icon + 0.25rem padding → ~36×36px badge (bold/prominent)",
   minimal:
     "Option C - Top border only, uppercase title, ultra-subtle editorial style",
   refined:
