@@ -139,7 +139,7 @@
   --search-hover-text: var(--color-slate-700);
 
   /* Search results colors (light mode) */
-  --search-result-bg: white;
+  --search-result-bg: var(--color-slate-50);
   --search-result-hover-bg: var(--color-slate-100);
   --search-result-selected-bg: color-mix(
     in oklch,
