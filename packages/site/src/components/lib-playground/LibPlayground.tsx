@@ -1,4 +1,4 @@
-import { MatcherRegistry } from "@social-embed/lib";
+import { isYouTubeShortsUrl, MatcherRegistry } from "@social-embed/lib";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createRng, generateSeed } from "../../lib/seededRng";
 import { RerollButton } from "../playground/RerollButton";
@@ -20,8 +20,6 @@ import {
 import { type LibOutput, OutputDisplay } from "./OutputDisplay";
 import { ProviderSelector } from "./ProviderSelector";
 import { UrlInput } from "./UrlInput";
-
-const libRegistry = MatcherRegistry.withDefaults();
 
 function providerIdFromMatchData(data: unknown): string | null {
   if (data && typeof data === "object") {
@@ -52,6 +50,8 @@ export interface LibPlaygroundProps {
   className?: string;
 }
 
+const registry = MatcherRegistry.withDefaults();
+
 /**
  * Transform a URL using the library and return output data.
  */
@@ -67,12 +67,13 @@ function transformUrl(url: string): LibOutput {
   }
 
   try {
-    const match = libRegistry.match(url);
+    const result = registry.match(url);
 
-    if (!match.ok) {
+    if (!result.ok) {
       return {
         embedUrl: null,
-        error: "No matching provider found for this URL",
+        error:
+          result.error?.message ?? "No matching provider found for this URL",
         input: url,
         isValid: false,
         provider: null,
@@ -80,9 +81,9 @@ function transformUrl(url: string): LibOutput {
       };
     }
 
-    const providerId = providerIdFromMatchData(match.data);
-    const embedUrl = libRegistry.toEmbedUrl(url);
-    const isShorts = /youtube\.com\/shorts\//i.test(url);
+    const providerId = providerIdFromMatchData(result.data);
+    const embedUrl = registry.toEmbedUrl(url);
+    const isShorts = isYouTubeShortsUrl(url);
 
     return {
       embedUrl: embedUrl || null,
