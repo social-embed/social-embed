@@ -1,22 +1,17 @@
-import react from "@vitejs/plugin-react";
-import type { UserConfig as ViteUserConfig } from "vite";
-import { defineConfig } from "vitest/config";
+/// <reference types="vitest" />
+import { getViteConfig } from "astro/config";
 
-// FIXME: Type assertion required due to Vite version mismatch
-// Astro bundles Vite 6, @vitejs/plugin-react targets Vite 7
-// Remove when Astro upgrades to Vite 7 or use pnpm override
-type VitePlugin = NonNullable<ViteUserConfig["plugins"]>[number];
-const reactPlugin = react() as unknown as VitePlugin;
-
-export default defineConfig({
+// Use getViteConfig for Astro component testing support with AstroContainer
+export default getViteConfig({
   define: {
     // Build-time globals needed by cdnSources.ts
     __GIT_BRANCH__: JSON.stringify("test-branch"),
   },
-  plugins: [reactPlugin],
+  // @ts-expect-error: Vitest 'test' property not recognized in Astro's Vite config type
   test: {
+    // happy-dom provides DOM APIs for React component tests
     environment: "happy-dom",
-    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx", "plugins/**/*.test.ts"],
     setupFiles: ["./vitest.setup.ts"],
   },
 });
