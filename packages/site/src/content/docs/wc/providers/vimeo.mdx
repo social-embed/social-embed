@@ -5,16 +5,25 @@ sidebar_label: Vimeo
 description: Vimeo Video Player support for <o-embed> component.
 ---
 
-## Default dimensions
+import { Aside } from '@astrojs/starlight/components';
 
-URL: https://vimeo.com/134668506
+[Vimeo] is a video hosting and sharing platform.
+
+[vimeo]: https://vimeo.com
+
+## Basic Usage
 
 ```html
 <o-embed url="https://vimeo.com/134668506"></o-embed>
 ```
 
-<o-embed
-url="https://vimeo.com/134668506"></o-embed>
+<o-embed url="https://vimeo.com/134668506"></o-embed>
+
+---
+
+## Channel and Group URLs
+
+Vimeo supports various URL formats including channels and groups:
 
 ```html
 <o-embed url="https://vimeo.com/channels/staffpicks/134668506"></o-embed>
@@ -22,21 +31,133 @@ url="https://vimeo.com/134668506"></o-embed>
 
 <o-embed url="https://vimeo.com/channels/staffpicks/134668506"></o-embed>
 
-## Custom dimensions
+---
+
+## Vimeo-specific Options
+
+The `<o-embed>` component supports Vimeo-specific options via the `provider-options` attribute.
+
+### Available Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `autoplay` | boolean | Auto-start the video (requires `muted: true` in most browsers) |
+| `muted` | boolean | Start the video muted |
+| `loop` | boolean | Loop the video continuously |
+| `background` | boolean | Enable background mode (hides all UI, paid accounts only) |
+| `autopause` | boolean | Pause when video scrolls out of view (default: true) |
+| `controls` | boolean | Show player controls (default: true) |
+| `title` | boolean | Show video title (default: true) |
+| `byline` | boolean | Show author byline (default: true) |
+| `portrait` | boolean | Show author portrait (default: true) |
+
+### Autoplay with Muted
+
+Enable autoplay (requires muted for most browsers):
 
 ```html
-<o-embed url="https://vimeo.com/134668506" width="1080" height="536"></o-embed>
+<o-embed
+  url="https://vimeo.com/134668506"
+  provider-options='{"autoplay": true, "muted": true}'
+></o-embed>
 ```
 
-<o-embed
-url="https://vimeo.com/134668506" width="1080" height="536"></o-embed>
+### Loop
+
+Loop the video continuously:
 
 ```html
 <o-embed
-  url="https://vimeo.com/channels/staffpicks/134668506"
+  url="https://vimeo.com/134668506"
+  provider-options='{"loop": true}'
+></o-embed>
+```
+
+### Background Mode
+
+<Aside type="caution">
+Background mode is only available for paid Vimeo accounts. It hides all player UI elements.
+</Aside>
+
+```html
+<o-embed
+  url="https://vimeo.com/134668506"
+  provider-options='{"background": true}'
+></o-embed>
+```
+
+### Hide UI Elements
+
+Hide specific UI elements for a cleaner appearance:
+
+```html
+<o-embed
+  url="https://vimeo.com/134668506"
+  provider-options='{"title": false, "byline": false, "portrait": false}'
+></o-embed>
+```
+
+### Disable Autopause
+
+Prevent the video from pausing when scrolled out of view:
+
+```html
+<o-embed
+  url="https://vimeo.com/134668506"
+  provider-options='{"autopause": false}'
+></o-embed>
+```
+
+### Hide Controls
+
+```html
+<o-embed
+  url="https://vimeo.com/134668506"
+  provider-options='{"controls": false}'
+></o-embed>
+```
+
+### Combining Options
+
+```html
+<o-embed
+  url="https://vimeo.com/134668506"
+  provider-options='{"autoplay": true, "muted": true, "loop": true, "title": false}'
+></o-embed>
+```
+
+---
+
+## Custom Dimensions
+
+```html
+<o-embed
+  url="https://vimeo.com/134668506"
   width="1080"
   height="536"
 ></o-embed>
 ```
 
-<o-embed url="https://vimeo.com/channels/staffpicks/134668506" width="1080" height="536"></o-embed>
+<o-embed
+  url="https://vimeo.com/134668506"
+  width="1080"
+  height="536"
+></o-embed>
+
+---
+
+## Responsive Width
+
+Use percentage width for responsive embeds:
+
+```html
+<o-embed
+  url="https://vimeo.com/134668506"
+  width="100%"
+></o-embed>
+```
+
+<o-embed
+  url="https://vimeo.com/134668506"
+  width="100%"
+></o-embed>
