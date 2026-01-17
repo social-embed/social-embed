@@ -28,10 +28,19 @@ export function thinSubResults(
 }
 
 /**
- * Generate a breadcrumb path from URL.
- * e.g., "/wc/providers/youtube/" → "Wc › Providers › YouTube"
+ * Breadcrumb segment overrides for acronyms and special cases.
+ * Keys are lowercase, values are the display text.
  */
-function urlToBreadcrumb(url: string): string {
+export const BREADCRUMB_OVERRIDES: Record<string, string> = {
+  api: "API",
+  wc: "WC",
+};
+
+/**
+ * Generate a breadcrumb path from URL.
+ * e.g., "/wc/providers/youtube/" → "WC > Providers > Youtube"
+ */
+export function urlToBreadcrumb(url: string): string {
   const parts = url
     .replace(/^\//, "") // Remove leading slash
     .replace(/\/$/, "") // Remove trailing slash
@@ -43,13 +52,18 @@ function urlToBreadcrumb(url: string): string {
 
   return parts
     .map((part) => {
+      const lowerPart = part.toLowerCase();
+      // Check for override first
+      if (BREADCRUMB_OVERRIDES[lowerPart]) {
+        return BREADCRUMB_OVERRIDES[lowerPart];
+      }
       // Capitalize first letter, handle kebab-case
       return part
         .split("-")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
     })
-    .join(" › ");
+    .join(" > ");
 }
 
 /**
