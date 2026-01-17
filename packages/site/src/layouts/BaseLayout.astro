@@ -63,7 +63,12 @@ const fullTitle = title === "social-embed" ? title : `${title} | social-embed`;
     <!-- Theme script (inline to prevent flash) -->
     <script is:inline>
       (() => {
-        const theme = localStorage.getItem('starlight-theme');
+        let theme = null;
+        try {
+          theme = localStorage.getItem('starlight-theme');
+        } catch {
+          // localStorage unavailable (private browsing, security restrictions)
+        }
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const resolved = theme === 'light' ? 'light'
                        : theme === 'dark' ? 'dark'
