@@ -1,24 +1,39 @@
 ---
 /**
  * Aside component for callouts and admonitions.
- * Default: hybrid (24×24 icon + 0.25rem padding).
- * Other variants available for comparison: classic, refined, card, minimal.
+ *
+ * Props:
+ * - type: Semantic type (note, tip, caution, danger) - controls colors
+ * - variant: Container/layout style (classic, refined, card, minimal, hybrid)
+ * - iconStyle: Icon appearance (inline, soft, solid) - can override variant default
+ * - iconSize: Icon dimensions (sm, md, lg) - can override variant default
+ *
+ * Default variant is "hybrid" with solid icon style and lg size.
  */
 interface Props {
   type?: "note" | "tip" | "caution" | "danger";
   title?: string;
-  variant?:
-    | "classic"
-    | "refined"
-    | "card"
-    | "minimal"
-    | "hybrid"
-    | "hybrid-a"
-    | "hybrid-b"
-    | "hybrid-d";
+  variant?: "classic" | "refined" | "card" | "minimal" | "hybrid";
+  iconStyle?: "inline" | "soft" | "solid";
+  iconSize?: "sm" | "md" | "lg";
 }
 
+// Variant defaults for iconStyle and iconSize
+const variantDefaults: Record<
+  string,
+  { iconStyle: "inline" | "soft" | "solid"; iconSize: "sm" | "md" | "lg" }
+> = {
+  card: { iconSize: "md", iconStyle: "solid" },
+  classic: { iconSize: "md", iconStyle: "inline" },
+  hybrid: { iconSize: "lg", iconStyle: "solid" },
+  minimal: { iconSize: "sm", iconStyle: "inline" },
+  refined: { iconSize: "md", iconStyle: "soft" },
+};
+
 const { type = "note", title, variant = "hybrid" } = Astro.props;
+const defaults = variantDefaults[variant] || variantDefaults.hybrid;
+const iconStyle = Astro.props.iconStyle ?? defaults.iconStyle;
+const iconSize = Astro.props.iconSize ?? defaults.iconSize;
 
 const icons: Record<string, string> = {
   caution: "M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z",
@@ -38,16 +53,16 @@ const defaultTitles: Record<string, string> = {
 
 <aside class:list={["aside", `aside-${type}`, `aside-${variant}`]} role="note">
   <p class="aside-title">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d={icons[type]} />
-    </svg>
+    <span class:list={["aside-icon", `aside-icon-${iconStyle}`, `aside-icon-${iconSize}`]}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path d={icons[type]} />
+      </svg>
+    </span>
     <span>{title || defaultTitles[type]}</span>
   </p>
   <div class="aside-content">
@@ -114,7 +129,75 @@ const defaultTitles: Record<string, string> = {
   }
 
   /* ========================================
-   * VARIANT: CLASSIC (current production style)
+   * ICON WRAPPER (base styles)
+   * ======================================== */
+  .aside-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ========================================
+   * ICON STYLES (independent of variant)
+   * ======================================== */
+  /* Inline: icon inherits text color, no container */
+  .aside-icon-inline {
+    color: var(--aside-color);
+  }
+
+  :global([data-theme="dark"]) .aside-icon-inline {
+    color: color-mix(in oklch, var(--aside-color), white 30%);
+  }
+
+  /* Soft: subtle badge with lightened background */
+  .aside-icon-soft {
+    padding: 0.25rem;
+    background: color-mix(in oklch, var(--aside-color), white 70%);
+    border-radius: 0.375rem;
+    color: var(--aside-color);
+  }
+
+  :global([data-theme="dark"]) .aside-icon-soft {
+    background: color-mix(in oklch, var(--aside-color), transparent 70%);
+    color: color-mix(in oklch, var(--aside-color), white 30%);
+  }
+
+  /* Solid: strong badge with full color + white icon */
+  .aside-icon-solid {
+    padding: 0.25rem;
+    background: var(--aside-color);
+    color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  :global([data-theme="dark"]) .aside-icon-solid {
+    background: color-mix(in oklch, var(--aside-color), white 10%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  /* ========================================
+   * ICON SIZES (independent of variant)
+   * ======================================== */
+  .aside-icon-sm svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .aside-icon-md svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .aside-icon-lg svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* ========================================
+   * VARIANT: CLASSIC
+   * Simple left border with flat background
    * ======================================== */
   .aside-classic {
     border-left: 4px solid var(--aside-color);
@@ -129,8 +212,8 @@ const defaultTitles: Record<string, string> = {
   }
 
   /* ========================================
-   * VARIANT: REFINED (Option A)
-   * Gradient background + icon pill
+   * VARIANT: REFINED
+   * Gradient background fading right
    * ======================================== */
   .aside-refined {
     border-left: 5px solid var(--aside-color);
@@ -145,12 +228,6 @@ const defaultTitles: Record<string, string> = {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   }
 
-  .aside-refined .aside-title svg {
-    padding: 0.25rem;
-    background: color-mix(in oklch, var(--aside-color), white 70%);
-    border-radius: 0.375rem;
-  }
-
   :global([data-theme="dark"]) .aside-refined {
     --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
     background: linear-gradient(
@@ -162,13 +239,9 @@ const defaultTitles: Record<string, string> = {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   }
 
-  :global([data-theme="dark"]) .aside-refined .aside-title svg {
-    background: color-mix(in oklch, var(--aside-color), transparent 70%);
-  }
-
   /* ========================================
-   * VARIANT: CARD (Option B)
-   * Full border card + colored icon badge
+   * VARIANT: CARD
+   * Full bordered card, no left accent
    * ======================================== */
   .aside-card {
     border: 1px solid color-mix(in oklch, var(--aside-color), white 70%);
@@ -181,14 +254,6 @@ const defaultTitles: Record<string, string> = {
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
 
-  .aside-card .aside-title svg {
-    padding: 0.375rem;
-    background: var(--aside-color);
-    color: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
-
   :global([data-theme="dark"]) .aside-card {
     background: color-mix(in oklch, var(--aside-color), transparent 88%);
     border-color: color-mix(in oklch, var(--aside-color), transparent 65%);
@@ -197,12 +262,8 @@ const defaultTitles: Record<string, string> = {
       inset 0 1px 0 color-mix(in oklch, var(--aside-color), transparent 80%);
   }
 
-  :global([data-theme="dark"]) .aside-card .aside-title svg {
-    background: color-mix(in oklch, var(--aside-color), white 10%);
-  }
-
   /* ========================================
-   * VARIANT: MINIMAL (Option C)
+   * VARIANT: MINIMAL
    * Top border only, uppercase title
    * ======================================== */
   .aside-minimal {
@@ -220,9 +281,7 @@ const defaultTitles: Record<string, string> = {
     text-transform: uppercase;
   }
 
-  .aside-minimal .aside-title svg {
-    width: 16px;
-    height: 16px;
+  .aside-minimal .aside-icon {
     opacity: 0.85;
   }
 
@@ -236,13 +295,10 @@ const defaultTitles: Record<string, string> = {
   }
 
   /* ========================================
-   * HYBRID VARIANTS (A-D) for comparison
-   * All share hybrid base styling, differ in icon size/padding
+   * VARIANT: HYBRID
+   * Gradient background with left accent (recommended)
    * ======================================== */
-  .aside-hybrid,
-  .aside-hybrid-a,
-  .aside-hybrid-b,
-  .aside-hybrid-d {
+  .aside-hybrid {
     border-left: 5px solid var(--aside-color);
     padding: 1rem 1.25rem;
     margin: 1.5rem 0;
@@ -255,48 +311,7 @@ const defaultTitles: Record<string, string> = {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   }
 
-  .aside-hybrid .aside-title svg,
-  .aside-hybrid-a .aside-title svg,
-  .aside-hybrid-b .aside-title svg,
-  .aside-hybrid-d .aside-title svg {
-    background: var(--aside-color);
-    color: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  }
-
-  /* Hybrid-A: 24×24 icon + 0.375rem padding → ~36×36px badge */
-  .aside-hybrid-a .aside-title svg {
-    width: 24px;
-    height: 24px;
-    padding: 0.375rem;
-  }
-
-  /* Hybrid-B: 20×20 icon + 0.25rem padding → ~28×28px badge */
-  .aside-hybrid-b .aside-title svg {
-    width: 20px;
-    height: 20px;
-    padding: 0.25rem;
-  }
-
-  /* Hybrid (default): 24×24 icon + 0.25rem padding → ~32×32px badge */
-  .aside-hybrid .aside-title svg {
-    width: 24px;
-    height: 24px;
-    padding: 0.25rem;
-  }
-
-  /* Hybrid-D: 28×28 icon + 0.25rem padding → ~36×36px badge */
-  .aside-hybrid-d .aside-title svg {
-    width: 28px;
-    height: 28px;
-    padding: 0.25rem;
-  }
-
-  :global([data-theme="dark"]) .aside-hybrid,
-  :global([data-theme="dark"]) .aside-hybrid-a,
-  :global([data-theme="dark"]) .aside-hybrid-b,
-  :global([data-theme="dark"]) .aside-hybrid-d {
+  :global([data-theme="dark"]) .aside-hybrid {
     --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
     background: linear-gradient(
       to right,
@@ -305,13 +320,5 @@ const defaultTitles: Record<string, string> = {
     );
     border-left-color: color-mix(in oklch, var(--aside-color), white 15%);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  }
-
-  :global([data-theme="dark"]) .aside-hybrid .aside-title svg,
-  :global([data-theme="dark"]) .aside-hybrid-a .aside-title svg,
-  :global([data-theme="dark"]) .aside-hybrid-b .aside-title svg,
-  :global([data-theme="dark"]) .aside-hybrid-d .aside-title svg {
-    background: color-mix(in oklch, var(--aside-color), white 10%);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 </style>
