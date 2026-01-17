@@ -151,6 +151,9 @@ export interface SearchModalProps {
   subResultsDisplay?: SubResultsDisplay;
   /** Whether arrow keys can navigate into sub-results (default: false) */
   navigateSections?: boolean;
+  /** Custom navigation handler. If provided, called instead of default navigation.
+   *  Return a Promise if navigation is async (e.g., Astro View Transitions). */
+  onNavigate?: (url: string) => void | Promise<void>;
 }
 
 /** Options for the usePagefindSearch hook */

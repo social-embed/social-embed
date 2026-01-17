@@ -29,6 +29,7 @@ interface RenderProps {
   onClose?: () => void;
   isOpen?: boolean;
   subResultsDisplay?: "inline" | "toggle" | "breadcrumbs";
+  onNavigate?: (url: string) => void | Promise<void>;
 }
 
 async function renderModal(props: RenderProps = {}) {
@@ -490,6 +491,152 @@ describe("SearchModal", () => {
 
       // Should preserve "Vimeo" case even though we searched "vimeo"
       expect(titleElement?.innerHTML).toMatch(/<mark>Vimeo<\/mark>/i);
+    });
+  });
+
+  describe("navigation", () => {
+    test("calls onNavigate prop when provided", async () => {
+      const onNavigate = vi.fn();
+      const { input, container } = await renderModal({ onNavigate });
+
+      // Search for results
+      await act(async () => {
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value",
+        )?.set;
+        nativeInputValueSetter?.call(input, "youtube");
+        input?.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+
+      // Click on the anchor inside the first result (that's where the click handler is)
+      const firstResultLink = container?.querySelector(
+        '[role="option"] a',
+      ) as HTMLAnchorElement | null;
+      expect(firstResultLink).toBeTruthy();
+
+      await act(async () => {
+        firstResultLink?.click();
+      });
+
+      expect(onNavigate).toHaveBeenCalledWith(expect.stringContaining("/"));
+    });
+
+    test("does not clear state while navigating", async () => {
+      // Create a navigation handler that never resolves (simulates slow navigation)
+      const onNavigate = vi.fn(() => new Promise<void>(() => {}));
+      const { input, getResults, container } = await renderModal({
+        onNavigate,
+      });
+
+      // Search for results
+      await act(async () => {
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value",
+        )?.set;
+        nativeInputValueSetter?.call(input, "youtube");
+        input?.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+
+      const resultsBeforeNav = getResults();
+      expect(resultsBeforeNav.length).toBeGreaterThan(0);
+
+      // Click to trigger navigation (which won't complete)
+      const firstResultLink = container?.querySelector(
+        '[role="option"] a',
+      ) as HTMLAnchorElement | null;
+      await act(async () => {
+        firstResultLink?.click();
+      });
+
+      // Results should still be visible (not cleared) because navigation is in progress
+      const resultsAfterNav = getResults();
+      expect(resultsAfterNav.length).toBeGreaterThan(0);
+    });
+
+    test("ignores Escape key while navigating", async () => {
+      const onClose = vi.fn();
+      // Create a navigation handler that never resolves
+      const onNavigate = vi.fn(() => new Promise<void>(() => {}));
+      const { input, container } = await renderModal({ onClose, onNavigate });
+
+      // Search for results
+      await act(async () => {
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value",
+        )?.set;
+        nativeInputValueSetter?.call(input, "youtube");
+        input?.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+
+      // Click to trigger navigation (which won't complete)
+      const firstResultLink = container?.querySelector(
+        '[role="option"] a',
+      ) as HTMLAnchorElement | null;
+      await act(async () => {
+        firstResultLink?.click();
+      });
+
+      // Reset onClose mock since it might have been called during navigation setup
+      onClose.mockClear();
+
+      // Press Escape while navigating
+      await act(async () => {
+        input?.dispatchEvent(
+          new KeyboardEvent("keydown", { bubbles: true, key: "Escape" }),
+        );
+      });
+
+      // onClose should NOT have been called because navigation is in progress
+      expect(onClose).not.toHaveBeenCalled();
+    });
+
+    test("calls onNavigate when pressing Enter on selected result", async () => {
+      const onNavigate = vi.fn();
+      const { input } = await renderModal({ onNavigate });
+
+      // Search for results
+      await act(async () => {
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value",
+        )?.set;
+        nativeInputValueSetter?.call(input, "youtube");
+        input?.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+
+      // Arrow down to select first result, then press Enter
+      await act(async () => {
+        input?.dispatchEvent(
+          new KeyboardEvent("keydown", { bubbles: true, key: "ArrowDown" }),
+        );
+      });
+
+      await act(async () => {
+        input?.dispatchEvent(
+          new KeyboardEvent("keydown", { bubbles: true, key: "Enter" }),
+        );
+      });
+
+      expect(onNavigate).toHaveBeenCalledWith(expect.stringContaining("/"));
     });
   });
 });

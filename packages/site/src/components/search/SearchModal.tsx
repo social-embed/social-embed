@@ -17,6 +17,20 @@ const RESULT_ID_PREFIX = "search-result";
 const INLINE_SUBRESULTS_LIMIT = 3;
 
 /**
+ * Attempt to use Astro's View Transitions navigate function.
+ * Returns true if navigation was handled by Astro, false otherwise.
+ */
+async function tryAstroNavigate(url: string): Promise<boolean> {
+  try {
+    const { navigate } = await import("astro:transitions/client");
+    navigate(url);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Get the number of navigable sub-results for a result based on display mode.
  * - 'inline': Limited to INLINE_SUBRESULTS_LIMIT
  * - 'toggle': All sub-results (but only when toggled - handled separately)
@@ -48,9 +62,11 @@ export function SearchModal({
   isOpen: externalIsOpen,
   subResultsDisplay = "breadcrumbs",
   navigateSections = false,
+  onNavigate,
 }: SearchModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
   const isOpen = externalIsOpen ?? internalIsOpen;
 
   const { state, setQuery, clear } = usePagefindSearch({
@@ -93,8 +109,10 @@ export function SearchModal({
     }
   }, [isOpen]);
 
-  // Handle close
+  // Handle close - respects navigation lock to prevent flash
   const handleClose = useCallback(() => {
+    if (isNavigating) return; // Don't clear during navigation
+
     clear();
     setLocalSelectedIndex(-1);
     setLocalSelectedSubIndex(-1);
@@ -103,15 +121,32 @@ export function SearchModal({
     } else {
       setInternalIsOpen(false);
     }
-  }, [clear, onClose]);
+  }, [clear, onClose, isNavigating]);
 
-  // Navigate to a result URL
+  // Navigate to a result URL - supports custom navigation and Astro View Transitions
   const handleNavigate = useCallback(
-    (url: string) => {
-      window.location.href = url;
-      handleClose();
+    async (url: string) => {
+      setIsNavigating(true);
+
+      try {
+        if (onNavigate) {
+          await onNavigate(url);
+        } else {
+          const navigated = await tryAstroNavigate(url);
+          if (!navigated) {
+            window.location.href = url;
+          }
+        }
+      } catch (error) {
+        console.error("Navigation failed:", error);
+        setIsNavigating(false);
+        return;
+      }
+
+      // For SPA routers, close modal after navigation completes
+      onClose?.();
     },
-    [handleClose],
+    [onNavigate, onClose],
   );
 
   // Handle sub-result selection change from mouse
@@ -212,7 +247,9 @@ export function SearchModal({
 
         case "Escape":
           e.preventDefault();
-          handleClose();
+          if (!isNavigating) {
+            handleClose();
+          }
           break;
 
         case "Home":
@@ -240,6 +277,7 @@ export function SearchModal({
       subResultsDisplay,
       handleNavigate,
       handleClose,
+      isNavigating,
     ],
   );
 
@@ -326,6 +364,7 @@ export function SearchModalDialog({
   initialQuery = "",
   onClose,
   isOpen,
+  onNavigate,
 }: SearchModalProps & { isOpen: boolean }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -376,6 +415,7 @@ export function SearchModalDialog({
           initialQuery={initialQuery}
           isOpen={isOpen}
           onClose={onClose}
+          onNavigate={onNavigate}
           useMockData={useMockData}
         />
       </div>
