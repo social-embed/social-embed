@@ -185,28 +185,29 @@ function IconStylePicker({
       <legend className="text-xs font-medium text-slate-600 dark:text-slate-400">
         Icon Style
       </legend>
-      <div
-        className="inline-flex rounded-lg border border-slate-200 bg-slate-100 p-0.5 dark:border-slate-600 dark:bg-slate-800"
-        role="radiogroup"
-      >
+      <div className="inline-flex gap-0.5 rounded-lg border border-slate-200 bg-slate-100 p-0.5 dark:border-slate-600 dark:bg-slate-800">
         {options.map((opt) => {
           const isSelected = value === opt;
           const isDefault = opt !== "auto" && opt === defaultStyle;
 
           return (
-            <button
-              aria-checked={isSelected}
+            <label
               className={`relative flex items-center justify-center w-8 h-8 rounded-md transition-colors cursor-pointer select-none ${
                 isSelected
                   ? "bg-white shadow-sm dark:bg-slate-700"
                   : "hover:bg-slate-200 dark:hover:bg-slate-700"
               }`}
               key={opt}
-              onClick={() => onChange(opt)}
-              role="radio"
               title={opt}
-              type="button"
             >
+              <input
+                checked={isSelected}
+                className="sr-only"
+                name="icon-style"
+                onChange={() => onChange(opt)}
+                type="radio"
+                value={opt}
+              />
               {opt === "auto" ? (
                 <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
                   A
@@ -235,7 +236,7 @@ function IconStylePicker({
               {isDefault && (
                 <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-blue-500" />
               )}
-            </button>
+            </label>
           );
         })}
       </div>
