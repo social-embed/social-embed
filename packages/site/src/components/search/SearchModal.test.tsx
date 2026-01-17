@@ -28,6 +28,7 @@ interface RenderProps {
   initialQuery?: string;
   onClose?: () => void;
   isOpen?: boolean;
+  subResultsDisplay?: "inline" | "toggle" | "breadcrumbs";
 }
 
 async function renderModal(props: RenderProps = {}) {
@@ -392,7 +393,10 @@ describe("SearchModal", () => {
     });
 
     test("highlights matching terms in title", async () => {
-      const { input, container } = await renderModal();
+      // Use toggle mode to test title highlighting behavior
+      const { input, container } = await renderModal({
+        subResultsDisplay: "toggle",
+      });
 
       // Search for "YouTube" which appears in the title "YouTube Embeds"
       await act(async () => {
@@ -418,7 +422,10 @@ describe("SearchModal", () => {
     });
 
     test("highlights matching terms in sub-result titles", async () => {
-      const { input, container } = await renderModal();
+      // Use toggle mode to test sub-result expansion and highlighting
+      const { input, container } = await renderModal({
+        subResultsDisplay: "toggle",
+      });
 
       // Search for "Installation" which appears in sub-result titles
       await act(async () => {
@@ -455,7 +462,10 @@ describe("SearchModal", () => {
     });
 
     test("preserves original case when highlighting", async () => {
-      const { input, container } = await renderModal();
+      // Use toggle mode to test title highlighting
+      const { input, container } = await renderModal({
+        subResultsDisplay: "toggle",
+      });
 
       // Search with lowercase for title that has proper case
       await act(async () => {

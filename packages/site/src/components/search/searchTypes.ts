@@ -75,7 +75,7 @@ export interface SearchResultItemProps {
   onMouseEnter: () => void;
   /** Unique ID for accessibility (aria-activedescendant) */
   id: string;
-  /** Display mode for sub-results (default: 'toggle') */
+  /** Display mode for sub-results (default: 'breadcrumbs') */
   subResultsDisplay?: SubResultsDisplay;
   /** Index of selected sub-result when navigateSections is true (-1 = main result) */
   selectedSubIndex?: number;
@@ -97,7 +97,7 @@ export interface SearchResultsProps {
   onNavigate: (url: string) => void;
   /** ID prefix for result items */
   idPrefix?: string;
-  /** Display mode for sub-results (default: 'toggle') */
+  /** Display mode for sub-results (default: 'breadcrumbs') */
   subResultsDisplay?: SubResultsDisplay;
   /** Whether arrow keys can navigate into sub-results (default: false) */
   navigateSections?: boolean;
@@ -147,7 +147,7 @@ export interface SearchModalProps {
   onClose?: () => void;
   /** Whether the modal is controlled externally */
   isOpen?: boolean;
-  /** Display mode for sub-results (default: 'toggle') */
+  /** Display mode for sub-results (default: 'breadcrumbs') */
   subResultsDisplay?: SubResultsDisplay;
   /** Whether arrow keys can navigate into sub-results (default: false) */
   navigateSections?: boolean;

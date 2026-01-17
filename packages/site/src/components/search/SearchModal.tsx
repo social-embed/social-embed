@@ -46,7 +46,7 @@ export function SearchModal({
   initialQuery = "",
   onClose,
   isOpen: externalIsOpen,
-  subResultsDisplay = "toggle",
+  subResultsDisplay = "breadcrumbs",
   navigateSections = false,
 }: SearchModalProps) {
   const inputRef = useRef<HTMLInputElement>(null);
