@@ -87,12 +87,16 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
         TabsManager.syncGroups.get(syncKey)!.add(container);
 
         // Restore saved selection
-        const saved = localStorage.getItem(`tabs-sync-${syncKey}`);
-        if (saved) {
-          const savedIndex = Number.parseInt(saved, 10);
-          if (savedIndex < panels.length) {
-            TabsManager.selectTab(container, savedIndex, null);
+        try {
+          const saved = localStorage.getItem(`tabs-sync-${syncKey}`);
+          if (saved) {
+            const savedIndex = Number.parseInt(saved, 10);
+            if (savedIndex < panels.length) {
+              TabsManager.selectTab(container, savedIndex, null);
+            }
           }
+        } catch {
+          // localStorage may be unavailable (private browsing, security restrictions)
         }
       }
     }
@@ -121,7 +125,11 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
 
       // Sync other tabs with same key
       if (syncKey) {
-        localStorage.setItem(`tabs-sync-${syncKey}`, String(index));
+        try {
+          localStorage.setItem(`tabs-sync-${syncKey}`, String(index));
+        } catch {
+          // localStorage may be unavailable (private browsing, quota exceeded)
+        }
         TabsManager.syncGroups.get(syncKey)?.forEach((otherContainer) => {
           if (otherContainer !== container) {
             TabsManager.selectTab(otherContainer, index, null);
