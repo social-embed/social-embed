@@ -216,7 +216,7 @@ function IconStylePicker({
                     opt === "inline"
                       ? "text-blue-600 dark:text-blue-400"
                       : opt === "soft"
-                        ? "p-0.5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400"
+                        ? "p-0.5 rounded bg-blue-100 dark:bg-blue-800/70 text-blue-600 dark:text-blue-400"
                         : "p-0.5 rounded bg-blue-600 dark:bg-blue-500 text-white"
                   }`}
                 >
