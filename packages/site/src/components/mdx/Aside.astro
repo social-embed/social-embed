@@ -1,14 +1,24 @@
 ---
 /**
  * Aside component for callouts and admonitions.
- * Replaces @astrojs/starlight/components Aside.
+ * Default: hybrid (24×24 icon + 0.25rem padding).
+ * Other variants available for comparison: classic, refined, card, minimal.
  */
 interface Props {
   type?: "note" | "tip" | "caution" | "danger";
   title?: string;
+  variant?:
+    | "classic"
+    | "refined"
+    | "card"
+    | "minimal"
+    | "hybrid"
+    | "hybrid-a"
+    | "hybrid-b"
+    | "hybrid-d";
 }
 
-const { type = "note", title } = Astro.props;
+const { type = "note", title, variant = "hybrid" } = Astro.props;
 
 const icons: Record<string, string> = {
   caution: "M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z",
@@ -26,7 +36,7 @@ const defaultTitles: Record<string, string> = {
 };
 ---
 
-<aside class:list={["aside", `aside-${type}`]} role="note">
+<aside class:list={["aside", `aside-${type}`, `aside-${variant}`]} role="note">
   <p class="aside-title">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -46,43 +56,12 @@ const defaultTitles: Record<string, string> = {
 </aside>
 
 <style>
+  /* ========================================
+   * BASE STYLES (shared across all variants)
+   * ======================================== */
   .aside {
     --aside-color: var(--color-mv-blue);
     --aside-bg: var(--color-mv-blue-light);
-    border-left: 5px solid var(--aside-color);
-    padding: 1rem 1.25rem;
-    margin: 1.5rem 0;
-    border-radius: 0 0.5rem 0.5rem 0;
-    background: linear-gradient(
-      to right,
-      var(--aside-bg),
-      color-mix(in oklch, var(--aside-bg), white 60%) 100%
-    );
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  }
-
-  :global([data-theme="dark"]) .aside {
-    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
-    background: linear-gradient(
-      to right,
-      var(--aside-bg),
-      color-mix(in oklch, var(--aside-bg), transparent 40%) 100%
-    );
-    border-left-color: color-mix(in oklch, var(--aside-color), white 15%);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  }
-
-  .aside-title svg {
-    padding: 0.375rem;
-    background: var(--aside-color);
-    color: white;
-    border-radius: 0.5rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
-  }
-
-  :global([data-theme="dark"]) .aside-title svg {
-    background: color-mix(in oklch, var(--aside-color), white 10%);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
   .aside-note {
@@ -132,5 +111,207 @@ const defaultTitles: Record<string, string> = {
 
   .aside-content :global(p + p) {
     margin-top: 0.75rem;
+  }
+
+  /* ========================================
+   * VARIANT: CLASSIC (current production style)
+   * ======================================== */
+  .aside-classic {
+    border-left: 4px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: var(--aside-bg);
+  }
+
+  :global([data-theme="dark"]) .aside-classic {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+  }
+
+  /* ========================================
+   * VARIANT: REFINED (Option A)
+   * Gradient background + icon pill
+   * ======================================== */
+  .aside-refined {
+    border-left: 5px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), white 60%) 100%
+    );
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .aside-refined .aside-title svg {
+    padding: 0.25rem;
+    background: color-mix(in oklch, var(--aside-color), white 70%);
+    border-radius: 0.375rem;
+  }
+
+  :global([data-theme="dark"]) .aside-refined {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), transparent 40%) 100%
+    );
+    border-left-color: color-mix(in oklch, var(--aside-color), white 15%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  :global([data-theme="dark"]) .aside-refined .aside-title svg {
+    background: color-mix(in oklch, var(--aside-color), transparent 70%);
+  }
+
+  /* ========================================
+   * VARIANT: CARD (Option B)
+   * Full border card + colored icon badge
+   * ======================================== */
+  .aside-card {
+    border: 1px solid color-mix(in oklch, var(--aside-color), white 70%);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: color-mix(in oklch, var(--aside-color), white 92%);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  .aside-card .aside-title svg {
+    padding: 0.375rem;
+    background: var(--aside-color);
+    color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  :global([data-theme="dark"]) .aside-card {
+    background: color-mix(in oklch, var(--aside-color), transparent 88%);
+    border-color: color-mix(in oklch, var(--aside-color), transparent 65%);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 color-mix(in oklch, var(--aside-color), transparent 80%);
+  }
+
+  :global([data-theme="dark"]) .aside-card .aside-title svg {
+    background: color-mix(in oklch, var(--aside-color), white 10%);
+  }
+
+  /* ========================================
+   * VARIANT: MINIMAL (Option C)
+   * Top border only, uppercase title
+   * ======================================== */
+  .aside-minimal {
+    border-top: 2px solid var(--aside-color);
+    border-radius: 0;
+    padding: 1rem 0 1rem 1rem;
+    margin: 1.5rem 0;
+    background: color-mix(in oklch, var(--aside-color), white 96%);
+    box-shadow: none;
+  }
+
+  .aside-minimal .aside-title {
+    font-size: 0.8125rem;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .aside-minimal .aside-title svg {
+    width: 16px;
+    height: 16px;
+    opacity: 0.85;
+  }
+
+  :global([data-theme="dark"]) .aside-minimal {
+    background: color-mix(in oklch, var(--aside-color), transparent 94%);
+    border-top-color: color-mix(in oklch, var(--aside-color), white 20%);
+  }
+
+  :global([data-theme="dark"]) .aside-minimal .aside-content {
+    color: var(--color-slate-400);
+  }
+
+  /* ========================================
+   * HYBRID VARIANTS (A-D) for comparison
+   * All share hybrid base styling, differ in icon size/padding
+   * ======================================== */
+  .aside-hybrid,
+  .aside-hybrid-a,
+  .aside-hybrid-b,
+  .aside-hybrid-d {
+    border-left: 5px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), white 60%) 100%
+    );
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .aside-hybrid .aside-title svg,
+  .aside-hybrid-a .aside-title svg,
+  .aside-hybrid-b .aside-title svg,
+  .aside-hybrid-d .aside-title svg {
+    background: var(--aside-color);
+    color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Hybrid-A: 24×24 icon + 0.375rem padding → ~36×36px badge */
+  .aside-hybrid-a .aside-title svg {
+    width: 24px;
+    height: 24px;
+    padding: 0.375rem;
+  }
+
+  /* Hybrid-B: 20×20 icon + 0.25rem padding → ~28×28px badge */
+  .aside-hybrid-b .aside-title svg {
+    width: 20px;
+    height: 20px;
+    padding: 0.25rem;
+  }
+
+  /* Hybrid (default): 24×24 icon + 0.25rem padding → ~32×32px badge */
+  .aside-hybrid .aside-title svg {
+    width: 24px;
+    height: 24px;
+    padding: 0.25rem;
+  }
+
+  /* Hybrid-D: 28×28 icon + 0.25rem padding → ~36×36px badge */
+  .aside-hybrid-d .aside-title svg {
+    width: 28px;
+    height: 28px;
+    padding: 0.25rem;
+  }
+
+  :global([data-theme="dark"]) .aside-hybrid,
+  :global([data-theme="dark"]) .aside-hybrid-a,
+  :global([data-theme="dark"]) .aside-hybrid-b,
+  :global([data-theme="dark"]) .aside-hybrid-d {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), transparent 40%) 100%
+    );
+    border-left-color: color-mix(in oklch, var(--aside-color), white 15%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  :global([data-theme="dark"]) .aside-hybrid .aside-title svg,
+  :global([data-theme="dark"]) .aside-hybrid-a .aside-title svg,
+  :global([data-theme="dark"]) .aside-hybrid-b .aside-title svg,
+  :global([data-theme="dark"]) .aside-hybrid-d .aside-title svg {
+    background: color-mix(in oklch, var(--aside-color), white 10%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 </style>

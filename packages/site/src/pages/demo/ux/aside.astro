@@ -1,6 +1,6 @@
 ---
 import { DemoLayout } from "../../../components/demo/DemoLayout";
-import AsideVariant from "../../../components/mdx/AsideVariant.astro";
+import Aside from "../../../components/mdx/Aside.astro";
 /**
  * Demo page for Aside/Admonition style variants.
  * Shows all 5 variants (classic, refined, card, minimal, hybrid)
@@ -57,11 +57,11 @@ const variantDescriptions: Record<(typeof variants)[number], string> = {
 
           <div class="aside-grid">
             {types.map((type) => (
-              <AsideVariant variant={variant} type={type}>
+              <Aside variant={variant} type={type}>
                 This is a <strong>{type}</strong> message. It provides important
                 information to the reader with appropriate visual styling for
                 the content type.
-              </AsideVariant>
+              </Aside>
             ))}
           </div>
         </section>
