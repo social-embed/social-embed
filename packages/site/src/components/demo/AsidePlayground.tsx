@@ -209,9 +209,7 @@ function IconStylePicker({
                 value={opt}
               />
               {opt === "auto" ? (
-                <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                  A
-                </span>
+                <span className="text-sm leading-none">✨</span>
               ) : (
                 <span
                   className={`inline-flex items-center justify-center ${
@@ -289,9 +287,7 @@ function IconSizePicker({
                 value={opt}
               />
               {opt === "auto" ? (
-                <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
-                  A
-                </span>
+                <span className="text-sm leading-none">✨</span>
               ) : (
                 <svg
                   aria-hidden="true"
