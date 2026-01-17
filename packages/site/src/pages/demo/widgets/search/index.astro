@@ -1,0 +1,228 @@
+---
+import { SearchModal } from "../../../../components/search/SearchModal";
+/**
+ * Search Demo Widget - Interactive search modal testing page.
+ * Allows testing the custom SearchModal component with mock data.
+ */
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Search Demo" description="Test the custom search modal component">
+  <div class="demo-page">
+    <header class="demo-header">
+      <h1>Search Modal Demo</h1>
+      <p class="demo-description">
+        Test the custom Pagefind search modal. In development mode, mock data is used.
+        In production, real Pagefind search is used.
+      </p>
+    </header>
+
+    <section class="demo-section">
+      <h2>Embedded Search</h2>
+      <p class="section-description">
+        Search modal embedded directly in the page (always visible).
+      </p>
+
+      <div class="search-demo-container">
+        <SearchModal client:load useMockData={true} />
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <h2>Test Queries</h2>
+      <p class="section-description">
+        Try these queries to test different scenarios:
+      </p>
+
+      <ul class="test-queries">
+        <li><code>youtube</code> - Multiple results with sub-results</li>
+        <li><code>getting started</code> - Matches title and content</li>
+        <li><code>spotify</code> - Results with theme options</li>
+        <li><code>api</code> - API reference with function docs</li>
+        <li><code>xyz123nonexistent</code> - No results (empty state)</li>
+      </ul>
+    </section>
+
+    <section class="demo-section">
+      <h2>Keyboard Navigation</h2>
+      <div class="keyboard-hints">
+        <div class="hint">
+          <kbd>↑</kbd> <kbd>↓</kbd>
+          <span>Navigate results</span>
+        </div>
+        <div class="hint">
+          <kbd>Enter</kbd>
+          <span>Select result</span>
+        </div>
+        <div class="hint">
+          <kbd>Esc</kbd>
+          <span>Close modal (in dialog mode)</span>
+        </div>
+        <div class="hint">
+          <kbd>Ctrl</kbd>+<kbd>K</kbd>
+          <span>Open search (from header)</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <h2>Features</h2>
+      <ul class="features-list">
+        <li>
+          <span class="feature-icon">✓</span>
+          <span>Debounced search (150ms)</span>
+        </li>
+        <li>
+          <span class="feature-icon">✓</span>
+          <span>Full keyboard navigation</span>
+        </li>
+        <li>
+          <span class="feature-icon">✓</span>
+          <span>ARIA accessibility attributes</span>
+        </li>
+        <li>
+          <span class="feature-icon">✓</span>
+          <span>Dark/light mode support</span>
+        </li>
+        <li>
+          <span class="feature-icon">✓</span>
+          <span>Expandable sub-results</span>
+        </li>
+        <li>
+          <span class="feature-icon">✓</span>
+          <span>Highlighted search terms</span>
+        </li>
+        <li>
+          <span class="feature-icon">✓</span>
+          <span>Loading and empty states</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .demo-page {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .demo-header {
+    margin-bottom: 2rem;
+  }
+
+  .demo-header h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--nav-text);
+    margin: 0 0 0.5rem;
+  }
+
+  .demo-description {
+    color: var(--nav-text-muted);
+    margin: 0;
+  }
+
+  .demo-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .demo-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--nav-text);
+    margin: 0 0 0.5rem;
+  }
+
+  .section-description {
+    color: var(--nav-text-muted);
+    font-size: 0.875rem;
+    margin: 0 0 1rem;
+  }
+
+  .search-demo-container {
+    border: 1px solid var(--nav-border);
+    border-radius: 0.5rem;
+    background-color: var(--nav-bg);
+    min-height: 24rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .test-queries {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .test-queries li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--nav-text-muted);
+  }
+
+  .test-queries code {
+    background-color: var(--search-kbd-bg);
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+    color: var(--nav-text);
+  }
+
+  .keyboard-hints {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 0.75rem;
+  }
+
+  .hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--nav-text-muted);
+  }
+
+  .hint kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding: 0 0.375rem;
+    font-size: 0.75rem;
+    font-family: inherit;
+    background-color: var(--search-kbd-bg);
+    border: 1px solid var(--nav-border);
+    border-radius: 0.25rem;
+    color: var(--nav-text);
+  }
+
+  .features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.5rem;
+  }
+
+  .features-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--nav-text-muted);
+  }
+
+  .feature-icon {
+    color: var(--color-mv-green);
+    font-weight: 600;
+  }
+</style>
