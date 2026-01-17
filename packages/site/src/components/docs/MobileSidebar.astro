@@ -142,8 +142,6 @@ const { currentPath } = Astro.props;
 <script>
   // Store references for cleanup on view transitions
   let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
-  let currentSidebar: HTMLElement | null = null;
-  let currentOverlay: HTMLElement | null = null;
   let linkClickHandlers: Array<{ link: HTMLAnchorElement; handler: () => void }> = [];
 
   function destroyMobileSidebar() {
@@ -157,8 +155,6 @@ const { currentPath } = Astro.props;
       link.removeEventListener('click', handler);
     }
     linkClickHandlers = [];
-    currentSidebar = null;
-    currentOverlay = null;
   }
 
   function initMobileSidebar() {
@@ -169,9 +165,6 @@ const { currentPath } = Astro.props;
     const closeButton = document.getElementById('mobile-sidebar-close');
     const sidebar = document.getElementById('mobile-sidebar');
     const overlay = document.getElementById('mobile-sidebar-overlay');
-
-    currentSidebar = sidebar;
-    currentOverlay = overlay;
 
     function openSidebar() {
       if (sidebar && overlay) {

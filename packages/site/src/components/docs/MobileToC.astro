@@ -206,8 +206,6 @@ const { items } = Astro.props;
 <script>
   // Store references for cleanup on view transitions
   let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
-  let currentToC: HTMLElement | null = null;
-  let currentOverlay: HTMLElement | null = null;
   let linkClickHandlers: Array<{ link: HTMLAnchorElement; handler: () => void }> = [];
 
   function destroyMobileToC() {
@@ -221,8 +219,6 @@ const { items } = Astro.props;
       link.removeEventListener('click', handler);
     }
     linkClickHandlers = [];
-    currentToC = null;
-    currentOverlay = null;
   }
 
   function initMobileToC() {
@@ -233,9 +229,6 @@ const { items } = Astro.props;
     const closeButton = document.getElementById('mobile-toc-close');
     const toc = document.getElementById('mobile-toc');
     const overlay = document.getElementById('mobile-toc-overlay');
-
-    currentToC = toc;
-    currentOverlay = overlay;
 
     function openToC() {
       if (toc && overlay) {
