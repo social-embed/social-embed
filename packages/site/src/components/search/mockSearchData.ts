@@ -246,15 +246,15 @@ function stripMarks(text: string): string {
 
 /**
  * Add <mark> tags around matching terms.
+ * Uses single-pass regex with alternation to avoid nested <mark> tags.
  */
 function highlightMatches(text: string, terms: string[]): string {
-  let result = text;
-  for (const term of terms) {
-    // Case-insensitive replace with preserved case
-    const regex = new RegExp(`(${escapeRegExp(term)})`, "gi");
-    result = result.replace(regex, "<mark>$1</mark>");
-  }
-  return result;
+  if (terms.length === 0) return text;
+  // Sort by length descending to match longer terms first
+  const sortedTerms = [...terms].sort((a, b) => b.length - a.length);
+  const pattern = sortedTerms.map(escapeRegExp).join("|");
+  const regex = new RegExp(`(${pattern})`, "gi");
+  return text.replace(regex, "<mark>$1</mark>");
 }
 
 /**
