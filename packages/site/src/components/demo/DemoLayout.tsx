@@ -33,6 +33,7 @@ const navigation: DemoNavItem[] = [
         ],
         label: "Playground",
       },
+      { href: "/demo/widgets/search", label: "Search" },
     ],
     label: "Widgets",
   },
