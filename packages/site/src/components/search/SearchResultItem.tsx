@@ -280,6 +280,12 @@ export function SearchResultItem({
  */
 export function getResultTitle(result: SearchResult): string {
   const title = result.meta.title || result.url;
-  // Strip any HTML tags (like <mark>) for plain text usage
-  return title.replace(/<[^>]*>/g, "");
+  // Strip HTML tags repeatedly to handle malformed nested tags like <scr<script>ipt>
+  let clean = title;
+  let prev: string;
+  do {
+    prev = clean;
+    clean = clean.replace(/<[^>]*>/g, "");
+  } while (clean !== prev);
+  return clean;
 }
