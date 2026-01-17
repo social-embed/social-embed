@@ -1,14 +1,21 @@
 // @vitest-environment node
+
+import { loadRenderers } from "astro:container";
+import { getContainerRenderer } from "@astrojs/react";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, it } from "vitest";
 
 import MarkdownLayout from "./MarkdownLayout.astro";
+
+// Load React renderer for components that use client:load (e.g., SearchModal)
+const renderers = await loadRenderers([getContainerRenderer()]);
 
 // Container options with site URL for BaseLayout's canonical link
 const CONTAINER_OPTIONS = {
   astroConfig: {
     site: "https://example.com",
   },
+  renderers,
 };
 
 // Render options with URL context
