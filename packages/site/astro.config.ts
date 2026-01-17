@@ -11,6 +11,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { pagefindIntegration } from "./plugins/astro-pagefind-integration";
 import { rehypeSkipFirstHeading } from "./plugins/rehype-skip-first-heading";
 import { localCdnPlugin } from "./plugins/vite-plugin-local-cdn";
+import { viteMdxMergeHeadings } from "./plugins/vite-plugin-mdx-merge-headings";
 
 /**
  * Get current git branch for esm.sh GitHub URLs.
@@ -29,6 +30,7 @@ function getGitBranch(): string {
 type VitePlugin = NonNullable<ViteUserConfig["plugins"]>[number];
 const tailwindPlugin = tailwindcss() as unknown as VitePlugin;
 const localCdn = localCdnPlugin() as unknown as VitePlugin;
+const mdxMergeHeadings = viteMdxMergeHeadings() as unknown as VitePlugin;
 
 // https://astro.build/config
 export default defineConfig({
@@ -147,7 +149,7 @@ export default defineConfig({
       __GIT_BRANCH__: JSON.stringify(getGitBranch()),
     },
     // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
-    plugins: [tailwindPlugin, localCdn],
+    plugins: [tailwindPlugin, localCdn, mdxMergeHeadings],
     resolve: {
       alias: {
         "@social-embed/lib": resolve(

@@ -112,9 +112,15 @@ importers:
       astro-expressive-code:
         specifier: ^0.41.6
         version: 0.41.6(astro@5.16.11(@types/node@20.19.30)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.55.1)(typescript@5.9.3)(yaml@2.8.2))
+      es-module-lexer:
+        specifier: ^2.0.0
+        version: 2.0.0
       happy-dom:
         specifier: ^20.3.1
         version: 20.3.1
+      magic-string:
+        specifier: ^0.30.21
+        version: 0.30.21
       pagefind:
         specifier: ^1.4.0
         version: 1.4.0
@@ -1892,6 +1898,9 @@ packages:
 
   es-module-lexer@1.7.0:
     resolution: {integrity: sha512-jEQoCwk8hyb2AZziIOLhDqpm5+2ww5uIE6lkO/6jcOCusfk6LhMHpXXfBLXTZ7Ydyt0j4VoUQv6uGNYbdW+kBA==}
+
+  es-module-lexer@2.0.0:
+    resolution: {integrity: sha512-5POEcUuZybH7IdmGsD8wlf0AI55wMecM9rVBTI/qEAy2c1kTOm3DjFYjrBdI2K3BaJjJYfYFeRtM0t9ssnRuxw==}
 
   esast-util-from-estree@2.0.0:
     resolution: {integrity: sha512-4CyanoAudUSBAn5K13H4JhsMH6L9ZP7XbLVe/dKybkxMO7eDyLsT8UHl9TRNrU2Gr9nz+FovfSIjuXWJ81uVwQ==}
@@ -5423,6 +5432,8 @@ snapshots:
   entities@7.0.0: {}
 
   es-module-lexer@1.7.0: {}
+
+  es-module-lexer@2.0.0: {}
 
   esast-util-from-estree@2.0.0:
     dependencies:
