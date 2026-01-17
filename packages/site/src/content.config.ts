@@ -25,6 +25,9 @@ const docs = defineCollection({
       // URL control
       id: z.string().optional(),
 
+      // Override page <title> and h1, independent from sidebar label
+      pageTitle: z.string().optional(),
+
       // Sidebar configuration
       sidebar: z
         .object({
@@ -41,10 +44,13 @@ const docs = defineCollection({
         })
         .optional(),
       sidebar_label: z.string().optional(),
+      // Strip the first h1 from markdown content (for README imports)
+      skipMarkdownTitle: z.boolean().default(false),
       slug: z.string().optional(),
 
       // Table of contents
       tableOfContents: z.boolean().default(true),
+
       // Core fields
       title: z.string(),
     })
