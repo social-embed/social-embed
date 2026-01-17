@@ -78,6 +78,7 @@ function Select<T extends string>({
 // Compact segmented toggle group
 type SegmentedControlProps<T extends string> = {
   label: string;
+  name: string;
   value: T;
   options: readonly T[];
   onChange: (value: T) => void;
@@ -87,6 +88,7 @@ type SegmentedControlProps<T extends string> = {
 
 function SegmentedControl<T extends string>({
   label,
+  name,
   value,
   options,
   onChange,
@@ -98,31 +100,32 @@ function SegmentedControl<T extends string>({
       <legend className="text-xs font-medium text-slate-600 dark:text-slate-400">
         {label}
       </legend>
-      <div
-        className="flex rounded-lg border border-slate-200 bg-slate-100 p-0.5 dark:border-slate-600 dark:bg-slate-800"
-        role="radiogroup"
-      >
+      <div className="flex gap-0.5 rounded-lg border border-slate-200 bg-slate-100 p-0.5 dark:border-slate-600 dark:bg-slate-800">
         {options.map((opt) => {
           const isSelected = value === opt;
           const isDefault = defaultValue === opt;
           return (
-            <button
-              aria-checked={isSelected}
-              className={`relative flex-1 px-2 py-1 text-xs font-medium rounded-md transition-colors cursor-pointer select-none ${
+            <label
+              className={`relative flex-1 px-2 py-1 text-xs font-medium rounded-md transition-colors cursor-pointer select-none text-center ${
                 isSelected
                   ? "bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-slate-100"
                   : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
               }`}
               key={opt}
-              onClick={() => onChange(opt)}
-              role="radio"
-              type="button"
             >
+              <input
+                checked={isSelected}
+                className="sr-only"
+                name={name}
+                onChange={() => onChange(opt)}
+                type="radio"
+                value={opt}
+              />
               {renderOption ? renderOption(opt, isDefault) : opt}
               {isDefault && !isSelected && (
                 <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-blue-500" />
               )}
-            </button>
+            </label>
           );
         })}
       </div>
@@ -142,6 +145,7 @@ function TypePicker({
   return (
     <SegmentedControl
       label="Type"
+      name="aside-type"
       onChange={onChange}
       options={options}
       renderOption={(opt) => (
