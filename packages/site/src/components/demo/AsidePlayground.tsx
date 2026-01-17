@@ -123,7 +123,7 @@ function SegmentedControl<T extends string>({
               />
               {renderOption ? renderOption(opt, isDefault) : opt}
               {isDefault && !isSelected && (
-                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-blue-500" />
+                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-[var(--color-mv-blue)]" />
               )}
             </label>
           );
@@ -214,11 +214,22 @@ function IconStylePicker({
                 <span
                   className={`inline-flex items-center justify-center ${
                     opt === "inline"
-                      ? "text-blue-600 dark:text-blue-400"
+                      ? ""
                       : opt === "soft"
-                        ? "p-0.5 rounded bg-blue-100 dark:bg-blue-800/70 text-blue-600 dark:text-blue-400"
-                        : "p-0.5 rounded bg-blue-600 dark:bg-blue-500 text-white"
+                        ? "p-0.5 rounded"
+                        : "p-0.5 rounded text-white"
                   }`}
+                  style={
+                    opt === "inline"
+                      ? { color: "var(--color-mv-blue)" }
+                      : opt === "soft"
+                        ? {
+                            background:
+                              "color-mix(in oklch, var(--color-mv-blue), transparent 80%)",
+                            color: "var(--color-mv-blue)",
+                          }
+                        : { background: "var(--color-mv-blue)" }
+                  }
                 >
                   <svg
                     aria-hidden="true"
@@ -232,7 +243,10 @@ function IconStylePicker({
                 </span>
               )}
               {isDefault && (
-                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-blue-500" />
+                <span
+                  className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full"
+                  style={{ background: "var(--color-mv-blue)" }}
+                />
               )}
             </label>
           );
@@ -291,9 +305,9 @@ function IconSizePicker({
               ) : (
                 <svg
                   aria-hidden="true"
-                  className="text-blue-600 dark:text-blue-400"
                   fill="currentColor"
                   height={iconSize}
+                  style={{ color: "var(--color-mv-blue)" }}
                   viewBox="0 0 24 24"
                   width={iconSize}
                 >
@@ -301,7 +315,10 @@ function IconSizePicker({
                 </svg>
               )}
               {isDefault && (
-                <span className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-blue-500" />
+                <span
+                  className="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full"
+                  style={{ background: "var(--color-mv-blue)" }}
+                />
               )}
             </label>
           );
