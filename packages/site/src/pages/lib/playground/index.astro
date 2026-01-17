@@ -1,35 +1,54 @@
 ---
+import Sidebar from "../../../components/docs/Sidebar.astro";
 import { LibPlayground } from "../../../components/lib-playground/LibPlayground";
+import { LinkButton } from "../../../components/mdx";
 /**
  * Library Playground - Interactive playground for testing @social-embed/lib.
- * Uses BaseLayout instead of StarlightPage.
+ * Uses MarkdownLayout for consistent sidebar navigation.
  */
-import BaseLayout from "../../../layouts/BaseLayout.astro";
+import MarkdownLayout from "../../../layouts/MarkdownLayout.astro";
 ---
 
-<BaseLayout
-  title="Library Playground"
-  description="Interactive playground for testing @social-embed/lib functions"
+<MarkdownLayout
+  frontmatter={{
+    title: "Interactive Playground",
+    description: "Interactive playground for testing @social-embed/lib functions",
+    tableOfContents: false,
+  }}
 >
-  <main class="playground-container">
+  <Sidebar slot="sidebar" currentPath={Astro.url.pathname} />
+
+  <p>
+    Test <code>@social-embed/lib</code> functions directly in your browser.
+    Enter a video URL to see parsed results.
+  </p>
+
+  <div class="playground-wrapper">
     <LibPlayground client:only="react" mode="full" className="playground-content" />
-  </main>
-</BaseLayout>
+  </div>
+
+  <LinkButton
+    href="/lib/playground/external/"
+    variant="minimal"
+    icon="arrow"
+  >
+    Explore more sandboxes on StackBlitz, CodeSandbox, CodePen, JSFiddle
+  </LinkButton>
+</MarkdownLayout>
 
 <style>
-  .playground-container {
-    padding: 2rem 1rem;
-    flex: 1;
+  .playground-wrapper {
+    margin-top: 1.5rem;
   }
 
-  .playground-container :global(.playground-content) {
+  .playground-wrapper :global(.playground-content) {
     background: var(--color-slate-100);
     border-radius: 0.5rem;
     padding: 1.5rem;
     border: 1px solid var(--color-slate-200);
   }
 
-  :global([data-theme="dark"]) .playground-container :global(.playground-content) {
+  :global([data-theme="dark"]) .playground-wrapper :global(.playground-content) {
     background: var(--color-slate-800);
     border-color: var(--color-slate-700);
   }
