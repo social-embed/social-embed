@@ -1,6 +1,7 @@
 @layer base, starlight, theme, components, utilities;
 
 @import "@astrojs/starlight-tailwind";
+@import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
@@ -78,6 +79,58 @@
   --color-mv-green-dark: color-mix(in oklch, oklch(0.73 0.13 120), black 30%);
 }
 
+/**
+ * Core navigation variables - OUR source of truth.
+ * Both homepage and Starlight use zero header padding.
+ * Inner elements (logo, right-group) handle their own spacing via --nav-inner-pad.
+ */
+:root {
+  /* Navigation dimensions */
+  --nav-height: 3.5rem;
+  --nav-pad-x: 0;
+  --nav-pad-y: 0;
+  --nav-gap: 1rem;
+  --nav-inner-pad: 1rem; /* Padding for inner elements (logo, right-group) */
+
+  /* Navigation colors (dark mode default) */
+  --nav-bg: rgba(15, 23, 42, 0.95); /* slate-900/95 */
+  --nav-border: var(--color-slate-700);
+  --nav-text: var(--color-slate-100);
+  --nav-text-muted: var(--color-slate-400);
+
+  /* Search button colors (dark mode default) */
+  --search-icon: var(--color-slate-200);
+  --search-text: var(--color-slate-300);
+  --search-border: var(--color-slate-700);
+  --search-bg: var(--color-slate-900);
+  --search-kbd-bg: var(--color-slate-800);
+  --search-hover-border: var(--color-slate-300);
+  --search-hover-text: var(--color-slate-100);
+
+  /* Starlight inherits from our nav variables */
+  --sl-nav-height: var(--nav-height);
+  --sl-nav-pad-x: var(--nav-pad-x);
+  --sl-nav-pad-y: var(--nav-pad-y);
+  --sl-nav-gap: var(--nav-gap);
+  --sl-color-bg-nav: var(--nav-bg);
+}
+
+[data-theme="light"] {
+  --nav-bg: rgba(255, 255, 255, 0.95); /* white/95 */
+  --nav-border: var(--color-slate-200);
+  --nav-text: var(--color-slate-900);
+  --nav-text-muted: var(--color-slate-600);
+
+  /* Search button colors (light mode) */
+  --search-icon: var(--color-slate-500);
+  --search-text: var(--color-slate-500);
+  --search-border: var(--color-slate-300);
+  --search-bg: var(--color-slate-50);
+  --search-kbd-bg: var(--color-slate-200);
+  --search-hover-border: var(--color-slate-400);
+  --search-hover-text: var(--color-slate-700);
+}
+
 /* Target small displays like phones */
 :root {
   --sl-content-width: 100%;
@@ -145,6 +198,11 @@
   min-height: 600px;
 }
 
+/* Fix iframe min-height inside .not-content widgets */
+.not-content iframe {
+  min-height: unset;
+}
+
 @layer utilities {
   /* Override gray colors with slate colors */
   :root {
@@ -204,5 +262,11 @@
 
     --sl-color-red-low: var(--color-mv-red-light);
     --sl-color-red-high: var(--color-mv-red-dark);
+  }
+
+  /* Add backdrop blur to Starlight header to match homepage */
+  header:has(.header) {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
   }
 }

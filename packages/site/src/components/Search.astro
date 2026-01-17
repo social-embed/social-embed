@@ -25,7 +25,7 @@ const headingInactiveClass =
   "text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-slate-100 font-bold no-underline";
 ---
 
-<div class="flex flex-wrap items-start flex-start w-full gap-3 lg:gap-5 p-3 lg:p-0">
+<div class="flex flex-wrap items-center w-full gap-3 lg:gap-5 p-3 lg:p-0">
   <!-- Web Component -->
   <div class:list={["flex flex-col items-start", isWcSection ? ribbonActiveClass : ribbonInactiveClass]}>
     <a href="/wc" class:list={[isWcSection ? headingActiveClass : headingInactiveClass]}>
@@ -33,7 +33,7 @@ const headingInactiveClass =
       <span class="hidden md:block lg:hidden">web component</span>
       <span class="hidden lg:block"><code>&lt;o-embed&gt;</code> component</span>
     </a>
-    <span class="text-sm text-slate-500 dark:text-slate-400 hidden md:block no-underline">
+    <span class="sub-links text-sm text-slate-500 dark:text-slate-400 no-underline">
       <a href="/wc/playground/" class:list={["no-underline hover:underline", isWcPlayground ? activeClass : inactiveClass]}>Playground</a>
       <span class="text-slate-400 dark:text-slate-500 mx-1">·</span>
       <a href="https://github.com/social-embed/social-embed/tree/master/packages/wc" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 no-underline hover:underline inline-flex items-center gap-0.5">Source<svg class="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>
@@ -48,7 +48,7 @@ const headingInactiveClass =
       <span class="block lg:hidden">lib</span>
       <span class="hidden lg:block">Library</span>
     </a>
-    <span class="text-sm text-slate-500 dark:text-slate-400 hidden md:block">
+    <span class="sub-links text-sm text-slate-500 dark:text-slate-400">
       <a href="/lib/playground/" class:list={["no-underline hover:underline", isLibPlayground ? activeClass : inactiveClass]}>Playground</a>
       <span class="text-slate-400 dark:text-slate-500 mx-1">·</span>
       <a href="https://github.com/social-embed/social-embed/tree/master/packages/lib" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 no-underline hover:underline inline-flex items-center gap-0.5">Source<svg class="w-3 h-3 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg></a>
@@ -63,6 +63,17 @@ const headingInactiveClass =
 </div>
 
 <style>
+  /* Hide sub-links until 58rem (928px) to prevent header crowding */
+  .sub-links {
+    display: none;
+  }
+
+  @media (min-width: 58rem) {
+    .sub-links {
+      display: block;
+    }
+  }
+
   /* Hide search entirely below tablet (768px), show icon-only until 1024px */
   :global(button[data-open-modal]) {
     display: none !important;

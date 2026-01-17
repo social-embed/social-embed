@@ -182,12 +182,12 @@ export function LibPlayground({
       {/* Mini mode header */}
       {isMini && (
         <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
-          Library playground{" "}
+          Library{" "}
           <a
             className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 no-underline"
             href={createShareableUrl(state)}
           >
-            (full size)
+            (playground)
           </a>
         </span>
       )}

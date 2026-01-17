@@ -1,0 +1,112 @@
+---
+/**
+ * Pure Astro homepage - NO Starlight components or classes.
+ * Uses Font component for fonts, core components for header.
+ */
+import "../tailwind.css";
+import { Font } from "astro:assets";
+// Core header components (pure Astro equivalents of Starlight's virtual components)
+import CoreHeaderLayout from "../components/core/CoreHeaderLayout.astro";
+import PureSearch from "../components/core/PureSearch.astro";
+import PureSiteTitle from "../components/core/PureSiteTitle.astro";
+import PureSocialIcons from "../components/core/PureSocialIcons.astro";
+import PureThemeSelect from "../components/core/PureThemeSelect.astro";
+import GitPullLogo from "../components/GitPullLogo.astro";
+import { LibPlayground } from "../components/lib-playground/LibPlayground";
+import { MiniPlayground } from "../components/playground/MiniPlayground";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="One tag to rule all embeds. Store URLs, not embed code." />
+    <title>social-embed</title>
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Load fonts via Astro experimental fonts API -->
+    <Font cssVariable="--font-ibm-plex-sans" preload />
+    <Font cssVariable="--font-ibm-plex-mono" preload />
+
+    <!-- Theme script (inline to prevent flash) -->
+    <script is:inline>
+      (() => {
+        const theme = localStorage.getItem('starlight-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        // Handle 'auto' theme from PureThemeSelect
+        const resolved = theme === 'light' ? 'light'
+                       : theme === 'dark' ? 'dark'
+                       : (prefersDark ? 'dark' : 'light');
+        document.documentElement.dataset.theme = resolved;
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans">
+    <!-- Header using core components -->
+    <header class="sticky top-0 z-50" style="height: var(--nav-height); background-color: var(--nav-bg); border-bottom: 1px solid var(--nav-border); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);">
+      <CoreHeaderLayout>
+        <PureSiteTitle slot="logo" />
+        <PureSearch slot="search" />
+        <PureSocialIcons slot="social" />
+        <PureThemeSelect slot="theme" />
+      </CoreHeaderLayout>
+    </header>
+
+    <main class="px-4 md:px-8 py-6 max-w-7xl mx-auto">
+      <!-- Compact hero -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold mb-1">social-embed</h1>
+        <p class="text-slate-600 dark:text-slate-400">
+          One tag to rule all embeds. Store URLs, not embed code.
+        </p>
+      </div>
+
+      <!-- Two packages -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Web Component -->
+        <section class="flex flex-col">
+          <div class="mb-3">
+            <div class="flex items-baseline justify-between gap-2">
+              <h2 class="text-lg font-semibold">Web Component</h2>
+              <a href="/wc/" class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium">
+                Get started <span aria-hidden="true">→</span>
+              </a>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">
+              Drop <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded text-xs">&lt;o-embed&gt;</code> anywhere.
+            </p>
+          </div>
+          <div class="flex-1 min-h-[800px]">
+            <MiniPlayground client:only="react" className="h-full" codeHeight="275px" iframeHeight="425px" />
+          </div>
+        </section>
+
+        <!-- Library -->
+        <section class="flex flex-col">
+          <div class="mb-3">
+            <div class="flex items-baseline justify-between gap-2">
+              <h2 class="text-lg font-semibold">Library</h2>
+              <a href="/lib/" class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 hover:underline text-sm font-medium">
+                Get started <span aria-hidden="true">→</span>
+              </a>
+            </div>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">
+              Extract IDs, generate embed URLs, detect providers.
+            </p>
+          </div>
+          <div class="flex-1">
+            <LibPlayground client:only="react" mode="mini" />
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-4 px-4 flex flex-col items-center gap-2 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700">
+      <div>
+        © 2021-{new Date().getFullYear()} <a href="https://tony.sh" class="hover:underline">Tony Narlock</a>
+      </div>
+      <GitPullLogo />
+    </footer>
+  </body>
+</html>

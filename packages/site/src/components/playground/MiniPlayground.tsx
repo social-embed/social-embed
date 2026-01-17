@@ -70,6 +70,10 @@ function TabButton({ active, badge, children, onClick }: TabButtonProps) {
 export interface MiniPlaygroundProps {
   /** Additional CSS classes */
   className?: string;
+  /** Height for the code editor section (e.g., "200px", "50%") */
+  codeHeight?: string;
+  /** Height for the iframe/preview section (e.g., "300px", "50%") */
+  iframeHeight?: string;
   /** Initial HTML code (overrides preset) */
   initialCode?: string;
   /** Initial preset ID */
@@ -82,6 +86,8 @@ export interface MiniPlaygroundProps {
  */
 export function MiniPlayground({
   className = "",
+  codeHeight,
+  iframeHeight,
   initialCode,
   initialPreset,
 }: MiniPlaygroundProps) {
@@ -218,12 +224,12 @@ export function MiniPlayground({
       <div className="flex flex-wrap items-center gap-2 px-3 py-2 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
         {/* Title with link to full playground */}
         <span className="text-xs font-medium text-slate-600 dark:text-slate-300 shrink-0">
-          <code>&lt;o-embed&gt;</code> playground{" "}
+          <code>&lt;o-embed&gt;</code>{" "}
           <a
             className="text-slate-500 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 no-underline"
             href={fullSizeUrl}
           >
-            (full size)
+            (playground)
           </a>
         </span>
 
@@ -290,9 +296,11 @@ export function MiniPlayground({
         <div
           className={`
             ${activeTab === "code" ? "flex" : "hidden"}
-            sm:flex flex-1 min-h-[150px]
+            sm:flex min-h-[150px]
             border-b border-slate-200 dark:border-slate-700
+            ${codeHeight ? "" : "flex-1"}
           `}
+          style={codeHeight ? { flexShrink: 0, height: codeHeight } : undefined}
         >
           <CodeEditor
             className="h-full w-full"
@@ -314,8 +322,12 @@ export function MiniPlayground({
           <div
             className={`
               ${activeTab === "preview" ? "flex" : "hidden"}
-              sm:flex flex-1 min-h-[100px]
+              sm:flex min-h-[100px]
+              ${iframeHeight ? "" : "flex-1"}
             `}
+            style={
+              iframeHeight ? { flexShrink: 0, height: iframeHeight } : undefined
+            }
           >
             <PreviewPane
               className="h-full w-full"
