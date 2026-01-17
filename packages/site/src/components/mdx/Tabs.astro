@@ -160,10 +160,15 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
       (tabs[newIndex] as HTMLElement).focus();
       (tabs[newIndex] as HTMLElement).click();
     }
+
+    static destroy() {
+      TabsManager.syncGroups.clear();
+    }
   }
 
   // Initialize on load and after view transitions
   TabsManager.init();
+  document.addEventListener("astro:before-swap", () => TabsManager.destroy());
   document.addEventListener("astro:after-swap", () => TabsManager.init());
 </script>
 
