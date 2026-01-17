@@ -51,6 +51,8 @@ const { Content, headings } = await render(entry);
 const frontmatter = {
   description: entry.data.description,
   head: entry.data.head,
+  pageTitle: entry.data.pageTitle,
+  skipMarkdownTitle: entry.data.skipMarkdownTitle,
   tableOfContents: entry.data.tableOfContents,
   title: entry.data.title,
 };

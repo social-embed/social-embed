@@ -14,6 +14,8 @@ import BaseLayout from "./BaseLayout.astro";
 interface Props {
   frontmatter: {
     title: string;
+    pageTitle?: string;
+    skipMarkdownTitle?: boolean;
     description?: string;
     tableOfContents?: boolean;
     head?: Array<{
@@ -26,6 +28,10 @@ interface Props {
 }
 
 const { frontmatter, headings = [] } = Astro.props;
+
+// Resolve display title: pageTitle overrides title for browser tab and h1
+const displayTitle = frontmatter.pageTitle ?? frontmatter.title;
+
 const showToC = frontmatter.tableOfContents !== false;
 const tocItems = showToC
   ? generateToC(headings, { maxLevel: 3, minLevel: 2 })
@@ -33,7 +39,7 @@ const tocItems = showToC
 ---
 
 <BaseLayout
-  title={frontmatter.title}
+  title={displayTitle}
   description={frontmatter.description}
   head={frontmatter.head}
 >
@@ -53,8 +59,10 @@ const tocItems = showToC
     <!-- Main content area -->
     <main class="main-content">
       <article class="prose">
-        <h1>{frontmatter.title}</h1>
-        <slot />
+        <h1>{displayTitle}</h1>
+        <div class:list={[{ "skip-markdown-title": frontmatter.skipMarkdownTitle }]}>
+          <slot />
+        </div>
       </article>
     </main>
 
@@ -76,6 +84,11 @@ const tocItems = showToC
     max-width: 90rem;
     margin: 0 auto;
     min-height: calc(100vh - var(--nav-height));
+  }
+
+  /* Hide first h1 from imported markdown when skipMarkdownTitle is true */
+  .skip-markdown-title :global(h1:first-child) {
+    display: none;
   }
 
   /* Left sidebar */
