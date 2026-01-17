@@ -109,6 +109,17 @@
   --search-hover-border: var(--color-slate-300);
   --search-hover-text: var(--color-slate-100);
 
+  /* Shadow scale (Elastic pattern) */
+  --search-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --search-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+
+  /* Transition timing */
+  --search-transition-fast: 100ms;
+  --search-transition-normal: 150ms;
+
+  /* Focus ring */
+  --search-focus-ring: var(--color-mv-blue);
+
   /* Search results colors (dark mode default) */
   --search-result-bg: var(--color-slate-800);
   --search-result-hover-bg: var(--color-slate-700);
@@ -118,7 +129,10 @@
     transparent 85%
   );
   --search-result-selected-border: var(--color-mv-blue);
-  --search-mark-bg: color-mix(in oklch, var(--color-mv-blue), transparent 70%);
+  /* Selected: distinct shadow + border (not just inset) */
+  --search-result-selected-shadow: 0 0 0 1px var(--color-mv-blue), var(--search-shadow-sm);
+  /* Dark mode - improved visibility (50% transparent instead of 70%) */
+  --search-mark-bg: color-mix(in oklch, var(--color-mv-blue), transparent 50%);
   --search-breadcrumb: var(--color-slate-500);
   --search-subresult-bg: var(--color-slate-900);
 }
@@ -139,15 +153,17 @@
   --search-hover-text: var(--color-slate-700);
 
   /* Search results colors (light mode) */
-  --search-result-bg: var(--color-slate-50);
-  --search-result-hover-bg: var(--color-slate-100);
+  /* Bump from slate-50 to slate-100 for visible contrast against white dialog */
+  --search-result-bg: var(--color-slate-100);
+  --search-result-hover-bg: var(--color-slate-200);
   --search-result-selected-bg: color-mix(
     in oklch,
     var(--color-mv-blue),
     white 90%
   );
   --search-result-selected-border: var(--color-mv-blue);
-  --search-mark-bg: color-mix(in oklch, var(--color-mv-blue), white 80%);
+  /* Light mode - improved visibility (60% white instead of 80%) */
+  --search-mark-bg: color-mix(in oklch, var(--color-mv-blue), white 60%);
   --search-breadcrumb: var(--color-slate-400);
   --search-subresult-bg: var(--color-slate-50);
 }

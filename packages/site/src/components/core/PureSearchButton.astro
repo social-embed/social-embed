@@ -116,6 +116,7 @@ const useMockData = import.meta.env.DEV;
   /* Custom search result styling */
   .search-result-default {
     background-color: var(--search-result-bg);
+    transition: background-color var(--search-transition-normal) ease-out;
   }
 
   .search-result-default:hover {
@@ -124,16 +125,18 @@ const useMockData = import.meta.env.DEV;
 
   .search-result-selected {
     background-color: var(--search-result-selected-bg);
-    box-shadow: inset 0 0 0 1px var(--search-result-selected-border);
+    box-shadow: var(--search-result-selected-shadow);
   }
 
   /* Search excerpt mark highlighting */
   .search-excerpt mark {
     background-color: var(--search-mark-bg);
     color: inherit;
-    padding: 0.0625rem 0.1875rem;
-    border-radius: 0.125rem;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.1875rem;
     font-weight: 600;
+    /* Subtle inner border for definition */
+    box-shadow: inset 0 0 0 1px color-mix(in oklch, var(--color-mv-blue), transparent 70%);
   }
 
   /* Small keyboard shortcut style */
@@ -164,20 +167,93 @@ const useMockData = import.meta.env.DEV;
     border: 0;
   }
 
-  /* Search results animation */
+  /* Search results animation - respects reduced motion preference */
   @keyframes search-slide-up {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateY(8px) scale(0.98);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
   }
 
-  .search-results {
-    animation: search-slide-up 150ms ease-out;
+  @media (prefers-reduced-motion: no-preference) {
+    .search-results {
+      animation: search-slide-up var(--search-transition-normal) ease-out;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .search-results {
+      animation: none;
+    }
+  }
+
+  /* Dialog entrance animation */
+  @keyframes search-dialog-enter {
+    from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes search-backdrop-enter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .search-dialog[open] {
+      animation: search-dialog-enter 200ms ease-out;
+    }
+
+    .search-dialog::backdrop {
+      animation: search-backdrop-enter 200ms ease-out;
+    }
+  }
+
+  /* Touch device adjustments (Algolia pattern) */
+  @media (hover: none) and (pointer: coarse) {
+    /* Increase touch targets to 44px minimum */
+    .search-result-item > div {
+      min-height: 3rem;
+    }
+
+    /* Increase clear button touch target to 44px */
+    .search-clear-btn {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+
+    /* Remove hover states (they persist awkwardly on touch) */
+    .search-result-default:hover {
+      background-color: var(--search-result-bg);
+    }
+
+    /* Hide keyboard shortcuts on touch */
+    .search-kbd,
+    .search-kbd-small {
+      display: none !important;
+    }
+  }
+
+  /* Focus ring pattern */
+  :where(.search-trigger, .search-result-item a):focus-visible {
+    outline: 2px solid var(--search-focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* High contrast mode support */
+  @media (forced-colors: active) {
+    .search-result-selected {
+      outline: 2px solid CanvasText;
+      outline-offset: -2px;
+    }
+
+    .search-excerpt mark {
+      background-color: Mark;
+      color: MarkText;
+    }
   }
 </style>
 

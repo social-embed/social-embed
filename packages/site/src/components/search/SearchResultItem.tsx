@@ -105,7 +105,8 @@ export function SearchResultItem({
       {/* biome-ignore lint/a11y/noStaticElementInteractions: Keyboard events delegate to focusable link inside */}
       <div
         className={`
-          cursor-pointer rounded-lg transition-all duration-150
+          cursor-pointer rounded-lg
+          transition-[background-color,box-shadow] duration-150
           ${isMainSelected ? "search-result-selected" : isSelected ? "" : "search-result-default"}
         `}
         onClick={onClick}

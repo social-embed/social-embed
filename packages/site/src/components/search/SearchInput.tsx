@@ -70,6 +70,7 @@ export function SearchInput({
           <button
             aria-label="Clear search"
             className="
+              search-clear-btn
               flex items-center justify-center w-6 h-6
               bg-transparent border-0 cursor-pointer rounded
               text-[var(--nav-text-muted)] hover:text-[var(--nav-text)]
