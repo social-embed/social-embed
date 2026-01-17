@@ -108,6 +108,19 @@
   --search-kbd-bg: var(--color-slate-800);
   --search-hover-border: var(--color-slate-300);
   --search-hover-text: var(--color-slate-100);
+
+  /* Search results colors (dark mode default) */
+  --search-result-bg: var(--color-slate-800);
+  --search-result-hover-bg: var(--color-slate-700);
+  --search-result-selected-bg: color-mix(
+    in oklch,
+    var(--color-mv-blue),
+    transparent 85%
+  );
+  --search-result-selected-border: var(--color-mv-blue);
+  --search-mark-bg: color-mix(in oklch, var(--color-mv-blue), transparent 70%);
+  --search-breadcrumb: var(--color-slate-500);
+  --search-subresult-bg: var(--color-slate-900);
 }
 
 [data-theme="light"] {
@@ -124,4 +137,17 @@
   --search-kbd-bg: var(--color-slate-200);
   --search-hover-border: var(--color-slate-400);
   --search-hover-text: var(--color-slate-700);
+
+  /* Search results colors (light mode) */
+  --search-result-bg: white;
+  --search-result-hover-bg: var(--color-slate-100);
+  --search-result-selected-bg: color-mix(
+    in oklch,
+    var(--color-mv-blue),
+    white 90%
+  );
+  --search-result-selected-border: var(--color-mv-blue);
+  --search-mark-bg: color-mix(in oklch, var(--color-mv-blue), white 80%);
+  --search-breadcrumb: var(--color-slate-400);
+  --search-subresult-bg: var(--color-slate-50);
 }
