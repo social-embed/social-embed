@@ -1,4 +1,5 @@
 ---
+import { DemoLayout } from "../../../../components/demo/DemoLayout";
 import { SearchModal } from "../../../../components/search/SearchModal";
 /**
  * Search Demo Widget - Interactive search modal testing page.
@@ -7,8 +8,10 @@ import { SearchModal } from "../../../../components/search/SearchModal";
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Search Demo" description="Test the custom search modal component">
-  <div class="demo-page">
+<BaseLayout title="Search Demo" description="Test the custom search modal component" hideFooter>
+  <div class="demo-container">
+    <DemoLayout currentPath="/demo/widgets/search" client:only="react">
+      <div class="demo-page">
     <header class="demo-header">
       <h1>Search Modal Demo</h1>
       <p class="demo-description">
@@ -166,10 +169,21 @@ import BaseLayout from "../../../../layouts/BaseLayout.astro";
         </li>
       </ul>
     </section>
+      </div>
+    </DemoLayout>
   </div>
 </BaseLayout>
 
 <style>
+  .demo-container {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
   .demo-page {
     max-width: 80rem;
     margin: 0 auto;
