@@ -140,11 +140,38 @@ const { currentPath } = Astro.props;
 </style>
 
 <script>
+  // Store references for cleanup on view transitions
+  let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
+  let currentSidebar: HTMLElement | null = null;
+  let currentOverlay: HTMLElement | null = null;
+  let linkClickHandlers: Array<{ link: HTMLAnchorElement; handler: () => void }> = [];
+
+  function destroyMobileSidebar() {
+    // Remove document-level keydown listener
+    if (keydownHandler) {
+      document.removeEventListener('keydown', keydownHandler);
+      keydownHandler = null;
+    }
+    // Remove link click handlers
+    for (const { link, handler } of linkClickHandlers) {
+      link.removeEventListener('click', handler);
+    }
+    linkClickHandlers = [];
+    currentSidebar = null;
+    currentOverlay = null;
+  }
+
   function initMobileSidebar() {
+    // Clean up previous listeners before re-initializing
+    destroyMobileSidebar();
+
     const toggleButton = document.getElementById('mobile-sidebar-toggle');
     const closeButton = document.getElementById('mobile-sidebar-close');
     const sidebar = document.getElementById('mobile-sidebar');
     const overlay = document.getElementById('mobile-sidebar-overlay');
+
+    currentSidebar = sidebar;
+    currentOverlay = overlay;
 
     function openSidebar() {
       if (sidebar && overlay) {
@@ -167,16 +194,19 @@ const { currentPath } = Astro.props;
     closeButton?.addEventListener('click', closeSidebar);
     overlay?.addEventListener('click', closeSidebar);
 
-    // Close on escape key
-    document.addEventListener('keydown', (e) => {
+    // Close on escape key (store reference for cleanup)
+    keydownHandler = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && sidebar?.classList.contains('active')) {
         closeSidebar();
       }
-    });
+    };
+    document.addEventListener('keydown', keydownHandler);
 
-    // Close sidebar when clicking on a link
+    // Close sidebar when clicking on a link (store references for cleanup)
     sidebar?.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeSidebar);
+      const handler = () => closeSidebar();
+      link.addEventListener('click', handler);
+      linkClickHandlers.push({ link: link as HTMLAnchorElement, handler });
     });
   }
 

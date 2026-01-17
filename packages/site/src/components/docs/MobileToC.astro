@@ -204,11 +204,38 @@ const { items } = Astro.props;
 </style>
 
 <script>
+  // Store references for cleanup on view transitions
+  let keydownHandler: ((e: KeyboardEvent) => void) | null = null;
+  let currentToC: HTMLElement | null = null;
+  let currentOverlay: HTMLElement | null = null;
+  let linkClickHandlers: Array<{ link: HTMLAnchorElement; handler: () => void }> = [];
+
+  function destroyMobileToC() {
+    // Remove document-level keydown listener
+    if (keydownHandler) {
+      document.removeEventListener('keydown', keydownHandler);
+      keydownHandler = null;
+    }
+    // Remove link click handlers
+    for (const { link, handler } of linkClickHandlers) {
+      link.removeEventListener('click', handler);
+    }
+    linkClickHandlers = [];
+    currentToC = null;
+    currentOverlay = null;
+  }
+
   function initMobileToC() {
+    // Clean up previous listeners before re-initializing
+    destroyMobileToC();
+
     const toggleButton = document.getElementById('mobile-toc-toggle');
     const closeButton = document.getElementById('mobile-toc-close');
     const toc = document.getElementById('mobile-toc');
     const overlay = document.getElementById('mobile-toc-overlay');
+
+    currentToC = toc;
+    currentOverlay = overlay;
 
     function openToC() {
       if (toc && overlay) {
@@ -231,16 +258,19 @@ const { items } = Astro.props;
     closeButton?.addEventListener('click', closeToC);
     overlay?.addEventListener('click', closeToC);
 
-    // Close on escape key
-    document.addEventListener('keydown', (e) => {
+    // Close on escape key (store reference for cleanup)
+    keydownHandler = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && toc?.classList.contains('active')) {
         closeToC();
       }
-    });
+    };
+    document.addEventListener('keydown', keydownHandler);
 
-    // Close ToC when clicking on a link
+    // Close ToC when clicking on a link (store references for cleanup)
     toc?.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeToC);
+      const handler = () => closeToC();
+      link.addEventListener('click', handler);
+      linkClickHandlers.push({ link: link as HTMLAnchorElement, handler });
     });
   }
 
