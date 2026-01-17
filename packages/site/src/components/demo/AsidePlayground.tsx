@@ -55,10 +55,10 @@ function Select<T extends string>({
   descriptions,
 }: SelectProps<T>): ReactNode {
   return (
-    <div className="flex flex-col gap-1">
-      <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+    <label className="flex flex-col gap-1">
+      <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
         {label}
-      </label>
+      </span>
       <select
         className="rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100"
         onChange={(e) => onChange(e.target.value as T)}
@@ -71,7 +71,7 @@ function Select<T extends string>({
           </option>
         ))}
       </select>
-    </div>
+    </label>
   );
 }
 
