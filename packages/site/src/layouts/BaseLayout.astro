@@ -39,6 +39,11 @@ const {
 } = Astro.props;
 
 const fullTitle = title === "social-embed" ? title : `${title} | social-embed`;
+
+// Generate canonical URL - fallback to request URL if site not configured
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : Astro.url.href;
 ---
 
 <html lang="en">
@@ -48,7 +53,7 @@ const fullTitle = title === "social-embed" ? title : `${title} | social-embed`;
     <meta name="description" content={description} />
     <title>{fullTitle}</title>
     <link rel="icon" href="/favicon.ico" />
-    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+    <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
