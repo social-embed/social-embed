@@ -9,6 +9,7 @@ import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { pagefindIntegration } from "./plugins/astro-pagefind-integration";
+import { rehypeSkipFirstHeading } from "./plugins/rehype-skip-first-heading";
 import { localCdnPlugin } from "./plugins/vite-plugin-local-cdn";
 
 /**
@@ -118,6 +119,7 @@ export default defineConfig({
   // Markdown processing for pure Astro pages
   markdown: {
     rehypePlugins: [
+      rehypeSkipFirstHeading,
       rehypeHeadingIds,
       [
         rehypeAutolinkHeadings,
