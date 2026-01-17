@@ -131,44 +131,6 @@ import BaseLayout from "../../../../layouts/BaseLayout.astro";
         <li><code>xyz123nonexistent</code> - No results (empty state)</li>
       </ul>
     </section>
-
-    <section class="demo-section">
-      <h2>Features</h2>
-      <ul class="features-list">
-        <li>
-          <span class="feature-icon">✓</span>
-          <span>Debounced search (150ms)</span>
-        </li>
-        <li>
-          <span class="feature-icon">✓</span>
-          <span>Full keyboard navigation</span>
-        </li>
-        <li>
-          <span class="feature-icon">✓</span>
-          <span>ARIA accessibility attributes</span>
-        </li>
-        <li>
-          <span class="feature-icon">✓</span>
-          <span>Dark/light mode support</span>
-        </li>
-        <li>
-          <span class="feature-icon">✓</span>
-          <span>Three sub-result display modes</span>
-        </li>
-        <li>
-          <span class="feature-icon">✓</span>
-          <span>Highlighted search terms</span>
-        </li>
-        <li>
-          <span class="feature-icon">✓</span>
-          <span>Loading and empty states</span>
-        </li>
-        <li>
-          <span class="feature-icon">✓</span>
-          <span>Section keyboard navigation</span>
-        </li>
-      </ul>
-    </section>
       </div>
     </DemoLayout>
   </div>
@@ -353,27 +315,5 @@ import BaseLayout from "../../../../layouts/BaseLayout.astro";
     border: 1px solid var(--nav-border);
     border-radius: 0.25rem;
     color: var(--nav-text);
-  }
-
-  .features-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-    gap: 0.5rem;
-  }
-
-  .features-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    color: var(--nav-text-muted);
-  }
-
-  .feature-icon {
-    color: var(--color-mv-green);
-    font-weight: 600;
   }
 </style>
