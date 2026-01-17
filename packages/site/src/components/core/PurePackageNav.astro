@@ -40,7 +40,10 @@ const headingInactiveClass =
       <span class="hidden lg:block"><code>&lt;o-embed&gt;</code> component</span>
     </a>
     <span class="sub-links text-sm text-slate-500 dark:text-slate-400 no-underline">
-      <a href="/wc/playground/" class:list={["no-underline hover:underline", isWcPlayground ? activeClass : inactiveClass]}>Playground</a>
+      <span class="text-links">
+        <a href="/wc/" class:list={["no-underline hover:underline", isWcSection && !isWcPlayground ? activeClass : inactiveClass]}>Docs</a> ·
+        <a href="/wc/playground/" class:list={["no-underline hover:underline", isWcPlayground ? activeClass : inactiveClass]}>Playground</a>
+      </span>
       <span class="icon-links">
         <a href="https://github.com/social-embed/social-embed/tree/master/packages/wc" target="_blank" rel="noopener noreferrer" title="View source on GitHub" aria-label="View source on GitHub" class="inline-flex items-center opacity-60 hover:opacity-100 transition-opacity">
           <GitHubIcon class="w-4 h-4" fill="currentColor" />
@@ -59,7 +62,10 @@ const headingInactiveClass =
       <span class="hidden lg:block">Library</span>
     </a>
     <span class="sub-links text-sm text-slate-500 dark:text-slate-400">
-      <a href="/lib/playground/" class:list={["no-underline hover:underline", isLibPlayground ? activeClass : inactiveClass]}>Playground</a>
+      <span class="text-links">
+        <a href="/lib/" class:list={["no-underline hover:underline", isLibSection && !isLibPlayground ? activeClass : inactiveClass]}>Docs</a> ·
+        <a href="/lib/playground/" class:list={["no-underline hover:underline", isLibPlayground ? activeClass : inactiveClass]}>Playground</a>
+      </span>
       <span class="icon-links">
         <a href="https://github.com/social-embed/social-embed/tree/master/packages/lib" target="_blank" rel="noopener noreferrer" title="View source on GitHub" aria-label="View source on GitHub" class="inline-flex items-center opacity-60 hover:opacity-100 transition-opacity">
           <GitHubIcon class="w-4 h-4" fill="currentColor" />
