@@ -2,7 +2,7 @@
 title: Overview
 pageTitle: "<o-embed> Web Component"
 skipMarkdownTitle: true
-tableOfContents: false
+tableOfContents: true
 slug: wc
 sidebar:
   order: 1
@@ -11,6 +11,7 @@ head:
     content: "p:has(> a) { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }"
 ---
 
-import README from "../../../../../wc/README.md";
+import README, { getHeadings } from "../../../../../wc/README.md";
+export { getHeadings };
 
 <README />

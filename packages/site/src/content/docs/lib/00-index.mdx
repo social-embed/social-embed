@@ -2,7 +2,7 @@
 title: Overview
 pageTitle: "@social-embed/lib"
 skipMarkdownTitle: true
-tableOfContents: false
+tableOfContents: true
 slug: lib
 sidebar:
   order: 1
@@ -11,6 +11,7 @@ head:
     content: "p:has(> a) { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }"
 ---
 
-import README from "../../../../../lib/README.md";
+import README, { getHeadings } from "../../../../../lib/README.md";
+export { getHeadings };
 
 <README />
