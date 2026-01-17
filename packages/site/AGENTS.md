@@ -2,70 +2,38 @@
 
 AI agent guidance specific to the `packages/site` documentation site.
 
-## Starlight: The Double-Edged Sword
+## Architecture: Pure Astro
 
-This site uses [Astro Starlight](https://starlight.astro.build/) for documentation. While excellent for docs, Starlight's CSS is **poisonous to custom design**.
+This site uses pure Astro with:
+- Custom layouts (`BaseLayout.astro`, `MarkdownLayout.astro`)
+- React islands for interactive components
+- Tailwind CSS for styling
+- Pagefind for search
+- Expressive Code for code blocks
 
-### The Problem
+### Key Layouts
 
-Starlight injects CSS classes like `sl-flex`, `sl-markdown-content`, and complex grid layouts that:
-- Override Tailwind utilities unpredictably
-- Add unwanted padding, margins, and constraints
-- Break responsive layouts
-- Force content into narrow containers
+| Layout | Purpose |
+|--------|---------|
+| `BaseLayout.astro` | Base for all pages (header, footer, theme) |
+| `MarkdownLayout.astro` | 3-column docs layout (sidebar, content, TOC) |
 
-### The Solution: Pure Astro Pages
+### Custom Components
 
-For pages requiring custom design (homepage, landing pages, custom layouts):
+Core header components in `src/components/core/`:
+- `CoreHeaderLayout.astro` - Header skeleton with slots
+- `PureSiteTitle.astro` - Logo and site name
+- `PurePackageNav.astro` - Package navigation ribbon (wc/lib)
+- `PureSocialIcons.astro` - Social icons + search button
+- `PureThemeSelect.astro` - Theme toggle
+- `PureSearchButton.astro` - Pagefind search modal
 
-**DO:** Create pages in `src/pages/` as pure Astro files:
-```astro
----
-// src/pages/index.astro
-import "../tailwind.css";
-// Import React components as islands
-import { MyComponent } from "../components/MyComponent";
----
-<html lang="en">
-  <head>
-    <!-- Own head, no Starlight -->
-    <script is:inline>
-      // Theme toggle compatible with Starlight's localStorage key
-      const theme = localStorage.getItem('starlight-theme');
-      document.documentElement.dataset.theme = theme || 'dark';
-    </script>
-  </head>
-  <body class="bg-white dark:bg-slate-900">
-    <!-- Pure Tailwind, no sl-* classes -->
-    <MyComponent client:only="react" />
-  </body>
-</html>
-```
+MDX components in `src/components/mdx/`:
+- `Aside.astro`, `Badge.astro`, `LinkButton.astro`, `Tabs.astro`
 
-**DON'T:** Use `StarlightPage` for custom layouts:
-```astro
-// AVOID - brings in ALL Starlight CSS cruft
-import { StarlightPage } from '@astrojs/starlight/components';
-```
+### Theme System
 
-**DON'T:** Import Starlight internal CSS:
-```ts
-// AVOID - may not exist or changes between versions
-import '@astrojs/starlight/style/props.css';
-```
-
-### When to Use What
-
-| Page Type | Approach |
-|-----------|----------|
-| Documentation pages | `src/content/docs/*.mdx` (Starlight) |
-| Homepage / Landing | `src/pages/*.astro` (Pure Astro) |
-| Playground pages | `src/pages/*.astro` (Pure Astro) |
-| Custom layouts | `src/pages/*.astro` (Pure Astro) |
-
-### Theme Compatibility
-
-Pure Astro pages should use Starlight's localStorage key for theme consistency:
+Uses `starlight-theme` localStorage key for backward compatibility:
 
 ```javascript
 // Read theme (in <head> to prevent flash)
@@ -82,26 +50,9 @@ document.documentElement.dataset.theme = next;
 localStorage.setItem('starlight-theme', next);
 ```
 
-### Starlight Internals to Avoid
-
-These require `Astro.locals.starlightRoute` context (only available on Starlight pages):
-- `Header.astro` from Starlight
-- `ThemeSelect.astro` from Starlight
-- Any component accessing `locals.starlightRoute`
-
-For pure Astro pages, implement your own header/nav/theme toggle using Tailwind.
-
 ### Key Files
 
-- `src/pages/index.astro` - Pure Astro homepage (no Starlight)
-- `src/content/docs/` - Starlight documentation pages
-- `src/tailwind.css` - Shared Tailwind styles
-- `astro.config.ts` - Starlight + React + Tailwind integration
-
-### Debugging Starlight Interference
-
-If a page looks broken:
-1. Inspect element - look for `sl-*` class names
-2. If present, Starlight CSS is interfering
-3. Move page to `src/pages/` as pure Astro
-4. Use only Tailwind classes
+- `src/layouts/BaseLayout.astro` - Base layout for all pages
+- `src/layouts/MarkdownLayout.astro` - Documentation layout
+- `src/content/docs/` - Documentation content
+- `astro.config.ts` - Astro + React + Tailwind + Pagefind

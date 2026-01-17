@@ -1,0 +1,436 @@
+---
+import { AsidePlayground } from "../../../components/demo/AsidePlayground";
+import { DemoLayout } from "../../../components/demo/DemoLayout";
+import AsideComponent from "../../../components/mdx/Aside.astro";
+/**
+ * Demo page for Aside/Admonition style variants.
+ * Shows interactive playground plus all 5 variants (classic, refined, card, minimal, hybrid)
+ * with each aside type (note, tip, caution, danger).
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const variants = ["classic", "refined", "card", "minimal", "hybrid"] as const;
+const types = ["note", "tip", "caution", "danger"] as const;
+
+const variantDescriptions: Record<(typeof variants)[number], string> = {
+  card: "Full bordered card with colored icon badge, no left border",
+  classic: "Simple left border with flat background",
+  hybrid:
+    "Recommended - Gradient background with left accent + solid icon badge",
+  minimal: "Top border only, uppercase title, ultra-subtle editorial style",
+  refined:
+    "Gradient background fading right + icon with subtle pill background",
+};
+---
+
+<BaseLayout title="Aside Variants" description="Demo page for aside/admonition style variants" hideFooter>
+  <div class="demo-wrapper">
+    <DemoLayout currentPath="/demo/ux/aside" client:load>
+      <div class="demo-container">
+    <div class="demo-header">
+      <h1>Aside / Admonition Variants</h1>
+    </div>
+
+    {/* Interactive Playground */}
+    <section class="playground-section">
+      <AsidePlayground client:load />
+    </section>
+
+    {/* Variant Showcase */}
+    <div class="variants-header">
+      <h2>All Variants</h2>
+      <p>Each variant with its default icon style shown across all types.</p>
+    </div>
+
+    {
+      variants.map((variant) => (
+        <section class="variant-section">
+          <div class="variant-header">
+            <h2 class="variant-title">{variant}</h2>
+            <p class="variant-desc">{variantDescriptions[variant]}</p>
+          </div>
+
+          <div class="aside-grid">
+            {types.map((type) => (
+              <AsideComponent variant={variant} type={type}>
+                This is a <strong>{type}</strong> message. It provides important
+                information to the reader with appropriate visual styling for
+                the content type.
+              </AsideComponent>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+      </div>
+    </DemoLayout>
+  </div>
+</BaseLayout>
+
+<style>
+  .demo-wrapper {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
+  .demo-container {
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .demo-container {
+      padding: 2rem 2rem;
+    }
+  }
+
+  .demo-header {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .demo-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-slate-900);
+    margin: 0 0 0.75rem 0;
+  }
+
+  :global([data-theme="dark"]) .demo-header h1 {
+    color: var(--color-slate-100);
+  }
+
+  .demo-subtitle {
+    color: var(--color-slate-600);
+    font-size: 1rem;
+    max-width: 40rem;
+    margin: 0 auto;
+  }
+
+  :global([data-theme="dark"]) .demo-subtitle {
+    color: var(--color-slate-400);
+  }
+
+  .variant-section {
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+
+  :global([data-theme="dark"]) .variant-section {
+    border-bottom-color: var(--color-slate-700);
+  }
+
+  .variant-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .variant-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .variant-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-slate-800);
+    margin: 0 0 0.375rem 0;
+    text-transform: capitalize;
+  }
+
+  :global([data-theme="dark"]) .variant-title {
+    color: var(--color-slate-200);
+  }
+
+  .variant-desc {
+    font-size: 0.875rem;
+    color: var(--color-slate-500);
+    margin: 0;
+  }
+
+  :global([data-theme="dark"]) .variant-desc {
+    color: var(--color-slate-400);
+  }
+
+  /* Responsive grid for aside types */
+  .aside-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .aside-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Reset margin on asides within the grid */
+  .aside-grid :global(.aside) {
+    margin: 0;
+  }
+
+  /* Playground section */
+  .playground-section {
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+
+  :global([data-theme="dark"]) .playground-section {
+    border-bottom-color: var(--color-slate-700);
+  }
+
+  /* Variants header */
+  .variants-header {
+    margin-bottom: 2rem;
+  }
+
+  .variants-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-slate-800);
+    margin: 0 0 0.5rem 0;
+  }
+
+  :global([data-theme="dark"]) .variants-header h2 {
+    color: var(--color-slate-200);
+  }
+
+  .variants-header p {
+    font-size: 0.875rem;
+    color: var(--color-slate-500);
+    margin: 0;
+  }
+
+  :global([data-theme="dark"]) .variants-header p {
+    color: var(--color-slate-400);
+  }
+
+  /* ========================================
+   * PLAYGROUND PREVIEW STYLES
+   * These duplicate Aside.astro styles for React preview
+   * (Astro scoped CSS doesn't apply to React components)
+   * ======================================== */
+  .playground-section :global(.aside-preview .aside) {
+    --aside-color: var(--color-mv-blue);
+    --aside-bg: var(--color-mv-blue-light);
+  }
+
+  .playground-section :global(.aside-preview .aside-note) {
+    --aside-color: var(--color-mv-blue);
+    --aside-bg: var(--color-mv-blue-light);
+  }
+
+  .playground-section :global(.aside-preview .aside-tip) {
+    --aside-color: var(--color-mv-green);
+    --aside-bg: var(--color-mv-green-light);
+  }
+
+  .playground-section :global(.aside-preview .aside-caution) {
+    --aside-color: var(--color-mv-yellow);
+    --aside-bg: var(--color-mv-yellow-light);
+  }
+
+  .playground-section :global(.aside-preview .aside-danger) {
+    --aside-color: var(--color-mv-red);
+    --aside-bg: var(--color-mv-red-light);
+  }
+
+  .playground-section :global(.aside-preview .aside-title) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--aside-color);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-title) {
+    color: color-mix(in oklch, var(--aside-color), white 30%);
+  }
+
+  .playground-section :global(.aside-preview .aside-content) {
+    color: var(--color-slate-700);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-content) {
+    color: var(--color-slate-300);
+  }
+
+  .playground-section :global(.aside-preview .aside-content p) {
+    margin: 0;
+  }
+
+  /* Icon wrapper */
+  .playground-section :global(.aside-preview .aside-icon) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Icon styles */
+  .playground-section :global(.aside-preview .aside-icon-inline) {
+    color: var(--aside-color);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-icon-inline) {
+    color: color-mix(in oklch, var(--aside-color), white 30%);
+  }
+
+  .playground-section :global(.aside-preview .aside-icon-soft) {
+    padding: 0.25rem;
+    background: color-mix(in oklch, var(--aside-color), white 70%);
+    border-radius: 0.375rem;
+    color: var(--aside-color);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-icon-soft) {
+    background: color-mix(in oklch, var(--aside-color), transparent 70%);
+    color: color-mix(in oklch, var(--aside-color), white 30%);
+  }
+
+  .playground-section :global(.aside-preview .aside-icon-solid) {
+    padding: 0.25rem;
+    background: var(--aside-color);
+    color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-icon-solid) {
+    background: color-mix(in oklch, var(--aside-color), white 10%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Icon sizes */
+  .playground-section :global(.aside-preview .aside-icon-sm svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .playground-section :global(.aside-preview .aside-icon-md svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .playground-section :global(.aside-preview .aside-icon-lg svg) {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Variant: Classic */
+  .playground-section :global(.aside-preview .aside-classic) {
+    border-left: 4px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: var(--aside-bg);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-classic) {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+  }
+
+  /* Variant: Refined */
+  .playground-section :global(.aside-preview .aside-refined) {
+    border-left: 5px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), white 60%) 100%
+    );
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-refined) {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), transparent 40%) 100%
+    );
+    border-left-color: color-mix(in oklch, var(--aside-color), white 15%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Variant: Card */
+  .playground-section :global(.aside-preview .aside-card) {
+    border: 1px solid color-mix(in oklch, var(--aside-color), white 70%);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    background: color-mix(in oklch, var(--aside-color), white 92%);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-card) {
+    background: color-mix(in oklch, var(--aside-color), transparent 88%);
+    border-color: color-mix(in oklch, var(--aside-color), transparent 65%);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 color-mix(in oklch, var(--aside-color), transparent 80%);
+  }
+
+  /* Variant: Minimal */
+  .playground-section :global(.aside-preview .aside-minimal) {
+    border-top: 2px solid var(--aside-color);
+    border-radius: 0;
+    padding: 1rem 0 1rem 1rem;
+    background: color-mix(in oklch, var(--aside-color), white 96%);
+    box-shadow: none;
+  }
+
+  .playground-section :global(.aside-preview .aside-minimal .aside-title) {
+    font-size: 0.8125rem;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .playground-section :global(.aside-preview .aside-minimal .aside-icon) {
+    opacity: 0.85;
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-minimal) {
+    background: color-mix(in oklch, var(--aside-color), transparent 94%);
+    border-top-color: color-mix(in oklch, var(--aside-color), white 20%);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-minimal .aside-content) {
+    color: var(--color-slate-400);
+  }
+
+  /* Variant: Hybrid */
+  .playground-section :global(.aside-preview .aside-hybrid) {
+    border-left: 5px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), white 60%) 100%
+    );
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  :global([data-theme="dark"]) .playground-section :global(.aside-preview .aside-hybrid) {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), transparent 40%) 100%
+    );
+    border-left-color: color-mix(in oklch, var(--aside-color), white 15%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+</style>

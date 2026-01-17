@@ -1,56 +1,29 @@
 ---
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import { DemoLayout } from "../../../../components/demo/DemoLayout";
 import { DemoWidgetsPlaygroundBrowse } from "../../../../components/demo/DemoWidgetsPlaygroundBrowse";
+/**
+ * Demo Widgets Playground - Browse playground widget components.
+ * Uses BaseLayout instead of StarlightPage.
+ */
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
 ---
 
-<StarlightPage
-  frontmatter={{
-    title: "Playground Widgets",
-    description: "Compact playground widgets for testing embeds and URL transformations",
-    template: "splash",
-    tableOfContents: false,
-  }}
-  hasSidebar={false}
+<BaseLayout
+  title="Playground Widgets"
+  description="Compact playground widgets for testing embeds and URL transformations"
+  hideFooter
 >
-  <div data-page="demo" class="not-content">
+  <div class="demo-container">
     <DemoLayout currentPath="/demo/widgets/playground" client:only="react">
       <DemoWidgetsPlaygroundBrowse client:only="react" />
     </DemoLayout>
   </div>
-</StarlightPage>
+</BaseLayout>
 
-<style is:global>
-  /* Reset Starlight layout for demo pages */
-  body:has([data-page="demo"]) {
-    .pagination-links,
-    footer.sl-flex {
-      display: none !important;
-    }
-
-    main,
-    .content-panel,
-    .main-pane,
-    .sl-container,
-    .sl-markdown-content {
-      padding: 0 !important;
-      margin: 0 !important;
-      max-width: 100% !important;
-    }
-
-    .content-panel + .content-panel {
-      border-top: none !important;
-    }
-
-    h1[id="_top"] {
-      display: none !important;
-    }
-  }
-
-  /* Demo fills viewport below header */
-  [data-page="demo"] {
+<style>
+  .demo-container {
     position: fixed;
-    top: calc(var(--sl-nav-height, 3.5rem) + 1px);
+    top: var(--nav-height);
     left: 0;
     right: 0;
     bottom: 0;

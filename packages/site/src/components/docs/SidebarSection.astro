@@ -1,0 +1,72 @@
+---
+/**
+ * Sidebar section with label, optional badge, and child links.
+ */
+import Badge from "../mdx/Badge.astro";
+import SidebarLink from "./SidebarLink.astro";
+
+interface Props {
+  label: string;
+  badge?: {
+    text: string;
+    variant?: "note" | "tip" | "caution" | "danger" | "success";
+  };
+  items: Array<{ label: string; href: string }>;
+  currentPath: string;
+  collapsed?: boolean;
+}
+
+const { label, badge, items, currentPath, collapsed = false } = Astro.props;
+---
+
+<div class="sidebar-section">
+  <div class="section-header">
+    <span class="section-label">{label}</span>
+    {badge && <Badge text={badge.text} variant={badge.variant} size="small" />}
+  </div>
+  <div class:list={["section-items", { collapsed }]}>
+    {
+      items.map((item) => {
+        const itemPath = item.href.replace(/\/$/, "");
+        const current = currentPath.replace(/\/$/, "");
+        const isActive = itemPath === current;
+
+        return <SidebarLink href={item.href} label={item.label} isActive={isActive} />;
+      })
+    }
+  </div>
+</div>
+
+<style>
+  .sidebar-section {
+    margin-bottom: 1rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate-500);
+  }
+
+  :global([data-theme="dark"]) .section-label {
+    color: var(--color-slate-400);
+  }
+
+  .section-items {
+    /* Items visible by default */
+  }
+
+  .section-items.collapsed {
+    display: none;
+  }
+</style>

@@ -1,112 +1,125 @@
 ---
-import { Aside, LinkButton } from "@astrojs/starlight/components";
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import Sidebar from "../../../components/docs/Sidebar.astro";
+import { Aside, LinkButton } from "../../../components/mdx";
+/**
+ * Library External Sandboxes - Links to external code playgrounds.
+ * Uses MarkdownLayout for consistent styling and mobile navigation.
+ */
+import MarkdownLayout from "../../../layouts/MarkdownLayout.astro";
+
+const headings = [
+  { depth: 2, slug: "stackblitz", text: "StackBlitz" },
+  { depth: 2, slug: "codesandbox", text: "CodeSandbox" },
+  { depth: 2, slug: "codepen", text: "CodePen" },
+  { depth: 2, slug: "jsfiddle", text: "JSFiddle" },
+];
 ---
 
-<StarlightPage
+<MarkdownLayout
   frontmatter={{
     title: "External Sandboxes",
     description: "Try @social-embed/lib in external code playgrounds",
     tableOfContents: true,
   }}
+  headings={headings}
 >
-  <div class="sandbox-content">
-    <p>
-      Try the <code>@social-embed/lib</code> library in your favorite online code editor.
-    </p>
+  <Sidebar slot="sidebar" currentPath={Astro.url.pathname} />
 
-    <LinkButton
-      href="/wc/playground/"
-      variant="primary"
-      icon="rocket"
-      iconPlacement="start"
-    >
-      Interactive Playground
-    </LinkButton>
+  <p>
+    Try the <code>@social-embed/lib</code> library in your favorite online code editor.
+  </p>
 
-    <hr />
+  <LinkButton
+    href="/lib/playground/"
+    variant="primary"
+    icon="rocket"
+    iconPlacement="start"
+  >
+    Interactive Playground
+  </LinkButton>
 
-    <Aside type="tip">
-      Loading issues with external playgrounds? Enable third-party cookies or disable AdBlockers.
-    </Aside>
+  <hr />
 
-    <h2 id="stackblitz">StackBlitz</h2>
+  <Aside type="tip">
+    Loading issues with external playgrounds? Enable third-party cookies or disable AdBlockers.
+  </Aside>
 
-    <LinkButton
-      href="https://stackblitz.com/edit/vitejs-vite-utf8vxjo?file=index.html,src%2Fapp.ts&terminal=dev"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on StackBlitz
-    </LinkButton>
+  <h2 id="stackblitz">StackBlitz</h2>
 
-    <iframe src="https://stackblitz.com/edit/vitejs-vite-utf8vxjo?ctl=1&embed=1&file=src%2Fapp.ts" width="100%" height="600"></iframe>
+  <LinkButton
+    href="https://stackblitz.com/edit/vitejs-vite-utf8vxjo?file=index.html,src%2Fapp.ts&terminal=dev"
+    variant="secondary"
+    icon="external"
+    iconPlacement="start"
+  >
+    Launch on StackBlitz
+  </LinkButton>
 
-    <h2 id="codesandbox">CodeSandbox</h2>
+  <iframe src="https://stackblitz.com/edit/vitejs-vite-utf8vxjo?ctl=1&embed=1&file=src%2Fapp.ts" width="100%" height="600" style="border: 0; margin-top: 1rem; border-radius: 0.5rem;"></iframe>
 
-    <LinkButton
-      href="https://codesandbox.io/p/sandbox/example-of-social-embed-lib-3gntvf"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on CodeSandbox
-    </LinkButton>
+  <h2 id="codesandbox">CodeSandbox</h2>
 
-    <iframe src="https://codesandbox.io/embed/3gntvf?view=editor+%2B+preview&module=%2Fsrc%2FApp.tsx&hidenavigation=1"
-      style="width:100%; height: 500px; border:0; border-radius: 4px; overflow:hidden;"
-      title="Example of @social-embed/lib"
-      allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-      sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-    ></iframe>
+  <LinkButton
+    href="https://codesandbox.io/p/sandbox/example-of-social-embed-lib-3gntvf"
+    variant="secondary"
+    icon="external"
+    iconPlacement="start"
+  >
+    Launch on CodeSandbox
+  </LinkButton>
 
-    <h2 id="codepen">CodePen</h2>
+  <iframe src="https://codesandbox.io/embed/3gntvf?view=editor+%2B+preview&module=%2Fsrc%2FApp.tsx&hidenavigation=1"
+    style="width:100%; height: 500px; border:0; border-radius: 4px; overflow:hidden; margin-top: 1rem;"
+    title="Example of @social-embed/lib"
+    allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+    sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+  ></iframe>
 
-    <LinkButton
-      href="https://codepen.io/attachment/pen/VwPPrNq"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on CodePen
-    </LinkButton>
+  <h2 id="codepen">CodePen</h2>
 
-    <p class="codepen" data-height="500" data-default-tab="js,result" data-slug-hash="VwPPrNq" data-pen-title="Example of @social-embed/lib" data-preview="true" data-editable="true" data-user="attachment" style="height: 500px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-      <span>See the Pen <a href="https://codepen.io/attachment/pen/VwPPrNq">
-      Example of @social-embed/lib</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
-      on <a href="https://codepen.io">CodePen</a>.</span>
-    </p>
-    <script is:inline async src="https://public.codepenassets.com/embed/index.js"></script>
+  <LinkButton
+    href="https://codepen.io/attachment/pen/VwPPrNq"
+    variant="secondary"
+    icon="external"
+    iconPlacement="start"
+  >
+    Launch on CodePen
+  </LinkButton>
 
-    <h3>CodePen (with console)</h3>
+  <p class="codepen" data-height="500" data-default-tab="js,result" data-slug-hash="VwPPrNq" data-pen-title="Example of @social-embed/lib" data-preview="true" data-editable="true" data-user="attachment" style="height: 500px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+    <span>See the Pen <a href="https://codepen.io/attachment/pen/VwPPrNq">
+    Example of @social-embed/lib</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
+    on <a href="https://codepen.io">CodePen</a>.</span>
+  </p>
+  <script is:inline async src="https://public.codepenassets.com/embed/index.js"></script>
 
-    <LinkButton
-      href="https://codepen.io/attachment/pen/poRRpdp?editors=0010"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on CodePen
-    </LinkButton>
+  <h3>CodePen (with console)</h3>
 
-    <p class="codepen" data-height="500" data-default-tab="js,result" data-slug-hash="poRRpdp" data-pen-title="@social-embed/lib console" data-preview="true" data-editable="true" data-user="attachment" style="height: 500px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
-      <span>See the Pen <a href="https://codepen.io/attachment/pen/poRRpdp">
-      @social-embed/lib console</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
-      on <a href="https://codepen.io">CodePen</a>.</span>
-    </p>
+  <LinkButton
+    href="https://codepen.io/attachment/pen/poRRpdp?editors=0010"
+    variant="secondary"
+    icon="external"
+    iconPlacement="start"
+  >
+    Launch on CodePen
+  </LinkButton>
 
-    <h2 id="jsfiddle">JSFiddle</h2>
+  <p class="codepen" data-height="500" data-default-tab="js,result" data-slug-hash="poRRpdp" data-pen-title="@social-embed/lib console" data-preview="true" data-editable="true" data-user="attachment" style="height: 500px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;">
+    <span>See the Pen <a href="https://codepen.io/attachment/pen/poRRpdp">
+    @social-embed/lib console</a> by Tony (<a href="https://codepen.io/attachment">@attachment</a>)
+    on <a href="https://codepen.io">CodePen</a>.</span>
+  </p>
 
-    <LinkButton
-      href="https://jsfiddle.net/gitpull/pcLagbsm/"
-      variant="secondary"
-      icon="external"
-      iconPlacement="start"
-    >
-      Launch on JSFiddle
-    </LinkButton>
+  <h2 id="jsfiddle">JSFiddle</h2>
 
-    <iframe width="100%" height="600" src="//jsfiddle.net/gitpull/pcLagbsm/embedded/result,js/" style="border: 0" loading="lazy" allowfullscreen="true"></iframe>
-  </div>
-</StarlightPage>
+  <LinkButton
+    href="https://jsfiddle.net/gitpull/pcLagbsm/"
+    variant="secondary"
+    icon="external"
+    iconPlacement="start"
+  >
+    Launch on JSFiddle
+  </LinkButton>
+
+  <iframe width="100%" height="600" src="//jsfiddle.net/gitpull/pcLagbsm/embedded/result,js/" style="border: 0; margin-top: 1rem; border-radius: 0.5rem;" loading="lazy" allowfullscreen="true"></iframe>
+</MarkdownLayout>

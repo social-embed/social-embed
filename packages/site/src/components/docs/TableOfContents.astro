@@ -1,0 +1,231 @@
+---
+/**
+ * Table of Contents component for documentation pages.
+ * Displays a sticky sidebar with heading links.
+ */
+import type { ToCItem } from "../../lib/generateToC";
+
+interface Props {
+  items: ToCItem[];
+  title?: string;
+}
+
+const { items, title = "On this page" } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <nav class="toc" aria-labelledby="toc-heading">
+      <h2 id="toc-heading" class="toc-title">
+        {title}
+      </h2>
+      <ul class="toc-list">
+        {items.map((item) => (
+          <li class="toc-item">
+            <a href={`#${item.slug}`} class="toc-link">
+              {item.text}
+            </a>
+            {item.children.length > 0 && (
+              <ul class="toc-sublist">
+                {item.children.map((child) => (
+                  <li class="toc-subitem">
+                    <a href={`#${child.slug}`} class="toc-sublink">
+                      {child.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<script>
+  // Highlight active heading based on scroll position
+  class ToCHighlighter {
+    private observer: IntersectionObserver | null = null;
+    private activeLink: HTMLAnchorElement | null = null;
+
+    constructor() {
+      this.init();
+    }
+
+    init() {
+      const links = document.querySelectorAll(".toc-link, .toc-sublink");
+      if (links.length === 0) return;
+
+      // Get all heading IDs from the ToC links
+      const headingIds = Array.from(links).map((link) =>
+        (link as HTMLAnchorElement).getAttribute("href")?.slice(1),
+      );
+
+      // Create intersection observer for headings
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              this.setActive(entry.target.id);
+              break;
+            }
+          }
+        },
+        {
+          rootMargin: "-80px 0px -80% 0px",
+          threshold: 0,
+        },
+      );
+
+      // Observe all headings
+      for (const id of headingIds) {
+        if (id) {
+          const heading = document.getElementById(id);
+          if (heading) {
+            this.observer.observe(heading);
+          }
+        }
+      }
+    }
+
+    setActive(id: string) {
+      // Remove previous active state
+      if (this.activeLink) {
+        this.activeLink.removeAttribute("data-active");
+      }
+
+      // Set new active state
+      const newActive = document.querySelector(
+        `.toc a[href="#${id}"]`,
+      ) as HTMLAnchorElement;
+      if (newActive) {
+        newActive.setAttribute("data-active", "");
+        this.activeLink = newActive;
+      }
+    }
+
+    destroy() {
+      this.observer?.disconnect();
+    }
+  }
+
+  // Initialize on load and after view transitions
+  let highlighter: ToCHighlighter | null = null;
+
+  function initHighlighter() {
+    highlighter?.destroy();
+    highlighter = new ToCHighlighter();
+  }
+
+  initHighlighter();
+  document.addEventListener("astro:after-swap", initHighlighter);
+</script>
+
+<style>
+  .toc {
+    position: sticky;
+    top: calc(var(--nav-height) + 1.5rem);
+    max-height: calc(100vh - var(--nav-height) - 3rem);
+    overflow-y: auto;
+    padding-right: 1rem;
+    font-size: 0.875rem;
+  }
+
+  /* Custom scrollbar */
+  .toc::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .toc::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .toc::-webkit-scrollbar-thumb {
+    background: var(--color-slate-300);
+    border-radius: 2px;
+  }
+
+  :global([data-theme="dark"]) .toc::-webkit-scrollbar-thumb {
+    background: var(--color-slate-600);
+  }
+
+  .toc-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-slate-500);
+    margin-bottom: 0.75rem;
+  }
+
+  :global([data-theme="dark"]) .toc-title {
+    color: var(--color-slate-400);
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid var(--color-slate-200);
+  }
+
+  :global([data-theme="dark"]) .toc-list {
+    border-left-color: var(--color-slate-700);
+  }
+
+  .toc-item {
+    margin: 0;
+  }
+
+  .toc-link,
+  .toc-sublink {
+    display: block;
+    padding: 0.375rem 0 0.375rem 1rem;
+    margin-left: -1px;
+    color: var(--color-slate-600);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition:
+      color 0.15s,
+      border-color 0.15s;
+  }
+
+  :global([data-theme="dark"]) .toc-link,
+  :global([data-theme="dark"]) .toc-sublink {
+    color: var(--color-slate-400);
+  }
+
+  .toc-link:hover,
+  .toc-sublink:hover {
+    color: var(--color-slate-900);
+  }
+
+  :global([data-theme="dark"]) .toc-link:hover,
+  :global([data-theme="dark"]) .toc-sublink:hover {
+    color: var(--color-slate-100);
+  }
+
+  .toc-link[data-active],
+  .toc-sublink[data-active] {
+    color: var(--color-mv-blue);
+    border-left-color: var(--color-mv-blue);
+  }
+
+  :global([data-theme="dark"]) .toc-link[data-active],
+  :global([data-theme="dark"]) .toc-sublink[data-active] {
+    color: color-mix(in oklch, var(--color-mv-blue), white 20%);
+    border-left-color: color-mix(in oklch, var(--color-mv-blue), white 20%);
+  }
+
+  .toc-sublist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-sublink {
+    padding-left: 1.5rem;
+    font-size: 0.8125rem;
+  }
+</style>

@@ -1,12 +1,17 @@
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
+import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
-import starlight from "@astrojs/starlight";
-import starlightDocSearch from "@astrojs/starlight-docsearch";
 import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
 import { defineConfig } from "astro/config";
+import expressiveCode from "astro-expressive-code";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import { pagefindIntegration } from "./plugins/astro-pagefind-integration";
+import { rehypeSkipFirstHeading } from "./plugins/rehype-skip-first-heading";
 import { localCdnPlugin } from "./plugins/vite-plugin-local-cdn";
+import { viteMdxMergeHeadings } from "./plugins/vite-plugin-mdx-merge-headings";
 
 /**
  * Get current git branch for esm.sh GitHub URLs.
@@ -25,6 +30,7 @@ function getGitBranch(): string {
 type VitePlugin = NonNullable<ViteUserConfig["plugins"]>[number];
 const tailwindPlugin = tailwindcss() as unknown as VitePlugin;
 const localCdn = localCdnPlugin() as unknown as VitePlugin;
+const mdxMergeHeadings = viteMdxMergeHeadings() as unknown as VitePlugin;
 
 // https://astro.build/config
 export default defineConfig({
@@ -94,97 +100,46 @@ export default defineConfig({
     ],
   },
   integrations: [
-    starlight({
-      components: {
-        Footer: "./src/components/Footer.astro",
-        Head: "./src/components/Head.astro",
-        Header: "./src/components/Header.astro",
-        PageFrame: "./src/components/PageFrame.astro",
-        Search: "./src/components/Search.astro",
-        ThemeSelect: "./src/components/ThemeSelect.astro",
+    expressiveCode({
+      styleOverrides: {
+        borderRadius: "0.5rem",
+        codeFontFamily: "var(--font-mono)",
+        codeFontSize: "0.875rem",
+        codePaddingBlock: "1rem",
+        codePaddingInline: "1rem",
+        frames: {
+          shadowColor: "transparent",
+        },
       },
-      credits: true,
-      customCss: [
-        // Path to your Tailwind base styles:
-        "./src/tailwind.css",
-      ],
-      editLink: {
-        baseUrl:
-          "https://github.com/social-embed/social-embed/edit/master/packages/site/",
-      },
-      favicon: "/favicon.ico",
-      head: [
-        {
-          attrs: {
-            client: "load",
-            src: "/cdn/o-embed.js",
-            type: "module",
-          },
-          tag: "script",
-        },
-      ],
-      logo: {
-        src: "./src/assets/img/logo.svg",
-      },
-      sidebar: [
-        "getting-started",
-        {
-          autogenerate: { directory: "lib" },
-          badge: { text: "lib", variant: "note" },
-          label: "Library",
-        },
-        {
-          badge: { text: "try it", variant: "success" },
-          collapsed: false,
-          items: [
-            { label: "Interactive", link: "/lib/playground/" },
-            { label: "More Sandboxes", link: "/lib/playground/external" },
-          ],
-          label: "Lib Playground",
-        },
-        {
-          autogenerate: { directory: "wc" },
-          badge: { text: "wc", variant: "tip" },
-          label: "Web Component",
-        },
-        {
-          badge: { text: "try it", variant: "success" },
-          collapsed: false,
-          items: [
-            { label: "Interactive", link: "/wc/playground/" },
-            { label: "More Sandboxes", link: "/wc/playground/external" },
-          ],
-          label: "WC Playground",
-        },
-        "migration",
-        "news",
-      ],
-      social: [
-        {
-          href: "https://codeberg.org/social-embed/social-embed",
-          icon: "codeberg",
-          label: "Codeberg",
-        },
-        {
-          href: "https://github.com/social-embed/social-embed",
-          icon: "github",
-          label: "GitHub",
-        },
-        {
-          href: "https://gitlab.com/social-embed/social-embed",
-          icon: "gitlab",
-          label: "GitLab",
-        },
-      ],
-      title: "social-embed",
+      themeCssSelector: (theme) => `[data-theme="${theme.type}"]`,
+      themes: ["github-dark", "github-light"],
     }),
+    mdx(),
     react(),
-    starlightDocSearch({
-      apiKey: "a59a27c90979939bd097dcb51d8f22e3",
-      appId: "BIATGF4K4K",
-      indexName: "social-embed",
-    }),
+    pagefindIntegration(),
   ],
+  // Markdown processing for pure Astro pages
+  markdown: {
+    rehypePlugins: [
+      rehypeSkipFirstHeading,
+      rehypeHeadingIds,
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "append",
+          content: {
+            children: [{ type: "text", value: "#" }],
+            properties: { ariaHidden: "true", className: ["anchor-icon"] },
+            tagName: "span",
+            type: "element",
+          },
+          properties: {
+            className: ["anchor-link"],
+          },
+        },
+      ],
+    ],
+  },
   redirects: {
     "/playground": "/wc/playground/",
   },
@@ -194,7 +149,7 @@ export default defineConfig({
       __GIT_BRANCH__: JSON.stringify(getGitBranch()),
     },
     // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
-    plugins: [tailwindPlugin, localCdn],
+    plugins: [tailwindPlugin, localCdn, mdxMergeHeadings],
     resolve: {
       alias: {
         "@social-embed/lib": resolve(

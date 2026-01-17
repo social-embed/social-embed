@@ -1,0 +1,319 @@
+---
+import { DemoLayout } from "../../../../components/demo/DemoLayout";
+import { SearchModal } from "../../../../components/search/SearchModal";
+/**
+ * Search Demo Widget - Interactive search modal testing page.
+ * Allows testing the custom SearchModal component with mock data.
+ */
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Search Demo" description="Test the custom search modal component" hideFooter>
+  <div class="demo-container">
+    <DemoLayout currentPath="/demo/widgets/search" client:only="react">
+      <div class="demo-page">
+    <header class="demo-header">
+      <h1>Search Modal Demo</h1>
+      <p class="demo-description">
+        Test the custom Pagefind search modal with different sub-result display modes.
+        In development mode, mock data is used.
+      </p>
+    </header>
+
+    <section class="demo-section">
+      <h2>Sub-Result Display Modes</h2>
+      <p class="section-description">
+        Three display modes for sub-results (sections within pages).
+        Try searching for <code>youtube</code> to see sub-results in each mode.
+      </p>
+
+      <div class="display-modes-grid">
+        <!-- Inline Mode (Pagefind-style) -->
+        <div class="mode-card">
+          <h3 class="mode-title">
+            <span class="mode-badge mode-badge-inline">inline</span>
+            Pagefind-style
+          </h3>
+          <p class="mode-description">
+            Always shows top 3 sub-results expanded with ⤷ prefix.
+            Sub-results are navigable with arrow keys.
+          </p>
+          <div class="search-demo-container search-demo-compact">
+            <SearchModal
+              client:load
+              useMockData={true}
+              subResultsDisplay="inline"
+              navigateSections={true}
+              initialQuery="youtube"
+            />
+          </div>
+        </div>
+
+        <!-- Toggle Mode (Default) -->
+        <div class="mode-card">
+          <h3 class="mode-title">
+            <span class="mode-badge mode-badge-toggle">toggle</span>
+            Collapsible (Default)
+          </h3>
+          <p class="mode-description">
+            Click the section count to expand/collapse sub-results.
+            Compact initial view, user-controlled expansion.
+          </p>
+          <div class="search-demo-container search-demo-compact">
+            <SearchModal
+              client:load
+              useMockData={true}
+              subResultsDisplay="toggle"
+              initialQuery="youtube"
+            />
+          </div>
+        </div>
+
+        <!-- Breadcrumbs Mode (Algolia-style) -->
+        <div class="mode-card">
+          <h3 class="mode-title">
+            <span class="mode-badge mode-badge-breadcrumbs">breadcrumbs</span>
+            Algolia-style
+          </h3>
+          <p class="mode-description">
+            Shows path like "Wc › Providers › YouTube" above title.
+            No nested sub-results, flat layout.
+          </p>
+          <div class="search-demo-container search-demo-compact">
+            <SearchModal
+              client:load
+              useMockData={true}
+              subResultsDisplay="breadcrumbs"
+              initialQuery="youtube"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <h2>Keyboard Navigation with Sections</h2>
+      <p class="section-description">
+        When <code>navigateSections={true}</code> and <code>subResultsDisplay="inline"</code>,
+        arrow keys navigate into individual sub-results.
+      </p>
+      <div class="keyboard-hints">
+        <div class="hint">
+          <kbd>↑</kbd> <kbd>↓</kbd>
+          <span>Navigate results + sub-results</span>
+        </div>
+        <div class="hint">
+          <kbd>Enter</kbd>
+          <span>Go to selected item (main or sub)</span>
+        </div>
+        <div class="hint">
+          <kbd>Ctrl</kbd>+<kbd>Home</kbd>
+          <span>Jump to first result</span>
+        </div>
+        <div class="hint">
+          <kbd>Ctrl</kbd>+<kbd>End</kbd>
+          <span>Jump to last result</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section">
+      <h2>Test Queries</h2>
+      <p class="section-description">
+        Try these queries to test different scenarios:
+      </p>
+
+      <ul class="test-queries">
+        <li><code>youtube</code> - Multiple results with sub-results</li>
+        <li><code>getting started</code> - Matches title and content</li>
+        <li><code>spotify</code> - Results with theme options</li>
+        <li><code>api</code> - API reference with function docs</li>
+        <li><code>xyz123nonexistent</code> - No results (empty state)</li>
+      </ul>
+    </section>
+      </div>
+    </DemoLayout>
+  </div>
+</BaseLayout>
+
+<style>
+  .demo-container {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+
+  .demo-page {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .demo-header {
+    margin-bottom: 2rem;
+  }
+
+  .demo-header h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--nav-text);
+    margin: 0 0 0.5rem;
+  }
+
+  .demo-description {
+    color: var(--nav-text-muted);
+    margin: 0;
+  }
+
+  .demo-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .demo-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--nav-text);
+    margin: 0 0 0.5rem;
+  }
+
+  .section-description {
+    color: var(--nav-text-muted);
+    font-size: 0.875rem;
+    margin: 0 0 1rem;
+  }
+
+  .section-description code {
+    background-color: var(--search-kbd-bg);
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+    color: var(--nav-text);
+  }
+
+  /* Display modes grid */
+  .display-modes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    gap: 1.5rem;
+  }
+
+  .mode-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .mode-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--nav-text);
+    margin: 0;
+  }
+
+  .mode-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+  }
+
+  .mode-badge-inline {
+    background-color: color-mix(in srgb, var(--color-mv-green) 20%, transparent);
+    color: var(--color-mv-green);
+  }
+
+  .mode-badge-toggle {
+    background-color: color-mix(in srgb, var(--color-mv-blue) 20%, transparent);
+    color: var(--color-mv-blue);
+  }
+
+  .mode-badge-breadcrumbs {
+    background-color: color-mix(in srgb, var(--color-mv-purple) 20%, transparent);
+    color: var(--color-mv-purple);
+  }
+
+  .mode-description {
+    color: var(--nav-text-muted);
+    font-size: 0.8125rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .search-demo-container {
+    border: 1px solid var(--nav-border);
+    border-radius: 0.5rem;
+    background-color: var(--nav-bg);
+    min-height: 24rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-demo-compact {
+    min-height: 20rem;
+    max-height: 28rem;
+  }
+
+  .test-queries {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .test-queries li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--nav-text-muted);
+  }
+
+  .test-queries code {
+    background-color: var(--search-kbd-bg);
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+    color: var(--nav-text);
+  }
+
+  .keyboard-hints {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.75rem;
+  }
+
+  .hint {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--nav-text-muted);
+  }
+
+  .hint kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    padding: 0 0.375rem;
+    font-size: 0.75rem;
+    font-family: inherit;
+    background-color: var(--search-kbd-bg);
+    border: 1px solid var(--nav-border);
+    border-radius: 0.25rem;
+    color: var(--nav-text);
+  }
+</style>

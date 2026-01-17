@@ -1,57 +1,26 @@
 ---
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
 import { Playground as PlaygroundComponent } from "../../../components/playground/Playground";
+/**
+ * WC Playground - Interactive playground for testing web component.
+ * Uses BaseLayout instead of StarlightPage.
+ */
+import BaseLayout from "../../../layouts/BaseLayout.astro";
 ---
 
-<StarlightPage
-  frontmatter={{
-    title: "Playground",
-    description: "Interactive playground for testing social-embed components",
-    template: "splash",
-    tableOfContents: false,
-  }}
-  hasSidebar={false}
+<BaseLayout
+  title="Playground"
+  description="Interactive playground for testing social-embed components"
+  hideFooter
 >
-  <div data-page="playground" class="not-content">
+  <div class="playground-container">
     <PlaygroundComponent client:only="react" />
   </div>
-</StarlightPage>
+</BaseLayout>
 
-<style is:global>
-  /* Nuclear reset for playground page - override ALL Starlight wrappers */
-  body:has([data-page="playground"]) {
-    /* Hide pagination/footer */
-    .pagination-links,
-    footer.sl-flex {
-      display: none !important;
-    }
-
-    /* Reset all Starlight container wrappers */
-    main,
-    .content-panel,
-    .main-pane,
-    .sl-container,
-    .sl-markdown-content {
-      padding: 0 !important;
-      margin: 0 !important;
-      max-width: 100% !important;
-    }
-
-    /* Remove the content-panel sibling border-top */
-    .content-panel + .content-panel {
-      border-top: none !important;
-    }
-
-    /* Hide page title */
-    h1[id="_top"] {
-      display: none !important;
-    }
-  }
-
-  /* Playground fills viewport below header */
-  [data-page="playground"] {
+<style>
+  .playground-container {
     position: fixed;
-    top: calc(var(--sl-nav-height, 3.5rem) + 1px); /* +1px for header border */
+    top: var(--nav-height);
     left: 0;
     right: 0;
     bottom: 0;

@@ -78,6 +78,18 @@
           }
         }
       }
+    },
+    {
+      // SearchResultItem renders Pagefind excerpts containing only <mark> tags
+      // from our own indexed documentation content, not user input
+      "includes": ["**/SearchResultItem.tsx"],
+      "linter": {
+        "rules": {
+          "security": {
+            "noDangerouslySetInnerHtml": "off"
+          }
+        }
+      }
     }
   ]
 }

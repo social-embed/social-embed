@@ -1,0 +1,324 @@
+---
+/**
+ * Aside component for callouts and admonitions.
+ *
+ * Props:
+ * - type: Semantic type (note, tip, caution, danger) - controls colors
+ * - variant: Container/layout style (classic, refined, card, minimal, hybrid)
+ * - iconStyle: Icon appearance (inline, soft, solid) - can override variant default
+ * - iconSize: Icon dimensions (sm, md, lg) - can override variant default
+ *
+ * Default variant is "hybrid" with solid icon style and lg size.
+ */
+interface Props {
+  type?: "note" | "tip" | "caution" | "danger";
+  title?: string;
+  variant?: "classic" | "refined" | "card" | "minimal" | "hybrid";
+  iconStyle?: "inline" | "soft" | "solid";
+  iconSize?: "sm" | "md" | "lg";
+}
+
+// Variant defaults for iconStyle and iconSize
+const variantDefaults: Record<
+  string,
+  { iconStyle: "inline" | "soft" | "solid"; iconSize: "sm" | "md" | "lg" }
+> = {
+  card: { iconSize: "md", iconStyle: "solid" },
+  classic: { iconSize: "md", iconStyle: "inline" },
+  hybrid: { iconSize: "lg", iconStyle: "solid" },
+  minimal: { iconSize: "sm", iconStyle: "inline" },
+  refined: { iconSize: "md", iconStyle: "soft" },
+};
+
+const { type = "note", title, variant = "hybrid" } = Astro.props;
+const defaults = variantDefaults[variant] || variantDefaults.hybrid;
+const iconStyle = Astro.props.iconStyle ?? defaults.iconStyle;
+const iconSize = Astro.props.iconSize ?? defaults.iconSize;
+
+const icons: Record<string, string> = {
+  caution: "M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z",
+  danger:
+    "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z",
+  note: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z",
+  tip: "M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z",
+};
+
+const defaultTitles: Record<string, string> = {
+  caution: "Caution",
+  danger: "Danger",
+  note: "Note",
+  tip: "Tip",
+};
+---
+
+<aside class:list={["aside", `aside-${type}`, `aside-${variant}`]} role="note">
+  <p class="aside-title">
+    <span class:list={["aside-icon", `aside-icon-${iconStyle}`, `aside-icon-${iconSize}`]}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path d={icons[type]} />
+      </svg>
+    </span>
+    <span>{title || defaultTitles[type]}</span>
+  </p>
+  <div class="aside-content">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  /* ========================================
+   * BASE STYLES (shared across all variants)
+   * ======================================== */
+  .aside {
+    --aside-color: var(--color-mv-blue);
+    --aside-bg: var(--color-mv-blue-light);
+  }
+
+  .aside-note {
+    --aside-color: var(--color-mv-blue);
+    --aside-bg: var(--color-mv-blue-light);
+  }
+
+  .aside-tip {
+    --aside-color: var(--color-mv-green);
+    --aside-bg: var(--color-mv-green-light);
+  }
+
+  .aside-caution {
+    --aside-color: var(--color-mv-yellow);
+    --aside-bg: var(--color-mv-yellow-light);
+  }
+
+  .aside-danger {
+    --aside-color: var(--color-mv-red);
+    --aside-bg: var(--color-mv-red-light);
+  }
+
+  .aside-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--aside-color);
+  }
+
+  :global([data-theme="dark"]) .aside-title {
+    color: color-mix(in oklch, var(--aside-color), white 30%);
+  }
+
+  .aside-content {
+    color: var(--color-slate-700);
+  }
+
+  :global([data-theme="dark"]) .aside-content {
+    color: var(--color-slate-300);
+  }
+
+  .aside-content :global(p) {
+    margin: 0;
+  }
+
+  .aside-content :global(p + p) {
+    margin-top: 0.75rem;
+  }
+
+  /* ========================================
+   * ICON WRAPPER (base styles)
+   * ======================================== */
+  .aside-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ========================================
+   * ICON STYLES (independent of variant)
+   * ======================================== */
+  /* Inline: icon inherits text color, no container */
+  .aside-icon-inline {
+    color: var(--aside-color);
+  }
+
+  :global([data-theme="dark"]) .aside-icon-inline {
+    color: color-mix(in oklch, var(--aside-color), white 30%);
+  }
+
+  /* Soft: subtle badge with lightened background */
+  .aside-icon-soft {
+    padding: 0.25rem;
+    background: color-mix(in oklch, var(--aside-color), white 70%);
+    border-radius: 0.375rem;
+    color: var(--aside-color);
+  }
+
+  :global([data-theme="dark"]) .aside-icon-soft {
+    background: color-mix(in oklch, var(--aside-color), transparent 70%);
+    color: color-mix(in oklch, var(--aside-color), white 30%);
+  }
+
+  /* Solid: strong badge with full color + white icon */
+  .aside-icon-solid {
+    padding: 0.25rem;
+    background: var(--aside-color);
+    color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+
+  :global([data-theme="dark"]) .aside-icon-solid {
+    background: color-mix(in oklch, var(--aside-color), white 10%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
+  /* ========================================
+   * ICON SIZES (independent of variant)
+   * ======================================== */
+  .aside-icon-sm svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .aside-icon-md svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .aside-icon-lg svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* ========================================
+   * VARIANT: CLASSIC
+   * Simple left border with flat background
+   * ======================================== */
+  .aside-classic {
+    border-left: 4px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: var(--aside-bg);
+  }
+
+  :global([data-theme="dark"]) .aside-classic {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+  }
+
+  /* ========================================
+   * VARIANT: REFINED
+   * Gradient background fading right
+   * ======================================== */
+  .aside-refined {
+    border-left: 5px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), white 60%) 100%
+    );
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  :global([data-theme="dark"]) .aside-refined {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), transparent 40%) 100%
+    );
+    border-left-color: color-mix(in oklch, var(--aside-color), white 15%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+
+  /* ========================================
+   * VARIANT: CARD
+   * Full bordered card, no left accent
+   * ======================================== */
+  .aside-card {
+    border: 1px solid color-mix(in oklch, var(--aside-color), white 70%);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    background: color-mix(in oklch, var(--aside-color), white 92%);
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
+
+  :global([data-theme="dark"]) .aside-card {
+    background: color-mix(in oklch, var(--aside-color), transparent 88%);
+    border-color: color-mix(in oklch, var(--aside-color), transparent 65%);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 color-mix(in oklch, var(--aside-color), transparent 80%);
+  }
+
+  /* ========================================
+   * VARIANT: MINIMAL
+   * Top border only, uppercase title
+   * ======================================== */
+  .aside-minimal {
+    border-top: 2px solid var(--aside-color);
+    border-radius: 0;
+    padding: 1rem 0 1rem 1rem;
+    margin: 1.5rem 0;
+    background: color-mix(in oklch, var(--aside-color), white 96%);
+    box-shadow: none;
+  }
+
+  .aside-minimal .aside-title {
+    font-size: 0.8125rem;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+  }
+
+  .aside-minimal .aside-icon {
+    opacity: 0.85;
+  }
+
+  :global([data-theme="dark"]) .aside-minimal {
+    background: color-mix(in oklch, var(--aside-color), transparent 94%);
+    border-top-color: color-mix(in oklch, var(--aside-color), white 20%);
+  }
+
+  :global([data-theme="dark"]) .aside-minimal .aside-content {
+    color: var(--color-slate-400);
+  }
+
+  /* ========================================
+   * VARIANT: HYBRID
+   * Gradient background with left accent (recommended)
+   * ======================================== */
+  .aside-hybrid {
+    border-left: 5px solid var(--aside-color);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), white 60%) 100%
+    );
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  :global([data-theme="dark"]) .aside-hybrid {
+    --aside-bg: color-mix(in oklch, var(--aside-color), transparent 85%);
+    background: linear-gradient(
+      to right,
+      var(--aside-bg),
+      color-mix(in oklch, var(--aside-bg), transparent 40%) 100%
+    );
+    border-left-color: color-mix(in oklch, var(--aside-color), white 15%);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  }
+</style>

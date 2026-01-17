@@ -1,0 +1,156 @@
+---
+/**
+ * Base layout for all pure Astro pages.
+ * Provides consistent header, footer, fonts, and theme handling.
+ */
+import "../tailwind.css";
+import { Font } from "astro:assets";
+import CoreHeaderLayout from "../components/core/CoreHeaderLayout.astro";
+import PurePackageNav from "../components/core/PurePackageNav.astro";
+import PureSiteTitle from "../components/core/PureSiteTitle.astro";
+import PureSocialIcons from "../components/core/PureSocialIcons.astro";
+import PureThemeSelect from "../components/core/PureThemeSelect.astro";
+import GitPullLogo from "../components/GitPullLogo.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Add custom elements to head */
+  head?: Array<{
+    tag: string;
+    content?: string;
+    attrs?: Record<string, string>;
+  }>;
+  /** Hide the header */
+  hideHeader?: boolean;
+  /** Hide the footer */
+  hideFooter?: boolean;
+  /** Custom body class */
+  bodyClass?: string;
+}
+
+const {
+  title,
+  description = "One tag to rule all embeds. Store URLs, not embed code.",
+  head = [],
+  hideHeader = false,
+  hideFooter = false,
+  bodyClass = "",
+} = Astro.props;
+
+const fullTitle = title === "social-embed" ? title : `${title} | social-embed`;
+
+// Generate canonical URL - fallback to request URL if site not configured
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : Astro.url.href;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{fullTitle}</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="social-embed" />
+
+    <!-- Load fonts via Astro experimental fonts API -->
+    <Font cssVariable="--font-ibm-plex-sans" preload />
+    <Font cssVariable="--font-ibm-plex-mono" preload />
+
+    <!-- Theme script (inline to prevent flash) -->
+    <script is:inline>
+      (() => {
+        let stored = null;
+        try {
+          stored = localStorage.getItem('starlight-theme');
+        } catch {
+          // localStorage unavailable (private browsing, security restrictions)
+        }
+        // Preference: what the user selected (light/auto/dark)
+        const preference = stored === 'light' ? 'light'
+                         : stored === 'dark' ? 'dark'
+                         : 'auto';
+        // Resolved: actual theme to apply (light/dark)
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const resolved = preference === 'auto'
+                       ? (prefersDark ? 'dark' : 'light')
+                       : preference;
+        document.documentElement.dataset.themePreference = preference;
+        document.documentElement.dataset.theme = resolved;
+      })();
+    </script>
+
+    <!-- Web component for o-embed -->
+    <script is:inline src="/cdn/o-embed.js" type="module"></script>
+
+    <!-- Custom head elements -->
+    {
+      head.map((el) => {
+        if (el.tag === "style") {
+          return <style set:html={el.content} {...el.attrs} />;
+        }
+        if (el.tag === "script") {
+          return <script is:inline set:html={el.content} {...el.attrs} />;
+        }
+        if (el.tag === "link") {
+          return <link {...el.attrs} />;
+        }
+        if (el.tag === "meta") {
+          return <meta {...el.attrs} />;
+        }
+        return null;
+      })
+    }
+
+    <slot name="head" />
+  </head>
+
+  <body
+    class:list={[
+      "min-h-screen flex flex-col bg-white text-slate-900 font-sans",
+      "dark:bg-slate-900 dark:text-slate-100",
+      bodyClass,
+    ]}
+  >
+    {
+      !hideHeader && (
+        <header
+          class="sticky top-0 z-50"
+          style="height: var(--nav-height); background-color: var(--nav-bg); border-bottom: 1px solid var(--nav-border); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);"
+        >
+          <CoreHeaderLayout>
+            <slot name="mobile-toggles" slot="mobile-toggles" />
+            <PureSiteTitle slot="logo" />
+            <PurePackageNav slot="package-nav" />
+            <PureSocialIcons slot="social" />
+            <PureThemeSelect slot="theme" />
+          </CoreHeaderLayout>
+        </header>
+      )
+    }
+
+    <slot />
+
+    {
+      !hideFooter && (
+        <footer class="mt-auto py-4 px-4 flex flex-col items-center gap-2 text-xs text-slate-500 border-t border-slate-200 dark:text-slate-400 dark:border-slate-700">
+          <div>
+            &copy; 2021-{new Date().getFullYear()}{" "}
+            <a href="https://tony.sh" class="hover:underline">
+              Tony Narlock
+            </a>
+          </div>
+          <GitPullLogo />
+        </footer>
+      )
+    }
+  </body>
+</html>

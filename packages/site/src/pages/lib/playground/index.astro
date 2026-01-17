@@ -1,76 +1,55 @@
 ---
-import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import Sidebar from "../../../components/docs/Sidebar.astro";
 import { LibPlayground } from "../../../components/lib-playground/LibPlayground";
+import { LinkButton } from "../../../components/mdx";
+/**
+ * Library Playground - Interactive playground for testing @social-embed/lib.
+ * Uses MarkdownLayout for consistent sidebar navigation.
+ */
+import MarkdownLayout from "../../../layouts/MarkdownLayout.astro";
 ---
 
-<StarlightPage
+<MarkdownLayout
   frontmatter={{
-    title: "Library Playground",
+    title: "Interactive Playground",
     description: "Interactive playground for testing @social-embed/lib functions",
-    template: "splash",
     tableOfContents: false,
   }}
-  hasSidebar={false}
 >
-  <div data-page="lib-playground" class="not-content">
-    <div class="playground-container">
-      <LibPlayground client:only="react" mode="full" className="playground-content" />
-    </div>
+  <Sidebar slot="sidebar" currentPath={Astro.url.pathname} />
+
+  <p>
+    Test <code>@social-embed/lib</code> functions directly in your browser.
+    Enter a video URL to see parsed results.
+  </p>
+
+  <div class="playground-wrapper">
+    <LibPlayground client:only="react" mode="full" className="playground-content" />
   </div>
-</StarlightPage>
 
-<style is:global>
-  /* Reset Starlight wrappers for lib playground page */
-  body:has([data-page="lib-playground"]) {
-    /* Hide pagination/footer */
-    .pagination-links,
-    footer.sl-flex {
-      display: none !important;
-    }
+  <LinkButton
+    href="/lib/playground/external/"
+    variant="minimal"
+    icon="arrow"
+  >
+    Explore more sandboxes on StackBlitz, CodeSandbox, CodePen, JSFiddle
+  </LinkButton>
+</MarkdownLayout>
 
-    /* Reset all Starlight container wrappers */
-    main,
-    .content-panel,
-    .main-pane,
-    .sl-container,
-    .sl-markdown-content {
-      padding: 0 !important;
-      margin: 0 !important;
-      max-width: 100% !important;
-    }
-
-    /* Remove the content-panel sibling border-top */
-    .content-panel + .content-panel {
-      border-top: none !important;
-    }
-
-    /* Hide page title */
-    h1[id="_top"] {
-      display: none !important;
-    }
+<style>
+  .playground-wrapper {
+    margin-top: 1.5rem;
   }
 
-  /* Playground container styling */
-  .playground-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-  }
-
-  .playground-content {
-    background: var(--sl-color-gray-6);
+  .playground-wrapper :global(.playground-content) {
+    background: var(--color-slate-100);
     border-radius: 0.5rem;
     padding: 1.5rem;
-    border: 1px solid var(--sl-color-gray-5);
+    border: 1px solid var(--color-slate-200);
   }
 
-  /* Light mode adjustments */
-  :root:not([data-theme="dark"]) {
-    .playground-container {
-      .playground-content {
-        background: var(--sl-color-gray-7);
-        border-color: var(--sl-color-gray-5);
-      }
-    }
+  :global([data-theme="dark"]) .playground-wrapper :global(.playground-content) {
+    background: var(--color-slate-800);
+    border-color: var(--color-slate-700);
   }
 </style>

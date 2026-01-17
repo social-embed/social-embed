@@ -7,8 +7,16 @@
 
 const btnBase =
   "px-2 py-1 mx-0.5 inline-flex items-center justify-center rounded-sm cursor-pointer bg-transparent text-slate-600 dark:text-slate-400 hover:bg-slate-100/70 dark:hover:bg-slate-700/40";
-const activeState =
-  "[&[data-active='true']]:bg-slate-200 [&[data-active='true']]:text-slate-900 dark:[&[data-active='true']]:bg-slate-700 dark:[&[data-active='true']]:text-slate-100";
+
+// CSS-based active states using html[data-theme-preference] attribute
+// Each button gets its own selector (cannot combine &[attr] in Tailwind arbitrary variants)
+// This eliminates flicker because CSS reads the attribute set by inline script before JS runs
+const activeLightState =
+  "[html[data-theme-preference='light']_&]:bg-slate-200 [html[data-theme-preference='light']_&]:text-slate-900 dark:[html[data-theme-preference='light']_&]:bg-slate-700 dark:[html[data-theme-preference='light']_&]:text-slate-100";
+const activeAutoState =
+  "[html[data-theme-preference='auto']_&]:bg-slate-200 [html[data-theme-preference='auto']_&]:text-slate-900 dark:[html[data-theme-preference='auto']_&]:bg-slate-700 dark:[html[data-theme-preference='auto']_&]:text-slate-100";
+const activeDarkState =
+  "[html[data-theme-preference='dark']_&]:bg-slate-200 [html[data-theme-preference='dark']_&]:text-slate-900 dark:[html[data-theme-preference='dark']_&]:bg-slate-700 dark:[html[data-theme-preference='dark']_&]:text-slate-100";
 ---
 
 <pure-theme-select>
@@ -23,7 +31,7 @@ const activeState =
         data-theme-value="light"
         type="button"
         aria-label="Light"
-        class:list={[btnBase, activeState]}
+        class:list={[btnBase, activeLightState]}
       >
         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <circle cx="12" cy="12" r="5"></circle>
@@ -41,7 +49,7 @@ const activeState =
         data-theme-value="auto"
         type="button"
         aria-label="System"
-        class:list={[btnBase, activeState]}
+        class:list={[btnBase, activeAutoState]}
       >
         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
@@ -53,7 +61,7 @@ const activeState =
         data-theme-value="dark"
         type="button"
         aria-label="Dark"
-        class:list={[btnBase, activeState]}
+        class:list={[btnBase, activeDarkState]}
       >
         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
@@ -114,22 +122,19 @@ const activeState =
     matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
 
   function onThemeChange(theme: Theme): void {
+    // Set both preference (for CSS button states) and resolved theme (for styling)
+    document.documentElement.dataset.themePreference = theme;
     document.documentElement.dataset.theme = theme === "auto" ? getPreferredColorScheme() : theme;
     storeTheme(theme);
-    updateButtonStates(theme);
+    updateMobileIcon(theme);
   }
 
-  function updateButtonStates(theme: Theme): void {
-    document.querySelectorAll("pure-theme-select").forEach((picker) => {
-      picker.querySelectorAll("[data-theme-value]").forEach((btn) => {
-        const isActive = btn.getAttribute("data-theme-value") === theme;
-        btn.setAttribute("data-active", isActive ? "true" : "false");
-      });
-      picker.querySelectorAll("[data-icon]").forEach((icon) => {
-        const show = icon.getAttribute("data-icon") === theme;
-        icon.classList.toggle("hidden", !show);
-        icon.classList.toggle("block", show);
-      });
+  // Update mobile toggle icon - CSS handles desktop button states via data-theme-preference
+  function updateMobileIcon(theme: Theme): void {
+    document.querySelectorAll("pure-theme-select [data-icon]").forEach((icon) => {
+      const show = icon.getAttribute("data-icon") === theme;
+      icon.classList.toggle("hidden", !show);
+      icon.classList.toggle("block", show);
     });
   }
 
@@ -140,8 +145,8 @@ const activeState =
   class PureThemeSelect extends HTMLElement {
     constructor() {
       super();
-      const currentTheme = loadTheme();
-      onThemeChange(currentTheme);
+      // Initialize mobile icon on mount (CSS handles desktop buttons)
+      updateMobileIcon(loadTheme());
 
       this.querySelectorAll("[data-theme-value]").forEach((btn) => {
         btn.addEventListener("click", () => {

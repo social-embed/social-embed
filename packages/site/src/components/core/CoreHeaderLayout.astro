@@ -1,20 +1,20 @@
 ---
 /**
- * Shared header layout skeleton used by both:
- * - Starlight pages (via Header.astro with virtual components)
- * - Pure Astro pages (via index.astro with pure components)
- *
+ * Shared header layout skeleton for pure Astro pages.
  * Provides consistent flexbox layout and CSS styling.
  * Uses --nav-* variables (our source of truth).
  */
 ---
 
 <div class="header">
+  <div class="mobile-toggles">
+    <slot name="mobile-toggles" />
+  </div>
   <div class="title-wrapper">
     <slot name="logo" />
   </div>
-  <div class="search-area">
-    <slot name="search" />
+  <div class="package-nav-area">
+    <slot name="package-nav" />
   </div>
   <div class="nav-area">
     <slot name="nav" />
@@ -33,6 +33,18 @@
     height: 100%;
   }
 
+  .mobile-toggles {
+    display: flex;
+    align-items: center;
+    padding-left: var(--nav-inner-pad, 1rem);
+    flex-shrink: 0;
+  }
+
+  .mobile-toggles:empty {
+    display: none;
+    padding: 0;
+  }
+
   .title-wrapper {
     overflow: clip;
     padding: 0.25rem;
@@ -43,7 +55,12 @@
     flex-shrink: 0;
   }
 
-  .search-area {
+  /* When mobile toggles present, reduce title padding */
+  .mobile-toggles:not(:empty) + .title-wrapper {
+    padding-left: 0.25rem;
+  }
+
+  .package-nav-area {
     flex: 1;
     display: flex;
     justify-content: flex-start;
@@ -76,6 +93,19 @@
   @media (max-width: 49.99rem) {
     .nav-area {
       display: none;
+    }
+  }
+
+  /* At narrow mobile widths, tighten spacing */
+  @media (max-width: 29.99rem) {
+    .header {
+      gap: 0.25rem;
+    }
+    .mobile-toggles {
+      padding-left: 0.5rem;
+    }
+    .right-group {
+      padding-right: 0.5rem;
     }
   }
 </style>

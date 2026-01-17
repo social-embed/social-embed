@@ -1,12 +1,12 @@
 ---
 id: contributing
 title: Contributing
+pageTitle: "Contributing to @social-embed/wc"
+skipMarkdownTitle: true
 description: Contribute to the @social-embed web component.
 sidebar:
   order: 90
 ---
-
-# Contributing to @social-embed/wc
 
 ## Clone the repo
 

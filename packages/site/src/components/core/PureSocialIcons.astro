@@ -2,6 +2,7 @@
 /**
  * Pure Astro equivalent of Starlight's SocialIcons component.
  * Displays search button + GitHub, GitLab, Codeberg icons.
+ * GitLab/Codeberg hidden on mobile to save space.
  */
 import PureSearchButton from "./PureSearchButton.astro";
 ---
@@ -16,14 +17,14 @@ import PureSearchButton from "./PureSearchButton.astro";
     </svg>
   </a>
 
-  <a href="https://gitlab.com/social-embed/social-embed" target="_blank" rel="noopener me" aria-label="GitLab">
+  <a href="https://gitlab.com/social-embed/social-embed" target="_blank" rel="noopener me" aria-label="GitLab" class="hide-mobile">
     <span class="sr-only">GitLab</span>
     <svg class="icon" fill="currentColor" viewBox="0 0 24 24">
       <path d="m23.6 9.593-.033-.086L20.3.98a.851.851 0 0 0-.336-.405.879.879 0 0 0-1.002.07.87.87 0 0 0-.29.44l-2.206 6.748H7.533L5.327 1.086a.857.857 0 0 0-.29-.441.879.879 0 0 0-1.002-.07.851.851 0 0 0-.336.405L.432 9.502l-.032.086a6.066 6.066 0 0 0 2.012 7.01l.01.008.028.02 4.98 3.727 2.462 1.863 1.5 1.132a1.008 1.008 0 0 0 1.22 0l1.5-1.132 2.461-1.863 5.006-3.747.012-.01a6.068 6.068 0 0 0 2.009-7.003"/>
     </svg>
   </a>
 
-  <a href="https://codeberg.org/social-embed/social-embed" target="_blank" rel="noopener me" aria-label="Codeberg">
+  <a href="https://codeberg.org/social-embed/social-embed" target="_blank" rel="noopener me" aria-label="Codeberg" class="hide-mobile">
     <span class="sr-only">Codeberg</span>
     <svg class="icon" fill="currentColor" viewBox="0 0 24 24">
       <path d="M11.955.49A12 12 0 0 0 0 12.49a12 12 0 0 0 1.832 6.373L11.838 5.928a.187.187 0 0 1 .324 0l10.006 12.935A12 12 0 0 0 24 12.49a12 12 0 0 0-12-12 12 12 0 0 0-.045 0zm.375 6.467 4.416 16.553a12 12 0 0 0 5.137-4.213z"/>
@@ -38,9 +39,23 @@ import PureSearchButton from "./PureSearchButton.astro";
     gap: 1rem;
   }
 
+  /* Tighter gap on narrow mobile */
+  @media (max-width: 29.99rem) {
+    .social-icons {
+      gap: 0.25rem;
+    }
+  }
+
   a {
     color: var(--nav-text-muted);
-    display: flex;
+    display: none;  /* Hidden on narrow mobile */
+  }
+
+  /* Show social links at 30rem+ (480px) */
+  @media (min-width: 30rem) {
+    a {
+      display: flex;
+    }
   }
 
   a:hover {
@@ -62,5 +77,16 @@ import PureSearchButton from "./PureSearchButton.astro";
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  /* Hide GitLab/Codeberg on narrow screens */
+  .hide-mobile {
+    display: none;
+  }
+
+  @media (min-width: 50rem) {
+    .hide-mobile {
+      display: flex;
+    }
   }
 </style>

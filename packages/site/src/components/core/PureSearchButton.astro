@@ -1,8 +1,11 @@
 ---
 /**
- * Pure Astro search button with Pagefind modal.
- * Mirrors Starlight's Search component but uses Tailwind styling.
+ * Pure Astro search button with custom React search modal.
+ * Uses Pagefind API under the hood with a beautiful custom UI.
  */
+import { SearchModal } from "../search/SearchModal";
+
+const useMockData = import.meta.env.DEV;
 ---
 
 <pure-search>
@@ -26,16 +29,12 @@
   <dialog class="search-dialog" aria-label="Search">
     <div class="dialog-frame">
       <button data-close-modal class="close-btn">Cancel</button>
-      {import.meta.env.DEV ? (
-        <div class="dev-warning">
-          <p>Search is only available in production builds.</p>
-          <p>Run <code>pnpm build && pnpm preview</code> to test search.</p>
-        </div>
-      ) : (
-        <div class="search-container">
-          <div id="pure__search"></div>
-        </div>
-      )}
+      <div class="search-container">
+        <SearchModal
+          client:load
+          useMockData={useMockData}
+        />
+      </div>
     </div>
   </dialog>
 </pure-search>
@@ -103,101 +102,82 @@
         }
       });
 
-      // Load Pagefind when idle (no DOMContentLoaded wrapper to avoid race condition)
-      if (!import.meta.env.DEV) {
-        const onIdle = window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1));
-        onIdle(async () => {
-          // @ts-expect-error — Missing types for @pagefind/default-ui package.
-          const { PagefindUI } = await import('@pagefind/default-ui');
-          new PagefindUI({
-            element: '#pure__search',
-            baseUrl: import.meta.env.BASE_URL,
-            bundlePath: import.meta.env.BASE_URL.replace(/\/$/, '') + '/pagefind/',
-            showImages: false,
-            showSubResults: true,
-          });
-        });
-      }
     }
   }
   customElements.define('pure-search', PureSearch);
 </script>
 
 <style is:global>
-  @import url('@pagefind/default-ui/css/ui.css');
-
   /* Prevent body scroll when modal is open */
   [data-search-modal-open] {
     overflow: hidden;
   }
 
-  /* Pagefind UI customizations */
-  #pure__search {
-    --pagefind-ui-scale: 0.9;
-    --pagefind-ui-primary: var(--nav-text);
-    --pagefind-ui-text: var(--nav-text-muted);
-    --pagefind-ui-font: var(--font-sans);
-    --pagefind-ui-background: transparent;
-    --pagefind-ui-border: var(--nav-border);
-    --pagefind-ui-border-width: 1px;
-    --pagefind-ui-tag: var(--nav-border);
+  /* Custom search result styling */
+  .search-result-default {
+    background-color: var(--search-result-bg);
   }
 
-  #pure__search .pagefind-ui__search-input {
-    color: var(--nav-text);
-    font-weight: 400;
+  .search-result-default:hover {
+    background-color: var(--search-result-hover-bg);
   }
 
-  #pure__search input:focus {
-    --pagefind-ui-border: var(--color-mv-blue);
+  .search-result-selected {
+    background-color: var(--search-result-selected-bg);
+    box-shadow: inset 0 0 0 1px var(--search-result-selected-border);
   }
 
-  #pure__search .pagefind-ui__results > * + * {
-    margin-top: 0.75rem;
+  /* Search excerpt mark highlighting */
+  .search-excerpt mark {
+    background-color: var(--search-mark-bg);
+    color: inherit;
+    padding: 0.0625rem 0.1875rem;
+    border-radius: 0.125rem;
+    font-weight: 600;
   }
 
-  #pure__search .pagefind-ui__result {
-    border: 0;
-    padding: 0;
-  }
-
-  #pure__search .pagefind-ui__result-nested {
-    padding: 0.5rem 1rem;
-  }
-
-  #pure__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)),
-  #pure__search .pagefind-ui__result-nested {
-    background-color: var(--search-bg);
+  /* Small keyboard shortcut style */
+  .search-kbd-small {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.25rem;
+    font-size: 0.625rem;
+    font-family: inherit;
+    background-color: var(--search-kbd-bg);
     border-radius: 0.25rem;
+    border: 1px solid var(--nav-border);
   }
 
-  #pure__search .pagefind-ui__result-title:not(:where(.pagefind-ui__result-nested *)):hover,
-  #pure__search .pagefind-ui__result-nested:hover {
-    outline: 1px solid var(--color-mv-blue);
+  /* Screen reader only utility */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
-  #pure__search .pagefind-ui__result-link {
-    color: var(--nav-text);
-    font-weight: 600;
+  /* Search results animation */
+  @keyframes search-slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  #pure__search .pagefind-ui__result-link:hover {
-    text-decoration: none;
-  }
-
-  #pure__search .pagefind-ui__result-excerpt {
-    font-size: 0.875rem;
-  }
-
-  #pure__search mark {
-    color: var(--nav-text);
-    background-color: transparent;
-    font-weight: 600;
-  }
-
-  #pure__search .pagefind-ui__search-clear {
-    background-color: transparent;
-    color: var(--nav-text-muted);
+  .search-results {
+    animation: search-slide-up 150ms ease-out;
   }
 </style>
 
@@ -302,7 +282,7 @@
     flex-direction: column;
     flex-grow: 1;
     gap: 1rem;
-    padding: 1rem;
+    padding: 0;
   }
 
   .close-btn {
@@ -321,19 +301,9 @@
 
   .search-container {
     flex: 1;
-  }
-
-  .dev-warning {
-    margin: auto;
-    text-align: center;
-    color: var(--nav-text-muted);
-  }
-
-  .dev-warning code {
-    background-color: var(--search-kbd-bg);
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
-    font-size: 0.875rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
   }
 
   /* Desktop dialog styling */
@@ -349,7 +319,7 @@
     }
 
     .dialog-frame {
-      padding: 1.5rem;
+      padding: 0;
     }
 
     .close-btn {

@@ -7,7 +7,7 @@ import logoSrc from "../../assets/img/logo.svg";
 ---
 
 <a href="/" class="site-title">
-  <img src={logoSrc.src} alt="" class="logo" />
+  <img src={logoSrc.src} alt="" class="h-8 w-[2.93rem] max-w-full object-contain object-left" />
   <span class="title">social-embed</span>
 </a>
 
@@ -21,15 +21,6 @@ import logoSrc from "../../assets/img/logo.svg";
     text-decoration: none;
     white-space: nowrap;
     min-width: 0;
-  }
-
-  .logo {
-    /* Fixed 32px height (Tailwind h-8 = 2rem) */
-    height: 2rem;
-    width: auto;
-    max-width: 100%;
-    object-fit: contain;
-    object-position: 0 50%;
   }
 
   .title {

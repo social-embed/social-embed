@@ -3,7 +3,6 @@
 > The official documentation site for the Social Embed project, available at [social-embed.org](https://social-embed.org)
 
 [![Built with Astro](https://img.shields.io/badge/Built%20with-Astro-FF5D01.svg?style=flat-square)](https://astro.build)
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
 
 This site documents the Social Embed project and its packages:
 - [@social-embed/lib](https://social-embed.org/lib/) - Core URL parsing library
@@ -11,7 +10,7 @@ This site documents the Social Embed project and its packages:
 
 ## Development
 
-This site is built with [Astro](https://astro.build) and [Starlight](https://starlight.astro.build), Astro's documentation theme.
+This site is built with [Astro](https://astro.build).
 
 ### Prerequisites
 
@@ -94,7 +93,7 @@ Content goes here...
 
 ## Customizing the Site
 
-- **Theme configuration**: Edit `astro.config.mjs` to change navigation, sidebar, and other Starlight settings
+- **Theme configuration**: Edit `astro.config.mjs` to change navigation, sidebar, and other Astro settings
 - **Styling**: Modify Tailwind CSS styles in `src/styles/` or component styles
 - **Components**: Add custom components in `src/components/`
 

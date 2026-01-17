@@ -1,0 +1,32 @@
+---
+/**
+ * TabItem component - used inside Tabs.
+ * Replaces @astrojs/starlight/components TabItem.
+ *
+ * Usage:
+ * <Tabs>
+ *   <TabItem label="First">Content 1</TabItem>
+ *   <TabItem label="Second">Content 2</TabItem>
+ * </Tabs>
+ */
+interface Props {
+  label: string;
+  icon?: string;
+}
+
+const { label } = Astro.props;
+---
+
+<div data-tab-panel data-tab-label={label}>
+  <slot />
+</div>
+
+<style>
+  [data-tab-panel] {
+    /* Content styling handled by parent */
+  }
+
+  [data-tab-panel][hidden] {
+    display: none;
+  }
+</style>
