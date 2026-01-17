@@ -223,11 +223,16 @@ export function filterMockResults(query: string): SearchResult[] {
     })
     .map((result) => ({
       ...result,
-      // Re-highlight matches in excerpt (replace existing marks and add new ones)
       excerpt: highlightMatches(stripMarks(result.excerpt), terms),
+      // Re-highlight matches in title and excerpt
+      meta: {
+        ...result.meta,
+        title: highlightMatches(result.meta.title, terms),
+      },
       sub_results: result.sub_results.map((sub) => ({
         ...sub,
         excerpt: highlightMatches(stripMarks(sub.excerpt), terms),
+        title: highlightMatches(sub.title, terms),
       })),
     }));
 }

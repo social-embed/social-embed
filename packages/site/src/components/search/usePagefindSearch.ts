@@ -44,6 +44,27 @@ interface Pagefind {
   search: (query: string) => Promise<PagefindSearchResponse>;
 }
 
+/**
+ * Escape special regex characters.
+ */
+function escapeRegExp(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Add <mark> tags around matching terms in text.
+ */
+function highlightTerms(text: string, query: string): string {
+  if (!query.trim()) return text;
+  const terms = query.toLowerCase().trim().split(/\s+/);
+  let result = text;
+  for (const term of terms) {
+    const regex = new RegExp(`(${escapeRegExp(term)})`, "gi");
+    result = result.replace(regex, "<mark>$1</mark>");
+  }
+  return result;
+}
+
 /** Initial search state */
 const initialState: SearchState = {
   error: null,
@@ -120,19 +141,20 @@ export function usePagefindSearch(
         .slice(0, maxResults)
         .map(async (result): Promise<SearchResult> => {
           const data = await result.data();
+          const title = data.meta.title ?? data.url;
           return {
             excerpt: data.excerpt,
             id: result.id,
             meta: {
               image: data.meta.image,
-              title: data.meta.title ?? data.url,
+              title: highlightTerms(title, query),
             },
             sub_results: showSubResults
               ? (data.sub_results ?? []).map((sub, index) => ({
                   anchor: sub.anchor ?? "",
                   excerpt: sub.excerpt,
                   id: `${result.id}-sub-${index}`,
-                  title: sub.title,
+                  title: highlightTerms(sub.title, query),
                   url: sub.url,
                 }))
               : [],

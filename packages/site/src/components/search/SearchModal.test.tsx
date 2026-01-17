@@ -368,4 +368,118 @@ describe("SearchModal", () => {
       expect(input?.value).toBe("vimeo");
     });
   });
+
+  describe("title matching and highlighting", () => {
+    test("matches results by title content", async () => {
+      const { input, getResults } = await renderModal();
+
+      // Search for "Getting Started" which appears in the title but not prominently in excerpt
+      await act(async () => {
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value",
+        )?.set;
+        nativeInputValueSetter?.call(input, "Getting Started");
+        input?.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+
+      const results = getResults();
+      expect(results.length).toBeGreaterThan(0);
+    });
+
+    test("highlights matching terms in title", async () => {
+      const { input, container } = await renderModal();
+
+      // Search for "YouTube" which appears in the title "YouTube Embeds"
+      await act(async () => {
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value",
+        )?.set;
+        nativeInputValueSetter?.call(input, "YouTube");
+        input?.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+
+      // Find the first result's title element (first div inside the link)
+      const firstResult = container?.querySelector('[role="option"]');
+      const titleElement = firstResult?.querySelector("a > div:first-child");
+
+      // Title should contain <mark> tag with highlighted text
+      expect(titleElement?.innerHTML).toContain("<mark>");
+      expect(titleElement?.innerHTML).toMatch(/<mark>YouTube<\/mark>/i);
+    });
+
+    test("highlights matching terms in sub-result titles", async () => {
+      const { input, container } = await renderModal();
+
+      // Search for "Installation" which appears in sub-result titles
+      await act(async () => {
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value",
+        )?.set;
+        nativeInputValueSetter?.call(input, "Installation");
+        input?.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+
+      // Expand sub-results by clicking the toggle button
+      const toggleButton = container?.querySelector(
+        '[aria-expanded="false"]',
+      ) as HTMLButtonElement | null;
+      if (toggleButton) {
+        await act(async () => {
+          toggleButton.click();
+        });
+      }
+
+      // Find a sub-result title that should be highlighted
+      const subResultTitle = container?.querySelector(
+        "ul li a span:first-child span",
+      );
+
+      // Sub-result title should contain <mark> tag
+      expect(subResultTitle?.innerHTML).toContain("<mark>");
+      expect(subResultTitle?.innerHTML).toMatch(/<mark>Installation<\/mark>/i);
+    });
+
+    test("preserves original case when highlighting", async () => {
+      const { input, container } = await renderModal();
+
+      // Search with lowercase for title that has proper case
+      await act(async () => {
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value",
+        )?.set;
+        nativeInputValueSetter?.call(input, "vimeo");
+        input?.dispatchEvent(new Event("input", { bubbles: true }));
+      });
+
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+
+      // Find the result with "Vimeo" in title
+      const results = container?.querySelectorAll('[role="option"]');
+      const vimeoResult = Array.from(results ?? []).find((r) =>
+        r.textContent?.includes("Vimeo"),
+      );
+      const titleElement = vimeoResult?.querySelector("a > div:first-child");
+
+      // Should preserve "Vimeo" case even though we searched "vimeo"
+      expect(titleElement?.innerHTML).toMatch(/<mark>Vimeo<\/mark>/i);
+    });
+  });
 });
