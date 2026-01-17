@@ -31,17 +31,22 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
     <!-- Theme script (inline to prevent flash) -->
     <script is:inline>
       (() => {
-        let theme = null;
+        let stored = null;
         try {
-          theme = localStorage.getItem('starlight-theme');
+          stored = localStorage.getItem('starlight-theme');
         } catch {
           // localStorage unavailable (private browsing, security restrictions)
         }
+        // Preference: what the user selected (light/auto/dark)
+        const preference = stored === 'light' ? 'light'
+                         : stored === 'dark' ? 'dark'
+                         : 'auto';
+        // Resolved: actual theme to apply (light/dark)
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        // Handle 'auto' theme from PureThemeSelect
-        const resolved = theme === 'light' ? 'light'
-                       : theme === 'dark' ? 'dark'
-                       : (prefersDark ? 'dark' : 'light');
+        const resolved = preference === 'auto'
+                       ? (prefersDark ? 'dark' : 'light')
+                       : preference;
+        document.documentElement.dataset.themePreference = preference;
         document.documentElement.dataset.theme = resolved;
       })();
     </script>
