@@ -29,6 +29,16 @@ export function DemoWidgetsBrowse() {
           }
           title="Playground Widgets"
         />
+        <DemoCard
+          description="Custom search modal with configurable sub-result display modes"
+          href="/demo/widgets/search"
+          preview={
+            <div className="flex items-center gap-3 text-4xl">
+              <span>🔍</span>
+            </div>
+          }
+          title="Search Widget"
+        />
       </div>
     </div>
   );
