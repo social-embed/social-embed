@@ -7,10 +7,54 @@
  */
 
 import { useState } from "react";
-import type { SearchResult, SearchResultItemProps } from "./searchTypes";
+import type {
+  SearchResult,
+  SearchResultItemProps,
+  SearchSubResult,
+} from "./searchTypes";
+
+/** Maximum number of sub-results to show in inline mode */
+const INLINE_SUBRESULTS_LIMIT = 3;
 
 /**
- * Individual search result with expandable sub-results.
+ * Thin sub-results to limit shown in inline mode (Pagefind-style).
+ * Takes the first N sub-results which are already sorted by relevance.
+ */
+export function thinSubResults(
+  subResults: SearchSubResult[],
+  limit = INLINE_SUBRESULTS_LIMIT,
+): SearchSubResult[] {
+  return subResults.slice(0, limit);
+}
+
+/**
+ * Generate a breadcrumb path from URL.
+ * e.g., "/wc/providers/youtube/" → "Wc › Providers › YouTube"
+ */
+function urlToBreadcrumb(url: string): string {
+  const parts = url
+    .replace(/^\//, "") // Remove leading slash
+    .replace(/\/$/, "") // Remove trailing slash
+    .replace(/#.*$/, "") // Remove anchor
+    .split("/")
+    .filter(Boolean);
+
+  if (parts.length === 0) return "Home";
+
+  return parts
+    .map((part) => {
+      // Capitalize first letter, handle kebab-case
+      return part
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    })
+    .join(" › ");
+}
+
+/**
+ * Individual search result with configurable sub-results display.
+ * Supports three display modes: inline, toggle, and breadcrumbs.
  */
 export function SearchResultItem({
   result,
@@ -18,53 +62,75 @@ export function SearchResultItem({
   onClick,
   onMouseEnter,
   id,
+  subResultsDisplay = "toggle",
+  selectedSubIndex = -1,
+  onSubResultMouseEnter,
+  onSubResultClick,
 }: SearchResultItemProps) {
   const [showSubResults, setShowSubResults] = useState(false);
   const hasSubResults = result.sub_results.length > 0;
 
+  // For inline mode, limit to top 3 sub-results
+  const displayedSubResults =
+    subResultsDisplay === "inline"
+      ? thinSubResults(result.sub_results)
+      : result.sub_results;
+
+  // Determine if main result (not a sub-result) is selected
+  const isMainSelected = isSelected && selectedSubIndex === -1;
+
   return (
     <div
       aria-selected={isSelected}
-      className={`
-        search-result-item
-        rounded-lg transition-all duration-150 cursor-pointer
-        ${isSelected ? "search-result-selected" : "search-result-default"}
-      `}
+      className="search-result-item rounded-lg transition-all duration-150"
       id={id}
-      onClick={onClick}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onClick();
-        }
-      }}
-      onMouseEnter={onMouseEnter}
       role="option"
-      tabIndex={0}
+      tabIndex={-1}
     >
-      {/* Main result */}
-      <a
-        className="block px-3 py-2 no-underline"
-        href={result.url}
-        onClick={(e) => {
-          // Let the parent handle navigation
-          e.preventDefault();
-          onClick();
+      {/* Main result - biome-ignore needed as this div delegates keyboard to inner link */}
+      {/* biome-ignore lint/a11y/noStaticElementInteractions: Keyboard events delegate to focusable link inside */}
+      <div
+        className={`
+          cursor-pointer rounded-lg transition-all duration-150
+          ${isMainSelected ? "search-result-selected" : isSelected ? "" : "search-result-default"}
+        `}
+        onClick={onClick}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onClick();
+          }
         }}
+        onMouseEnter={onMouseEnter}
       >
-        <div
-          className="font-medium text-[var(--nav-text)] text-sm leading-tight"
-          dangerouslySetInnerHTML={{ __html: result.meta.title }}
-        />
-        {/* Title and excerpt contain <mark> tags from Pagefind/mock data */}
-        <div
-          className="search-excerpt mt-1 text-xs text-[var(--nav-text-muted)] line-clamp-2 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: result.excerpt }}
-        />
-      </a>
+        <a
+          className="block px-3 py-2 no-underline"
+          href={result.url}
+          onClick={(e) => {
+            e.preventDefault();
+            onClick();
+          }}
+        >
+          {/* Breadcrumbs display: show path above title */}
+          {subResultsDisplay === "breadcrumbs" && (
+            <div className="text-xs text-[var(--search-breadcrumb)] mb-0.5">
+              {urlToBreadcrumb(result.url)}
+            </div>
+          )}
+          <div
+            className="font-medium text-[var(--nav-text)] text-sm leading-tight"
+            dangerouslySetInnerHTML={{ __html: result.meta.title }}
+          />
+          {/* Title and excerpt contain <mark> tags from Pagefind/mock data */}
+          <div
+            className="search-excerpt mt-1 text-xs text-[var(--nav-text-muted)] line-clamp-2 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: result.excerpt }}
+          />
+        </a>
+      </div>
 
-      {/* Sub-results toggle and list */}
-      {hasSubResults && (
+      {/* Sub-results: Toggle mode (current default behavior) */}
+      {subResultsDisplay === "toggle" && hasSubResults && (
         <div className="px-3 pb-2">
           <button
             aria-expanded={showSubResults}
@@ -99,32 +165,97 @@ export function SearchResultItem({
 
           {showSubResults && (
             <ul className="mt-2 space-y-1 list-none m-0 p-0">
-              {result.sub_results.map((sub) => (
-                <li key={sub.id}>
-                  <a
-                    className="
-                      block px-2 py-1.5 rounded text-xs no-underline
-                      bg-[var(--search-subresult-bg)] hover:bg-[var(--search-result-hover-bg)]
-                      transition-colors
-                    "
-                    href={sub.url}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <span className="text-[var(--nav-text-muted)] font-medium">
-                      # <span dangerouslySetInnerHTML={{ __html: sub.title }} />
-                    </span>
-                    {/* Sub-result title and excerpt contain <mark> tags */}
-                    <span
-                      className="search-excerpt block mt-0.5 text-[var(--search-breadcrumb)] line-clamp-1"
-                      dangerouslySetInnerHTML={{ __html: sub.excerpt }}
-                    />
-                  </a>
-                </li>
-              ))}
+              {result.sub_results.map((sub, subIndex) => {
+                const isSubSelected =
+                  isSelected && selectedSubIndex === subIndex;
+                return (
+                  <li key={sub.id}>
+                    <a
+                      className={`
+                        block px-2 py-1.5 rounded text-xs no-underline transition-colors
+                        ${isSubSelected ? "search-result-selected" : "bg-[var(--search-subresult-bg)] hover:bg-[var(--search-result-hover-bg)]"}
+                      `}
+                      data-selected={isSubSelected || undefined}
+                      href={sub.url}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        onSubResultClick?.(subIndex);
+                      }}
+                      onMouseEnter={() => onSubResultMouseEnter?.(subIndex)}
+                    >
+                      <span className="text-[var(--nav-text-muted)] font-medium">
+                        #{" "}
+                        <span dangerouslySetInnerHTML={{ __html: sub.title }} />
+                      </span>
+                      {/* Sub-result title and excerpt contain <mark> tags */}
+                      <span
+                        className="search-excerpt block mt-0.5 text-[var(--search-breadcrumb)] line-clamp-1"
+                        dangerouslySetInnerHTML={{ __html: sub.excerpt }}
+                      />
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
       )}
+
+      {/* Sub-results: Inline mode (Pagefind-style, always expanded) */}
+      {subResultsDisplay === "inline" && hasSubResults && (
+        <ul className="px-3 pb-2 space-y-1 list-none m-0 p-0">
+          {displayedSubResults.map((sub, subIndex) => {
+            const isSubSelected = isSelected && selectedSubIndex === subIndex;
+            return (
+              <li key={sub.id}>
+                <a
+                  className={`
+                    flex items-start gap-1.5 px-2 py-1 rounded text-xs no-underline transition-colors
+                    ${isSubSelected ? "search-result-selected" : "hover:bg-[var(--search-result-hover-bg)]"}
+                  `}
+                  data-selected={isSubSelected || undefined}
+                  href={sub.url}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    onSubResultClick?.(subIndex);
+                  }}
+                  onMouseEnter={() => onSubResultMouseEnter?.(subIndex)}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="text-[var(--search-breadcrumb)] flex-shrink-0 mt-px"
+                  >
+                    ⤷
+                  </span>
+                  <span className="flex-1 min-w-0">
+                    <span className="text-[var(--nav-text-muted)] font-medium">
+                      <span dangerouslySetInnerHTML={{ __html: sub.title }} />
+                    </span>
+                    <span
+                      className="search-excerpt block mt-0.5 text-[var(--search-breadcrumb)] line-clamp-1"
+                      dangerouslySetInnerHTML={{ __html: sub.excerpt }}
+                    />
+                  </span>
+                </a>
+              </li>
+            );
+          })}
+          {result.sub_results.length > INLINE_SUBRESULTS_LIMIT && (
+            <li className="px-2 text-xs text-[var(--search-breadcrumb)]">
+              +{result.sub_results.length - INLINE_SUBRESULTS_LIMIT} more
+              section
+              {result.sub_results.length - INLINE_SUBRESULTS_LIMIT > 1
+                ? "s"
+                : ""}
+            </li>
+          )}
+        </ul>
+      )}
+
+      {/* Sub-results: Breadcrumbs mode doesn't show nested items */}
+      {/* The breadcrumb path is shown above the title instead */}
     </div>
   );
 }
