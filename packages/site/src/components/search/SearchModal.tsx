@@ -70,11 +70,6 @@ export function SearchModal({
     setLocalSelectedSubIndex(-1); // Reset sub-selection when results change
   }, [selectedIndex]);
 
-  // Reset sub-selection when main selection changes
-  useEffect(() => {
-    setLocalSelectedSubIndex(-1);
-  }, []);
-
   // Set initial query if provided (on mount or when modal opens)
   useEffect(() => {
     if (initialQuery) {
