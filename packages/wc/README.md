@@ -60,14 +60,22 @@ pnpm add @social-embed/wc
 
 ### 2. Add to your project
 
-**Option A: Via Script Tag**
+**Option A: Via CDN (recommended for quick start)**
+
 ```html
-<script type="module" src="https://unpkg.com/@social-embed/wc?module"></script>
+<!-- esm.sh (recommended) -->
+<script type="module" src="https://esm.sh/@social-embed/wc"></script>
+
+<!-- Or jsDelivr -->
+<script type="module" src="https://esm.run/@social-embed/wc"></script>
+
+<!-- Or unpkg -->
+<script type="module" src="https://unpkg.com/@social-embed/wc"></script>
 
 <o-embed url="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
 ```
 
-**Option B: Via Import**
+**Option B: Via Import (for bundlers)**
 ```js
 // In your JavaScript/TypeScript file
 import "@social-embed/wc";
@@ -76,6 +84,19 @@ import "@social-embed/wc";
 document.body.innerHTML = `
   <o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
 `;
+```
+
+**Option C: Complete HTML Example**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="module" src="https://esm.sh/@social-embed/wc"></script>
+</head>
+<body>
+  <o-embed url="https://youtu.be/dQw4w9WgXcQ" allowfullscreen></o-embed>
+</body>
+</html>
 ```
 
 ## Supported Media Platforms
@@ -104,20 +125,33 @@ document.body.innerHTML = `
 
 ```html
 <!-- Set custom dimensions -->
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" width="640" height="360"></o-embed>
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  width="640"
+  height="360"
+></o-embed>
 
 <!-- Enable fullscreen button -->
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  allowfullscreen
+></o-embed>
 
 <!-- Add loading spinner with message -->
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" loading="Loading video..."></o-embed>
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  loading="Loading video..."
+></o-embed>
 ```
 
 ### Error Handling
 
 ```html
 <!-- Custom error message -->
-<o-embed url="invalid-url" error-message="Sorry, this URL isn't supported"></o-embed>
+<o-embed
+  url="invalid-url"
+  error-message="Sorry, this URL isn't supported"
+></o-embed>
 ```
 
 ## Technical Details

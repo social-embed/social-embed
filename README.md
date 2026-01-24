@@ -49,10 +49,11 @@ npm install @social-embed/lib
 
 ```javascript
 // Convert a URL to its embed form
-import { convertUrlToEmbedUrl } from "@social-embed/lib";
+import { MatcherRegistry } from "@social-embed/lib";
 
-const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
-// Output: "https://www.youtube.com/embed/Bd8_vO5zrjo"
+const registry = MatcherRegistry.withDefaults();
+const embedUrl = registry.toEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
+// Output: "https://www.youtube-nocookie.com/embed/Bd8_vO5zrjo"
 ```
 
 ## Supported Platforms

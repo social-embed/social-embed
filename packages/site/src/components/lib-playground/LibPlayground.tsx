@@ -1,7 +1,7 @@
 import {
   convertUrlToEmbedUrl,
-  getProviderFromUrl,
   isYouTubeShortsUrl,
+  MatcherRegistry,
 } from "@social-embed/lib";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createRng, generateSeed } from "../../lib/seededRng";
@@ -36,6 +36,9 @@ export interface LibPlaygroundProps {
   className?: string;
 }
 
+// Create registry once for reuse
+const registry = MatcherRegistry.withDefaults();
+
 /**
  * Transform a URL using the library and return output data.
  */
@@ -51,12 +54,12 @@ function transformUrl(url: string): LibOutput {
   }
 
   try {
-    const provider = getProviderFromUrl(url);
+    const result = registry.match(url);
 
-    if (!provider) {
+    if (!result.ok) {
       return {
         embedUrl: null,
-        error: "No matching provider found for this URL",
+        error: result.error?.message ?? "No matching provider found for this URL",
         input: url,
         isValid: false,
         provider: null,
@@ -64,7 +67,9 @@ function transformUrl(url: string): LibOutput {
       };
     }
 
-    const providerId = provider.getIdFromUrl(url);
+    // Extract ID from match data (different matchers use different field names)
+    const data = result.data as Record<string, unknown>;
+    const providerId = (data.id ?? data.videoId ?? data.trackId ?? data.albumId ?? data.playlistId ?? null) as string | null;
     const embedUrl = convertUrlToEmbedUrl(url);
 
     const isShorts = isYouTubeShortsUrl(url);

@@ -5,22 +5,84 @@ sidebar_label: Wistia
 description: Wistia video player support for <o-embed> component.
 ---
 
+import { Aside } from '@astrojs/starlight/components';
+
 [Wistia] is a marketing-oriented video platform.
 
 [wistia]: https://wistia.com
 
-## Default dimensions
-
-URL: https://support.wistia.com/medias/26sk4lmiix
+## Basic Usage
 
 ```html
 <o-embed url="https://support.wistia.com/medias/26sk4lmiix"></o-embed>
 ```
 
-<o-embed
-url="https://support.wistia.com/medias/26sk4lmiix"></o-embed>
+<o-embed url="https://support.wistia.com/medias/26sk4lmiix"></o-embed>
 
-## Custom dimensions
+---
+
+## Wistia-specific Options
+
+The `<o-embed>` component supports Wistia-specific options via the `provider-options` attribute.
+
+### Available Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `autoPlay` | boolean | Auto-start the video (note: camelCase) |
+| `muted` | boolean | Start the video muted (required for autoplay in most browsers) |
+| `playerColor` | string | Custom player accent color (hex without #) |
+| `videoFoam` | boolean | Enable responsive sizing |
+
+<Aside type="note">
+Wistia uses camelCase for its parameters (e.g., `autoPlay` not `autoplay`).
+</Aside>
+
+### Autoplay with Muted
+
+Enable autoplay (requires muted for most browsers):
+
+```html
+<o-embed
+  url="https://support.wistia.com/medias/26sk4lmiix"
+  provider-options='{"autoPlay": true, "muted": true}'
+></o-embed>
+```
+
+### Player Color
+
+Customize the player accent color using a hex code (without the # prefix):
+
+```html
+<o-embed
+  url="https://support.wistia.com/medias/26sk4lmiix"
+  provider-options='{"playerColor": "ff69b4"}'
+></o-embed>
+```
+
+### Video Foam (Responsive)
+
+Enable responsive sizing that adapts to the container:
+
+```html
+<o-embed
+  url="https://support.wistia.com/medias/26sk4lmiix"
+  provider-options='{"videoFoam": true}'
+></o-embed>
+```
+
+### Combining Options
+
+```html
+<o-embed
+  url="https://support.wistia.com/medias/26sk4lmiix"
+  provider-options='{"autoPlay": true, "muted": true, "playerColor": "ff69b4"}'
+></o-embed>
+```
+
+---
+
+## Custom Dimensions
 
 ```html
 <o-embed
@@ -31,16 +93,16 @@ url="https://support.wistia.com/medias/26sk4lmiix"></o-embed>
 ```
 
 <o-embed
-url="https://support.wistia.com/medias/26sk4lmiix" width="520" height="360"></o-embed>
-
-```html
-<o-embed
   url="https://support.wistia.com/medias/26sk4lmiix"
-  height="320"
+  width="520"
+  height="360"
 ></o-embed>
-```
 
-<o-embed url="https://support.wistia.com/medias/26sk4lmiix" height="320"></o-embed>
+---
+
+## Responsive Width
+
+Use percentage width for responsive embeds:
 
 ```html
 <o-embed
@@ -49,4 +111,7 @@ url="https://support.wistia.com/medias/26sk4lmiix" width="520" height="360"></o-
 ></o-embed>
 ```
 
-<o-embed url="https://support.wistia.com/medias/26sk4lmiix" width="100%"></o-embed>
+<o-embed
+  url="https://support.wistia.com/medias/26sk4lmiix"
+  width="100%"
+></o-embed>

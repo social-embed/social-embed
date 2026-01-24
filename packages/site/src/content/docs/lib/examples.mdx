@@ -6,281 +6,617 @@ sidebar:
   order: 25
 ---
 
-@social-embed/lib unifies URL detection and parsing for various services (YouTube, Vimeo, Spotify, etc.). It offers both:
-
-1. **Universal** – using `convertUrlToEmbedUrl(url)` to handle most providers automatically.
-2. **Provider-specific** – extracting IDs manually with functions like `getYouTubeIdFromUrl`, `getDailyMotionIdFromUrl`, etc.
+@social-embed/lib provides a type-safe, registry-based API for detecting and embedding media URLs. All parsing returns a `Result<T>` type for explicit error handling.
 
 ## Quick Overview
 
-| Function                       | Description                                                                                                                                         |
-|--------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `convertUrlToEmbedUrl(url)`    | Converts a recognized media URL into its `<iframe>`-friendly URL. Returns `""` if unrecognized or invalid.                                         |
-| `isValidUrl(url)`              | Checks if the string is a syntactically valid URL.                                                                                                 |
-| `getYouTubeIdFromUrl(url)`     | Extracts a YouTube video ID (e.g. `FTQbiNvZqaY`) from various YouTube link forms.                                                                  |
-| `getYouTubeEmbedUrlFromId(id)` | Builds `https://www.youtube.com/embed/<id>`                                                                                                        |
-| … (DailyMotion, Spotify, etc.) | Similar patterns for DailyMotion, Spotify, Vimeo, Loom, Wistia, EdPuzzle, etc. See details below.                                                  |
+| API | Description |
+|-----|-------------|
+| `MatcherRegistry.withDefaults()` | Create a registry with all built-in matchers |
+| `registry.match(url)` | Match a URL and get typed parse result |
+| `registry.toEmbedUrl(url)` | Get the embed URL directly |
+| `registry.toOutput(url, options)` | Get structured output for rendering |
+| `defineIframeMatcher(config)` | Create a custom matcher |
 
 ---
 
-## 1. Universal Conversion
+## 1. Basic Usage
 
-### `convertUrlToEmbedUrl(url)`
+### Match and Embed a URL
 
 ```ts
-import { convertUrlToEmbedUrl } from "@social-embed/lib";
+import { MatcherRegistry } from "@social-embed/lib";
 
-const embedUrl = convertUrlToEmbedUrl("https://youtu.be/FTQbiNvZqaY");
-console.log(embedUrl);
-// "https://www.youtube.com/embed/FTQbiNvZqaY"
+const registry = MatcherRegistry.withDefaults();
+
+// Match a URL and get typed result
+const result = registry.match("https://youtu.be/dQw4w9WgXcQ");
+
+if (result.ok) {
+  console.log(result.matcher.name);  // "YouTube"
+  console.log(result.data);          // { id: "dQw4w9WgXcQ" }
+
+  // Get the embed URL (privacy-enhanced by default)
+  const embedUrl = result.matcher.toEmbedUrl(result.data);
+  // => "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
+}
 ```
 
-- **What it does**  
-  - Detects the provider (YouTube, Vimeo, Spotify, Loom, etc.) by testing known URL patterns  
-  - Extracts the necessary ID(s)  
-  - Returns a fully embeddable URL (e.g. `https://www.youtube.com/embed/FTQbiNvZqaY`)
+### Direct Embed URL Conversion
 
-- **Invalid or Unrecognized**  
-  - If the URL is **valid** but from an unknown service, `convertUrlToEmbedUrl` returns the **normalized** URL or `""` depending on the version of the library.  
-  - If the string is not a valid URL at all, it returns `""`.
-
-#### Example: Spotify
+For simple cases where you just need the embed URL:
 
 ```ts
-console.log(convertUrlToEmbedUrl("spotify:album:1DFixLWuPkv3KT3TnV35m3"));
-// "https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3"
+const registry = MatcherRegistry.withDefaults();
+
+const embedUrl = registry.toEmbedUrl("https://youtu.be/dQw4w9WgXcQ");
+// => "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
 ```
 
-#### Example: DailyMotion
+### Get Structured Output
+
+For SSR or custom rendering, use `toOutput()` to get structured data:
 
 ```ts
-console.log(convertUrlToEmbedUrl("http://dailymotion.com/video/x7znrd0"));
-// "https://www.dailymotion.com/embed/video/x7znrd0"
-```
+const result = registry.match("https://youtu.be/dQw4w9WgXcQ");
 
-#### Example: Vimeo
+if (result.ok) {
+  const output = result.matcher.toOutput(result.data, {
+    width: 800,
+    height: 450,
+  });
 
-```ts
-console.log(convertUrlToEmbedUrl("vimeo.com/channels/staffpicks/134668506"));
-// "https://player.vimeo.com/video/134668506"
-```
-
-#### Example: EdPuzzle
-
-```ts
-console.log(
-  convertUrlToEmbedUrl("edpuzzle.com/media/606b413369971e424ec6021e"),
-);
-// "https://edpuzzle.com/embed/media/606b413369971e424ec6021e"
+  console.log(output);
+  // {
+  //   nodes: [{
+  //     type: "iframe",
+  //     src: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ",
+  //     attributes: { width: "800", height: "450", ... }
+  //   }]
+  // }
+}
 ```
 
 ---
 
-## 2. URL Validation
+## 2. Type-Safe Matching with `isMatch()`
 
-### `isValidUrl(url)`
+When you need type-safe access to matcher-specific data, use `isMatch()`:
 
 ```ts
-import { isValidUrl } from "@social-embed/lib";
+import { MatcherRegistry, YouTubeMatcher, SpotifyMatcher } from "@social-embed/lib";
 
-console.log(isValidUrl("https://apple.com")); // true
-console.log(isValidUrl("notaurl"));           // false
+const registry = MatcherRegistry.withDefaults();
+const result = registry.match(url);
+
+// Type guard narrows result to specific matcher
+if (registry.isMatch(result, YouTubeMatcher)) {
+  // TypeScript knows result.data is YouTubeData
+  console.log(result.data.videoId);  // Fully typed!
+}
+
+if (registry.isMatch(result, SpotifyMatcher)) {
+  // TypeScript knows result.data is SpotifyData
+  console.log(result.data.contentType);  // "track", "album", etc.
+  console.log(result.data.id);
+}
 ```
 
-- **What it does**  
-  - Uses `new URL()` internally to verify if the string is a syntactically valid URL.  
-  - Returns `true` or `false`.
+This is especially useful when you need matcher-specific behavior:
+
+```ts
+const result = registry.match(userInput);
+
+if (registry.isMatch(result, SpotifyMatcher)) {
+  // Apply Spotify-specific options
+  const output = result.matcher.toOutput(result.data, {
+    size: "compact",
+    theme: "dark",
+  });
+} else if (result.ok) {
+  // Generic handling for other matchers
+  const output = result.matcher.toOutput(result.data);
+}
+```
 
 ---
 
-## 3. Provider-Specific Functions
+## 3. Privacy Mode
 
-If you need more control, each provider offers a “get ID” and “build embed URL” approach. For example:
+Privacy-enhanced mode is **enabled by default** for matchers that support it:
+
+```ts
+const registry = MatcherRegistry.withDefaults();
+
+// Default: privacy enabled (uses youtube-nocookie.com)
+registry.toEmbedUrl("https://youtu.be/abc123");
+// => "https://www.youtube-nocookie.com/embed/abc123"
+
+// Opt out of privacy mode
+registry.toEmbedUrl("https://youtu.be/abc123", { privacy: false });
+// => "https://www.youtube.com/embed/abc123"
+```
+
+Privacy mode is supported for:
+- **YouTube**: Uses `youtube-nocookie.com` instead of `youtube.com`
+
+---
+
+## 4. Built-in Matchers
 
 ### YouTube
 
-- **`getYouTubeIdFromUrl(url: string): string`**  
-  Extracts a short ID (e.g. `"FTQbiNvZqaY"`) from YouTube links.  
-- **`getYouTubeEmbedUrlFromId(id: string): string`**  
-  Builds `"https://www.youtube.com/embed/<id>"`.
-
-**Example**:
+Supports standard, short, and embed URLs:
 
 ```ts
-import {
-  getYouTubeIdFromUrl,
-  getYouTubeEmbedUrlFromId,
-} from "@social-embed/lib";
+const registry = MatcherRegistry.withDefaults();
 
-const id = getYouTubeIdFromUrl("https://youtu.be/FTQbiNvZqaY");
-// "FTQbiNvZqaY"
+// Standard watch URL
+registry.toEmbedUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
 
-const embedUrl = getYouTubeEmbedUrlFromId(id);
-// "https://www.youtube.com/embed/FTQbiNvZqaY"
-```
+// Short URL
+registry.toEmbedUrl("https://youtu.be/dQw4w9WgXcQ");
 
-### DailyMotion
+// Already an embed URL
+registry.toEmbedUrl("https://www.youtube.com/embed/dQw4w9WgXcQ");
 
-```ts
-import {
-  getDailyMotionIdFromUrl,
-  getDailyMotionEmbedFromId,
-} from "@social-embed/lib";
-
-const dmId = getDailyMotionIdFromUrl("dailymotion.com/video/x7znrd0");
-// "x7znrd0"
-
-const embedUrl = getDailyMotionEmbedFromId(dmId);
-// "https://www.dailymotion.com/embed/video/x7znrd0"
+// All return: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
 ```
 
 ### Vimeo
 
 ```ts
-import {
-  getVimeoIdFromUrl,
-  getVimeoEmbedUrlFromId,
-} from "@social-embed/lib";
+registry.toEmbedUrl("https://vimeo.com/134668506");
+// => "https://player.vimeo.com/video/134668506"
 
-const vimeoId = getVimeoIdFromUrl("vimeo.com/channels/staffpicks/134668506");
-// "134668506"
+registry.toEmbedUrl("https://vimeo.com/channels/staffpicks/134668506");
+// => "https://player.vimeo.com/video/134668506"
+```
 
-const embedUrl = getVimeoEmbedUrlFromId(vimeoId);
-// "https://player.vimeo.com/video/134668506"
+### Spotify
+
+Supports tracks, albums, playlists, artists, shows, and episodes:
+
+```ts
+// Track
+registry.toEmbedUrl("https://open.spotify.com/track/4iV5W9uYEdYUVa79Axb7Rh");
+// => "https://open.spotify.com/embed/track/4iV5W9uYEdYUVa79Axb7Rh"
+
+// Album
+registry.toEmbedUrl("https://open.spotify.com/album/1DFixLWuPkv3KT3TnV35m3");
+// => "https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3"
+
+// Playlist
+registry.toEmbedUrl("https://open.spotify.com/playlist/37i9dQZF1DXcBWIGoYBM5M");
+// => "https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M"
+
+// Spotify URI format also works
+registry.toEmbedUrl("spotify:track:4iV5W9uYEdYUVa79Axb7Rh");
+// => "https://open.spotify.com/embed/track/4iV5W9uYEdYUVa79Axb7Rh"
+```
+
+### DailyMotion
+
+```ts
+registry.toEmbedUrl("https://www.dailymotion.com/video/x7znrd0");
+// => "https://www.dailymotion.com/embed/video/x7znrd0"
+
+registry.toEmbedUrl("https://dai.ly/x7znrd0");
+// => "https://www.dailymotion.com/embed/video/x7znrd0"
 ```
 
 ### Loom
 
 ```ts
-import { getLoomIdFromUrl, getLoomEmbedUrlFromId } from "@social-embed/lib";
-
-const loomId = getLoomIdFromUrl(
-  "loom.com/share/e883f70b219a49f6ba7fbeac71a72604",
-);
-// "e883f70b219a49f6ba7fbeac71a72604"
-
-const embedUrl = getLoomEmbedUrlFromId(loomId);
-// "https://www.loom.com/embed/e883f70b219a49f6ba7fbeac71a72604"
-```
-
-### EdPuzzle
-
-```ts
-import {
-  getEdPuzzleIdFromUrl,
-  getEdPuzzleEmbedUrlFromId,
-} from "@social-embed/lib";
-
-const edPuzzleId = getEdPuzzleIdFromUrl(
-  "edpuzzle.com/media/606b413369971e424ec6021e",
-);
-// "606b413369971e424ec6021e"
-
-const embedUrl = getEdPuzzleEmbedUrlFromId(edPuzzleId);
-// "https://edpuzzle.com/embed/media/606b413369971e424ec6021e"
+registry.toEmbedUrl("https://www.loom.com/share/e883f70b219a49f6ba7fbeac71a72604");
+// => "https://www.loom.com/embed/e883f70b219a49f6ba7fbeac71a72604"
 ```
 
 ### Wistia
 
 ```ts
-import {
-  getWistiaIdFromUrl,
-  getWistiaEmbedUrlFromId,
-} from "@social-embed/lib";
+registry.toEmbedUrl("https://support.wistia.com/medias/26sk4lmiix");
+// => "https://fast.wistia.net/embed/iframe/26sk4lmiix"
+```
 
-const wistiaId = getWistiaIdFromUrl(
-  "https://support.wistia.com/medias/26sk4lmiix",
-);
-// "26sk4lmiix"
+### EdPuzzle
 
-const embedUrl = getWistiaEmbedUrlFromId(wistiaId);
-// "https://fast.wistia.net/embed/iframe/26sk4lmiix"
+```ts
+registry.toEmbedUrl("https://edpuzzle.com/media/606b413369971e424ec6021e");
+// => "https://edpuzzle.com/embed/media/606b413369971e424ec6021e"
 ```
 
 ---
 
-## 4. `getProviderFromUrl(url)`
+## 5. Error Handling
 
-If you’d like to detect the provider without immediately converting the URL, call **`getProviderFromUrl(url)`**. It returns an **object** with `.name`, `.getIdFromUrl()`, and `.getEmbedUrlFromId()` methods:
+All parsing operations return a `Result<T>` type for explicit error handling:
 
-````ts
-import { getProviderFromUrl } from "@social-embed/lib";
+```ts
+const result = registry.match("https://invalid-url.com");
 
-const provider = getProviderFromUrl("https://youtu.be/FTQbiNvZqaY");
-/*
-{
-  name: "YouTube",
-  canParseUrl: [Function],
-  getIdFromUrl: [Function],
-  getEmbedUrlFromId: [Function]
+if (!result.ok) {
+  console.log(result.error.code);     // "NO_MATCH"
+  console.log(result.error.message);  // "No matcher found for URL"
+  console.log(result.error.fatal);    // false
 }
-*/
+```
 
-if (provider) {
-  // Extract the video ID or IDs
-  const extractedId = provider.getIdFromUrl("https://youtu.be/FTQbiNvZqaY");
-  // => "FTQbiNvZqaY"
+### Error Codes
 
-  // Build the final embed URL
-  const embedUrl = provider.getEmbedUrlFromId(extractedId);
-  // => "https://www.youtube.com/embed/FTQbiNvZqaY"
+| Code | Description |
+|------|-------------|
+| `NO_MATCH` | No matcher recognized the URL |
+| `INVALID_FORMAT` | URL matched but has invalid format |
+| `MISSING_ID` | URL matched but couldn't extract ID |
+| `PARSE_ERROR` | General parse failure |
 
-  console.log(`Embed URL: ${embedUrl}`);
+### Handling Unknown URLs
+
+```ts
+const url = "https://example.com/some-video";
+const result = registry.match(url);
+
+if (result.ok) {
+  // Known provider - use structured output
+  const output = result.matcher.toOutput(result.data);
+  renderEmbed(output);
 } else {
-  console.log("No recognized provider!");
+  // Unknown URL - could render as a link or show error
+  console.log(`Unsupported URL: ${url}`);
 }
-````
-
-- **If** `getProviderFromUrl(url)` returns `undefined`, it means no known provider was detected.
+```
 
 ---
 
-## 5. Adding a New Provider
+## 6. Custom Matchers
 
-If you have a custom service (e.g. **MyCustom**), you can implement your own detection and embed logic.
+### Using `defineIframeMatcher` (Recommended)
 
-1. **Implement** an object with these fields:
-   ```ts
-   export const MyCustomProvider: EmbedProvider = {
-     name: "MyCustom", // a unique string name
-     canParseUrl(url: string): boolean {
-       return /mycustom\.example\.com\/video\//.test(url);
-     },
-     getIdFromUrl(url: string): string {
-       // e.g. last path segment is the ID
-       return url.split("/").pop() || "";
-     },
-     getEmbedUrlFromId(id: string, ...args: unknown[]): string {
-       // Return a valid embed URL
-       return `https://mycustom.example.com/embed/${id}`;
-     },
-   };
-   ```
+For iframe-based embeds, use the factory function:
 
-2. **Register** it in a registry, or if you’re using `convertUrlToEmbedUrl`, add your provider to the **default registry** (in `@social-embed/lib` code or your own code):
-   ```ts
-   import { defaultRegistry } from "@social-embed/lib/registry";
-   import { MyCustomProvider } from "./MyCustomProvider";
+```ts
+import { defineIframeMatcher, MatcherRegistry } from "@social-embed/lib";
 
-   defaultRegistry.register(MyCustomProvider);
+const TikTokMatcher = defineIframeMatcher({
+  name: "TikTok",
+  domains: ["tiktok.com"],
+  patterns: [/tiktok\.com\/@[\w]+\/video\/(\d+)/],
+  embedUrl: (id) => `https://www.tiktok.com/embed/${id}`,
+  defaultDimensions: { width: 325, height: 580 },
+});
 
-   // Now convertUrlToEmbedUrl() can parse MyCustom URLs.
-   console.log(
-     convertUrlToEmbedUrl("https://mycustom.example.com/video/xyz123"),
-   );
-   // "https://mycustom.example.com/embed/xyz123"
-   ```
+// Add to registry
+const registry = MatcherRegistry.withDefaults().with(TikTokMatcher);
 
-3. **Done**. The library will detect “MyCustom” for your custom URL pattern. If you prefer, you can keep a separate registry if you don’t want to modify the default one.
+// Now works
+registry.toEmbedUrl("https://www.tiktok.com/@user/video/1234567890");
+// => "https://www.tiktok.com/embed/1234567890"
+```
+
+### Implementing UrlMatcher Directly
+
+For complex matchers with multi-field data:
+
+```ts
+import type { UrlMatcher, MatchContext, Result, EmbedOutput } from "@social-embed/lib";
+import { ok, noMatch, hostMatches } from "@social-embed/lib";
+
+interface MyServiceData {
+  id: string;
+  type: "video" | "audio";
+}
+
+const MyServiceMatcher: UrlMatcher<"MyService", MyServiceData> = {
+  name: "MyService",
+  domains: ["myservice.example.com"],
+
+  canMatch(ctx: MatchContext): boolean {
+    return hostMatches(ctx, ["myservice.example.com"]);
+  },
+
+  parse(ctx: MatchContext): Result<MyServiceData> {
+    const videoMatch = ctx.raw.match(/myservice\.example\.com\/video\/(\w+)/);
+    if (videoMatch) {
+      return ok({ id: videoMatch[1], type: "video" });
+    }
+
+    const audioMatch = ctx.raw.match(/myservice\.example\.com\/audio\/(\w+)/);
+    if (audioMatch) {
+      return ok({ id: audioMatch[1], type: "audio" });
+    }
+
+    return noMatch("No pattern matched");
+  },
+
+  toEmbedUrl(data: MyServiceData): string {
+    return `https://myservice.example.com/embed/${data.type}/${data.id}`;
+  },
+
+  toOutput(data: MyServiceData, options): EmbedOutput {
+    return {
+      nodes: [{
+        type: "iframe",
+        src: this.toEmbedUrl(data),
+        attributes: {
+          width: String(options?.width ?? 640),
+          height: String(options?.height ?? 360),
+        },
+      }],
+    };
+  },
+};
+```
+
+---
+
+## 7. Registry Patterns
+
+### Create with Defaults
+
+```ts
+const registry = MatcherRegistry.withDefaults();
+```
+
+### Create with Subset
+
+```ts
+import { YouTubeMatcher, VimeoMatcher } from "@social-embed/lib";
+
+const videoOnly = MatcherRegistry.create([YouTubeMatcher, VimeoMatcher]);
+```
+
+### Extend Immutably
+
+```ts
+const base = MatcherRegistry.withDefaults();
+const extended = base.with(MyCustomMatcher);
+// base is unchanged, extended has the new matcher
+```
+
+### Mutate at Runtime
+
+```ts
+const registry = MatcherRegistry.withDefaults();
+registry.register(MyCustomMatcher);  // Modifies in place
+```
+
+### Register with Priority
+
+Higher priority matchers are checked first, useful when overriding built-in behavior:
+
+```ts
+const registry = MatcherRegistry.withDefaults();
+
+// Register with priority (higher = matches first)
+registry.register(MyCustomMatcher, { priority: 10 });
+
+// Override built-in YouTube with custom implementation
+const CustomYouTubeMatcher = defineIframeMatcher({
+  name: "CustomYouTube",
+  domains: ["youtube.com", "youtu.be"],
+  patterns: [/youtu\.be\/(\w+)/, /youtube\.com\/watch\?v=(\w+)/],
+  embedUrl: (id) => `https://my-proxy.example.com/youtube/${id}`,
+});
+
+registry.register(CustomYouTubeMatcher, { priority: 100 });
+// Now CustomYouTubeMatcher matches before the built-in YouTubeMatcher
+```
+
+### Remove Matchers
+
+```ts
+const registry = MatcherRegistry.withDefaults();
+const noSpotify = registry.without("Spotify");
+```
+
+### Check Available Matchers
+
+```ts
+const registry = MatcherRegistry.withDefaults();
+
+console.log(registry.list().map(m => m.name));
+// ["YouTube", "Vimeo", "Spotify", "DailyMotion", "Loom", "Wistia", "EdPuzzle"]
+
+console.log(registry.has("YouTube"));  // true
+console.log(registry.get("YouTube"));  // YouTubeMatcher
+```
+
+---
+
+## 8. SSR Usage
+
+All core APIs are SSR-safe (no DOM dependencies):
+
+```ts
+// Works in Node.js, Deno, Bun, etc.
+import { MatcherRegistry, renderOutput } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+const result = registry.match("https://youtu.be/abc123");
+
+if (result.ok) {
+  const output = result.matcher.toOutput(result.data, { width: 800 });
+  const html = renderOutput(output);
+  // => '<iframe src="https://www.youtube-nocookie.com/embed/abc123" width="800" height="315" ...></iframe>'
+}
+```
+
+---
+
+## 9. Embed Class
+
+The `Embed` class provides a rich wrapper around embed output with convenient methods:
+
+```ts
+import { toEmbed } from "@social-embed/lib/browser";
+
+// Create an Embed instance from a URL
+const embed = toEmbed("https://youtu.be/dQw4w9WgXcQ");
+
+if (embed) {
+  // Get the embed URL
+  console.log(embed.toUrl());
+  // => "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
+
+  // Get complete HTML for rendering
+  console.log(embed.toHtml());
+  // => '<iframe src="..." width="560" height="315" ...></iframe>'
+
+  // Get raw nodes for custom rendering
+  const nodes = embed.toNodes();
+  // => [{ type: "iframe", src: "...", attributes: {...} }]
+
+  // Get structured data for serialization
+  const data = embed.toData();
+  // => { nodes: [...], scripts?: [...] }
+}
+```
+
+### Embed Properties
+
+```ts
+const embed = toEmbed("https://open.spotify.com/track/abc123");
+
+if (embed) {
+  console.log(embed.provider);  // "Spotify"
+  console.log(embed.data);      // { contentType: "track", id: "abc123" }
+  console.log(embed.nodes);     // Direct access to output nodes
+}
+```
+
+---
+
+## 10. Browser Convenience Functions
+
+For CDN, JSFiddle, or simple browser use, import from `/browser`:
+
+```ts
+import {
+  toEmbedUrl,
+  toEmbed,
+  match,
+  register,
+  unregister,
+  defaultStore,
+} from "@social-embed/lib/browser";
+```
+
+### One-Liner Conversions
+
+```ts
+// Get embed URL directly
+const embedUrl = toEmbedUrl("https://youtu.be/abc123");
+// => "https://www.youtube-nocookie.com/embed/abc123"
+
+// Get rich Embed object
+const embed = toEmbed("https://youtu.be/abc123");
+embed?.toHtml();  // Full iframe HTML
+
+// Get match result for conditional handling
+const result = match("https://youtu.be/abc123");
+if (result.ok) {
+  console.log(result.matcher.name);  // "YouTube"
+}
+```
+
+### Custom Matcher Registration
+
+```ts
+import { defineIframeMatcher } from "@social-embed/lib";
+
+const TikTokMatcher = defineIframeMatcher({
+  name: "TikTok",
+  domains: ["tiktok.com"],
+  patterns: [/tiktok\.com\/@[\w]+\/video\/(\d+)/],
+  embedUrl: (id) => `https://www.tiktok.com/embed/${id}`,
+});
+
+// Register globally (affects all components)
+register(TikTokMatcher);
+
+// Optionally set priority (higher = matches first)
+register(TikTokMatcher, { priority: 10 });
+
+// Remove when no longer needed
+unregister("TikTok");
+```
+
+---
+
+## 11. RegistryStore (Reactive State)
+
+The `RegistryStore` provides reactive state management for dynamic matcher registration:
+
+```ts
+import { RegistryStore, defineIframeMatcher } from "@social-embed/lib";
+
+const store = RegistryStore.withDefaults();
+
+// Subscribe to registry changes
+const unsubscribe = store.subscribe((registry) => {
+  console.log("Registry updated:", registry.list().map(m => m.name));
+});
+
+// Mutations trigger subscribers
+store.register(MyCustomMatcher);
+// => "Registry updated: [YouTube, Vimeo, ..., MyCustomMatcher]"
+
+// Clean up
+unsubscribe();
+```
+
+### React Integration Example
+
+```tsx
+import { useEffect, useState } from "react";
+import { defaultStore, toEmbed } from "@social-embed/lib/browser";
+
+function EmbedComponent({ url }: { url: string }) {
+  const [embed, setEmbed] = useState(() => toEmbed(url));
+
+  useEffect(() => {
+    // Re-render when matchers change
+    return defaultStore.subscribe(() => {
+      setEmbed(toEmbed(url));
+    });
+  }, [url]);
+
+  if (!embed) return <p>Unsupported URL</p>;
+
+  // Render using iframe node data directly
+  const node = embed.toNodes()[0];
+  if (node.type === "iframe") {
+    return <iframe src={node.src} {...node.attributes} />;
+  }
+  return null;
+}
+```
+
+### Store Properties
+
+```ts
+const store = RegistryStore.withDefaults();
+
+// Check if matcher exists
+store.has("YouTube");  // true
+
+// Get current registry (immutable)
+const registry = store.current;
+
+// Get matcher count
+store.size;  // 7 (built-in matchers)
+```
 
 ---
 
 ## Summary
 
-- **Universal** approach: `convertUrlToEmbedUrl(url)`.  
-- **Manual** approach: provider-specific ID extraction + embed link building.  
-- **Custom providers**: add them via the registry or use your own logic.  
+- **Registry-based**: Use `MatcherRegistry.withDefaults()` as your entry point
+- **Type-safe**: All operations return `Result<T>` for explicit error handling
+- **Privacy-first**: YouTube uses `youtube-nocookie.com` by default
+- **Extensible**: Add custom matchers with `defineIframeMatcher()` or implement `UrlMatcher` directly
+- **SSR-safe**: All core APIs work without DOM
+- **Reactive**: Use `RegistryStore` for dynamic matcher management
 
-If you run into any issues or want to extend coverage (e.g., new services like `Bandcamp`, `SoundCloud`), feel free to open a PR or an issue.
-
-Check out the [tests on GitHub](https://github.com/social-embed/social-embed) or the [Playground](/lib/playground/) for more real-world usage.
+Check out the [Matchers documentation](/lib/providers/) for more details on the `UrlMatcher` interface.

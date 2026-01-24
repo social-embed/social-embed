@@ -5,6 +5,52 @@ sidebar:
   order: 90
 ---
 
+## 0.2.0 (unreleased)
+
+### Breaking Changes - Internal Refactor
+
+The web component has been completely rewritten to use the new `@social-embed/lib` v2 API.
+
+#### What Changed
+
+- **Internal implementation**: Now uses `MatcherRegistry` via `defaultStore` from `@social-embed/lib/browser`
+- **Reactive updates**: Subscribes to `defaultStore` - when you call `register()`, `<o-embed>` auto-updates
+- **Reduced bundle size**: ~550 lines → ~160 lines by delegating to lib
+- **New attribute**: `privacy` - Enable/disable privacy-enhanced mode (default: `true`)
+
+#### Consumer Impact
+
+**HTML interface unchanged** - existing `<o-embed>` usage continues to work:
+
+```html
+<!-- Still works exactly the same -->
+<o-embed url="https://youtu.be/abc123" width="640" height="360"></o-embed>
+```
+
+**New privacy attribute**:
+
+```html
+<!-- Privacy mode enabled by default (uses youtube-nocookie.com) -->
+<o-embed url="https://youtu.be/abc123"></o-embed>
+
+<!-- Opt out of privacy mode -->
+<o-embed url="https://youtu.be/abc123" privacy="false"></o-embed>
+```
+
+#### For Advanced Users
+
+If you were injecting a custom registry:
+
+```typescript
+// Before: Not supported
+
+// After: Custom registry injection
+const element = document.querySelector('o-embed');
+element.registry = myCustomRegistry;
+```
+
+---
+
 ## Upcoming release
 
 <!-- _Enter the most recent changes here_ -->

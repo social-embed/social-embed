@@ -7,6 +7,70 @@ Here you can find project-wide changes. For more detailed changes:
 - [`@social-embed/lib`](https://social-embed.org/lib/release-notes)
 - [`@social-embed/wc`](https://social-embed.org/wc/release-notes)
 
+## 0.2 (unreleased)
+
+### Breaking Changes - API Redesign
+
+Complete API redesign of `@social-embed/lib` with new type-safe architecture:
+
+- **`EmbedProvider` → `UrlMatcher`**: New generic interface with correlated types
+  - `UrlMatcher<TName, TData, TOptions>` provides type-safe parse results
+  - Methods: `canMatch()`, `parse()`, `toEmbedUrl()`, `toOutput()`
+
+- **`EmbedProviderRegistry` → `MatcherRegistry`**: O(1) indexed dispatch
+  - Domain-based lookup for efficient matching with hundreds of matchers
+  - Immutable by design: `with()`, `without()` return new registries
+
+- **`RegistryStore`** (NEW): Mutable wrapper with reactivity
+  - `register()`, `unregister()` for runtime matcher changes
+  - Subscribe/notify pattern for reactive components (e.g., `<o-embed>`)
+
+- **`Result<T>` monad**: Explicit error handling replaces nullable returns
+  - Structured `MatchError` with codes: `NO_MATCH`, `INVALID_FORMAT`, `MISSING_ID`, `PARSE_ERROR`, `UNSUPPORTED_PRIVACY`
+
+- **`Embed` class** (NEW): Rich output object
+  - Methods: `.toHtml()`, `.toUrl()`, `.toNodes()`
+  - Replaces direct `EmbedOutput` manipulation
+
+- **Privacy-by-default**: YouTube uses `youtube-nocookie.com` by default
+  - Opt out with `{ privacy: false }`
+
+- **Core/Browser split**: SSR-safe core, optional browser module
+  - Core: `import { MatcherRegistry } from "@social-embed/lib"`
+  - Browser: `import { toEmbedUrl, register } from "@social-embed/lib/browser"`
+
+- **Factory pattern**: `defineMatcher({ type: "iframe" })` for config-driven matchers
+
+### Tiered API
+
+| Tier | Audience | API |
+|------|----------|-----|
+| **1** | CDN/JSFiddle users | `toEmbedUrl(url)` from browser module |
+| **1.5** | Runtime extension | `register(matcher)` from browser module |
+| **2** | HTML authors | `<o-embed url="...">` web component |
+| **3** | Framework integrators | `MatcherRegistry` class directly |
+
+### Documentation
+
+- **Migration guide**: New comprehensive guide at `/lib/migration/`
+  - v1 → v2 migration examples for all API changes
+  - Custom matcher migration with `defineMatcher()`
+  - Registry vs RegistryStore usage patterns
+  - Embed class usage examples
+
+- **Examples refresh**: Updated `/lib/examples/` for v2 API
+  - Embed class with `.toHtml()`, `.toUrl()`, `.toNodes()`
+  - Browser module convenience functions
+  - RegistryStore subscription patterns
+  - `isMatch()` type guards
+
+- **Provider docs**: All provider pages updated with v2 examples
+  - YouTube, Vimeo, Spotify, DailyMotion, Loom, Wistia, EdPuzzle
+
+See individual package CHANGES.md for migration details.
+
+---
+
 ## 0.1 (unreleased)
 
 ### Features and Improvements
