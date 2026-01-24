@@ -31,7 +31,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "type-check": "tsc --noEmit",
+    "type-check": "oxlint --type-check -A all --tsconfig tsconfig.json src",
+    "type-check:tsc": "tsc --noEmit",
     "vite": "vite",
     "start": "pnpm vite",
     "watch": "vite start",
