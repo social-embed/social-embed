@@ -5,7 +5,7 @@ import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { pagefindIntegration } from "./plugins/astro-pagefind-integration";
@@ -43,29 +43,31 @@ export default defineConfig({
         fallbacks: ["ui-sans-serif", "system-ui", "sans-serif"],
         name: "IBM Plex Sans",
         optimizedFallbacks: true,
-        provider: "local",
-        variants: [
-          {
-            display: "swap",
-            src: [
-              {
-                url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2",
-              },
-            ],
-            style: "normal",
-            weight: "400",
-          },
-          {
-            display: "swap",
-            src: [
-              {
-                url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2",
-              },
-            ],
-            style: "normal",
-            weight: "600",
-          },
-        ],
+        options: {
+          variants: [
+            {
+              display: "swap",
+              src: [
+                {
+                  url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2",
+                },
+              ],
+              style: "normal",
+              weight: "400",
+            },
+            {
+              display: "swap",
+              src: [
+                {
+                  url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2",
+                },
+              ],
+              style: "normal",
+              weight: "600",
+            },
+          ],
+        },
+        provider: fontProviders.local(),
       },
       // IBM Plex Mono
       {
@@ -73,29 +75,31 @@ export default defineConfig({
         fallbacks: ["ui-monospace", "monospace"],
         name: "IBM Plex Mono",
         optimizedFallbacks: true,
-        provider: "local",
-        variants: [
-          {
-            display: "swap",
-            src: [
-              {
-                url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2",
-              },
-            ],
-            style: "normal",
-            weight: "400",
-          },
-          {
-            display: "swap",
-            src: [
-              {
-                url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2",
-              },
-            ],
-            style: "normal",
-            weight: "600",
-          },
-        ],
+        options: {
+          variants: [
+            {
+              display: "swap",
+              src: [
+                {
+                  url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2",
+                },
+              ],
+              style: "normal",
+              weight: "400",
+            },
+            {
+              display: "swap",
+              src: [
+                {
+                  url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2",
+                },
+              ],
+              style: "normal",
+              weight: "600",
+            },
+          ],
+        },
+        provider: fontProviders.local(),
       },
     ],
   },
