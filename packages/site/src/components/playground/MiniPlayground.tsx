@@ -306,7 +306,6 @@ export function MiniPlayground({
             className="h-full w-full"
             language="html"
             onChange={handleCodeChange}
-            theme="dark"
             value={code}
           />
         </div>

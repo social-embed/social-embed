@@ -256,7 +256,6 @@ export function Playground() {
             className="h-full"
             language="html"
             onChange={handleCodeChange}
-            theme="dark"
             value={state.code}
           />
         </div>

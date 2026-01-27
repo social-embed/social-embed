@@ -15,7 +15,7 @@ import {
   keymap,
   lineNumbers,
 } from "@codemirror/view";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { seDark } from "./codemirror-dark";
 import { seLight } from "./codemirror-light";
 
@@ -23,7 +23,7 @@ export interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
   language?: "html" | "javascript";
-  theme?: "light" | "dark";
+  theme?: "light" | "dark" | "auto";
   className?: string;
   readOnly?: boolean;
 }
@@ -36,7 +36,7 @@ export function CodeEditor({
   value,
   onChange,
   language = "html",
-  theme = "dark",
+  theme = "auto",
   className = "",
   readOnly = false,
 }: CodeEditorProps) {
@@ -45,9 +45,41 @@ export function CodeEditor({
   const onChangeRef = useRef(onChange);
   const isInternalChange = useRef(false);
   const isExternalSync = useRef(false);
+  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">(() => {
+    if (theme === "light" || theme === "dark") {
+      return theme;
+    }
+    if (typeof document === "undefined") {
+      return "dark";
+    }
+    return document.documentElement.getAttribute("data-theme") === "light"
+      ? "light"
+      : "dark";
+  });
 
   // Keep onChange ref updated
   onChangeRef.current = onChange;
+
+  useEffect(() => {
+    if (theme === "light" || theme === "dark") {
+      setResolvedTheme(theme);
+      return;
+    }
+    if (typeof document === "undefined") return;
+    const root = document.documentElement;
+    const update = () => {
+      setResolvedTheme(
+        root.getAttribute("data-theme") === "light" ? "light" : "dark",
+      );
+    };
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(root, {
+      attributeFilter: ["data-theme"],
+      attributes: true,
+    });
+    return () => observer.disconnect();
+  }, [theme]);
 
   // Create editor on mount
   // biome-ignore lint/correctness/useExhaustiveDependencies: value is intentionally excluded to avoid destroying editor on every keystroke
@@ -92,7 +124,7 @@ export function CodeEditor({
       }),
     ];
 
-    extensions.push(theme === "dark" ? seDark : seLight);
+    extensions.push(resolvedTheme === "dark" ? seDark : seLight);
 
     const state = EditorState.create({
       doc: value,
@@ -110,7 +142,7 @@ export function CodeEditor({
       view.destroy();
       viewRef.current = null;
     };
-  }, [language, theme, readOnly]);
+  }, [language, readOnly, resolvedTheme]);
 
   // Sync value from props (external changes)
   useEffect(() => {
