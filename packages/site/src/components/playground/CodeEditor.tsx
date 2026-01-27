@@ -8,7 +8,6 @@ import {
   syntaxHighlighting,
 } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
-import { oneDark } from "@codemirror/theme-one-dark";
 import {
   EditorView,
   highlightActiveLine,
@@ -17,6 +16,8 @@ import {
   lineNumbers,
 } from "@codemirror/view";
 import { useEffect, useLayoutEffect, useRef } from "react";
+import { seDark } from "./codemirror-dark";
+import { seLight } from "./codemirror-light";
 
 export interface CodeEditorProps {
   value: string;
@@ -91,9 +92,7 @@ export function CodeEditor({
       }),
     ];
 
-    if (theme === "dark") {
-      extensions.push(oneDark);
-    }
+    extensions.push(theme === "dark" ? seDark : seLight);
 
     const state = EditorState.create({
       doc: value,

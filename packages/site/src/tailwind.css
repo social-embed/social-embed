@@ -79,6 +79,27 @@
   --color-mv-purple-dark: color-mix(in oklch, oklch(0.67 0.16 295), black 30%);
   --color-mv-cyan-dark: color-mix(in oklch, oklch(0.71 0.14 200), black 30%);
   --color-mv-green-dark: color-mix(in oklch, oklch(0.73 0.13 120), black 30%);
+
+  /* Palette steps used by editor themes */
+  --color-mv-blue-50: oklch(0.97 0.015 250);
+  --color-mv-blue-100: oklch(0.935 0.033 250);
+  --color-mv-blue-200: oklch(0.89 0.06 250);
+  --color-mv-blue-300: oklch(0.82 0.105 250);
+  --color-mv-blue-700: oklch(0.5 0.1425 250);
+
+  --color-mv-purple-300: oklch(0.82 0.112 295);
+  --color-mv-purple-400: oklch(0.74 0.152 295);
+  --color-mv-purple-600: oklch(0.59 0.168 295);
+  --color-mv-purple-700: oklch(0.52 0.152 295);
+
+  --color-mv-yellow-300: oklch(0.82 0.105 80);
+  --color-mv-yellow-700: oklch(0.57 0.1425 80);
+
+  --color-mv-orange-300: oklch(0.82 0.084 30);
+  --color-mv-orange-700: oklch(0.57 0.114 30);
+
+  --color-mv-red-300: oklch(0.82 0.098 10);
+  --color-mv-red-600: oklch(0.6 0.147 10);
 }
 
 /**
@@ -87,6 +108,13 @@
  * Inner elements (logo, right-group) handle their own spacing via --nav-inner-pad.
  */
 :root {
+  --color-panel-bg: var(--color-slate-900);
+  --color-panel-header: var(--color-slate-800);
+  --color-fg: var(--color-slate-100);
+  --color-muted: var(--color-slate-400);
+  --color-mv-fg: var(--color-fg);
+  --color-mv-muted: var(--color-muted);
+
   /* Navigation dimensions */
   --nav-height: 3.5rem;
   --nav-pad-x: 0;
@@ -140,6 +168,13 @@
 }
 
 [data-theme="light"] {
+  --color-panel-bg: var(--color-slate-50);
+  --color-panel-header: var(--color-slate-100);
+  --color-fg: var(--color-slate-900);
+  --color-muted: var(--color-slate-500);
+  --color-mv-fg: var(--color-fg);
+  --color-mv-muted: var(--color-muted);
+
   --nav-bg: rgba(255, 255, 255, 0.95); /* white/95 */
   --nav-border: var(--color-slate-200);
   --nav-text: var(--color-slate-900);
