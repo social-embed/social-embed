@@ -6,7 +6,7 @@ This file provides guidance to AI agents (including Codex CLI, Cursor, and other
 
 Format commit messages as:
 ```
-commit-type(Component/File[Subcomponent/method]) Concise description
+type(scope[detail]) concise description
 
 why: Explanation of necessity or impact.
 what:
@@ -16,7 +16,7 @@ what:
 
 Notes:
 - `commit-type` is always lowercase.
-- `Component/File` should usually be lowercase; use proper capitalization only when it’s a proper name (e.g. a class like `UniversalFlashcardWrapper`).
+- `scope` should usually be lowercase; use proper capitalization only when it's a proper name (e.g. a class like `UniversalFlashcardWrapper`).
 
 Common commit types:
 - **feat**: New features or enhancements
@@ -29,6 +29,8 @@ Common commit types:
 - **js(deps)**: Dependencies
 - **js(deps[dev])**: Dev Dependencies
 - **ai(rules[AGENTS])**: AI rule updates
+- **ai(claude[rules])**: Claude Code rules (CLAUDE.md)
+- **ai(claude[command])**: Claude Code command changes
 
 Example:
 ```
