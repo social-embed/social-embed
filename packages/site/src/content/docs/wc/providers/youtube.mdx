@@ -5,9 +5,11 @@ sidebar_label: YouTube
 description: YouTube Video embed support for <o-embed> component.
 ---
 
-## Basic
+import { Aside } from '@astrojs/starlight/components';
 
-### HTML
+## Basic Usage
+
+### Standard URL
 
 URL: https://youtu.be/FTQbiNvZqaY
 
@@ -17,7 +19,153 @@ URL: https://youtu.be/FTQbiNvZqaY
 
 <o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
 
-## Optional: Inner / child content
+---
+
+## YouTube Shorts
+
+Shorts URLs are automatically converted to standard embeds:
+
+```html
+<o-embed url="https://www.youtube.com/shorts/FTQbiNvZqaY"></o-embed>
+```
+
+<o-embed url="https://www.youtube.com/shorts/FTQbiNvZqaY"></o-embed>
+
+---
+
+## URL Formats
+
+All of these YouTube URL formats are supported:
+
+| Format | Example |
+|--------|---------|
+| Standard watch URL | `https://www.youtube.com/watch?v=VIDEO_ID` |
+| Short URL | `https://youtu.be/VIDEO_ID` |
+| Shorts URL | `https://www.youtube.com/shorts/VIDEO_ID` |
+| Embed URL | `https://www.youtube.com/embed/VIDEO_ID` |
+| Privacy-enhanced | `https://www.youtube-nocookie.com/embed/VIDEO_ID` |
+
+---
+
+## Privacy Mode
+
+By default, embeds use `youtube-nocookie.com` for enhanced privacy. This prevents YouTube from storing cookies on the user's browser unless they interact with the video.
+
+To disable privacy mode:
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  privacy="false"
+></o-embed>
+```
+
+---
+
+## YouTube-specific Options
+
+The `<o-embed>` component supports YouTube-specific options via the `provider-options` attribute.
+
+### Available Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `start` | number | Start time in seconds |
+| `end` | number | End time in seconds |
+| `autoplay` | boolean | Auto-start the video (requires `mute: true` in most browsers) |
+| `mute` | boolean | Start the video muted |
+| `loop` | boolean | Loop the video continuously |
+| `controls` | boolean | Show player controls (default: true) |
+
+### Start Time
+
+Start playback at a specific time (in seconds):
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"start": 30}'
+></o-embed>
+```
+
+### End Time
+
+Stop playback at a specific time:
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"start": 10, "end": 30}'
+></o-embed>
+```
+
+### Autoplay (Muted)
+
+<Aside type="note">
+Most browsers require videos to be muted for autoplay to work. Always set `mute: true` when using `autoplay: true`.
+</Aside>
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"autoplay": true, "mute": true}'
+></o-embed>
+```
+
+### Loop
+
+Enable continuous looping:
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"loop": true}'
+></o-embed>
+```
+
+### Hide Controls
+
+Hide the player controls:
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"controls": false}'
+></o-embed>
+```
+
+### Combining Options
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  provider-options='{"start": 30, "autoplay": true, "mute": true, "loop": true}'
+></o-embed>
+```
+
+---
+
+## Custom Dimensions
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  width="800"
+  height="450"
+></o-embed>
+```
+
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY"
+  width="800"
+  height="450"
+></o-embed>
+
+---
+
+## Slotted Content
+
+You can add child content that appears after the embed:
 
 ### CSS
 

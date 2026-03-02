@@ -1,83 +1,109 @@
 /**
- * Type tests for EmbedProvider interface
+ * Type tests for UrlMatcher interface
  *
  * These tests verify type safety without running actual code.
  * They are executed during compilation to ensure proper type constraints.
  */
 
 import { describe, expectTypeOf, test } from "vitest";
-import type { EmbedProvider } from "../src/provider";
+import type {
+  EmbedOutput,
+  MatchContext,
+  OutputOptions,
+  PrivacyOptions,
+  Result,
+  UrlMatcher,
+} from "../src";
 
-describe("EmbedProvider Type Tests", () => {
-  test("EmbedProvider interface should have required properties and methods", () => {
-    type Provider = EmbedProvider;
+describe("UrlMatcher Type Tests", () => {
+  test("UrlMatcher interface should have required properties and methods", () => {
+    type Matcher = UrlMatcher;
 
     // Test properties
-    expectTypeOf<Provider>().toHaveProperty("name");
-    expectTypeOf<Provider["name"]>().toBeString();
+    expectTypeOf<Matcher>().toHaveProperty("name");
+    expectTypeOf<Matcher["name"]>().toBeString();
+
+    // Test optional properties
+    expectTypeOf<Matcher>().toHaveProperty("domains");
+    expectTypeOf<Matcher>().toHaveProperty("schemes");
+    expectTypeOf<Matcher>().toHaveProperty("supportsPrivacyMode");
 
     // Test methods
-    expectTypeOf<Provider>().toHaveProperty("canParseUrl");
-    expectTypeOf<Provider["canParseUrl"]>().toBeFunction();
-    expectTypeOf<Provider["canParseUrl"]>().parameters.toMatchTypeOf<
-      [string]
+    expectTypeOf<Matcher>().toHaveProperty("canMatch");
+    expectTypeOf<Matcher["canMatch"]>().toBeFunction();
+    expectTypeOf<Matcher["canMatch"]>().parameters.toMatchTypeOf<
+      [MatchContext]
     >();
-    expectTypeOf<Provider["canParseUrl"]>().returns.toBeBoolean();
+    expectTypeOf<Matcher["canMatch"]>().returns.toBeBoolean();
 
-    expectTypeOf<Provider>().toHaveProperty("getIdFromUrl");
-    expectTypeOf<Provider["getIdFromUrl"]>().toBeFunction();
-    expectTypeOf<Provider["getIdFromUrl"]>().parameters.toMatchTypeOf<
-      [string]
-    >();
-    expectTypeOf<Provider["getIdFromUrl"]>().returns.toMatchTypeOf<
-      string | string[]
-    >();
+    expectTypeOf<Matcher>().toHaveProperty("parse");
+    expectTypeOf<Matcher["parse"]>().toBeFunction();
+    expectTypeOf<Matcher["parse"]>().parameters.toMatchTypeOf<[MatchContext]>();
+    expectTypeOf<Matcher["parse"]>().returns.toMatchTypeOf<Result<unknown>>();
 
-    expectTypeOf<Provider>().toHaveProperty("getEmbedUrlFromId");
-    expectTypeOf<Provider["getEmbedUrlFromId"]>().toBeFunction();
-    expectTypeOf<Provider["getEmbedUrlFromId"]>().parameters.toMatchTypeOf<
-      [string, ...unknown[]]
-    >();
-    expectTypeOf<Provider["getEmbedUrlFromId"]>().returns.toBeString();
+    expectTypeOf<Matcher>().toHaveProperty("toEmbedUrl");
+    expectTypeOf<Matcher["toEmbedUrl"]>().toBeFunction();
+    expectTypeOf<Matcher["toEmbedUrl"]>().returns.toBeString();
+
+    expectTypeOf<Matcher>().toHaveProperty("toOutput");
+    expectTypeOf<Matcher["toOutput"]>().toBeFunction();
+    expectTypeOf<Matcher["toOutput"]>().returns.toMatchTypeOf<EmbedOutput>();
   });
 
-  test("Provider implementation should conform to interface", () => {
+  test("UrlMatcher with generic parameters should maintain type safety", () => {
+    // Test with specific type parameters
+    type YouTubeData = { id: string };
+    type YouTubeMatcher = UrlMatcher<"YouTube", YouTubeData>;
+
+    expectTypeOf<YouTubeMatcher["name"]>().toEqualTypeOf<"YouTube">();
+
+    // Parse should return Result<YouTubeData>
+    type ParseResult = ReturnType<YouTubeMatcher["parse"]>;
+    expectTypeOf<ParseResult>().toMatchTypeOf<Result<YouTubeData>>();
+  });
+
+  test("Matcher implementation should conform to interface", () => {
     // Mock implementation for testing
-    const mockProvider: EmbedProvider = {
-      canParseUrl(url: string): boolean {
-        try {
-          // Properly parse the URL and check the hostname
-          const parsedUrl = new URL(url);
-          // Check if hostname is exactly test.com or ends with .test.com
-          return (
-            parsedUrl.hostname === "test.com" ||
-            parsedUrl.hostname.endsWith(".test.com")
-          );
-        } catch {
-          // Invalid URL format
-          return false;
-        }
+    const mockMatcher: UrlMatcher<"Test", { id: string }> = {
+      canMatch(ctx: MatchContext): boolean {
+        return ctx.host === "test.com";
       },
-      getEmbedUrlFromId(id: string): string {
-        return `https://embed.test.com/${id}`;
+      domains: ["test.com"],
+      name: "Test",
+
+      parse(_ctx: MatchContext): Result<{ id: string }> {
+        return { ok: true, value: { id: "test123" } };
       },
-      getIdFromUrl(url: string): string {
-        try {
-          const parsedUrl = new URL(url);
-          const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
-          return pathParts.length > 0 ? pathParts[pathParts.length - 1] : "";
-        } catch {
-          // Fallback to simple string manipulation if URL is invalid
-          return url.split("/").pop() || "";
-        }
+      supportsPrivacyMode: true,
+
+      toEmbedUrl(data: { id: string }, _options?: PrivacyOptions): string {
+        return `https://embed.test.com/${data.id}`;
       },
-      name: "TestProvider",
+
+      toOutput(
+        data: { id: string },
+        options?: OutputOptions & PrivacyOptions,
+      ): EmbedOutput {
+        return {
+          nodes: [
+            {
+              attributes: {
+                height: String(options?.height ?? 315),
+                width: String(options?.width ?? 560),
+              },
+              src: this.toEmbedUrl(data),
+              type: "iframe",
+            },
+          ],
+        };
+      },
     };
 
-    expectTypeOf(mockProvider).toMatchTypeOf<EmbedProvider>();
-    expectTypeOf(mockProvider.name).toBeString();
-    expectTypeOf(mockProvider.canParseUrl).toBeFunction();
-    expectTypeOf(mockProvider.getIdFromUrl).toBeFunction();
-    expectTypeOf(mockProvider.getEmbedUrlFromId).toBeFunction();
+    expectTypeOf(mockMatcher).toMatchTypeOf<UrlMatcher>();
+    expectTypeOf(mockMatcher.name).toEqualTypeOf<"Test">();
+    expectTypeOf(mockMatcher.canMatch).toBeFunction();
+    expectTypeOf(mockMatcher.parse).toBeFunction();
+    expectTypeOf(mockMatcher.toEmbedUrl).toBeFunction();
+    expectTypeOf(mockMatcher.toOutput).toBeFunction();
   });
 });

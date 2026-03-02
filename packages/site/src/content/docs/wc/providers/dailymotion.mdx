@@ -10,13 +10,17 @@ sidebar:
     variant: caution
 ---
 
-import { Badge } from '../../../../components/mdx';
+import { Aside, Badge } from '../../../../components/mdx';
 
-:::caution[Autoplay issues]
+<Aside type="caution" title="Autoplay issues">
 <Badge text="Known Issue" variant="caution"/> As of March 2025, autoplay support via iframes is broken for DailyMotion videos. For more information, see ["How to work with autostart"](https://developers.dailymotion.com/guides/player-autostart/) in the DailyMotion developer documentation.
-:::
+</Aside>
 
-## Default dimensions
+<Aside type="note" title="New Embed Endpoint">
+As of February 2025, DailyMotion uses a new embed endpoint (`geo.dailymotion.com`). This library has been updated to use the new endpoint automatically.
+</Aside>
+
+## Basic Usage
 
 URL: https://www.dailymotion.com/video/x7znrd0
 
@@ -26,7 +30,21 @@ URL: https://www.dailymotion.com/video/x7znrd0
 
 <o-embed url="https://www.dailymotion.com/video/x7znrd0"></o-embed>
 
-## Custom dimensions
+---
+
+## Short URL
+
+DailyMotion short URLs (`dai.ly`) are also supported:
+
+```html
+<o-embed url="https://dai.ly/x7znrd0"></o-embed>
+```
+
+<o-embed url="https://dai.ly/x7znrd0"></o-embed>
+
+---
+
+## Custom Dimensions
 
 ```html
 <o-embed
@@ -36,9 +54,89 @@ URL: https://www.dailymotion.com/video/x7znrd0
 ></o-embed>
 ```
 
-<o-embed url="https://www.dailymotion.com/video/x7znrd0" width="1080" height="536"></o-embed>
+<o-embed
+  url="https://www.dailymotion.com/video/x7znrd0"
+  width="1080"
+  height="536"
+></o-embed>
 
-## Custom dimensions (more)
+---
+
+## DailyMotion-specific Options
+
+The `<o-embed>` component supports DailyMotion-specific options via the `provider-options` attribute.
+
+### Available Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `mute` | boolean | Start the video muted |
+| `startTime` | number | Start time in seconds |
+| `loop` | boolean | Loop the video continuously |
+| `playerId` | string | Custom Player ID (for advanced customization) |
+
+### Muted Playback
+
+```html
+<o-embed
+  url="https://www.dailymotion.com/video/x7znrd0"
+  provider-options='{"mute": true}'
+></o-embed>
+```
+
+### Start Time
+
+Start playback at a specific time (in seconds):
+
+```html
+<o-embed
+  url="https://www.dailymotion.com/video/x7znrd0"
+  provider-options='{"startTime": 30}'
+></o-embed>
+```
+
+### Loop
+
+Enable continuous looping:
+
+```html
+<o-embed
+  url="https://www.dailymotion.com/video/x7znrd0"
+  provider-options='{"loop": true}'
+></o-embed>
+```
+
+### Combining Options
+
+```html
+<o-embed
+  url="https://www.dailymotion.com/video/x7znrd0"
+  provider-options='{"mute": true, "startTime": 30, "loop": true}'
+></o-embed>
+```
+
+---
+
+## Custom Player ID
+
+For advanced customization, you can use a Player ID created in the DailyMotion Partner HQ:
+
+```html
+<o-embed
+  url="https://www.dailymotion.com/video/x7znrd0"
+  provider-options='{"playerId": "xc394"}'
+></o-embed>
+```
+
+<Aside type="tip">
+Player IDs allow you to customize player appearance and behavior beyond the basic options. Create them in the [DailyMotion Partner HQ](https://www.dailymotion.com/partner/).
+</Aside>
+
+---
+
+## CSS Custom Properties
+
+Use CSS custom properties for responsive sizing:
 
 ```html
 <style>
