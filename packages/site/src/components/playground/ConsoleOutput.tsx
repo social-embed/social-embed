@@ -71,10 +71,10 @@ export function ConsoleOutput({
             </div>
           ) : (
             <div className="space-y-1">
-              {logs.map((entry, index) => (
+              {logs.map((entry) => (
                 <div
                   className={`flex items-start gap-2 ${LOG_TYPE_STYLES[entry.type]}`}
-                  key={`${entry.timestamp}-${index}`}
+                  key={entry.id}
                 >
                   <span className="opacity-60 select-none">
                     {LOG_TYPE_ICONS[entry.type]}

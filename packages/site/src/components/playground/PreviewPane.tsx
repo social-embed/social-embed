@@ -8,6 +8,7 @@ import {
 } from "react";
 
 export interface ConsoleEntry {
+  id: string;
   type: "log" | "warn" | "error" | "info";
   args: string[];
   timestamp: number;
@@ -163,6 +164,7 @@ export const PreviewPane = forwardRef<PreviewPaneHandle, PreviewPaneProps>(
         if (data?.type === "console" && onConsoleMessage) {
           onConsoleMessage({
             args: data.args,
+            id: crypto.randomUUID(),
             timestamp: data.timestamp,
             type: data.method,
           });
