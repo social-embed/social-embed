@@ -34,7 +34,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.6",
     "cross-env": "^10.1.0",
-    "oxlint": "^1.51.0",
+    "oxlint": "^1.53.0",
     "oxlint-tsgolint": "^0.16.0"
   }
 }
