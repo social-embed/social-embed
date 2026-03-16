@@ -60,8 +60,7 @@ export function localCdnPlugin(): Plugin {
             fileName: () => fileName,
             formats: ["es"],
           },
-          minify: "esbuild",
-          rollupOptions: {
+          rolldownOptions: {
             external: [],
           },
           sourcemap: true,

@@ -32,9 +32,9 @@
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.6",
+    "@biomejs/biome": "2.4.7",
     "cross-env": "^10.1.0",
-    "oxlint": "^1.53.0",
-    "oxlint-tsgolint": "^0.16.0"
+    "oxlint": "^1.55.0",
+    "oxlint-tsgolint": "^0.17.0"
   }
 }
