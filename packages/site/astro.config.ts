@@ -34,75 +34,73 @@ const mdxMergeHeadings = viteMdxMergeHeadings() as unknown as VitePlugin;
 
 // https://astro.build/config
 export default defineConfig({
-  // Experimental fonts API configuration
-  experimental: {
-    fonts: [
-      // IBM Plex Sans
-      {
-        cssVariable: "--font-ibm-plex-sans",
-        fallbacks: ["ui-sans-serif", "system-ui", "sans-serif"],
-        name: "IBM Plex Sans",
-        optimizedFallbacks: true,
-        options: {
-          variants: [
-            {
-              display: "swap",
-              src: [
-                {
-                  url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2",
-                },
-              ],
-              style: "normal",
-              weight: "400",
-            },
-            {
-              display: "swap",
-              src: [
-                {
-                  url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2",
-                },
-              ],
-              style: "normal",
-              weight: "600",
-            },
-          ],
-        },
-        provider: fontProviders.local(),
+  // Fonts API (graduated from experimental in Astro 6.0.4)
+  fonts: [
+    // IBM Plex Sans
+    {
+      cssVariable: "--font-ibm-plex-sans",
+      fallbacks: ["ui-sans-serif", "system-ui", "sans-serif"],
+      name: "IBM Plex Sans",
+      optimizedFallbacks: true,
+      options: {
+        variants: [
+          {
+            display: "swap",
+            src: [
+              {
+                url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2",
+              },
+            ],
+            style: "normal",
+            weight: "400",
+          },
+          {
+            display: "swap",
+            src: [
+              {
+                url: "../../node_modules/@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2",
+              },
+            ],
+            style: "normal",
+            weight: "600",
+          },
+        ],
       },
-      // IBM Plex Mono
-      {
-        cssVariable: "--font-ibm-plex-mono",
-        fallbacks: ["ui-monospace", "monospace"],
-        name: "IBM Plex Mono",
-        optimizedFallbacks: true,
-        options: {
-          variants: [
-            {
-              display: "swap",
-              src: [
-                {
-                  url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2",
-                },
-              ],
-              style: "normal",
-              weight: "400",
-            },
-            {
-              display: "swap",
-              src: [
-                {
-                  url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2",
-                },
-              ],
-              style: "normal",
-              weight: "600",
-            },
-          ],
-        },
-        provider: fontProviders.local(),
+      provider: fontProviders.local(),
+    },
+    // IBM Plex Mono
+    {
+      cssVariable: "--font-ibm-plex-mono",
+      fallbacks: ["ui-monospace", "monospace"],
+      name: "IBM Plex Mono",
+      optimizedFallbacks: true,
+      options: {
+        variants: [
+          {
+            display: "swap",
+            src: [
+              {
+                url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2",
+              },
+            ],
+            style: "normal",
+            weight: "400",
+          },
+          {
+            display: "swap",
+            src: [
+              {
+                url: "../../node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-600-normal.woff2",
+              },
+            ],
+            style: "normal",
+            weight: "600",
+          },
+        ],
       },
-    ],
-  },
+      provider: fontProviders.local(),
+    },
+  ],
   integrations: [
     expressiveCode({
       styleOverrides: {
@@ -152,7 +150,7 @@ export default defineConfig({
     define: {
       __GIT_BRANCH__: JSON.stringify(getGitBranch()),
     },
-    // Astro uses Vite 6 while @tailwindcss/vite targets Vite 7 types.
+    // Vite plugin type version mismatches across Astro/Tailwind/local plugins.
     plugins: [tailwindPlugin, localCdn, mdxMergeHeadings],
     resolve: {
       alias: {
