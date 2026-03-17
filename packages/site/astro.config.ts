@@ -39,7 +39,14 @@ export default defineConfig({
     // IBM Plex Sans
     {
       cssVariable: "--font-ibm-plex-sans",
-      fallbacks: ["ui-sans-serif", "system-ui", "sans-serif"],
+      fallbacks: [
+        "ui-sans-serif",
+        "system-ui",
+        "sans-serif",
+        "Apple Color Emoji",
+        "Segoe UI Emoji",
+        "Segoe UI Symbol",
+      ],
       name: "IBM Plex Sans",
       optimizedFallbacks: true,
       options: {
