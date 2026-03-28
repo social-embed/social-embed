@@ -102,6 +102,14 @@ document.body.innerHTML = `
 
 ### Attributes
 
+| Attribute | Default | Description |
+|-----------|---------|-------------|
+| `url` | — | The media URL to embed (required) |
+| `width` | `"560"` | Width of the embed |
+| `height` | `"315"` | Height of the embed |
+| `allowfullscreen` | `"true"` | Enable fullscreen button |
+| `frameborder` | `"0"` | Iframe border width |
+
 ```html
 <!-- Set custom dimensions -->
 <o-embed url="https://youtu.be/Bd8_vO5zrjo" width="640" height="360"></o-embed>
@@ -109,6 +117,42 @@ document.body.innerHTML = `
 <!-- Enable fullscreen button -->
 <o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
 ```
+
+### CSS Custom Properties
+
+Control embed dimensions globally with CSS custom properties:
+
+```css
+o-embed {
+  --social-embed-iframe-width: 100%;
+  --social-embed-iframe-height: 400px;
+}
+```
+
+This is useful for responsive layouts and preventing Cumulative Layout Shift (CLS):
+
+```css
+o-embed {
+  display: block;
+  --social-embed-iframe-width: 100%;
+  --social-embed-iframe-height: 315px;
+  min-height: 315px;
+}
+```
+
+### Slot Content
+
+You can add child content inside `<o-embed>` — it renders after the iframe via a `<slot>`. This can be used for captions or as a fallback when JavaScript is unavailable:
+
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo">
+  <a href="https://youtu.be/Bd8_vO5zrjo">Watch on YouTube</a>
+</o-embed>
+```
+
+### Generic Fallback
+
+Any valid URL — even from unsupported platforms — renders as a plain `<iframe>`. This makes `<o-embed>` a universal embed tag that happens to have smart defaults for known providers.
 
 ## Technical Details
 
