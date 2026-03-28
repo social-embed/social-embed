@@ -48,10 +48,10 @@ pnpm add @social-embed/lib
 
 ```typescript
 // unpkg
-import { getYouTubeIdFromUrl } from "https://www.unpkg.com/@social-embed/lib?module";
+import { convertUrlToEmbedUrl } from "https://www.unpkg.com/@social-embed/lib?module";
 
 // skypack
-import { getYouTubeIdFromUrl } from "https://cdn.skypack.dev/@social-embed/lib";
+import { convertUrlToEmbedUrl } from "https://cdn.skypack.dev/@social-embed/lib";
 ```
 
 ## Key Features
