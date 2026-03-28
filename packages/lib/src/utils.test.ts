@@ -16,4 +16,20 @@ describe("utils test", () => {
   it("should detect valid URLs", () => {
     expect(isValidUrl("https://apple.com")).toBe(true);
   });
+
+  it("should reject javascript: URIs", () => {
+    expect(isValidUrl("javascript:alert(1)")).toBe(false);
+  });
+
+  it("should reject data: URIs", () => {
+    expect(isValidUrl("data:text/html,<h1>hi</h1>")).toBe(false);
+  });
+
+  it("should accept https: URLs", () => {
+    expect(isValidUrl("https://example.com")).toBe(true);
+  });
+
+  it("should accept http: URLs", () => {
+    expect(isValidUrl("http://example.com")).toBe(true);
+  });
 });
