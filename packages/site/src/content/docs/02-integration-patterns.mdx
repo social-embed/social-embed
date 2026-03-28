@@ -1,0 +1,98 @@
+---
+title: Integration patterns
+slug: integration-patterns
+sidebar:
+  order: 3
+---
+
+social-embed integrates with content systems through one simple pattern: store the URL, render `<o-embed>`. Here are concrete examples.
+
+## Rich text editors
+
+In editors like TipTap, ProseMirror, or Slate, define one embed node instead of one per provider.
+
+**TipTap / ProseMirror node spec:**
+
+```ts
+import { Node, mergeAttributes } from "@tiptap/core";
+
+const OEmbed = Node.create({
+  name: "oEmbed",
+  group: "block",
+  atom: true,
+
+  addAttributes() {
+    return {
+      url: { default: null },
+    };
+  },
+
+  parseHTML() {
+    return [{ tag: "o-embed" }];
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ["o-embed", mergeAttributes(HTMLAttributes)];
+  },
+});
+```
+
+When a user pastes a media URL, the editor wraps it in a single node. The serialized output is always `<o-embed url="..."></o-embed>` — one shape, regardless of provider.
+
+## Markdown and MDX
+
+`<o-embed>` tags work inline in markdown because HTML passes through most parsers:
+
+```md
+Watch the demo:
+
+<o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>
+
+Continue reading...
+```
+
+This renders in any markdown pipeline that preserves HTML (Astro, Hugo, Jekyll, MDX). The social-embed docs site itself uses this pattern — every provider page contains live `<o-embed>` tags.
+
+**Sanitizer note:** Some markdown renderers strip unknown HTML tags by default (notably `react-markdown` and DOMPurify). Add `<o-embed>` to your sanitizer's allow list:
+
+```ts
+// DOMPurify
+DOMPurify.sanitize(html, {
+  ADD_TAGS: ["o-embed"],
+  ADD_ATTR: ["url"],
+});
+```
+
+## Database / CMS content
+
+Store embeds as part of your content — either as tags in HTML content or as raw URLs in structured fields:
+
+```sql
+-- Option A: Store the tag in HTML content
+INSERT INTO posts (body) VALUES (
+  '<p>Check this out:</p><o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>'
+);
+
+-- Option B: Store just the URL in a structured field
+INSERT INTO posts (embed_url) VALUES (
+  'https://youtu.be/Bd8_vO5zrjo'
+);
+-- Render <o-embed url="..."> in the template
+```
+
+At render time, load the web component once and every `<o-embed>` on the page resolves automatically.
+
+## Server-side validation
+
+When accepting user-submitted URLs, validate before storing:
+
+```ts
+import { getProviderFromUrl } from "@social-embed/lib";
+
+function validateEmbedUrl(url: string): boolean {
+  const provider = getProviderFromUrl(url);
+  return provider !== undefined; // Only allow recognized providers
+}
+```
+
+This restricts embeds to known providers. The web component's generic fallback renders any valid URL — server-side validation is where the allowlist lives.
