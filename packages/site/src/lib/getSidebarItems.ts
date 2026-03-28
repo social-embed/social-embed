@@ -156,8 +156,16 @@ async function getGroupedItems(directory: string): Promise<SidebarSection[]> {
 
 /**
  * Build the full sidebar structure.
+ *
+ * When `section` is provided, only items relevant to that section are returned.
+ * Root items (getting-started, how-it-works, etc.) are always included.
+ * - "lib" → root items + Library section + Lib Playground
+ * - "wc"  → root items + Web Component section + WC subgroups + WC Playground
+ * - undefined → everything (root pages, homepage)
  */
-export async function getSidebarItems(): Promise<SidebarItem[]> {
+export async function getSidebarItems(
+  section?: "lib" | "wc",
+): Promise<SidebarItem[]> {
   const docs = await getCollection("docs");
 
   // Root level items
@@ -169,14 +177,7 @@ export async function getSidebarItems(): Promise<SidebarItem[]> {
       order: entry.data.sidebar?.order,
     }));
 
-  // Library section
-  const libItems = await getItemsFromDirectory("lib");
-
-  // Web Component section (including subdirectories)
-  const wcItems = await getItemsFromDirectory("wc");
-  const wcGroups = await getGroupedItems("wc");
-
-  const sidebar: SidebarItem[] = [
+  const rootSection: SidebarItem[] = [
     // Getting started (root)
     ...sortItems(
       rootItems.filter((item: SidebarLink) =>
@@ -184,7 +185,7 @@ export async function getSidebarItems(): Promise<SidebarItem[]> {
       ),
     ),
 
-    // Other root items (migration, news) - right after getting started
+    // Other root items (migration, news, etc.) - right after getting started
     ...sortItems(
       rootItems.filter(
         (item: SidebarLink) =>
@@ -193,6 +194,57 @@ export async function getSidebarItems(): Promise<SidebarItem[]> {
           item.href !== "/wc/",
       ),
     ),
+  ];
+
+  if (section === "lib") {
+    const libItems = await getItemsFromDirectory("lib");
+    return [
+      ...rootSection,
+      {
+        badge: { text: "lib", variant: "note" },
+        items: sortItems(libItems),
+        label: "Library",
+      },
+      {
+        badge: { text: "try it", variant: "success" },
+        items: [
+          { href: "/lib/playground/", label: "Interactive" },
+          { href: "/lib/playground/external/", label: "More Sandboxes" },
+        ],
+        label: "Lib Playground",
+      },
+    ];
+  }
+
+  if (section === "wc") {
+    const wcItems = await getItemsFromDirectory("wc");
+    const wcGroups = await getGroupedItems("wc");
+    return [
+      ...rootSection,
+      {
+        badge: { text: "wc", variant: "tip" },
+        items: sortItems(wcItems),
+        label: "Web Component",
+      },
+      ...wcGroups,
+      {
+        badge: { text: "try it", variant: "success" },
+        items: [
+          { href: "/wc/playground/", label: "Interactive" },
+          { href: "/wc/playground/external/", label: "More Sandboxes" },
+        ],
+        label: "WC Playground",
+      },
+    ];
+  }
+
+  // No section filter — return everything (root pages, homepage)
+  const libItems = await getItemsFromDirectory("lib");
+  const wcItems = await getItemsFromDirectory("wc");
+  const wcGroups = await getGroupedItems("wc");
+
+  return [
+    ...rootSection,
 
     // Library section
     {
@@ -231,8 +283,6 @@ export async function getSidebarItems(): Promise<SidebarItem[]> {
       label: "WC Playground",
     },
   ];
-
-  return sidebar;
 }
 
 export { isSection };
