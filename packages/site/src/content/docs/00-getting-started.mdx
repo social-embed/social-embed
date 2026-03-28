@@ -44,6 +44,15 @@ Add one script tag and one `<o-embed>` element — that's it:
 
 No build step, no bundler, no framework.
 
+## Which package do I need?
+
+| I want to...                          | Use                                     |
+|---------------------------------------|-----------------------------------------|
+| Embed media in HTML, Markdown, or CMS | [`@social-embed/wc`](/wc/)              |
+| Validate or transform URLs server-side | [`@social-embed/lib`](/lib/)           |
+| Build a custom embed renderer          | [`@social-embed/lib`](/lib/)           |
+| Both validate and render               | Both packages together                  |
+
 ## Building something?
 
 Install the web component for drop-in embedding:
@@ -111,15 +120,6 @@ const provider = getProviderFromUrl("https://youtu.be/Bd8_vO5zrjo");
 ```
 
 See the [library docs](/lib/) for examples and the full API.
-
-## Which package do I need?
-
-| I want to...                          | Use                                     |
-|---------------------------------------|-----------------------------------------|
-| Embed media in HTML, Markdown, or CMS | [`@social-embed/wc`](/wc/)              |
-| Validate or transform URLs server-side | [`@social-embed/lib`](/lib/)           |
-| Build a custom embed renderer          | [`@social-embed/lib`](/lib/)           |
-| Both validate and render               | Both packages together                  |
 
 ## Good to know
 
