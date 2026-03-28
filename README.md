@@ -1,59 +1,63 @@
 # Social Embed
 
-> A lightweight, browser-friendly toolkit for transforming media URLs into embeddable content.
+> Paste a media URL. Store one portable tag. Render the right embed.
 
 [![npm version](https://img.shields.io/npm/v/@social-embed/lib.svg?style=flat)](https://www.npmjs.com/package/@social-embed/lib)
 [![npm version](https://img.shields.io/npm/v/@social-embed/wc.svg?style=flat)](https://www.npmjs.com/package/@social-embed/wc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Easily convert URLs from popular platforms (YouTube, Spotify, Vimeo, etc.) into embeddable content with zero server-side dependencies. Available as a JavaScript library or a drop-in Web Component.
+Every media platform has its own URL formats and iframe rules. social-embed hides that behind one stable contract: users paste normal URLs, the library detects and converts them, and the web component renders the correct embed. Instead of storing provider-specific iframe markup, you store one readable tag.
+
+```html
+<!-- What you used to store in your database -->
+<iframe width="560" height="315"
+  src="https://www.youtube.com/embed/Bd8_vO5zrjo"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen></iframe>
+
+<!-- What you store now -->
+<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
+```
+
+The URL is the canonical data. Everything else — provider detection, embed URL construction, iframe rendering, platform-specific dimensions — is derived at render time.
 
 ## Demo
 
 [Try it on CodePen](https://codepen.io/attachment/pen/poRRwdy) | [Live Examples](https://social-embed.org/wc/)
 
-```html
-<!-- Before: Raw URL that users need to manually process -->
-https://www.youtube.com/watch?v=Bd8_vO5zrjo
-
-<!-- After: Simply wrap in o-embed tags -->
-<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
-```
-
-## Key Features
-
-- **Zero dependencies** - The core library has no npm dependencies; the web component uses [Lit](https://lit.dev/)
-- **Multi-platform support** - YouTube, Spotify, Vimeo, DailyMotion, and more
-- **Lightweight** - Small footprint for fast page loads
-- **Framework-agnostic** - Works with any frontend technology
-- **Simple API** - Easy to integrate with straightforward methods
-
 ## Quick Start
 
-### Option 1: Web Component
+### Web Component (most users)
 
 ```html
-<!-- Add the web component -->
 <script type="module" src="https://unpkg.com/@social-embed/wc?module"></script>
 
-<!-- Use it in your HTML -->
 <o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
 ```
 
-### Option 2: JavaScript Library
+That's it. No build step, no bundler, no framework.
+
+### JavaScript Library (custom renderers, server-side validation)
 
 ```bash
-# Install the package
 npm install @social-embed/lib
 ```
 
 ```javascript
-// Convert a URL to its embed form
 import { convertUrlToEmbedUrl } from "@social-embed/lib";
 
 const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
-// Output: "https://www.youtube.com/embed/Bd8_vO5zrjo"
+// "https://www.youtube.com/embed/Bd8_vO5zrjo"
 ```
+
+## Why social-embed
+
+- **Store URLs, not embed code** — `<o-embed url="...">` is both the storage format and the rendering instruction. Clean databases, portable markdown, future-proof content.
+- **Framework-agnostic** — Works with any frontend technology via native Web Components
+- **Zero npm dependencies** — The core library (`@social-embed/lib`) has no dependencies; the web component uses [Lit](https://lit.dev/)
+- **Client-side only** — No backend, no API keys, no oEmbed server
+- **Extensible** — Add custom providers by implementing three methods on the `EmbedProvider` interface
 
 ## Supported Platforms
 
@@ -67,22 +71,21 @@ const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
 | EdPuzzle    | edpuzzle.com/media/ID                            | ✅ Stable   |
 | Wistia      | support.wistia.com/medias/ID                     | ✅ Stable   |
 
-For more details and examples for each platform, [see the documentation](https://social-embed.org/).
+For more details and examples, [see the documentation](https://social-embed.org/).
 
 ## Packages
 
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
-| **@social-embed/lib** | Core library for parsing and generating embed URLs | 🟡 API in development | [Documentation](https://social-embed.org/lib/) · [npm](https://www.npmjs.com/package/@social-embed/lib) |
-| **@social-embed/wc** | Web Component for easy embedding in any HTML | ✅ Stable | [Documentation](https://social-embed.org/wc/) · [npm](https://www.npmjs.com/package/@social-embed/wc) |
+| **@social-embed/wc** | Web Component — drop `<o-embed>` into any HTML | ✅ Stable | [Docs](https://social-embed.org/wc/) · [npm](https://www.npmjs.com/package/@social-embed/wc) |
+| **@social-embed/lib** | Core library — URL parsing, ID extraction, embed URL generation | 🟡 API in development | [Docs](https://social-embed.org/lib/) · [npm](https://www.npmjs.com/package/@social-embed/lib) |
 
 ## Use Cases
 
-- **Content Management Systems** - Add embed functionality to user-generated content
-- **Markdown Editors** - Enhance editors with automatic embeds
-- **Social Platforms** - Turn shared links into rich embeds
-- **Documentation Sites** - Embed media examples in tutorials
-- **WYSIWYG Editors** - Integrate with HTML editors like CKEditor
+- **Rich text editors** — Users paste URLs; the editor stores `<o-embed>` instead of provider-specific iframe HTML. One custom node definition, not one per provider.
+- **Markdown & MDX** — `<o-embed>` survives markdown parsing, renders in the browser, and is readable in source.
+- **CMS & database content** — Store one tag per embed instead of HTML blobs. When platforms change their embed format, update the library — no database migration.
+- **Sandboxes & demos** — Works from a CDN with zero configuration.
 
 ## Browser Support
 
