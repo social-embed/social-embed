@@ -49,9 +49,6 @@ pnpm add @social-embed/lib
 ```typescript
 // unpkg
 import { convertUrlToEmbedUrl } from "https://www.unpkg.com/@social-embed/lib?module";
-
-// skypack
-import { convertUrlToEmbedUrl } from "https://cdn.skypack.dev/@social-embed/lib";
 ```
 
 ## Key Features
