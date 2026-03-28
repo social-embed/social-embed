@@ -259,7 +259,7 @@ If you have a custom service (e.g. **MyCustom**), you can implement your own det
 
 2. **Register** it in a registry, or if you’re using `convertUrlToEmbedUrl`, add your provider to the **default registry** (in `@social-embed/lib` code or your own code):
    ```ts
-   import { defaultRegistry } from "@social-embed/lib/registry";
+   import { defaultRegistry } from "@social-embed/lib";
    import { MyCustomProvider } from "./MyCustomProvider";
 
    defaultRegistry.register(MyCustomProvider);
