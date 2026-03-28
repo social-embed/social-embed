@@ -629,4 +629,41 @@ describe("o-embed", () => {
       expect(iframe).toBeNull();
     });
   });
+
+  describe("iframe title attribute (a11y)", () => {
+    it("renders iframe with provider-based title for YouTube", async () => {
+      const el = await fixture(
+        html`<o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>`,
+      );
+      await expectShadowDomEventually(el, (shadow) => {
+        const iframe = shadow.querySelector("iframe");
+        return iframe?.getAttribute("title") === "YouTube embed";
+      });
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("title")).toBe("YouTube embed");
+    });
+
+    it("renders iframe with generic title for unknown URLs", async () => {
+      const el = await fixture(
+        html`<o-embed url="https://example.com/video"></o-embed>`,
+      );
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("title")).toBe("Embedded content");
+    });
+
+    it("uses custom title attribute when provided", async () => {
+      const el = await fixture(
+        html`<o-embed
+          url="https://youtu.be/Bd8_vO5zrjo"
+          title="My video"
+        ></o-embed>`,
+      );
+      await expectShadowDomEventually(el, (shadow) => {
+        const iframe = shadow.querySelector("iframe");
+        return iframe?.getAttribute("title") === "My video";
+      });
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("title")).toBe("My video");
+    });
+  });
 });
