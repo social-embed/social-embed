@@ -14,7 +14,14 @@ import {
   PreviewPane,
   type PreviewPaneHandle,
 } from "./PreviewPane";
-import { DEFAULT_PRESET, getPresetById, PRESETS } from "./presets";
+import {
+  DEFAULT_PRESET,
+  extractSnippet,
+  getPresetById,
+  PRESETS,
+  type ViewMode,
+  wrapSnippet,
+} from "./presets";
 import { RerollButton } from "./RerollButton";
 import {
   applySeededUrls,
@@ -78,6 +85,8 @@ export interface MiniPlaygroundProps {
   initialCode?: string;
   /** Initial preset ID */
   initialPreset?: string;
+  /** Initial view mode: "full" shows complete HTML, "snippet" shows only body content */
+  initialViewMode?: ViewMode;
 }
 
 /**
@@ -90,7 +99,9 @@ export function MiniPlayground({
   iframeHeight,
   initialCode,
   initialPreset,
+  initialViewMode = "full",
 }: MiniPlaygroundProps) {
+  const [viewMode, setViewMode] = useState<ViewMode>(initialViewMode);
   // Determine initial preset and code
   const [presetId, setPresetId] = useState(() => {
     if (initialCode) return undefined; // Custom code, no preset
@@ -99,12 +110,16 @@ export function MiniPlayground({
   });
 
   const [code, setCode] = useState(() => {
-    if (initialCode) return initialCode;
-    if (initialPreset) {
+    let fullCode: string;
+    if (initialCode) {
+      fullCode = initialCode;
+    } else if (initialPreset) {
       const preset = getPresetById(initialPreset);
-      return preset?.code ?? DEFAULT_PRESET.code;
+      fullCode = preset?.code ?? DEFAULT_PRESET.code;
+    } else {
+      fullCode = DEFAULT_PRESET.code;
     }
-    return DEFAULT_PRESET.code;
+    return initialViewMode === "snippet" ? extractSnippet(fullCode) : fullCode;
   });
 
   // Template for reroll (preserves original code with URL placeholders)
@@ -165,26 +180,44 @@ export function MiniPlayground({
     setConsoleLogs([]); // Clear console on CDN change
   }, []);
 
-  const handlePresetChange = useCallback((id: string) => {
-    const preset = getPresetById(id);
-    if (preset) {
-      setCode(preset.code);
-      setPresetId(id);
-      setTemplateCode(undefined);
-      setSeed(undefined);
-      setConsoleLogs([]);
-    }
+  const handleViewModeToggle = useCallback(() => {
+    setViewMode((prev) => {
+      const next = prev === "full" ? "snippet" : "full";
+      setCode((currentCode) =>
+        next === "snippet"
+          ? extractSnippet(currentCode)
+          : wrapSnippet(currentCode),
+      );
+      return next;
+    });
   }, []);
+
+  const handlePresetChange = useCallback(
+    (id: string) => {
+      const preset = getPresetById(id);
+      if (preset) {
+        setCode(
+          viewMode === "snippet" ? extractSnippet(preset.code) : preset.code,
+        );
+        setPresetId(id);
+        setTemplateCode(undefined);
+        setSeed(undefined);
+        setConsoleLogs([]);
+      }
+    },
+    [viewMode],
+  );
 
   // Reroll handler - generates new seed and updates URLs
   const handleReroll = useCallback(() => {
     const newSeed = generateSeed();
 
-    // Get template (existing template or current code)
-    const template = templateCode ?? code;
+    // Get full HTML template (existing template, or wrap snippet if in snippet mode)
+    const currentFull =
+      templateCode ?? (viewMode === "snippet" ? wrapSnippet(code) : code);
 
     // Reactive update via postMessage (no iframe reload)
-    const updates = generateReactiveUpdates(template, newSeed);
+    const updates = generateReactiveUpdates(currentFull, newSeed);
     for (const update of updates) {
       previewRef.current?.updateAttribute(
         update.selector,
@@ -194,12 +227,12 @@ export function MiniPlayground({
     }
 
     // Compute display code from template + seed
-    const { html } = applySeededUrls(template, newSeed);
+    const { html: fullHtml } = applySeededUrls(currentFull, newSeed);
 
-    setCode(html);
-    setTemplateCode(template); // Preserve template for future rerolls
+    setCode(viewMode === "snippet" ? extractSnippet(fullHtml) : fullHtml);
+    setTemplateCode(currentFull); // Preserve full template for future rerolls
     setSeed(newSeed); // Store seed for compact share links
-  }, [code, templateCode]);
+  }, [code, templateCode, viewMode]);
 
   // Check if current code can be randomized
   const canReroll = useMemo(() => canRandomize(code), [code]);
@@ -263,6 +296,27 @@ export function MiniPlayground({
             </option>
           ))}
         </select>
+
+        {/* View mode toggle */}
+        <button
+          className={`
+            h-7 px-2 text-xs font-medium border rounded transition-colors cursor-pointer
+            ${
+              viewMode === "snippet"
+                ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border-indigo-300 dark:border-indigo-700"
+                : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500"
+            }
+          `}
+          onClick={handleViewModeToggle}
+          title={
+            viewMode === "snippet"
+              ? "Show full HTML page"
+              : "Show only the embed tag"
+          }
+          type="button"
+        >
+          {viewMode === "snippet" ? "Tag" : "HTML"}
+        </button>
 
         {canReroll && <RerollButton onClick={handleReroll} variant="sm" />}
       </div>
@@ -333,6 +387,7 @@ export function MiniPlayground({
               code={stableCode}
               onConsoleMessage={handleConsoleMessage}
               ref={previewRef}
+              viewMode={viewMode}
               wcUrl={cdnUrls.wc}
             />
           </div>
