@@ -1,16 +1,39 @@
 ---
 title: Overview
 pageTitle: "@social-embed/lib"
-skipMarkdownTitle: true
 tableOfContents: true
 slug: lib
 sidebar:
   order: 1
-head:
-  - tag: style
-    content: "p:has(> a) { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }"
 ---
 
-import README from "../../../../../lib/README.md";
+`@social-embed/lib` is a zero-dependency JavaScript library for detecting media platforms, extracting IDs from URLs, and generating embeddable URLs. It runs in any JavaScript environment — browsers, Node.js, edge workers.
 
-<README />
+```ts
+import { convertUrlToEmbedUrl } from "@social-embed/lib";
+
+convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
+// "https://www.youtube.com/embed/Bd8_vO5zrjo"
+```
+
+## Key features
+
+- **Universal conversion** — `convertUrlToEmbedUrl()` handles all providers in one call
+- **Provider detection** — `getProviderFromUrl()` identifies which platform a URL belongs to
+- **Extensible registry** — Add custom providers with `defaultRegistry.register()`
+- **Zero dependencies** — No npm dependencies, no DOM requirement
+- **Type-safe** — Full TypeScript with exported `EmbedProvider` type and `EmbedProviderRegistry` class
+
+## What to read next
+
+- [Installation](/lib/installation) — npm, CDN, and bundler setup
+- [Examples](/lib/examples) — Universal conversion, per-provider functions, custom providers
+- [Providers](/lib/providers) — The `EmbedProvider` interface and registry system
+
+## How it fits
+
+This library handles steps 1-3 of the social-embed pipeline (detect → extract → build). It is used internally by the [`<o-embed>` web component](/wc/), but you can use it standalone for:
+
+- **Server-side URL validation** — Check if a URL is from a recognized provider before storing it
+- **Custom renderers** — Build your own embed UI in React, Vue, Svelte, or any framework
+- **Content pipelines** — Transform URLs in batch processing, API endpoints, or build steps
