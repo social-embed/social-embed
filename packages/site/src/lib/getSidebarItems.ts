@@ -145,6 +145,7 @@ async function getGroupedItems(directory: string): Promise<SidebarSection[]> {
       }));
 
       groups.push({
+        collapsed: subdir === "providers",
         items: sortItems(items),
         label: subdir.charAt(0).toUpperCase() + subdir.slice(1),
       });

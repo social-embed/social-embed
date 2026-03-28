@@ -1,6 +1,7 @@
 ---
 /**
  * Sidebar section with label, optional badge, and child links.
+ * When collapsed is true, renders as a <details>/<summary> for native toggle.
  */
 import Badge from "../mdx/Badge.astro";
 import SidebarLink from "./SidebarLink.astro";
@@ -17,25 +18,50 @@ interface Props {
 }
 
 const { label, badge, items, currentPath, collapsed = false } = Astro.props;
+
+// If any child is active, expand the group even if collapsed by default
+const hasActiveChild = items.some((item) => {
+  const itemPath = item.href.replace(/\/$/, "");
+  const current = currentPath.replace(/\/$/, "");
+  return itemPath === current;
+});
 ---
 
-<div class="sidebar-section">
-  <div class="section-header">
-    <span class="section-label">{label}</span>
-    {badge && <Badge text={badge.text} variant={badge.variant} size="small" />}
+{collapsed ? (
+  <details class="sidebar-section" open={hasActiveChild || undefined}>
+    <summary class="section-header">
+      <span class="section-label">{label}</span>
+      {badge && <Badge text={badge.text} variant={badge.variant} size="small" />}
+    </summary>
+    <div class="section-items">
+      {
+        items.map((item) => {
+          const itemPath = item.href.replace(/\/$/, "");
+          const current = currentPath.replace(/\/$/, "");
+          const isActive = itemPath === current;
+          return <SidebarLink href={item.href} label={item.label} isActive={isActive} />;
+        })
+      }
+    </div>
+  </details>
+) : (
+  <div class="sidebar-section">
+    <div class="section-header">
+      <span class="section-label">{label}</span>
+      {badge && <Badge text={badge.text} variant={badge.variant} size="small" />}
+    </div>
+    <div class="section-items">
+      {
+        items.map((item) => {
+          const itemPath = item.href.replace(/\/$/, "");
+          const current = currentPath.replace(/\/$/, "");
+          const isActive = itemPath === current;
+          return <SidebarLink href={item.href} label={item.label} isActive={isActive} />;
+        })
+      }
+    </div>
   </div>
-  <div class:list={["section-items", { collapsed }]}>
-    {
-      items.map((item) => {
-        const itemPath = item.href.replace(/\/$/, "");
-        const current = currentPath.replace(/\/$/, "");
-        const isActive = itemPath === current;
-
-        return <SidebarLink href={item.href} label={item.label} isActive={isActive} />;
-      })
-    }
-  </div>
-</div>
+)}
 
 <style>
   .sidebar-section {
@@ -62,11 +88,27 @@ const { label, badge, items, currentPath, collapsed = false } = Astro.props;
     color: var(--color-slate-400);
   }
 
-  .section-items {
-    /* Items visible by default */
+  /* details/summary reset for collapsible sections */
+  details.sidebar-section > summary {
+    list-style: none;
+    cursor: pointer;
   }
 
-  .section-items.collapsed {
+  details.sidebar-section > summary::-webkit-details-marker {
     display: none;
+  }
+
+  details.sidebar-section > summary::marker {
+    display: none;
+    content: "";
+  }
+
+  details.sidebar-section > summary .section-label::after {
+    content: " ▸";
+    font-size: 0.625rem;
+  }
+
+  details.sidebar-section[open] > summary .section-label::after {
+    content: " ▾";
   }
 </style>
