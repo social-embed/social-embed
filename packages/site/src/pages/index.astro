@@ -98,7 +98,7 @@ import { ReadonlyCode } from "../components/playground/ReadonlyCode";
       </div>
 
       <!-- Before / After -->
-      <div class="mb-12">
+      <div class="max-w-6xl mx-auto mb-12">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Before — stored in your database</p>
@@ -113,17 +113,9 @@ import { ReadonlyCode } from "../components/playground/ReadonlyCode";
   allowfullscreen></iframe>`}
             />
           </div>
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">After — stored now</p>
-            <ReadonlyCode
-              client:only="react"
-              code={`<o-embed
-  url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"
-></o-embed>`}
-            />
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
-              The URL is the data. Provider detection, embed URL construction, and rendering happen at render time. <a href="#playground" class="text-indigo-600 dark:text-indigo-400 hover:underline">See example</a>
-            </p>
+          <div class="flex flex-col">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">After — <code class="text-indigo-600 dark:text-indigo-400">&lt;o-embed&gt;</code></p>
+            <MiniPlayground client:only="react" className="flex-1" codeHeight="150px" iframeHeight="315px" />
           </div>
         </div>
       </div>
