@@ -134,6 +134,25 @@ console.log(isValidUrl("https://apple.com")); // true
 console.log(isValidUrl("notaurl")); // false
 ```
 
+## Custom Providers
+
+Add support for any platform by implementing the `EmbedProvider` interface (3 methods + a name) and registering it:
+
+```typescript
+import { defaultRegistry } from "@social-embed/lib";
+
+defaultRegistry.register({
+  name: "MyPlatform",
+  canParseUrl: (url) => /myplatform\.com\/video\//.test(url),
+  getIdFromUrl: (url) => url.split("/").pop() || "",
+  getEmbedUrlFromId: (id) => `https://myplatform.com/embed/${id}`,
+});
+
+// Now convertUrlToEmbedUrl() handles MyPlatform URLs
+```
+
+See the [full extensibility guide](https://social-embed.org/lib/examples#5-adding-a-new-provider) for details.
+
 ## Try It Out
 
 - [CodePen][codepen]
