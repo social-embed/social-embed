@@ -1,0 +1,58 @@
+---
+title: Custom providers in the web component
+description: How custom providers work with <o-embed> dimensions and rendering
+sidebar:
+  order: 20
+---
+
+import { Aside } from '../../../../components/mdx';
+
+Custom providers registered via `defaultRegistry.register()` work in `<o-embed>` automatically. The web component uses the same registry as the library — when a custom provider's `canParseUrl()` matches, its `getEmbedUrlFromId()` builds the embed URL, and the component renders it as an iframe.
+
+## Default dimensions
+
+Custom providers use the default iframe dimensions: **560 x 315 pixels**. The built-in providers have hardcoded dimension overrides (Spotify gets 100% x 352px, YouTube Shorts gets 347 x 616px, etc.), but custom providers fall through to the generic default.
+
+## Overriding dimensions
+
+You can override dimensions per-element with attributes:
+
+```html
+<o-embed url="https://myplatform.com/video/abc" width="800" height="450"></o-embed>
+```
+
+Or globally with CSS custom properties:
+
+```css
+o-embed {
+  --social-embed-iframe-width: 100%;
+  --social-embed-iframe-height: 480px;
+}
+```
+
+<Aside type="tip">
+  CSS custom properties take visual precedence over HTML attributes. Use them for responsive layouts.
+</Aside>
+
+## Example: registering and using a custom provider
+
+```ts
+import { defaultRegistry } from "@social-embed/lib";
+
+defaultRegistry.register({
+  name: "MyPlatform",
+  canParseUrl: (url) => /myplatform\.com\/video\//.test(url),
+  getIdFromUrl: (url) => url.split("/").pop() || "",
+  getEmbedUrlFromId: (id) => `https://myplatform.com/embed/${id}`,
+});
+```
+
+```html
+<!-- Uses default 560x315 dimensions -->
+<o-embed url="https://myplatform.com/video/abc123"></o-embed>
+
+<!-- Override to 16:9 responsive -->
+<o-embed url="https://myplatform.com/video/abc123" width="100%" height="480"></o-embed>
+```
+
+See the [library extensibility docs](/lib/examples#5-adding-a-new-provider) for the full `EmbedProvider` interface.
