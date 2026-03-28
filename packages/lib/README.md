@@ -1,6 +1,6 @@
 # @social-embed/lib
 
-> A lightweight utility for transforming media URLs into embeddable content or extracting media IDs.
+> The embed normalization engine — detect providers, extract IDs, generate embed URLs. Zero dependencies, ~2 kB gzipped.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) 
 [![npm version](https://img.shields.io/npm/v/@social-embed/lib.svg?style=flat)](https://www.npmjs.com/package/@social-embed/lib)

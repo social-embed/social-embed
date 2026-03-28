@@ -1,6 +1,6 @@
 # &lt;o-embed&gt; Web Component
 
-> Transform media URLs into beautiful embeds with a single HTML tag.
+> A portable embed primitive — store `<o-embed url="...">`, render the right player. ~10 kB gzipped.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) 
 [![npm version](https://img.shields.io/npm/v/@social-embed/wc.svg?style=flat)](https://www.npmjs.com/package/@social-embed/wc)
