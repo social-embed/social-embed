@@ -630,6 +630,37 @@ describe("o-embed", () => {
     });
   });
 
+  describe("generic fallback security attributes", () => {
+    it("applies sandbox to generic fallback iframe", async () => {
+      const el = await fixture(
+        html`<o-embed url="https://example.com/page"></o-embed>`,
+      );
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("sandbox")).toBe(
+        "allow-scripts allow-same-origin allow-popups",
+      );
+    });
+
+    it("applies referrerpolicy to generic fallback iframe", async () => {
+      const el = await fixture(
+        html`<o-embed url="https://example.com/page"></o-embed>`,
+      );
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.getAttribute("referrerpolicy")).toBe("no-referrer");
+    });
+
+    it("does not apply sandbox to known provider iframes", async () => {
+      const el = await fixture(
+        html`<o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>`,
+      );
+      await expectShadowDomEventually(el, (shadow) => {
+        return shadow.querySelector("iframe") !== null;
+      });
+      const iframe = el.shadowRoot?.querySelector("iframe");
+      expect(iframe?.hasAttribute("sandbox")).toBe(false);
+    });
+  });
+
   describe("iframe title attribute (a11y)", () => {
     it("renders iframe with provider-based title for YouTube", async () => {
       const el = await fixture(

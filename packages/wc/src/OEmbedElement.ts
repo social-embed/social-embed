@@ -460,6 +460,8 @@ export class OEmbedElement extends LitElement {
         src="${this.url}"
         title="${this.getIframeTitle()}"
         frameborder=${ifDefined(this.frameborder)}
+        sandbox="allow-scripts allow-same-origin allow-popups"
+        referrerpolicy="no-referrer"
       ></iframe>
       <slot></slot>
     `;
