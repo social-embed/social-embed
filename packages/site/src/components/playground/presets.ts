@@ -2,11 +2,42 @@
  * Provider-focused preset code examples for the playground.
  */
 
+export type ViewMode = "full" | "snippet";
+
 export interface Preset {
   id: string;
   name: string;
   description: string;
   code: string;
+}
+
+/**
+ * Extract the inner body content from a full HTML page.
+ * Returns the original string if no <body> tag is found.
+ */
+export function extractSnippet(fullHtml: string): string {
+  const match = fullHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  return match ? match[1].trim() : fullHtml;
+}
+
+/**
+ * Wrap a snippet in the standard HTML page template.
+ * Uses {{WC_URL}} placeholder for CDN replacement in PreviewPane.
+ */
+export function wrapSnippet(snippet: string): string {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  ${WC_SCRIPT}
+  <style>
+    body { font-family: system-ui; }
+    o-embed { max-width: 560px; }
+  </style>
+</head>
+<body>
+  ${snippet}
+</body>
+</html>`;
 }
 
 const WC_SCRIPT = '<script type="module" src="{{WC_URL}}"></script>';
