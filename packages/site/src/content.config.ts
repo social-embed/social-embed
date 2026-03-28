@@ -15,7 +15,7 @@ const docs = defineCollection({
       head: z
         .array(
           z.object({
-            attrs: z.record(z.string()).optional(),
+            attrs: z.record(z.string(), z.string()).optional(),
             content: z.string().optional(),
             tag: z.string(),
           }),
