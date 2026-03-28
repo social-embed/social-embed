@@ -20,9 +20,9 @@
     "format": "pnpm run biome check . --write; pnpm run biome format . --write"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.0.0",
-    "@astrojs/mdx": "^5.0.1",
-    "@astrojs/react": "^5.0.0",
+    "@astrojs/markdown-remark": "^7.1.0",
+    "@astrojs/mdx": "^5.0.3",
+    "@astrojs/react": "^5.0.2",
     "@codemirror/lang-html": "^6.4.11",
     "@codemirror/lang-javascript": "^6.2.5",
     "@fontsource/ibm-plex-mono": "^5.2.7",
@@ -30,26 +30,26 @@
     "@pagefind/default-ui": "^1.4.0",
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
-    "@tailwindcss/vite": "^4.2.1",
-    "astro": "^6.0.5",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^6.1.1",
     "codemirror": "^6.0.2",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-live": "^4.1.8",
     "sharp": "^0.34.5",
-    "tailwindcss": "^4.2.1"
+    "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
-    "@biomejs/biome": "^2.4.7",
+    "@biomejs/biome": "^2.4.9",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "astro-expressive-code": "^0.41.7",
     "es-module-lexer": "^2.0.0",
-    "happy-dom": "^20.8.4",
+    "happy-dom": "^20.8.9",
     "magic-string": "^0.30.21",
     "pagefind": "^1.4.0",
     "rehype-autolink-headings": "^7.1.0",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.2"
   }
 }

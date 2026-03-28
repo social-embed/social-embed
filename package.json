@@ -29,12 +29,12 @@
   },
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.2"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.7",
+    "@biomejs/biome": "2.4.9",
     "cross-env": "^10.1.0",
-    "oxlint": "^1.56.0",
-    "oxlint-tsgolint": "^0.17.0"
+    "oxlint": "^1.57.0",
+    "oxlint-tsgolint": "^0.18.1"
   }
 }
