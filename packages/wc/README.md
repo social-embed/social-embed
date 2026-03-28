@@ -108,16 +108,6 @@ document.body.innerHTML = `
 
 <!-- Enable fullscreen button -->
 <o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
-
-<!-- Add loading spinner with message -->
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" loading="Loading video..."></o-embed>
-```
-
-### Error Handling
-
-```html
-<!-- Custom error message -->
-<o-embed url="invalid-url" error-message="Sorry, this URL isn't supported"></o-embed>
 ```
 
 ## Technical Details
