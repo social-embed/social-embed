@@ -1,0 +1,86 @@
+---
+title: Accessibility & fallbacks
+description: Accessible embeds, screen reader support, and fallback strategies for <o-embed>
+sidebar:
+  order: 35
+---
+
+## Iframe title
+
+Every `<iframe>` rendered by `<o-embed>` has a `title` attribute for screen readers. The title is resolved in this order:
+
+1. **Explicit `title` attribute** — If you set `title="..."` on the element, that value is used
+2. **Provider name** — For known providers: `"YouTube embed"`, `"Spotify embed"`, `"Vimeo embed"`, etc.
+3. **Generic fallback** — For unrecognized URLs: `"Embedded content"`
+
+Override the auto-generated title for more descriptive labels:
+
+```html
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  title="Conference talk: tmux productivity tips"
+></o-embed>
+```
+
+## Keyboard navigation
+
+Embedded iframes receive focus in the normal tab order. When a user tabs into an `<o-embed>` element, focus enters the iframe, and the embedded player's keyboard controls take over (play/pause, volume, seek). Tabbing out returns focus to the host page.
+
+No additional ARIA attributes are needed — the `title` attribute provides the accessible name, and the iframe is a standard interactive landmark.
+
+## Slot fallback
+
+`<o-embed>` uses a `<slot>` element. Any child content you add renders after the iframe. Use this for:
+
+**Accessible fallback links** — Give screen readers and non-JS contexts a usable alternative:
+
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo">
+  <a href="https://youtu.be/Bd8_vO5zrjo">Watch on YouTube</a>
+</o-embed>
+```
+
+**Captions or context** — Add descriptive text below the embed:
+
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo">
+  <p><em>Demo: Using social-embed in a TipTap editor</em></p>
+</o-embed>
+```
+
+## No-JavaScript fallback
+
+`<o-embed>` is a Web Component — it requires JavaScript to upgrade and render the iframe. Before JS loads (or if JS is disabled), the custom element is treated as an unknown HTML element and only the slot content is visible.
+
+This makes slot content the primary fallback strategy:
+
+```html
+<!-- Before JS loads, users see the link. After, they see the embed + link. -->
+<o-embed url="https://youtu.be/Bd8_vO5zrjo">
+  <a href="https://youtu.be/Bd8_vO5zrjo">Watch on YouTube</a>
+</o-embed>
+```
+
+For static HTML contexts where JavaScript will never load, use a `<noscript>` block as an alternative:
+
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>
+<noscript>
+  <a href="https://youtu.be/Bd8_vO5zrjo">Watch on YouTube (requires JavaScript)</a>
+</noscript>
+```
+
+## Preventing layout shift (CLS)
+
+When `<o-embed>` loads, the iframe renders and shifts surrounding content. To prevent Cumulative Layout Shift, set explicit dimensions with CSS custom properties:
+
+```css
+o-embed {
+  display: block;
+  --social-embed-iframe-width: 100%;
+  --social-embed-iframe-height: 315px;
+  min-height: 315px;
+}
+```
+
+See [Attributes & Styling](/wc/configuration/attributes-and-styling#preventing-layout-shift-cls) for the full dimension resolution order and more examples.
