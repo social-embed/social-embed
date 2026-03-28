@@ -9,10 +9,26 @@ import { Tabs, TabItem } from '../../components/mdx';
 social-embed turns media URLs into embeddable content. Instead of storing platform-specific iframe HTML, you store one portable tag:
 
 ```html
+<!-- What you used to store -->
+<iframe width="560" height="315"
+  src="https://www.youtube.com/embed/Bd8_vO5zrjo"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media"
+  allowfullscreen></iframe>
+
+<!-- What you store now -->
 <o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
 ```
 
-The URL is the canonical data. Provider detection, embed URL construction, and rendering happen automatically at render time.
+The URL is the canonical data. Provider detection, embed URL construction, and rendering happen automatically at render time. See [How it works](/how-it-works) for the full pipeline.
+
+**Note:** `<o-embed>` requires JavaScript to render. For resilience in non-JS contexts, add a fallback link:
+
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo">
+  <a href="https://youtu.be/Bd8_vO5zrjo">Watch on YouTube</a>
+</o-embed>
+```
 
 ## Have 30 seconds?
 
