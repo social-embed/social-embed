@@ -177,24 +177,11 @@ export async function getSidebarItems(
       order: entry.data.sidebar?.order,
     }));
 
-  const rootSection: SidebarItem[] = [
-    // Getting started (root)
-    ...sortItems(
-      rootItems.filter((item: SidebarLink) =>
-        item.href.includes("getting-started"),
-      ),
+  const rootSection: SidebarItem[] = sortItems(
+    rootItems.filter(
+      (item: SidebarLink) => item.href !== "/lib/" && item.href !== "/wc/",
     ),
-
-    // Other root items (migration, news, etc.) - right after getting started
-    ...sortItems(
-      rootItems.filter(
-        (item: SidebarLink) =>
-          !item.href.includes("getting-started") &&
-          item.href !== "/lib/" &&
-          item.href !== "/wc/",
-      ),
-    ),
-  ];
+  );
 
   if (section === "lib") {
     const libItems = await getItemsFromDirectory("lib");
