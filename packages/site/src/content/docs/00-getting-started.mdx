@@ -118,3 +118,11 @@ See the [library docs](/lib/) for examples and the full API.
 | Validate or transform URLs server-side | [`@social-embed/lib`](/lib/)           |
 | Build a custom embed renderer          | [`@social-embed/lib`](/lib/)           |
 | Both validate and render               | Both packages together                  |
+
+## Good to know
+
+**social-embed is a client-side URL parser, not an oEmbed protocol client.** Despite the name similarity, it does not make HTTP requests to oEmbed endpoints. It derives embed URLs locally using static pattern matching — no API keys, no server, no network requests for the URL conversion step.
+
+**It is not a security boundary.** The generic fallback renders any valid URL as an iframe. If you accept user-submitted URLs, validate them server-side with `getProviderFromUrl()` to restrict to known providers.
+
+**Requires JavaScript to render.** `<o-embed>` is a Web Component — it needs JS to upgrade and display the iframe. Use slot content as a fallback for non-JS contexts (see above).
