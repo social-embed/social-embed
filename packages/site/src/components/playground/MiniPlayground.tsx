@@ -350,9 +350,8 @@ export function MiniPlayground({
         <div
           className={`
             ${activeTab === "code" ? "flex" : "hidden"}
-            sm:flex min-h-[150px]
+            sm:flex ${codeHeight ? "" : "min-h-[150px] flex-1"}
             border-b border-slate-200 dark:border-slate-700
-            ${codeHeight ? "" : "flex-1"}
           `}
           style={codeHeight ? { flexShrink: 0, height: codeHeight } : undefined}
         >
