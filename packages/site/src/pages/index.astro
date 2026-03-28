@@ -98,25 +98,23 @@ import { ReadonlyCode } from "../components/playground/ReadonlyCode";
       </div>
 
       <!-- Before / After -->
-      <div class="max-w-6xl mx-auto mb-12">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Before — stored in your database</p>
-            <ReadonlyCode
-              client:only="react"
-              code={`<iframe width="560" height="315"
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Before — stored in your database</p>
+          <ReadonlyCode
+            client:only="react"
+            code={`<iframe width="560" height="315"
   src="https://www.youtube.com/embed/Bd8_vO5zrjo"
   frameborder="0"
   allow="accelerometer; autoplay;
     clipboard-write; encrypted-media;
     gyroscope; picture-in-picture"
   allowfullscreen></iframe>`}
-            />
-          </div>
-          <div class="flex flex-col">
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">After — <code class="text-indigo-600 dark:text-indigo-400">&lt;o-embed&gt;</code></p>
-            <MiniPlayground client:only="react" className="flex-1" codeHeight="150px" iframeHeight="315px" initialViewMode="snippet" />
-          </div>
+          />
+        </div>
+        <div class="flex flex-col">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">After — <code class="text-indigo-600 dark:text-indigo-400">&lt;o-embed&gt;</code></p>
+          <MiniPlayground client:only="react" className="h-full" codeHeight="275px" iframeHeight="425px" initialViewMode="snippet" />
         </div>
       </div>
 
