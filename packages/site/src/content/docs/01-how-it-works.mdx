@@ -67,16 +67,7 @@ YouTube Shorts get portrait dimensions. Spotify gets full-width. Vimeo gets wide
 
 ## The provider interface
 
-Every provider implements four members:
-
-```ts
-interface EmbedProvider {
-  readonly name: string;
-  canParseUrl(url: string): boolean;
-  getIdFromUrl(url: string): string | string[];
-  getEmbedUrlFromId(id: string, ...args: unknown[]): string;
-}
-```
+Every provider implements the [`EmbedProvider` interface](/lib/api-reference#embedprovider-interface) — four members: a `name`, `canParseUrl()` for detection, `getIdFromUrl()` for extraction, and `getEmbedUrlFromId()` for URL construction.
 
 Seven providers are built-in. You can [add your own](/lib/examples#5-adding-a-new-provider) with `defaultRegistry.register()`.
 
