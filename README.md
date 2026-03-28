@@ -88,18 +88,6 @@ For more details and examples for each platform, [see the documentation](https:/
 
 Works in all modern browsers that support Web Components.
 
-## Projects
-
-| Package     | Source          | Website                                                | Status          | Description                               |
-| ----------- | --------------- | ------------------------------------------------------ | --------------- | ----------------------------------------- |
-| Library     | [packages/lib/] | https://social-embed.org/lib/                 | 🟡 API unstable | Constants, regexes, id scraper, url maker |
-| `<o-embed>` | [packages/wc/]  | https://social-embed.org/wc/                  | ✅ Stable       | [custom element] / [web component]        |
-
-[packages/wc/]: packages/wc/
-[packages/lib/]: packages/lib/
-[custom element]: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
-[web component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
-
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
