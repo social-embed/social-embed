@@ -15,7 +15,7 @@ This library makes it easy to work with media URLs from popular platforms like Y
 - **Detect** which platform a URL belongs to
 - **Validate** URLs with a simple utility function
 
-All with **zero server-side dependencies** - everything runs in the browser.
+All with **zero dependencies** - runs in any JavaScript environment (browsers, Node.js, edge workers).
 
 ## Quick Start
 
