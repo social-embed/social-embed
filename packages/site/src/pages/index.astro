@@ -63,17 +63,13 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
     </header>
 
     <main class="px-4 md:px-8 py-6 max-w-7xl mx-auto">
-      <!-- Hero with context -->
+      <!-- Hero -->
       <div class="text-center mb-10">
         <h1 class="text-3xl font-bold mb-2">social-embed</h1>
         <p class="text-lg text-slate-700 dark:text-slate-300 mb-4 max-w-2xl mx-auto">
           One tag to rule all embeds. Store URLs, not embed code.
         </p>
-        <p class="text-sm text-slate-500 dark:text-slate-400 max-w-xl mx-auto mb-6">
-          Users paste media URLs. You store <code class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs">&lt;o-embed url="..."&gt;</code>.
-          The library detects the provider. The component renders the embed. No backend, no API keys.
-        </p>
-        <div class="flex justify-center gap-3">
+        <div class="flex justify-center gap-3 mb-8">
           <a href="/getting-started" class="inline-flex items-center gap-1 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors">
             Get started <span aria-hidden="true">&rarr;</span>
           </a>
@@ -81,6 +77,62 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
             How it works
           </a>
         </div>
+      </div>
+
+      <!-- Before / After -->
+      <div class="max-w-3xl mx-auto mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Before — stored in your database</p>
+            <pre class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 text-xs leading-relaxed overflow-x-auto"><code class="text-slate-700 dark:text-slate-300">&lt;iframe width="560" height="315"
+  src="https://www.youtube.com/embed/Bd8_vO5zrjo"
+  frameborder="0"
+  allow="accelerometer; autoplay;
+    clipboard-write; encrypted-media;
+    gyroscope; picture-in-picture"
+  allowfullscreen&gt;&lt;/iframe&gt;</code></pre>
+          </div>
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">After — stored now</p>
+            <pre class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 text-xs leading-relaxed overflow-x-auto"><code class="text-indigo-600 dark:text-indigo-400">&lt;o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"&gt;&lt;/o-embed&gt;</code></pre>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              The URL is the data. Provider detection, embed URL construction, and rendering happen at render time.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Use cases -->
+      <div class="max-w-4xl mx-auto mb-12">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <a href="/integration-patterns" class="group block rounded-lg border border-slate-200 dark:border-slate-700 p-4 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">Rich text editors</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">One custom node, not one per provider.</p>
+          </a>
+          <a href="/integration-patterns" class="group block rounded-lg border border-slate-200 dark:border-slate-700 p-4 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">Markdown & MDX</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Survives parsing, renders in the browser.</p>
+          </a>
+          <a href="/integration-patterns" class="group block rounded-lg border border-slate-200 dark:border-slate-700 p-4 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">CMS & databases</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Update the library, not your data.</p>
+          </a>
+          <a href="/getting-started" class="group block rounded-lg border border-slate-200 dark:border-slate-700 p-4 hover:border-indigo-300 dark:hover:border-indigo-700 transition-colors">
+            <p class="text-sm font-semibold text-slate-900 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">Sandboxes</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">One CDN script, zero configuration.</p>
+          </a>
+        </div>
+      </div>
+
+      <!-- Trust signals -->
+      <div class="flex flex-wrap justify-center gap-6 mb-12 text-sm text-slate-600 dark:text-slate-400">
+        <span>7 built-in providers</span>
+        <span class="text-slate-300 dark:text-slate-600" aria-hidden="true">|</span>
+        <span>~2 kB lib · ~10 kB component</span>
+        <span class="text-slate-300 dark:text-slate-600" aria-hidden="true">|</span>
+        <span>Zero dependencies (lib)</span>
+        <span class="text-slate-300 dark:text-slate-600" aria-hidden="true">|</span>
+        <span>Framework-agnostic</span>
       </div>
 
       <!-- Two packages -->
@@ -98,7 +150,7 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
               Drop <code class="bg-slate-100 dark:bg-slate-800 px-1 rounded text-xs">&lt;o-embed&gt;</code> anywhere.
             </p>
           </div>
-          <div class="flex-1 min-h-[800px]">
+          <div class="flex-1">
             <MiniPlayground client:only="react" className="h-full" codeHeight="275px" iframeHeight="425px" />
           </div>
         </section>
