@@ -109,6 +109,7 @@ document.body.innerHTML = `
 | `height` | `"315"` | Height of the embed |
 | `allowfullscreen` | `"true"` | Enable fullscreen button |
 | `frameborder` | `"0"` | Iframe border width |
+| `title` | (auto-generated) | Accessible iframe title. Auto-generated from provider name (e.g. `"YouTube embed"`) if not set. Falls back to `"Embedded content"` for unknown providers. |
 
 ```html
 <!-- Set custom dimensions -->

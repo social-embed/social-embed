@@ -30,6 +30,11 @@
           "description": "For YouTube only. Passing anything other than 1/true omits the tag.",
           "name": "allowfullscreen",
           "type": "string | boolean | undefined"
+        },
+        {
+          "description": "Accessible iframe title. Auto-generated from provider name (e.g. 'YouTube embed') if not set. Falls back to 'Embedded content' for unknown providers.",
+          "name": "title",
+          "type": "string"
         }
       ],
       "description": "Renders embeds from <o-embed url=\"\"> tags",
@@ -74,6 +79,12 @@
           "description": "For YouTube only. Passing anything other than 1/true omits the tag.",
           "name": "allowfullscreen",
           "type": "string | boolean | undefined"
+        },
+        {
+          "attribute": "title",
+          "description": "Accessible iframe title. Auto-generated from provider name (e.g. 'YouTube embed') if not set. Falls back to 'Embedded content' for unknown providers.",
+          "name": "title",
+          "type": "string"
         }
       ],
       "slots": [
