@@ -8,54 +8,53 @@ const docs = defineCollection({
     base: "./src/content/docs",
     pattern: "**/*.{md,mdx}",
   }),
-  schema: z
-    .object({
-      description: z.string().optional(),
+  // looseObject allows unknown frontmatter fields to pass through
+  schema: z.looseObject({
+    description: z.string().optional(),
 
-      // Custom head elements (for page-specific styles)
-      head: z
-        .array(
-          z.object({
-            attrs: z.record(z.string(), z.string()).optional(),
-            content: z.string().optional(),
-            tag: z.string(),
-          }),
-        )
-        .optional(),
+    // Custom head elements (for page-specific styles)
+    head: z
+      .array(
+        z.object({
+          attrs: z.record(z.string(), z.string()).optional(),
+          content: z.string().optional(),
+          tag: z.string(),
+        }),
+      )
+      .optional(),
 
-      // URL control
-      id: z.string().optional(),
+    // URL control
+    id: z.string().optional(),
 
-      // Override page <title> and h1, independent from sidebar label
-      pageTitle: z.string().optional(),
+    // Override page <title> and h1, independent from sidebar label
+    pageTitle: z.string().optional(),
 
-      // Sidebar configuration
-      sidebar: z
-        .object({
-          badge: z
-            .object({
-              text: z.string(),
-              variant: z
-                .enum(["note", "tip", "caution", "danger", "success"])
-                .optional(),
-            })
-            .optional(),
-          label: z.string().optional(),
-          order: z.number().optional(),
-        })
-        .optional(),
-      sidebar_label: z.string().optional(),
-      // Strip the first h1 from markdown content (for README imports)
-      skipMarkdownTitle: z.boolean().default(false),
-      slug: z.string().optional(),
+    // Sidebar configuration
+    sidebar: z
+      .object({
+        badge: z
+          .object({
+            text: z.string(),
+            variant: z
+              .enum(["note", "tip", "caution", "danger", "success"])
+              .optional(),
+          })
+          .optional(),
+        label: z.string().optional(),
+        order: z.number().optional(),
+      })
+      .optional(),
+    sidebar_label: z.string().optional(),
+    // Strip the first h1 from markdown content (for README imports)
+    skipMarkdownTitle: z.boolean().default(false),
+    slug: z.string().optional(),
 
-      // Table of contents
-      tableOfContents: z.boolean().default(true),
+    // Table of contents
+    tableOfContents: z.boolean().default(true),
 
-      // Core fields
-      title: z.string(),
-    })
-    .passthrough(), // Allow unknown frontmatter fields
+    // Core fields
+    title: z.string(),
+  }),
 });
 
 export const collections = {
