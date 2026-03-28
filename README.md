@@ -22,7 +22,7 @@ https://www.youtube.com/watch?v=Bd8_vO5zrjo
 
 ## Key Features
 
-- **Zero dependencies** - Client-side parsing with no backend requirements
+- **Zero dependencies** - The core library has no npm dependencies; the web component uses [Lit](https://lit.dev/)
 - **Multi-platform support** - YouTube, Spotify, Vimeo, DailyMotion, and more
 - **Lightweight** - Small footprint for fast page loads
 - **Framework-agnostic** - Works with any frontend technology
