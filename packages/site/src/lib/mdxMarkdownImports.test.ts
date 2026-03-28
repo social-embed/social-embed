@@ -36,10 +36,8 @@ describe("MDX files importing markdown", () => {
       }
     }
 
-    // Sanity check: we should have found at least some MDX files importing markdown
-    expect(
-      filesWithMarkdownImports.length,
-      "Expected to find MDX files importing .md files",
-    ).toBeGreaterThan(0);
+    // Note: overview pages were rewritten with dedicated content (no README imports).
+    // This test now validates that any remaining .md imports don't have manual re-exports.
+    // It's valid for filesWithMarkdownImports to be empty if no MDX files import .md files.
   });
 });
