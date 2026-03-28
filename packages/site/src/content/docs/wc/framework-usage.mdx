@@ -1,0 +1,234 @@
+---
+title: Framework usage
+description: Using <o-embed> with React, Vue, Svelte, Angular, and SSR frameworks
+sidebar:
+  order: 8
+---
+
+import { Aside, Tabs, TabItem } from '../../../components/mdx';
+
+`<o-embed>` is a standard Web Component and works with any framework. This page covers framework-specific setup, TypeScript configuration, and SSR considerations.
+
+For reactive URL binding patterns (dynamic updates, preview-as-you-type), see [Reactive URL binding](/wc/configuration/reactive).
+
+## TypeScript
+
+Importing `@social-embed/wc` automatically augments global types:
+
+```ts
+// These declarations ship with the package (OEmbedElement.ts):
+declare global {
+  interface HTMLElementTagNameMap {
+    "o-embed": OEmbedElement;
+  }
+  namespace JSX {
+    interface IntrinsicElements {
+      "o-embed": Partial<OEmbedElement>;
+    }
+  }
+}
+```
+
+This means `document.querySelector("o-embed")` returns `OEmbedElement` and JSX/TSX usage is type-safe out of the box.
+
+<Aside type="tip">
+  If your project uses React-specific JSX types (`React.DetailedHTMLProps`), you may need an additional augmentation. See the React section below.
+</Aside>
+
+## React
+
+### React 19+
+
+React 19 natively supports custom element properties. Direct attribute binding works:
+
+```jsx
+import "@social-embed/wc";
+
+function MediaEmbed({ url }) {
+  return <o-embed url={url}></o-embed>;
+}
+```
+
+### React 18
+
+React 18 does not pass unknown props to custom elements as properties. Use a ref to set properties imperatively:
+
+```jsx
+import { useEffect, useRef } from "react";
+import "@social-embed/wc";
+
+function MediaEmbed({ url }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.url = url;
+    }
+  }, [url]);
+
+  return <o-embed ref={ref}></o-embed>;
+}
+```
+
+### React TypeScript augmentation
+
+The package ships a generic `JSX.IntrinsicElements` declaration using `Partial<OEmbedElement>`. If your project uses `@types/react` and you see type errors, add a React-specific augmentation:
+
+```ts
+// react-app-env.d.ts or global.d.ts
+import type { OEmbedElement } from "@social-embed/wc";
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      "o-embed": React.DetailedHTMLProps<
+        React.HTMLAttributes<OEmbedElement> & { url?: string },
+        OEmbedElement
+      >;
+    }
+  }
+}
+```
+
+## Vue 3
+
+Vue handles custom elements natively with property binding:
+
+```vue
+<template>
+  <o-embed :url="mediaUrl"></o-embed>
+</template>
+```
+
+To suppress the `"Failed to resolve component: o-embed"` warning, configure the Vue compiler to recognize the custom element:
+
+<Tabs>
+  <TabItem label="Vite config">
+    ```ts
+    // vite.config.ts
+    import vue from "@vitejs/plugin-vue";
+
+    export default {
+      plugins: [
+        vue({
+          template: {
+            compilerOptions: {
+              isCustomElement: (tag) => tag === "o-embed",
+            },
+          },
+        }),
+      ],
+    };
+    ```
+  </TabItem>
+  <TabItem label="Vue app config">
+    ```ts
+    // main.ts
+    const app = createApp(App);
+    app.config.compilerOptions.isCustomElement = (tag) => tag === "o-embed";
+    ```
+  </TabItem>
+</Tabs>
+
+## Svelte 5
+
+Svelte passes attributes directly to custom elements:
+
+```svelte
+<script>
+  import "@social-embed/wc";
+  let { url } = $props();
+</script>
+
+<o-embed url={url}></o-embed>
+```
+
+## Angular
+
+Add `CUSTOM_ELEMENTS_SCHEMA` to your module or standalone component:
+
+```ts
+import { CUSTOM_ELEMENTS_SCHEMA, Component } from "@angular/core";
+import "@social-embed/wc";
+
+@Component({
+  selector: "app-embed",
+  template: `<o-embed [attr.url]="mediaUrl"></o-embed>`,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
+export class EmbedComponent {
+  mediaUrl = "https://youtu.be/Bd8_vO5zrjo";
+}
+```
+
+## SSR (Next.js, Nuxt, SvelteKit, Astro)
+
+`<o-embed>` is a Web Component that registers itself via `customElements.define()`. This must happen on the client side — the element will not render during server-side rendering.
+
+**The HTML tag is safe to include in SSR output.** The browser treats `<o-embed>` as an unknown element until the JavaScript loads and upgrades it. Use slot content as a fallback:
+
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo">
+  <a href="https://youtu.be/Bd8_vO5zrjo">Watch on YouTube</a>
+</o-embed>
+```
+
+### Dynamic import patterns
+
+Import `@social-embed/wc` on the client side only:
+
+<Tabs>
+  <TabItem label="Next.js">
+    ```tsx
+    "use client";
+    import { useEffect } from "react";
+
+    export function MediaEmbed({ url }: { url: string }) {
+      useEffect(() => {
+        import("@social-embed/wc");
+      }, []);
+
+      return <o-embed url={url}></o-embed>;
+    }
+    ```
+  </TabItem>
+  <TabItem label="Nuxt">
+    ```vue
+    <script setup>
+    onMounted(() => {
+      import("@social-embed/wc");
+    });
+    </script>
+
+    <template>
+      <o-embed :url="mediaUrl"></o-embed>
+    </template>
+    ```
+  </TabItem>
+  <TabItem label="SvelteKit">
+    ```svelte
+    <script>
+    import { onMount } from "svelte";
+    let { url } = $props();
+
+    onMount(() => {
+      import("@social-embed/wc");
+    });
+    </script>
+
+    <o-embed {url}></o-embed>
+    ```
+  </TabItem>
+  <TabItem label="Astro">
+    ```astro
+    <!-- No dynamic import needed — use a script tag -->
+    <script>
+      import "@social-embed/wc";
+    </script>
+
+    <o-embed url="https://youtu.be/Bd8_vO5zrjo">
+      <a href="https://youtu.be/Bd8_vO5zrjo">Watch on YouTube</a>
+    </o-embed>
+    ```
+  </TabItem>
+</Tabs>
