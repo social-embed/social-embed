@@ -13,11 +13,18 @@ export interface Preset {
 
 /**
  * Extract the inner body content from a full HTML page.
+ * Strips heading tags and leading indentation for a clean snippet.
  * Returns the original string if no <body> tag is found.
  */
 export function extractSnippet(fullHtml: string): string {
   const match = fullHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-  return match ? match[1].trim() : fullHtml;
+  if (!match) return fullHtml;
+  return match[1]
+    .replace(/<h[1-6][^>]*>[\s\S]*?<\/h[1-6]>\s*/gi, "")
+    .split("\n")
+    .map((line) => line.replace(/^ {2}/, ""))
+    .join("\n")
+    .trim();
 }
 
 /**
@@ -25,6 +32,10 @@ export function extractSnippet(fullHtml: string): string {
  * Uses {{WC_URL}} placeholder for CDN replacement in PreviewPane.
  */
 export function wrapSnippet(snippet: string): string {
+  const indented = snippet
+    .split("\n")
+    .map((line) => (line.trim() ? `  ${line}` : line))
+    .join("\n");
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -35,7 +46,7 @@ export function wrapSnippet(snippet: string): string {
   </style>
 </head>
 <body>
-  ${snippet}
+${indented}
 </body>
 </html>`;
 }
