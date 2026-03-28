@@ -23,13 +23,13 @@ This sample uses the TypeScript compiler to produce JavaScript that runs in mode
 To build the JavaScript version of your component:
 
 ```bash
-yarn build
+pnpm build
 ```
 
 To watch files and rebuild when the files are modified, run the following command in a separate shell:
 
 ```bash
-yarn build --watch
+pnpm build --watch
 ```
 
 ## Testing
@@ -39,7 +39,7 @@ This sample uses web-test-runner and the open-wc test helpers for testing. See t
 Tests can be run with the `test` script:
 
 ```bash
-yarn test
+pnpm test
 ```
 
 Note: On Ubuntu, you may need to download libraries:
@@ -54,7 +54,7 @@ libxdamage1
 via `vite preview`:
 
 ```bash
-yarn serve
+pnpm serve
 ```
 
 There is a development HTML file located at `/index.html` that you can view at http://localhost:4173/index.html.
@@ -82,7 +82,7 @@ The rules are mostly the recommended rules from each project, but some have been
 To lint the project run:
 
 ```bash
-yarn lint
+pnpm lint
 ```
 
 ## Formatting
