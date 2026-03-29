@@ -1,0 +1,24 @@
+---
+import { DemoIntegrationPatternsBrowse } from "../../../components/demo/DemoIntegrationPatternsBrowse";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Integration Pattern Examples"
+  description="Runnable and copy-paste examples for social-embed integrations."
+>
+  <div
+    style="max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem;"
+  >
+    <h1
+      style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;"
+    >
+      Integration Pattern Examples
+    </h1>
+    <p style="color: var(--sl-color-gray-3, #64748b); margin-bottom: 2rem;">
+      Runnable apps and fixtures showing how to integrate social-embed into
+      real applications. Each example answers one concrete integration question.
+    </p>
+    <DemoIntegrationPatternsBrowse client:only="react" />
+  </div>
+</BaseLayout>
