@@ -1,5 +1,9 @@
+linkWorkspacePackages: true
+preferWorkspacePackages: true
+
 packages:
   - packages/*
+  - examples/integration-patterns/*
 
 onlyBuiltDependencies:
   - esbuild
