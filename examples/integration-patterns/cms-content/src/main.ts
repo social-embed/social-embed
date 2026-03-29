@@ -1,5 +1,5 @@
 import "@social-embed/wc";
-import { getCmsPreviewHtml, STORED_EMBED_URL } from "./cmsHelpers";
+import { getCmsPreviewHtml } from "./cmsHelpers";
 
 export function bootstrapApp(container: HTMLElement) {
   const previews = getCmsPreviewHtml();
@@ -10,7 +10,7 @@ export function bootstrapApp(container: HTMLElement) {
       <section style="display: grid; gap: 16px; grid-template-columns: 1fr 1fr;">
         <div>
           <h2>Stored HTML body</h2>
-          <pre data-testid="stored-html-source" style="background: #f6f6f6; min-height: 120px; overflow-x: auto; padding: 12px; white-space: pre-wrap;">${STORED_EMBED_URL ? previews.htmlBody.replace(/</g, "&lt;").replace(/>/g, "&gt;") : ""}</pre>
+          <pre data-testid="stored-html-source" style="background: #f6f6f6; min-height: 120px; overflow-x: auto; padding: 12px; white-space: pre-wrap;">${previews.htmlBody.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</pre>
           <div data-testid="stored-body-preview" style="border: 1px solid #ccc; margin-top: 8px; min-height: 120px; padding: 12px;"></div>
         </div>
         <div>

@@ -3,16 +3,20 @@ import { INVALID_URL, VALID_URL, validateEmbedUrl } from "./validationHelpers";
 
 describe("validateEmbedUrl", () => {
   it("accepts supported providers", () => {
-    expect(validateEmbedUrl(VALID_URL)).toEqual({
-      isValid: true,
-      providerName: "YouTube",
-    });
+    const result = validateEmbedUrl(VALID_URL);
+    expect(result.isValid).toBe(true);
+    if (result.isValid) {
+      expect(result.providerName).toBe("YouTube");
+      expect(result.embedUrl).toContain("youtube.com/embed");
+    }
   });
 
   it("rejects unsupported providers", () => {
-    expect(validateEmbedUrl(INVALID_URL)).toEqual({
-      isValid: false,
-      providerName: null,
-    });
+    const result = validateEmbedUrl(INVALID_URL);
+    expect(result.isValid).toBe(false);
+    if (!result.isValid) {
+      expect(result.providerName).toBeNull();
+      expect(result.reason).toBe("URL is not a recognized provider");
+    }
   });
 });

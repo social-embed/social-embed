@@ -1,6 +1,16 @@
-# Server Validation Example
+# Server-side Validation
 
-This example shows a provider allowlist decision using `@social-embed/lib` before rendering an embed.
+Use this when:
+- You need to accept embed URLs from users and must reject unknown providers before storing or rendering
+- You want a discriminated-union result type so TypeScript narrows `providerName` and `reason` without casting
+
+Steal these files:
+- `src/validationHelpers.ts` — `EmbedValidationResult` discriminated union, `validateEmbedUrl()` using `@social-embed/lib`
+
+Production notes:
+- `getProviderFromUrl()` matches against the social-embed provider registry — it does not make network requests, so it is safe to call on every keystroke or at request-handler time
+- `convertUrlToEmbedUrl()` canonicalizes short-form URLs (e.g. `youtu.be`) into embeddable `youtube.com/embed/` form; always use the returned `embedUrl`, not the raw input, when building the `<o-embed>` tag
+- The `isValid: false` branch carries `providerName: null` — model this explicitly so callers cannot accidentally read `providerName` without checking `isValid` first
 
 Install dependencies:
 
@@ -14,16 +24,10 @@ Start the dev server:
 pnpm dev
 ```
 
-Run all tests:
+Run unit tests:
 
 ```bash
-pnpm test
-```
-
-Run the full local verification suite:
-
-```bash
-pnpm verify
+pnpm test:unit
 ```
 
 Run browser tests:
@@ -32,20 +36,8 @@ Run browser tests:
 pnpm test:browser
 ```
 
-Run unit tests only:
+Run all tests:
 
 ```bash
-pnpm test:unit
-```
-
-Repo path:
-
-```bash
-examples/integration-patterns/server-validation
-```
-
-StackBlitz GitHub-subdir URL pattern:
-
-```text
-https://stackblitz.com/github/social-embed/social-embed/tree/BRANCH/examples/integration-patterns/server-validation
+pnpm test
 ```
