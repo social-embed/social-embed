@@ -77,6 +77,22 @@ This release completely redesigns the library API for type safety and SSR compat
 - **Browser module**: `import { toEmbedUrl, register } from "@social-embed/lib/browser"`
 - **SSR-safe**: All core APIs work without DOM
 
+#### Removed public API (migration required)
+
+These v0.1 exports are **removed**. See [site migration /lib/migration/0.2](https://social-embed.org/lib/migration/0.2/) for replacements.
+
+| Removed | Use instead |
+|---------|-------------|
+| `EmbedProvider`, `EmbedProviderRegistry` | `UrlMatcher`, `MatcherRegistry` |
+| `defaultRegistry` | `MatcherRegistry.withDefaults()`, `RegistryStore`, or `@social-embed/lib/browser` |
+| `getProviderFromUrl()` | `registry.match(url)` |
+| `getYouTubeIdFromUrl`, `getYouTubeEmbedUrlFromId`, … (all per-provider `get*FromUrl` / `get*Embed*`) | `registry.match()` + `result.matcher.toEmbedUrl(result.data)` |
+| `YouTubeProvider`, `VimeoProvider`, … | `YouTubeMatcher`, `VimeoMatcher`, … |
+| `isValidUrl` | Application validation or URL parsing of your choice |
+| `providers/*` modules | `matchers/*` via package exports |
+
+`convertUrlToEmbedUrl()` is kept but **deprecated**.
+
 #### Migration Guide
 
 ```typescript
