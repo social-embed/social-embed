@@ -5,7 +5,9 @@ import { DEFAULT_MARKDOWN, sanitizeMarkdownSource } from "./markdownHelpers";
 
 export function App() {
   const [source, setSource] = useState(DEFAULT_MARKDOWN);
-  const [allowEmbed, setAllowEmbed] = useState(false);
+  // Default to true so the example shows a working embed on first load.
+  // Toggle off to see how DOMPurify strips <o-embed> when not allow-listed.
+  const [allowEmbed, setAllowEmbed] = useState(true);
   const sanitizedSource = useMemo(
     () => sanitizeMarkdownSource(source, allowEmbed),
     [allowEmbed, source],

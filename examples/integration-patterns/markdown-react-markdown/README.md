@@ -1,6 +1,16 @@
-# Markdown React Markdown Example
+# Markdown — react-markdown
 
-This example shows a markdown pipeline that keeps `<o-embed>` only when the sanitizer allow list permits it.
+Use this when:
+- You render Markdown to React and want `<o-embed>` custom elements to survive the sanitizer
+- You need a toggle showing the difference between stripped and allowed embed output
+
+Steal these files:
+- `src/App.tsx` — `allowedElements` / `unwrapDisallowed` config that keeps `<o-embed>` while stripping unsafe HTML
+
+Production notes:
+- `rehype-sanitize` (used internally by react-markdown when `allowElement` is not set) strips unknown elements by default — you must explicitly allow `o-embed`
+- Pass `allowedAttributes: { "o-embed": ["url"] }` to limit which attributes survive sanitization
+- The `allowEmbed` toggle in this example defaults to `true`; adjust to match your content trust model
 
 Install dependencies:
 
@@ -14,16 +24,10 @@ Start the dev server:
 pnpm dev
 ```
 
-Run all tests:
+Run unit tests:
 
 ```bash
-pnpm test
-```
-
-Run the full local verification suite:
-
-```bash
-pnpm verify
+pnpm test:unit
 ```
 
 Run browser tests:
@@ -32,20 +36,8 @@ Run browser tests:
 pnpm test:browser
 ```
 
-Run unit tests only:
+Run all tests:
 
 ```bash
-pnpm test:unit
-```
-
-Repo path:
-
-```bash
-examples/integration-patterns/markdown-react-markdown
-```
-
-StackBlitz GitHub-subdir URL pattern:
-
-```text
-https://stackblitz.com/github/social-embed/social-embed/tree/BRANCH/examples/integration-patterns/markdown-react-markdown
+pnpm test
 ```
