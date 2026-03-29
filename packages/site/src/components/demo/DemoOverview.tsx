@@ -40,6 +40,18 @@ export function DemoOverview() {
           }
           title="Widgets"
         />
+        <DemoCard
+          description="Bootable docs examples for rich text, markdown, CMS content, and validation"
+          href="/demo/integration-patterns"
+          preview={
+            <div className="flex items-center gap-3 text-2xl">
+              <span>🧩</span>
+              <span>📝</span>
+              <span>🛡️</span>
+            </div>
+          }
+          title="Integration Patterns"
+        />
       </div>
     </div>
   );
