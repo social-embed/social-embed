@@ -8,11 +8,15 @@
 
 A [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components) that turns URLs from popular media platforms (YouTube, Spotify, Vimeo, etc.) into fully functional embedded players. Just add a single tag to your HTML:
 
-```html
-<!-- Before: Raw link your users can't interact with -->
-https://www.youtube.com/watch?v=G_QhTdzWBJk
+Before — a raw link your users can't interact with:
 
-<!-- After: Interactive embedded player -->
+```
+https://www.youtube.com/watch?v=G_QhTdzWBJk
+```
+
+After — an interactive embedded player:
+
+```html
 <o-embed url="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
 ```
 
@@ -61,18 +65,26 @@ pnpm add @social-embed/wc
 ### 2. Add to your project
 
 **Option A: Via Script Tag**
+
 ```html
 <script type="module" src="https://unpkg.com/@social-embed/wc?module"></script>
+```
 
+```html
 <o-embed url="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
 ```
 
 **Option B: Via Import**
-```js
-// In your JavaScript/TypeScript file
-import "@social-embed/wc";
 
-// Then in your HTML
+In your JavaScript/TypeScript file:
+
+```js
+import "@social-embed/wc";
+```
+
+Then in your HTML:
+
+```js
 document.body.innerHTML = `
   <o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
 `;
@@ -111,11 +123,15 @@ document.body.innerHTML = `
 | `frameborder` | `"0"` | Iframe border width |
 | `title` | (auto-generated) | Accessible iframe title. Auto-generated from provider name (e.g. `"YouTube embed"`) if not set. Falls back to `"Embedded content"` for unknown providers. |
 
-```html
-<!-- Set custom dimensions -->
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" width="640" height="360"></o-embed>
+Set custom dimensions:
 
-<!-- Enable fullscreen button -->
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo" width="640" height="360"></o-embed>
+```
+
+Enable fullscreen button:
+
+```html
 <o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
 ```
 

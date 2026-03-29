@@ -8,15 +8,19 @@
 
 Every media platform has its own URL formats and iframe rules. social-embed hides that behind one stable contract: users paste normal URLs, the library detects and converts them, and the web component renders the correct embed. Instead of storing provider-specific iframe markup, you store one readable tag.
 
+What you used to store in your database:
+
 ```html
-<!-- What you used to store in your database -->
 <iframe width="560" height="315"
   src="https://www.youtube.com/embed/Bd8_vO5zrjo"
   frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen></iframe>
+```
 
-<!-- What you store now -->
+What you store now:
+
+```html
 <o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
 ```
 
@@ -32,7 +36,9 @@ The URL is the canonical data. Everything else — provider detection, embed URL
 
 ```html
 <script type="module" src="https://unpkg.com/@social-embed/wc?module"></script>
+```
 
+```html
 <o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
 ```
 

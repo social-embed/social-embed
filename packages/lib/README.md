@@ -22,7 +22,6 @@ All with **zero dependencies** - runs in any JavaScript environment (browsers, N
 ```typescript
 import { convertUrlToEmbedUrl } from "@social-embed/lib";
 
-// Convert ANY supported URL to its embed form
 const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
 console.log(embedUrl); // "https://www.youtube.com/embed/Bd8_vO5zrjo"
 ```
@@ -46,8 +45,9 @@ pnpm add @social-embed/lib
 
 ### Using a CDN
 
+unpkg:
+
 ```typescript
-// unpkg
 import { convertUrlToEmbedUrl } from "https://www.unpkg.com/@social-embed/lib?module";
 ```
 
@@ -63,16 +63,23 @@ import { convertUrlToEmbedUrl } from "https://www.unpkg.com/@social-embed/lib?mo
 
 ### YouTube
 
+Extract ID from any YouTube URL format:
+
 ```typescript
-// Extract ID from any YouTube URL format
 const videoId = getYouTubeIdFromUrl("https://youtu.be/Bd8_vO5zrjo");
 console.log(videoId); // "Bd8_vO5zrjo"
+```
 
-// Convert to embed URL
+Convert to embed URL:
+
+```typescript
 const embedUrl = getYouTubeEmbedUrlFromId("Bd8_vO5zrjo");
 console.log(embedUrl); // "https://www.youtube.com/embed/Bd8_vO5zrjo"
+```
 
-// Or do it all in one step
+Or do it all in one step:
+
+```typescript
 console.log(convertUrlToEmbedUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"));
 // "https://www.youtube.com/embed/Bd8_vO5zrjo"
 ```
@@ -82,7 +89,9 @@ console.log(convertUrlToEmbedUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"))
 ```typescript
 const videoId = getDailyMotionIdFromUrl("https://www.dailymotion.com/video/x7znrd0");
 console.log(videoId); // "x7znrd0"
+```
 
+```typescript
 console.log(getDailyMotionEmbedFromId("x7znrd0"));
 // "https://www.dailymotion.com/embed/video/x7znrd0"
 ```

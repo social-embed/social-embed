@@ -19,30 +19,33 @@ This site is built with [Astro](https://astro.build).
 
 ### Setup
 
-```bash
-# Install dependencies from the repository root
-pnpm install
+Install dependencies from the repository root:
 
-# Or if in the site directory
+```bash
 pnpm install
 ```
 
 ### Local Development
 
-```bash
-# Start the development server
-pnpm dev
+Start the development server:
 
-# The site will be available at http://localhost:4321
+```bash
+pnpm dev
 ```
+
+The site will be available at http://localhost:4321.
 
 ### Building for Production
 
-```bash
-# Build the production site
-pnpm build
+Build the production site:
 
-# Preview the production build
+```bash
+pnpm build
+```
+
+Preview the production build:
+
+```bash
 pnpm preview
 ```
 
