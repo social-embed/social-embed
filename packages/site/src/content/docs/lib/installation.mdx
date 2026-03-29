@@ -73,6 +73,12 @@ import { MatcherRegistry } from "https://cdn.jsdelivr.net/npm/@social-embed/lib/
 </TabItem>
 </Tabs>
 
+## Tree-shaking and side effects
+
+The npm package sets **`sideEffects: false`**: importing from `@social-embed/lib` does not run global side effects at load time, so bundlers can drop unused exports.
+
+If you use **`register()`**, the default **`defaultStore`**, or other browser-only helpers that mutate shared registry state, import from **`@social-embed/lib/browser`**. For SSR or immutable composition, use **`MatcherRegistry.withDefaults()`** from the main package instead. See the [library README on GitHub](https://github.com/social-embed/social-embed/blob/master/packages/lib/README.md) for the same contract in-repo.
+
 ## Where to Next?
 
 - Head over to the **Playground** section to explore demos and examples.
