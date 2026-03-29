@@ -1,8 +1,4 @@
-import {
-  convertUrlToEmbedUrl,
-  getProviderFromUrl,
-  isYouTubeShortsUrl,
-} from "@social-embed/lib";
+import { isYouTubeShortsUrl, MatcherRegistry } from "@social-embed/lib";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createRng, generateSeed } from "../../lib/seededRng";
 import { RerollButton } from "../playground/RerollButton";
@@ -25,6 +21,24 @@ import { type LibOutput, OutputDisplay } from "./OutputDisplay";
 import { ProviderSelector } from "./ProviderSelector";
 import { UrlInput } from "./UrlInput";
 
+function providerIdFromMatchData(data: unknown): string | null {
+  if (data && typeof data === "object") {
+    const o = data as Record<string, unknown>;
+    for (const key of ["videoId", "id", "mediaId", "hash"] as const) {
+      const v = o[key];
+      if (typeof v === "string") {
+        return v;
+      }
+    }
+    try {
+      return JSON.stringify(data);
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
 export interface LibPlaygroundProps {
   /** Display mode */
   mode?: "mini" | "full";
@@ -35,6 +49,8 @@ export interface LibPlaygroundProps {
   /** Additional CSS classes */
   className?: string;
 }
+
+const registry = MatcherRegistry.withDefaults();
 
 /**
  * Transform a URL using the library and return output data.
@@ -51,12 +67,13 @@ function transformUrl(url: string): LibOutput {
   }
 
   try {
-    const provider = getProviderFromUrl(url);
+    const result = registry.match(url);
 
-    if (!provider) {
+    if (!result.ok) {
       return {
         embedUrl: null,
-        error: "No matching provider found for this URL",
+        error:
+          result.error?.message ?? "No matching provider found for this URL",
         input: url,
         isValid: false,
         provider: null,
@@ -64,9 +81,8 @@ function transformUrl(url: string): LibOutput {
       };
     }
 
-    const providerId = provider.getIdFromUrl(url);
-    const embedUrl = convertUrlToEmbedUrl(url);
-
+    const providerId = providerIdFromMatchData(result.data);
+    const embedUrl = registry.toEmbedUrl(url);
     const isShorts = isYouTubeShortsUrl(url);
 
     return {
