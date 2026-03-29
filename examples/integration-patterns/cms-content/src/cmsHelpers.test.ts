@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { getCmsPreviewHtml, renderStructuredEmbed, STORED_EMBED_URL } from "./cmsHelpers";
+import {
+  getCmsPreviewHtml,
+  renderStructuredEmbed,
+  STORED_EMBED_URL,
+} from "./cmsHelpers";
 
 describe("cmsHelpers", () => {
   it("renders the structured URL as a stable o-embed tag", () => {

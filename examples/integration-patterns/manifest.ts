@@ -38,8 +38,11 @@ export const integrationPatternExamples: IntegrationPatternExample[] = [
   {
     description:
       "Reference ProseMirror node spec matching the rich-text docs section.",
-    files: ["examples/integration-patterns/fixtures/prosemirror/oembed-node.ts"],
-    githubPath: "examples/integration-patterns/fixtures/prosemirror/oembed-node.ts",
+    files: [
+      "examples/integration-patterns/fixtures/prosemirror/oembed-node.ts",
+    ],
+    githubPath:
+      "examples/integration-patterns/fixtures/prosemirror/oembed-node.ts",
     id: "prosemirror-node-spec",
     kind: "fixture",
     section: "rich-text-editors",
@@ -59,7 +62,8 @@ export const integrationPatternExamples: IntegrationPatternExample[] = [
     description:
       "Astro/MDX reference fixture matching the docs-site markdown integration pattern.",
     files: ["examples/integration-patterns/fixtures/markdown/astro-post.mdx"],
-    githubPath: "examples/integration-patterns/fixtures/markdown/astro-post.mdx",
+    githubPath:
+      "examples/integration-patterns/fixtures/markdown/astro-post.mdx",
     id: "astro-mdx-fixture",
     kind: "fixture",
     section: "markdown-and-mdx",
@@ -79,7 +83,8 @@ export const integrationPatternExamples: IntegrationPatternExample[] = [
     description:
       "Jekyll markdown fixture showing the same inline o-embed content pattern.",
     files: ["examples/integration-patterns/fixtures/markdown/jekyll-post.md"],
-    githubPath: "examples/integration-patterns/fixtures/markdown/jekyll-post.md",
+    githubPath:
+      "examples/integration-patterns/fixtures/markdown/jekyll-post.md",
     id: "jekyll-fixture",
     kind: "fixture",
     section: "markdown-and-mdx",

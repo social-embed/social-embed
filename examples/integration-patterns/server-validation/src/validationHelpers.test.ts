@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { INVALID_URL, validateEmbedUrl, VALID_URL } from "./validationHelpers";
+import { INVALID_URL, VALID_URL, validateEmbedUrl } from "./validationHelpers";
 
 describe("validateEmbedUrl", () => {
   it("accepts supported providers", () => {

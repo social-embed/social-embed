@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { createOEmbedNode, SAMPLE_URL, serializeEmbedTag } from "./embedExtension";
+import {
+  createOEmbedNode,
+  SAMPLE_URL,
+  serializeEmbedTag,
+} from "./embedExtension";
 
 describe("embedExtension", () => {
   it("creates a stable node payload", () => {
