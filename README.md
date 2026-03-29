@@ -64,7 +64,7 @@ const embedUrl = registry.toEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
 - **Store URLs, not embed code** — `<o-embed url="...">` is both the storage format and the rendering instruction. Clean databases, portable markdown, future-proof content.
 - **Framework-agnostic** — Works with any frontend technology via native Web Components
 - **Zero npm dependencies** — The core library (`@social-embed/lib`) has no dependencies; the web component uses [Lit](https://lit.dev/)
-- **Small bundles** — ~2 kB gzipped for the library, ~10 kB for the web component (includes Lit)
+- **Small bundles** — `@social-embed/lib` ships as a small gzip entry (~0.8 kB) plus a matcher chunk (~6.3 kB gzip, Vite production build); the web component is ~10 kB gzipped including Lit (see [Bundlephobia](https://bundlephobia.com/package/@social-embed/wc))
 - **Client-side only** — No backend, no API keys, no oEmbed server
 - **Extensible** — Add custom matchers with `defineIframeMatcher` / `defineScriptMatcher` and register them on `MatcherRegistry`
 

@@ -1,6 +1,6 @@
 # @social-embed/lib
 
-> The embed normalization engine — detect providers, extract IDs, generate embed URLs. Zero dependencies, ~2 kB gzipped.
+> The embed normalization engine — detect providers, extract IDs, generate embed URLs. Zero dependencies; production build splits a small entry plus a matcher chunk (see **Bundle size** below).
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) 
 [![npm version](https://img.shields.io/npm/v/@social-embed/lib.svg?style=flat)](https://www.npmjs.com/package/@social-embed/lib)
@@ -16,6 +16,18 @@ This library makes it easy to work with media URLs from popular platforms like Y
 - **Check** if a URL is supported by any provider
 
 All with **zero dependencies** - runs in any JavaScript environment (browsers, Node.js, edge workers).
+
+### Bundle size
+
+Sizes are from the **Vite 8 production** build of this package (`pnpm build`), using the reported **gzip** size of published `dist/` files (same numbers Vite prints after `computing gzip size`):
+
+| Artifact | gzip (approx.) | Role |
+|----------|----------------|------|
+| `dist/index.js` (main export) | ~0.8 kB | Facade / re-exports; pulls in matcher code when used |
+| `dist/browser-*.js` (hashed chunk) | ~6.3 kB | Built-in matchers + registry wiring |
+| `dist/browser/index.js` | ~0.2 kB | Entry for `@social-embed/lib/browser` (plus shared chunk when loaded) |
+
+Using **`MatcherRegistry.withDefaults()`** typically loads the main entry and the matcher chunk — on the order of **~7 kB gzip** total before your bundler’s tree-shaking. Importing only specific matchers can reduce what your app ships. The Bundlephobia badge above tracks the **published npm** tarball; prefer it for cross-version comparisons.
 
 ## Quick Start
 
@@ -90,7 +102,7 @@ import { mount } from "https://esm.sh/@social-embed/lib/browser";
 
 ## Key Features
 
-- **Tiny footprint** - Minimal impact on your bundle size
+- **Code-split build** - Small entry file; built-in matchers live in a separate chunk (see **Bundle size**)
 - **Type-safe** - Full TypeScript support with exported types
 - **Platform-agnostic** - Works in browsers, Node.js, and other JavaScript environments
 - **Comprehensive support** - Works with numerous media platforms
