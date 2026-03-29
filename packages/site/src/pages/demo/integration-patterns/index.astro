@@ -1,0 +1,29 @@
+---
+import { DemoIntegrationPatternsBrowse } from "../../../components/demo/DemoIntegrationPatternsBrowse";
+import { DemoLayout } from "../../../components/demo/DemoLayout";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Integration Pattern Examples"
+  description="Runnable apps and fixtures behind the integration patterns docs"
+  head={[{ tag: "meta", attrs: { "http-equiv": "refresh", content: "0; url=/wc/integration-patterns/" } }]}
+  hideFooter
+>
+  <div class="demo-container">
+    <DemoLayout currentPath="/demo/integration-patterns" client:only="react">
+      <DemoIntegrationPatternsBrowse client:only="react" />
+    </DemoLayout>
+  </div>
+</BaseLayout>
+
+<style>
+  .demo-container {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+</style>

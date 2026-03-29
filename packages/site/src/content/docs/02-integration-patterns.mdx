@@ -39,6 +39,8 @@ const OEmbed = Node.create({
 
 When a user pastes a media URL, the editor wraps it in a single node. The serialized output is always `<o-embed url="..."></o-embed>` — one shape, regardless of provider.
 
+Browse the runnable examples and fixtures for this section on the [Integration pattern examples](/wc/integration-patterns/#rich-text-editors) page.
+
 ## Markdown and MDX
 
 `<o-embed>` tags work inline in markdown because HTML passes through most parsers:
@@ -63,6 +65,8 @@ DOMPurify.sanitize(html, {
 });
 ```
 
+Browse the runnable example and markdown fixtures for this section on the [Integration pattern examples](/wc/integration-patterns/#markdown-and-mdx) page.
+
 ## Database / CMS content
 
 Store embeds as part of your content — either as tags in HTML content or as raw URLs in structured fields:
@@ -82,6 +86,8 @@ INSERT INTO posts (embed_url) VALUES (
 
 At render time, load the web component once and every `<o-embed>` on the page resolves automatically.
 
+Browse the runnable example for this section on the [Integration pattern examples](/wc/integration-patterns/#database-cms-content) page.
+
 ## Server-side validation
 
 When accepting user-submitted URLs, validate before storing:
@@ -96,3 +102,33 @@ function validateEmbedUrl(url: string): boolean {
 ```
 
 This restricts embeds to known providers. The web component's generic fallback renders any valid URL — server-side validation is where the allowlist lives. See [Security & validation](/security-and-validation) for CSP configuration, sanitizer allowlists, and privacy considerations.
+
+Browse the runnable example for this section on the [Integration pattern examples](/wc/integration-patterns/#server-side-validation) page.
+
+## Framework-agnostic / Vanilla TS
+
+For environments without a framework, add three validation gates before storing or rendering a URL: parse with a schema library, check against the provider registry, then enforce an explicit allow list:
+
+```ts
+import { convertUrlToEmbedUrl, getProviderFromUrl } from "@social-embed/lib";
+import { z } from "zod";
+
+const ALLOWED_PROVIDERS = ["YouTube", "Vimeo", "Spotify"];
+const embedUrlSchema = z.string().url("Must be a valid URL");
+
+function validateAndBuildEmbed(rawUrl: string) {
+  const parsed = embedUrlSchema.safeParse(rawUrl);
+  if (!parsed.success) {
+    return { isValid: false, reason: parsed.error.issues[0]?.message };
+  }
+  const provider = getProviderFromUrl(parsed.data);
+  if (!provider || !ALLOWED_PROVIDERS.includes(provider.name)) {
+    return { isValid: false, reason: "Provider not in allow list" };
+  }
+  return { isValid: true, embedUrl: convertUrlToEmbedUrl(parsed.data) ?? parsed.data };
+}
+```
+
+This pattern works in Node.js, Deno, Cloudflare Workers, and any browser environment — no React, Vue, or Angular required. Replace `ALLOWED_PROVIDERS` with your own list.
+
+Browse the runnable example for this section on the [Integration pattern examples](/wc/integration-patterns/#framework-agnostic) page.
