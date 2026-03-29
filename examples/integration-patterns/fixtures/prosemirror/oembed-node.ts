@@ -1,9 +1,6 @@
 import { Node } from "@tiptap/core";
 
 export const OEmbedNode = Node.create({
-  name: "oEmbed",
-  group: "block",
-  atom: true,
   addAttributes() {
     return {
       url: {
@@ -11,6 +8,9 @@ export const OEmbedNode = Node.create({
       },
     };
   },
+  atom: true,
+  group: "block",
+  name: "oEmbed",
   parseHTML() {
     return [{ tag: "o-embed" }];
   },

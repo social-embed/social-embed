@@ -12,9 +12,20 @@ export function App() {
   );
 
   return (
-    <main data-testid="app-root" style={{ fontFamily: "sans-serif", margin: "0 auto", maxWidth: 960, padding: 24 }}>
+    <main
+      data-testid="app-root"
+      style={{
+        fontFamily: "sans-serif",
+        margin: "0 auto",
+        maxWidth: 960,
+        padding: 24,
+      }}
+    >
       <h1>Markdown and Sanitizer Example</h1>
-      <p>This example toggles whether the sanitizer keeps <code>o-embed</code> in markdown source.</p>
+      <p>
+        This example toggles whether the sanitizer keeps <code>o-embed</code> in
+        markdown source.
+      </p>
 
       <label style={{ display: "block", marginBottom: 16 }}>
         <input
@@ -24,12 +35,13 @@ export function App() {
             setAllowEmbed(event.currentTarget.checked);
           }}
           type="checkbox"
-        />
-        {" "}
+        />{" "}
         Allow <code>o-embed</code> in DOMPurify
       </label>
 
-      <section style={{ display: "grid", gap: 16, gridTemplateColumns: "1fr 1fr" }}>
+      <section
+        style={{ display: "grid", gap: 16, gridTemplateColumns: "1fr 1fr" }}
+      >
         <div>
           <h2>Markdown Source</h2>
           <textarea
@@ -46,7 +58,13 @@ export function App() {
           <h2>Sanitized Source</h2>
           <pre
             data-testid="sanitized-source"
-            style={{ background: "#f6f6f6", minHeight: 220, overflowX: "auto", padding: 12, whiteSpace: "pre-wrap" }}
+            style={{
+              background: "#f6f6f6",
+              minHeight: 220,
+              overflowX: "auto",
+              padding: 12,
+              whiteSpace: "pre-wrap",
+            }}
           >
             {sanitizedSource}
           </pre>
@@ -55,8 +73,18 @@ export function App() {
 
       <section>
         <h2>Rendered Preview</h2>
-        <div data-testid="preview" style={{ border: "1px solid #ccc", marginTop: 8, minHeight: 120, padding: 12 }}>
-          <ReactMarkdown rehypePlugins={[rehypeRaw]}>{sanitizedSource}</ReactMarkdown>
+        <div
+          data-testid="preview"
+          style={{
+            border: "1px solid #ccc",
+            marginTop: 8,
+            minHeight: 120,
+            padding: 12,
+          }}
+        >
+          <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+            {sanitizedSource}
+          </ReactMarkdown>
         </div>
       </section>
     </main>

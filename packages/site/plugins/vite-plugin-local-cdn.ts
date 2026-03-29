@@ -60,7 +60,7 @@ export function localCdnPlugin(): Plugin {
             fileName: () => fileName,
             formats: ["es"],
           },
-          rolldownOptions: {
+          rollupOptions: {
             external: [],
           },
           sourcemap: true,

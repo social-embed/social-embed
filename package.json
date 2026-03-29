@@ -6,7 +6,7 @@
     "clean": "pnpm run --recursive clean",
     "distclean": "pnpm run --recursive distclean",
     "format": "pnpm run --recursive format",
-    "format:check": "biome format .",
+    "format:check": "biome format . --check",
     "lint": "biome lint .",
     "check": "pnpm run --recursive check",
     "type-check": "pnpm run --recursive type-check",
@@ -24,6 +24,7 @@
     "docs:gen:watch": "pnpm run --recursive docs:gen:watch",
     "docs:serve": "pnpm run --recursive docs:serve",
     "examples:sync-deps": "node scripts/update-example-deps.mjs",
+    "verify:integration-patterns": "pnpm exec biome check . && pnpm check && pnpm --filter @social-embed/lib test && pnpm --filter @social-embed/wc test && pnpm --filter \"./examples/integration-patterns/*\" test && pnpm --filter @social-embed/site test && pnpm --filter \"./examples/integration-patterns/*\" build && pnpm --filter @social-embed/site build && node scripts/smoke-example-previews.mjs",
     "serve": "pnpm run --recursive serve",
     "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
   },

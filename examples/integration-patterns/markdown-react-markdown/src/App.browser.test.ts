@@ -10,16 +10,23 @@ describe("Markdown example app", () => {
     await import("./main");
     await new Promise((resolve) => window.setTimeout(resolve, 50));
 
-    expect(document.querySelector('[data-testid="preview"] o-embed')).toBeNull();
+    expect(
+      document.querySelector('[data-testid="preview"] o-embed'),
+    ).toBeNull();
 
     const checkbox = document.querySelector(
       '[data-testid="allow-embed"]',
     ) as HTMLInputElement | null;
     expect(checkbox).not.toBeNull();
+    if (!checkbox) {
+      throw new Error("Missing allow-embed checkbox");
+    }
 
-    checkbox!.click();
+    checkbox.click();
     await new Promise((resolve) => window.setTimeout(resolve, 50));
 
-    expect(document.querySelector('[data-testid="preview"] o-embed')).not.toBeNull();
+    expect(
+      document.querySelector('[data-testid="preview"] o-embed'),
+    ).not.toBeNull();
   });
 });
