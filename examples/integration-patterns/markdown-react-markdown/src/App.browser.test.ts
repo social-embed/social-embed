@@ -10,9 +10,10 @@ describe("Markdown example app", () => {
     await import("./main");
     await new Promise((resolve) => window.setTimeout(resolve, 50));
 
+    // allowEmbed defaults to true — o-embed should be visible on first load
     expect(
       document.querySelector('[data-testid="preview"] o-embed'),
-    ).toBeNull();
+    ).not.toBeNull();
 
     const checkbox = document.querySelector(
       '[data-testid="allow-embed"]',
@@ -22,11 +23,12 @@ describe("Markdown example app", () => {
       throw new Error("Missing allow-embed checkbox");
     }
 
+    // Uncheck — embed should be stripped
     checkbox.click();
     await new Promise((resolve) => window.setTimeout(resolve, 50));
 
     expect(
       document.querySelector('[data-testid="preview"] o-embed'),
-    ).not.toBeNull();
+    ).toBeNull();
   });
 });

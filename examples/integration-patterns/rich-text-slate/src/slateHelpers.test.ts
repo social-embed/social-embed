@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   createEmbedElement,
+  isOEmbedElement,
   SAMPLE_URL,
   serializeSlateDocument,
 } from "./slateHelpers";
@@ -27,5 +28,22 @@ describe("slateHelpers", () => {
     expect(html).toContain(
       '<o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>',
     );
+  });
+
+  it("throws on unknown node types", () => {
+    expect(() =>
+      serializeSlateDocument([
+        { children: [], type: "custom-unknown" } as unknown as Parameters<
+          typeof serializeSlateDocument
+        >[0][number],
+      ]),
+    ).toThrow("serializeSlateDocument: unknown node");
+  });
+
+  it("isOEmbedElement narrows correctly", () => {
+    expect(isOEmbedElement(createEmbedElement(SAMPLE_URL))).toBe(true);
+    expect(isOEmbedElement({ children: [], type: "paragraph" })).toBe(false);
+    expect(isOEmbedElement(null)).toBe(false);
+    expect(isOEmbedElement("string")).toBe(false);
   });
 });

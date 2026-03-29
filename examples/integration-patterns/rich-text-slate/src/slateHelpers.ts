@@ -8,6 +8,15 @@ export type OEmbedElementNode = {
   url: string;
 };
 
+export function isOEmbedElement(node: unknown): node is OEmbedElementNode {
+  return (
+    typeof node === "object" &&
+    node !== null &&
+    "type" in node &&
+    (node as Record<string, unknown>).type === "oEmbed"
+  );
+}
+
 export function createEmbedElement(url: string): OEmbedElementNode {
   return {
     children: [{ text: "" }],
@@ -24,14 +33,18 @@ export function serializeSlateDocument(nodes: Descendant[]): string {
         return `<o-embed url="${url}"></o-embed>`;
       }
 
-      if ("children" in node) {
+      if ("type" in node && node.type === "paragraph" && "children" in node) {
         const text = node.children
           .map((child) => ("text" in child ? child.text : ""))
           .join("");
         return `<p>${text}</p>`;
       }
 
-      return "";
+      // All known node types are handled above. A missing case means the
+      // serializer needs updating — fail loudly rather than silently drop content.
+      throw new Error(
+        `serializeSlateDocument: unknown node — ${JSON.stringify(node)}`,
+      );
     })
     .join("");
 }
