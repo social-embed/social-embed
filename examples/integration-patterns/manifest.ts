@@ -3,15 +3,14 @@ export type ExampleTier = "core" | "community";
 
 export type SectionId =
   | "database-cms-content"
+  | "framework-agnostic"
   | "markdown-and-mdx"
   | "rich-text-editors"
   | "server-side-validation";
-// NOTE: "framework-agnostic" is added later, coordinated with a docs heading and new example.
-// The integrationPatternExamples.test.ts enforces that SectionId titles match ## headings in
-// the MDX file — all three changes must land in the same commit.
 
 export const integrationPatternSectionTitles: Record<SectionId, string> = {
   "database-cms-content": "Database / CMS content",
+  "framework-agnostic": "Framework-agnostic / Vanilla TS",
   "markdown-and-mdx": "Markdown and MDX",
   "rich-text-editors": "Rich text editors",
   "server-side-validation": "Server-side validation",
@@ -176,5 +175,20 @@ export const integrationPatternExamples: IntegrationPatternExample[] = [
     stackblitzOpenFile: "src/validationHelpers.ts",
     tier: "core",
     title: "Server-side Validation",
+  },
+  {
+    description:
+      "Vanilla TypeScript example combining Zod schema validation, provider recognition, and an explicit allow list.",
+    devPort: 4316,
+    files: ["examples/integration-patterns/vanilla-ts-with-validation"],
+    githubPath: "examples/integration-patterns/vanilla-ts-with-validation",
+    id: "vanilla-ts-with-validation",
+    kind: "runnable",
+    problemSolved:
+      "Validate embed URLs through three gates (format, provider, allow list) with no framework dependency.",
+    section: "framework-agnostic",
+    stackblitzOpenFile: "src/validationHelpers.ts",
+    tier: "core",
+    title: "Vanilla TS + Zod Validation",
   },
 ];
