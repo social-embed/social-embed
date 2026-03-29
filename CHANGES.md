@@ -41,6 +41,19 @@ Complete API redesign of `@social-embed/lib` with new type-safe architecture:
 
 - **Factory pattern**: `defineMatcher({ type: "iframe" })` for config-driven matchers
 
+### Removed public API (migration required)
+
+The following v0.1-style symbols are **no longer exported** from `@social-embed/lib`. Update imports using [the v0.2 migration guide](https://social-embed.org/lib/migration/0.2/).
+
+- **Types**: `EmbedProvider`, `EmbedProviderRegistry`
+- **Registry singleton**: `defaultRegistry` (use `MatcherRegistry.withDefaults()` or `RegistryStore` / `@social-embed/lib/browser`)
+- **Detection / dispatch**: `getProviderFromUrl()`
+- **Per-provider helpers** (use `MatcherRegistry` / `registry.match()` instead): `getYouTubeIdFromUrl`, `getYouTubeEmbedUrlFromId`, `getDailyMotionIdFromUrl`, `getDailyMotionEmbedFromId`, `getEdPuzzleIdFromUrl`, `getEdPuzzleEmbedUrlFromId`, `getLoomIdFromUrl`, `getLoomEmbedUrlFromId`, `getSpotifyIdAndTypeFromUrl`, `getSpotifyEmbedUrlFromIdAndType`, `getVimeoIdFromUrl`, `getVimeoEmbedUrlFromId`, `getWistiaIdFromUrl`, `getWistiaEmbedUrlFromId`, and related v0.1 provider surface
+- **Built-in provider objects**: e.g. `YouTubeProvider`, `VimeoProvider`, … (replaced by `YouTubeMatcher`, `VimeoMatcher`, …)
+- **Utilities**: `isValidUrl` and the old `providers/*` module layout
+
+`convertUrlToEmbedUrl()` remains as a **deprecated** compatibility helper.
+
 ### Tiered API
 
 | Tier | Audience | API |

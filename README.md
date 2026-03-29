@@ -87,7 +87,7 @@ For more details and examples, [see the documentation](https://social-embed.org/
 | Package | Description | Status | Links |
 |---------|-------------|--------|-------|
 | **@social-embed/wc** | Web Component — drop `<o-embed>` into any HTML | ✅ Stable | [Docs](https://social-embed.org/wc/) · [npm](https://www.npmjs.com/package/@social-embed/wc) |
-| **@social-embed/lib** | Core library — URL parsing, ID extraction, embed URL generation | 🟡 API in development | [Docs](https://social-embed.org/lib/) · [npm](https://www.npmjs.com/package/@social-embed/lib) |
+| **@social-embed/lib** | Core library — matchers, registry, embed URL generation (v0.2 redesign) | 🟡 Pre-release | [Docs](https://social-embed.org/lib/) · [Migration](https://social-embed.org/lib/migration/0.2/) · [npm](https://www.npmjs.com/package/@social-embed/lib) |
 
 ## Use Cases
 
