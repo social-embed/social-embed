@@ -1,5 +1,5 @@
 import "@social-embed/wc";
-import { INVALID_URL, validateEmbedUrl, VALID_URL } from "./validationHelpers";
+import { INVALID_URL, VALID_URL, validateEmbedUrl } from "./validationHelpers";
 
 export function bootstrapApp(container: HTMLElement) {
   container.innerHTML = `
@@ -17,11 +17,21 @@ export function bootstrapApp(container: HTMLElement) {
     </main>
   `;
 
-  const input = container.querySelector('[data-testid="url-input"]') as HTMLInputElement;
-  const status = container.querySelector('[data-testid="status"]') as HTMLParagraphElement;
-  const preview = container.querySelector('[data-testid="preview"]') as HTMLDivElement;
-  const validateButton = container.querySelector('[data-testid="validate-button"]') as HTMLButtonElement;
-  const sampleValidButton = container.querySelector('[data-testid="sample-valid"]') as HTMLButtonElement;
+  const input = container.querySelector(
+    '[data-testid="url-input"]',
+  ) as HTMLInputElement;
+  const status = container.querySelector(
+    '[data-testid="status"]',
+  ) as HTMLParagraphElement;
+  const preview = container.querySelector(
+    '[data-testid="preview"]',
+  ) as HTMLDivElement;
+  const validateButton = container.querySelector(
+    '[data-testid="validate-button"]',
+  ) as HTMLButtonElement;
+  const sampleValidButton = container.querySelector(
+    '[data-testid="sample-valid"]',
+  ) as HTMLButtonElement;
 
   function renderStatus() {
     const result = validateEmbedUrl(input.value);

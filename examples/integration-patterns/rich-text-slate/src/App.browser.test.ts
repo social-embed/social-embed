@@ -18,7 +18,9 @@ describe("Slate example app", () => {
     button?.click();
     await new Promise((resolve) => window.setTimeout(resolve, 50));
 
-    const serialized = document.querySelector('[data-testid="serialized-html"]');
+    const serialized = document.querySelector(
+      '[data-testid="serialized-html"]',
+    );
     expect(serialized?.textContent).toContain("<o-embed");
 
     const previewEmbed = document.querySelector(

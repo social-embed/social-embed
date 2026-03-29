@@ -20,6 +20,12 @@ Run all tests:
 pnpm test
 ```
 
+Run the full local verification suite:
+
+```bash
+pnpm verify
+```
+
 Run browser tests:
 
 ```bash
