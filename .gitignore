@@ -11,6 +11,9 @@ yarn-error.log
 !.yarn/plugins
 .pnp.*
 
+# cursor
+.cursor/plans/
+
 # biome
 biome-logs/
 
