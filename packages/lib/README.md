@@ -29,6 +29,12 @@ Sizes are from the **Vite 8 production** build of this package (`pnpm build`), u
 
 Using **`MatcherRegistry.withDefaults()`** typically loads the main entry and the matcher chunk — on the order of **~7 kB gzip** total before your bundler’s tree-shaking. Importing only specific matchers can reduce what your app ships. The Bundlephobia badge above tracks the **published npm** tarball; prefer it for cross-version comparisons.
 
+### Tree-shaking and side effects
+
+The package declares **`"sideEffects": false`**. The main entry **`@social-embed/lib`** does not mutate globals or register listeners at import time: it is safe for bundlers to tree-shake unused exports.
+
+**Runtime registration and the shared `defaultStore` singleton** live under **`@social-embed/lib/browser`**. Import that subpath when you use `register()`, `toEmbedUrl()` / `toEmbed()` tied to the default store, or other browser helpers that touch shared mutable state. For SSR or fully explicit control, prefer **`MatcherRegistry.withDefaults()`** (or your own **`RegistryStore`**) from the core entry instead.
+
 ## Quick Start
 
 ```typescript
