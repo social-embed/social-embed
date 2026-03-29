@@ -5,9 +5,15 @@
   "scripts": {
     "dev": "vite --port 4312",
     "build": "vite build && tsc --noEmit",
+    "check": "pnpm run type-check",
+    "format:check": "biome format . --check",
+    "lint": "biome lint .",
     "preview": "vite preview",
     "start": "vite",
     "test": "pnpm run test:unit && pnpm run test:browser",
+    "type-check": "oxlint --type-aware --type-check -A all --tsconfig tsconfig.json src",
+    "type-check:tsc": "tsc --noEmit",
+    "verify": "pnpm run format:check && pnpm run lint && pnpm run check && pnpm run test && pnpm run build",
     "test:unit": "vitest run",
     "test:browser": "vitest run --config vitest.browser.config.ts"
   },
@@ -23,6 +29,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "@vitest/browser-playwright": "^4.1.2",
+    "oxlint": "^1.57.0",
     "playwright": "^1.58.2",
     "typescript": "^6.0.2",
     "vite": "^7.3.1",

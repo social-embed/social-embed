@@ -10,9 +10,9 @@ describe("Server validation example app", () => {
     await import("./main");
     await new Promise((resolve) => window.setTimeout(resolve, 50));
 
-    expect(document.querySelector('[data-testid="status"]')?.textContent).toContain(
-      "Rejected",
-    );
+    expect(
+      document.querySelector('[data-testid="status"]')?.textContent,
+    ).toContain("Rejected");
 
     const sampleButton = document.querySelector(
       '[data-testid="sample-valid"]',
@@ -22,9 +22,9 @@ describe("Server validation example app", () => {
     sampleButton?.click();
     await new Promise((resolve) => window.setTimeout(resolve, 50));
 
-    expect(document.querySelector('[data-testid="status"]')?.textContent).toContain(
-      "Accepted provider",
-    );
+    expect(
+      document.querySelector('[data-testid="status"]')?.textContent,
+    ).toContain("Accepted provider");
     expect(
       document.querySelector('[data-testid="preview"] o-embed'),
     ).not.toBeNull();
