@@ -96,8 +96,8 @@ import { ReadonlyCode } from "../components/playground/ReadonlyCode";
       </div>
 
       <!-- Before / After -->
-      <div class="max-w-3xl mx-auto mb-12">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="mb-12">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Before — stored in your database</p>
             <ReadonlyCode
@@ -120,9 +120,8 @@ import { ReadonlyCode } from "../components/playground/ReadonlyCode";
 ></o-embed>`}
             />
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
-              The URL is the data. Provider detection, embed URL construction, and rendering happen at render time.
+              The URL is the data. Provider detection, embed URL construction, and rendering happen at render time. <a href="#playground" class="text-indigo-600 dark:text-indigo-400 hover:underline">See example</a>
             </p>
-            <o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
           </div>
         </div>
       </div>
@@ -152,7 +151,7 @@ import { ReadonlyCode } from "../components/playground/ReadonlyCode";
       <!-- Two packages -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Web Component -->
-        <section class="flex flex-col">
+        <section id="playground" class="flex flex-col scroll-mt-20">
           <div class="mb-3">
             <div class="flex items-baseline justify-between gap-2">
               <h2 class="text-lg font-semibold">Web Component</h2>
@@ -188,11 +187,6 @@ import { ReadonlyCode } from "../components/playground/ReadonlyCode";
         </section>
       </div>
     </main>
-
-    <!-- Load web component for the live embed demo -->
-    <script>
-      import "@social-embed/wc";
-    </script>
 
     <!-- Footer -->
     <footer class="mt-auto py-4 px-4 flex flex-col items-center gap-2 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-700">
