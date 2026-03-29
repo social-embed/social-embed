@@ -46,7 +46,7 @@ export function DemoIntegrationPatternsBrowse() {
                 className="rounded-xl border border-slate-200 bg-white p-4 dark:border-slate-800 dark:bg-slate-900"
                 key={example.id}
               >
-                <div className="mb-3">
+                <div className="mb-3 flex items-center gap-2">
                   <span
                     className={`inline-block rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
                       example.kind === "runnable"
@@ -56,22 +56,26 @@ export function DemoIntegrationPatternsBrowse() {
                   >
                     {example.kind}
                   </span>
+                  <span
+                    className={`inline-block rounded-full px-2.5 py-1 text-xs font-semibold uppercase ${
+                      example.tier === "core"
+                        ? "bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300"
+                        : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                    }`}
+                  >
+                    {example.tier}
+                  </span>
                 </div>
 
                 <h4 className="text-base font-semibold text-slate-900 dark:text-white">
                   {example.title}
                 </h4>
-                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                <p className="mt-1 text-sm font-medium text-slate-700 dark:text-slate-300">
+                  {example.problemSolved}
+                </p>
+                <p className="mt-2 text-sm text-slate-500 dark:text-slate-500">
                   {example.description}
                 </p>
-
-                <ul className="mt-3 space-y-1 text-xs text-slate-500 dark:text-slate-400">
-                  {example.files.map((filePath) => (
-                    <li key={filePath}>
-                      <code>{filePath}</code>
-                    </li>
-                  ))}
-                </ul>
 
                 <div className="mt-4 space-y-2 text-sm">
                   <p>
@@ -88,7 +92,11 @@ export function DemoIntegrationPatternsBrowse() {
                     <p>
                       <a
                         className="text-blue-600 no-underline hover:underline dark:text-blue-400"
-                        href={`${stackblitzBaseUrl}/${example.githubPath}`}
+                        href={`${stackblitzBaseUrl}/${example.githubPath}${
+                          example.stackblitzOpenFile
+                            ? `?file=${encodeURIComponent(example.stackblitzOpenFile)}`
+                            : ""
+                        }`}
                         rel="noreferrer"
                         target="_blank"
                       >
