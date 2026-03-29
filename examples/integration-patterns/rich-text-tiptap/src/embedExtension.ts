@@ -1,4 +1,17 @@
-import { mergeAttributes, Node } from "@tiptap/core";
+import {
+  type CommandProps,
+  mergeAttributes,
+  Node,
+  nodePasteRule,
+} from "@tiptap/core";
+
+declare module "@tiptap/core" {
+  interface Commands<ReturnType> {
+    oEmbed: {
+      insertOEmbed: (url: string) => ReturnType;
+    };
+  }
+}
 
 export const SAMPLE_URL = "https://youtu.be/Bd8_vO5zrjo";
 
@@ -25,6 +38,23 @@ export const OEmbedExtension = Node.create({
         default: null,
       },
     };
+  },
+  addCommands() {
+    return {
+      insertOEmbed:
+        (url: string) =>
+        ({ commands }: CommandProps) =>
+          commands.insertContent({ attrs: { url }, type: this.name }),
+    };
+  },
+  addPasteRules() {
+    return [
+      nodePasteRule({
+        find: /https?:\/\/\S+/g,
+        getAttributes: (match) => ({ url: match[0] }),
+        type: this.type,
+      }),
+    ];
   },
   atom: true,
   group: "block",

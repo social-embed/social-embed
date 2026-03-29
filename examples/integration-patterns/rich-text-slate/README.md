@@ -1,6 +1,17 @@
-# Rich Text Slate Example
+# Rich Text — Slate
 
-This example shows a Slate editor with a custom embed element that serializes to `<o-embed url="..."></o-embed>`.
+Use this when:
+- You are adding embed support to a Slate-based rich text editor
+- You need a custom void element type for embeds with typed narrowing
+- You serialize Slate content to HTML and expect `<o-embed url="..."></o-embed>` in the output
+
+Steal these files:
+- `src/slateHelpers.ts` — `OEmbedElementNode` type, `isOEmbedElement()` guard, `serializeSlateDocument()` for HTML output
+
+Production notes:
+- Slate does not do paste-rule magic — hook `onPaste` (or an `insertData` plugin) to detect pasted URLs and call `Transforms.insertNodes` with an oEmbed element
+- `isOEmbedElement()` is the narrowing gate; use it before accessing `.url` to keep TypeScript happy and avoid runtime crashes
+- `serializeSlateDocument()` throws on unknown node types — add a branch for each custom element you introduce
 
 Install dependencies:
 
@@ -14,16 +25,10 @@ Start the dev server:
 pnpm dev
 ```
 
-Run all tests:
+Run unit tests:
 
 ```bash
-pnpm test
-```
-
-Run the full local verification suite:
-
-```bash
-pnpm verify
+pnpm test:unit
 ```
 
 Run browser tests:
@@ -32,20 +37,8 @@ Run browser tests:
 pnpm test:browser
 ```
 
-Run unit tests only:
+Run all tests:
 
 ```bash
-pnpm test:unit
-```
-
-Repo path:
-
-```bash
-examples/integration-patterns/rich-text-slate
-```
-
-StackBlitz GitHub-subdir URL pattern:
-
-```text
-https://stackblitz.com/github/social-embed/social-embed/tree/BRANCH/examples/integration-patterns/rich-text-slate
+pnpm test
 ```
