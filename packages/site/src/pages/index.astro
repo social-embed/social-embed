@@ -14,6 +14,7 @@ import PureThemeSelect from "../components/core/PureThemeSelect.astro";
 import GitPullLogo from "../components/GitPullLogo.astro";
 import { LibPlayground } from "../components/lib-playground/LibPlayground";
 import { MiniPlayground } from "../components/playground/MiniPlayground";
+import { ReadonlyCode } from "../components/playground/ReadonlyCode";
 ---
 
 <html lang="en">
@@ -99,19 +100,25 @@ import { MiniPlayground } from "../components/playground/MiniPlayground";
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Before — stored in your database</p>
-            <pre class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 text-xs leading-relaxed overflow-x-auto"><code class="text-slate-700 dark:text-slate-300">&lt;iframe width="560" height="315"
+            <ReadonlyCode
+              client:only="react"
+              code={`<iframe width="560" height="315"
   src="https://www.youtube.com/embed/Bd8_vO5zrjo"
   frameborder="0"
   allow="accelerometer; autoplay;
     clipboard-write; encrypted-media;
     gyroscope; picture-in-picture"
-  allowfullscreen&gt;&lt;/iframe&gt;</code></pre>
+  allowfullscreen></iframe>`}
+            />
           </div>
           <div>
             <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">After — stored now</p>
-            <pre class="bg-slate-100 dark:bg-slate-800 rounded-lg p-4 text-xs leading-relaxed overflow-x-auto"><code class="text-indigo-600 dark:text-indigo-400">&lt;o-embed
+            <ReadonlyCode
+              client:only="react"
+              code={`<o-embed
   url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"
-&gt;&lt;/o-embed&gt;</code></pre>
+></o-embed>`}
+            />
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
               The URL is the data. Provider detection, embed URL construction, and rendering happen at render time.
             </p>
