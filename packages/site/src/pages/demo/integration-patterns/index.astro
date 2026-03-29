@@ -1,127 +1,28 @@
 ---
-import {
-  integrationPatternExamples,
-  integrationPatternSectionTitles,
-} from "@examples/integration-patterns/manifest";
+import { DemoIntegrationPatternsBrowse } from "../../../components/demo/DemoIntegrationPatternsBrowse";
+import { DemoLayout } from "../../../components/demo/DemoLayout";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-
-const groupedExamples = Object.entries(integrationPatternSectionTitles).map(
-  ([sectionId, sectionTitle]) => ({
-    examples: integrationPatternExamples.filter(
-      (example) => example.section === sectionId,
-    ),
-    sectionId,
-    sectionTitle,
-  }),
-);
 ---
 
 <BaseLayout
   title="Integration Pattern Examples"
   description="Runnable apps and fixtures behind the integration patterns docs"
+  hideFooter
 >
-  <main class="examples-page">
-    <header class="examples-hero">
-      <h1>Integration Pattern Examples</h1>
-      <p>
-        These examples are the source of truth for the integration patterns docs.
-        Runnable examples are standalone apps under <code>examples/integration-patterns/</code>.
-      </p>
-    </header>
-
-    {
-      groupedExamples.map(({ sectionId, sectionTitle, examples }) => (
-        <section class="examples-section" id={sectionId}>
-          <h2>{sectionTitle}</h2>
-          <div class="examples-grid">
-            {examples.map((example) => (
-              <article class="example-card">
-                <div class="example-card__meta">
-                  <span class:list={["pill", example.kind]}>
-                    {example.kind}
-                  </span>
-                </div>
-                <h3>{example.title}</h3>
-                <p>{example.description}</p>
-                <ul>
-                  {example.files.map((filePath) => (
-                    <li>
-                      <code>{filePath}</code>
-                    </li>
-                  ))}
-                </ul>
-                <p>
-                  <a
-                    href={`https://github.com/social-embed/social-embed/tree/main/${example.githubPath}`}
-                    rel="noreferrer"
-                    target="_blank"
-                  >
-                    View source
-                  </a>
-                </p>
-                {example.kind === "runnable" && (
-                  <p>
-                    <a
-                      href={`https://stackblitz.com/github/social-embed/social-embed/tree/main/${example.githubPath}`}
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      Open in StackBlitz
-                    </a>
-                  </p>
-                )}
-              </article>
-            ))}
-          </div>
-        </section>
-      ))
-    }
-  </main>
+  <div class="demo-container">
+    <DemoLayout currentPath="/demo/integration-patterns" client:only="react">
+      <DemoIntegrationPatternsBrowse client:only="react" />
+    </DemoLayout>
+  </div>
 </BaseLayout>
 
 <style>
-  .examples-page {
-    margin: 0 auto;
-    max-width: 72rem;
-    padding: 2rem 1.5rem 4rem;
-  }
-
-  .examples-hero {
-    margin-bottom: 2rem;
-  }
-
-  .examples-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-  }
-
-  .example-card {
-    border: 1px solid var(--color-border, #d4d4d8);
-    border-radius: 0.75rem;
-    padding: 1rem;
-  }
-
-  .example-card__meta {
-    margin-bottom: 0.75rem;
-  }
-
-  .pill {
-    border-radius: 999px;
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.25rem 0.6rem;
-    text-transform: uppercase;
-  }
-
-  .pill.fixture {
-    background: #eef2ff;
-    color: #4338ca;
-  }
-
-  .pill.runnable {
-    background: #ecfdf5;
-    color: #047857;
+  .demo-container {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
   }
 </style>
