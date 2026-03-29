@@ -21,6 +21,7 @@
     "docs": "pnpm run --recursive docs",
     "docs:gen:watch": "pnpm run --recursive docs:gen:watch",
     "docs:serve": "pnpm run --recursive docs:serve",
+    "examples:sync-deps": "node scripts/update-example-deps.mjs",
     "serve": "pnpm run --recursive serve",
     "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
   },

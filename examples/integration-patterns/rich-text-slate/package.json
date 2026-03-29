@@ -1,0 +1,31 @@
+{
+  "name": "social-embed-example-rich-text-slate",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 4312",
+    "build": "vite build && tsc --noEmit",
+    "preview": "vite preview",
+    "start": "vite",
+    "test": "pnpm run test:unit && pnpm run test:browser",
+    "test:unit": "vitest run",
+    "test:browser": "vitest run --config vitest.browser.config.ts"
+  },
+  "dependencies": {
+    "@social-embed/wc": "^0.1.0-next.13",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "slate": "^0.124.0",
+    "slate-react": "^0.124.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "@vitest/browser-playwright": "^4.1.2",
+    "playwright": "^1.58.2",
+    "typescript": "^6.0.2",
+    "vite": "^7.3.1",
+    "vitest": "^4.1.2"
+  }
+}
