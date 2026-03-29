@@ -87,6 +87,8 @@ export interface MiniPlaygroundProps {
   initialPreset?: string;
   /** Initial view mode: "full" shows complete HTML, "snippet" shows only body content */
   initialViewMode?: ViewMode;
+  /** Called when the displayed code changes (after reroll, preset switch, or edit) */
+  onSnippetChange?: (code: string) => void;
 }
 
 /**
@@ -100,6 +102,7 @@ export function MiniPlayground({
   initialCode,
   initialPreset,
   initialViewMode = "full",
+  onSnippetChange,
 }: MiniPlaygroundProps) {
   const [viewMode, setViewMode] = useState<ViewMode>(initialViewMode);
   // Determine initial preset and code
@@ -146,6 +149,11 @@ export function MiniPlayground({
     }, 500);
     return () => clearTimeout(timer);
   }, [code]);
+
+  // Notify parent when code changes
+  useEffect(() => {
+    onSnippetChange?.(code);
+  }, [code, onSnippetChange]);
 
   // Handle code changes from editor
   const handleCodeChange = useCallback((newCode: string) => {
