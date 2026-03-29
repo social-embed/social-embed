@@ -32,7 +32,11 @@ describe("integration pattern examples manifest", () => {
     );
 
     for (const sectionId of Object.keys(integrationPatternSectionTitles)) {
-      expect(sectionsWithExamples.has(sectionId as keyof typeof integrationPatternSectionTitles)).toBe(true);
+      expect(
+        sectionsWithExamples.has(
+          sectionId as keyof typeof integrationPatternSectionTitles,
+        ),
+      ).toBe(true);
     }
   });
 

@@ -19,9 +19,6 @@ export function serializeEmbedTag(url: string): string {
 }
 
 export const OEmbedExtension = Node.create({
-  name: "oEmbed",
-  group: "block",
-  atom: true,
   addAttributes() {
     return {
       url: {
@@ -29,6 +26,9 @@ export const OEmbedExtension = Node.create({
       },
     };
   },
+  atom: true,
+  group: "block",
+  name: "oEmbed",
   parseHTML() {
     return [{ tag: "o-embed" }];
   },
