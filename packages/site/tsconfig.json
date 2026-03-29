@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+    "baseUrl": ".",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@examples/*": ["../../examples/*"]
+    }
   },
   "exclude": ["dist", "build", "public"],
   "extends": "astro/tsconfigs/strict",
