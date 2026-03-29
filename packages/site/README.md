@@ -19,30 +19,33 @@ This site is built with [Astro](https://astro.build).
 
 ### Setup
 
-```bash
-# Install dependencies from the repository root
-pnpm install
+Install dependencies from the repository root:
 
-# Or if in the site directory
+```bash
 pnpm install
 ```
 
 ### Local Development
 
-```bash
-# Start the development server
-pnpm dev
+Start the development server:
 
-# The site will be available at http://localhost:4321
+```bash
+pnpm dev
 ```
+
+The site will be available at http://localhost:4321.
 
 ### Building for Production
 
-```bash
-# Build the production site
-pnpm build
+Build the production site:
 
-# Preview the production build
+```bash
+pnpm build
+```
+
+Preview the production build:
+
+```bash
 pnpm preview
 ```
 
@@ -56,11 +59,11 @@ packages/site/
 │   ├── assets/          # Images and other assets referenced in content
 │   ├── components/      # Custom Astro/React components
 │   ├── content/         # Markdown/MDX documentation content
-│   │   ├── docs/        # Main documentation pages
-│   │   └── config.ts    # Content collection configuration
-│   └── pages/           # Custom pages outside the docs
-├── astro.config.mjs     # Astro configuration
-├── tailwind.config.js   # Tailwind CSS configuration
+│   │   └── docs/        # Main documentation pages
+│   ├── pages/           # Custom pages outside the docs
+│   └── tailwind.css     # Tailwind CSS configuration
+├── astro.config.ts      # Astro configuration
+├── content.config.ts    # Content collection configuration
 └── tsconfig.json        # TypeScript configuration
 ```
 
@@ -93,8 +96,8 @@ Content goes here...
 
 ## Customizing the Site
 
-- **Theme configuration**: Edit `astro.config.mjs` to change navigation, sidebar, and other Astro settings
-- **Styling**: Modify Tailwind CSS styles in `src/styles/` or component styles
+- **Theme configuration**: Edit `astro.config.ts` to change navigation, sidebar, and other Astro settings
+- **Styling**: Modify Tailwind CSS styles in `src/tailwind.css` or component styles
 - **Components**: Add custom components in `src/components/`
 
 ## Deployment

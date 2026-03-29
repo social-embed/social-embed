@@ -1,51 +1,43 @@
 // @vitest-environment node
 /**
- * Tests that MDX overview pages properly export getHeadings from imported markdown.
+ * Tests that MDX overview pages export getHeadings with appropriate content.
  *
- * This verifies the runtime behavior of the getHeadings export pattern that
- * mdxMarkdownImports.test.ts checks statically. By directly importing the MDX
- * modules, we confirm that getHeadings is callable and returns actual headings.
+ * Overview pages were rewritten with dedicated content (no longer importing
+ * READMEs). These tests verify the pages still export callable getHeadings
+ * functions and return headings matching the new content structure.
  */
 import { describe, expect, it } from "vitest";
 
 describe("ToC Integration", () => {
-  it("/wc/ overview exports getHeadings with README headings", async () => {
-    // Dynamic import to test the actual module export
+  it("/wc/ overview exports getHeadings with overview headings", async () => {
     const wcIndex = await import("../content/docs/wc/00-index.mdx");
 
-    // Verify getHeadings is exported (the core pattern we're testing)
     expect(wcIndex.getHeadings).toBeDefined();
     expect(typeof wcIndex.getHeadings).toBe("function");
 
-    // Call getHeadings and verify it returns headings from the README
     const headings = wcIndex.getHeadings();
-    expect(headings.length).toBeGreaterThan(5);
+    expect(headings.length).toBeGreaterThan(0);
 
-    // Verify specific headings from wc/README.md
     const headingTexts = headings.map(
       (h: { depth: number; slug: string; text: string }) => h.text,
     );
-    expect(headingTexts).toContain("Quick Start");
-    expect(headingTexts).toContain("Key Features");
+    expect(headingTexts).toContain("Key features");
+    expect(headingTexts).toContain("What to read next");
   });
 
-  it("/lib/ overview exports getHeadings with README headings", async () => {
-    // Dynamic import to test the actual module export
+  it("/lib/ overview exports getHeadings with overview headings", async () => {
     const libIndex = await import("../content/docs/lib/00-index.mdx");
 
-    // Verify getHeadings is exported (the core pattern we're testing)
     expect(libIndex.getHeadings).toBeDefined();
     expect(typeof libIndex.getHeadings).toBe("function");
 
-    // Call getHeadings and verify it returns headings from the README
     const headings = libIndex.getHeadings();
-    expect(headings.length).toBeGreaterThan(5);
+    expect(headings.length).toBeGreaterThan(0);
 
-    // Verify specific headings from lib/README.md
     const headingTexts = headings.map(
       (h: { depth: number; slug: string; text: string }) => h.text,
     );
-    expect(headingTexts).toContain("Quick Start");
-    expect(headingTexts).toContain("Key Features");
+    expect(headingTexts).toContain("Key features");
+    expect(headingTexts).toContain("What to read next");
   });
 });

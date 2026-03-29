@@ -77,6 +77,7 @@ export class OEmbedElement extends LitElement {
     allowfullscreen: { type: String },
     frameborder: { type: String },
     height: { type: String },
+    title: { type: String },
     url: { type: String },
     width: { type: String },
   };
@@ -115,6 +116,22 @@ export class OEmbedElement extends LitElement {
    * @defaultValue `"true"`
    */
   public allowfullscreen: string | boolean | undefined = "true";
+
+  /**
+   * An accessible title for the rendered `<iframe>`.
+   * Auto-generated from the provider name if not set (e.g. "YouTube embed").
+   * Falls back to "Embedded content" for unknown providers.
+   */
+  declare title: string;
+
+  /**
+   * Computes the iframe title: user-provided title > provider-based > generic fallback.
+   */
+  private getIframeTitle(): string {
+    if (this.title) return this.title;
+    if (this.provider) return `${this.provider.name} embed`;
+    return "Embedded content";
+  }
 
   /**
    * The matched provider object, determined by calling `getProviderFromUrl(this.url)`.
@@ -232,6 +249,7 @@ export class OEmbedElement extends LitElement {
     return html`
       <iframe
         src="${url}"
+        title="${this.getIframeTitle()}"
         width="${this.width}"
         frameborder=${ifDefined(
           this.frameborder ? this.frameborder : undefined,
@@ -334,6 +352,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${url}"
+        title="${this.getIframeTitle()}"
         frameborder=${ifDefined(this.frameborder)}
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
@@ -372,6 +391,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${url}"
+        title="${this.getIframeTitle()}"
         frameborder=${ifDefined(this.frameborder)}
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
@@ -419,6 +439,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${youtubeUrl}"
+        title="${this.getIframeTitle()}"
         frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
@@ -437,7 +458,10 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${this.url}"
+        title="${this.getIframeTitle()}"
         frameborder=${ifDefined(this.frameborder)}
+        sandbox="allow-scripts allow-same-origin allow-popups"
+        referrerpolicy="no-referrer"
       ></iframe>
       <slot></slot>
     `;
@@ -474,6 +498,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${embedUrl}"
+        title="${this.getIframeTitle()}"
         frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
@@ -512,6 +537,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${embedUrl}"
+        title="${this.getIframeTitle()}"
         frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>
@@ -550,6 +576,7 @@ export class OEmbedElement extends LitElement {
         width="${width}"
         height="${height}"
         src="${embedUrl}"
+        title="${this.getIframeTitle()}"
         frameborder=${ifDefined(this.frameborder)}
         allowfullscreen=${ifDefined(this.shouldAllowFullscreen())}
       ></iframe>

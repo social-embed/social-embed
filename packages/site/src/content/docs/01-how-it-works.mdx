@@ -1,0 +1,81 @@
+---
+title: How it works
+slug: how-it-works
+sidebar:
+  order: 2
+---
+
+social-embed processes media URLs through a four-step pipeline. The first three steps happen in `@social-embed/lib`; the fourth happens in `@social-embed/wc`.
+
+## The pipeline
+
+```
+URL → Detect Provider → Extract ID → Build Embed URL → Render iframe
+```
+
+### 1. Detect provider
+
+Each registered provider implements `canParseUrl(url)`, which tests the URL against its regex patterns. The library tries each provider in order until one matches.
+
+```ts
+import { getProviderFromUrl } from "@social-embed/lib";
+
+const provider = getProviderFromUrl("https://youtu.be/Bd8_vO5zrjo");
+// { name: "YouTube", canParseUrl, getIdFromUrl, getEmbedUrlFromId }
+```
+
+If no provider matches, the result is `undefined`.
+
+### 2. Extract ID
+
+The matching provider calls `getIdFromUrl(url)` to extract the platform-specific media identifier from the URL.
+
+```ts
+const id = provider.getIdFromUrl("https://youtu.be/Bd8_vO5zrjo");
+// "Bd8_vO5zrjo"
+```
+
+Some providers (like Spotify) return multiple values — an ID and a content type.
+
+### 3. Build embed URL
+
+The provider constructs the platform-specific embed URL from the extracted ID:
+
+```ts
+const embedUrl = provider.getEmbedUrlFromId(id);
+// "https://www.youtube.com/embed/Bd8_vO5zrjo"
+```
+
+Or do all three steps at once with the universal entry point:
+
+```ts
+import { convertUrlToEmbedUrl } from "@social-embed/lib";
+
+convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
+// "https://www.youtube.com/embed/Bd8_vO5zrjo"
+```
+
+### 4. Render
+
+The `<o-embed>` web component performs steps 1-3 internally, then renders an `<iframe>` with provider-specific defaults (dimensions, permissions, aspect ratio):
+
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>
+```
+
+YouTube Shorts get portrait dimensions. Spotify gets full-width. Vimeo gets widescreen. Unknown-but-valid URLs fall back to a generic iframe.
+
+## The provider interface
+
+Every provider implements the [`EmbedProvider` interface](/lib/api-reference#embedprovider-interface) — four members: a `name`, `canParseUrl()` for detection, `getIdFromUrl()` for extraction, and `getEmbedUrlFromId()` for URL construction.
+
+Seven providers are built-in. You can [add your own](/lib/examples#5-adding-a-new-provider) with `defaultRegistry.register()`.
+
+## Two packages, one pipeline
+
+| Package | Steps | When to use |
+|---------|-------|-------------|
+| `@social-embed/wc` | All four (detect → render) | Drop-in embedding in HTML, Markdown, CMS |
+| `@social-embed/lib` | Steps 1-3 only (detect → build) | Server-side validation, custom renderers, frameworks |
+
+Most users need only the web component. The library is for when you need programmatic control over URL detection and transformation.

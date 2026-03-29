@@ -14,40 +14,16 @@ A **Provider** is an object that tells the library how to detect and embed a spe
 
 ## What Is a Provider?
 
-In code terms, each provider implements an interface that might look like:
+Each provider implements the [`EmbedProvider` interface](/lib/api-reference#embedprovider-interface):
 
-```ts
-/**
- * A typed interface for each Provider.
- */
-export interface EmbedProvider {
-  /**
-   * A unique, descriptive name for the provider (e.g., "YouTube").
-   */
-  readonly name: string;
+| Member | Description |
+|--------|-------------|
+| `name` | Unique identifier (e.g., `”YouTube”`, `”Spotify”`) |
+| `canParseUrl(url)` | Returns `true` if this provider can handle the URL |
+| `getIdFromUrl(url)` | Extracts the media ID (or `[id, type]` for Spotify) |
+| `getEmbedUrlFromId(id)` | Builds the embed-ready URL from the extracted ID |
 
-  /**
-   * Return `true` if this provider can handle the given URL (usually by regex matching).
-   */
-  canParseUrl(url: string): boolean;
-
-  /**
-   * Extract ID(s) or any relevant metadata from the URL. 
-   * For example, YouTube extracts the 11-character video ID.
-   */
-  getIdFromUrl(url: string): string | string[];
-
-  /**
-   * Generate the final iframe-friendly embed URL from an ID and possibly extra arguments.
-   */
-  getEmbedUrlFromId(id: string, ...args: unknown[]): string;
-}
-```
-
-- **`name`:** A simple string label (e.g. `"YouTube"`, `"DailyMotion"`, `"MyCustom"`)  
-- **`canParseUrl(url)`:** Usually uses a regex or other logic to detect if the URL belongs to this provider.  
-- **`getIdFromUrl(url)`:** Extracts the part(s) needed to build an embed link. Sometimes it’s just one string (like a video ID), sometimes it can be multiple (like `[id, type]` for Spotify).  
-- **`getEmbedUrlFromId(id, ...args)`:** Builds the actual “iframe-friendly” embed URL that your site or user can place in a `<iframe src="...">`.
+See the [API reference](/lib/api-reference#embedprovider-interface) for the full type definition.
 
 ## Built-in Providers
 

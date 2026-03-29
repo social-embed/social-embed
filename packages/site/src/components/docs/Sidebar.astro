@@ -13,10 +13,17 @@ interface Props {
 
 const { currentPath } = Astro.props;
 
+// Scope sidebar to the current section so lib pages show lib nav only, etc.
+const section = currentPath.startsWith("/lib/")
+  ? ("lib" as const)
+  : currentPath.startsWith("/wc/")
+    ? ("wc" as const)
+    : undefined;
+
 let sidebarItems: SidebarItem[] = [];
 
 try {
-  sidebarItems = await getSidebarItems();
+  sidebarItems = await getSidebarItems(section);
 } catch (e) {
   // During build, collection might not be ready yet
   console.warn("Could not load sidebar items:", e);

@@ -151,6 +151,11 @@ export default defineConfig({
   },
   redirects: {
     "/playground": "/wc/playground/",
+    "/wc/configuration/allowfullscreen/":
+      "/wc/configuration/attributes-and-styling/",
+    "/wc/configuration/dimensions/":
+      "/wc/configuration/attributes-and-styling/",
+    "/wc/configuration/url/": "/wc/configuration/attributes-and-styling/",
   },
   site: "https://social-embed.org",
   vite: {

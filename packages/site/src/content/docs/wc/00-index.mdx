@@ -1,16 +1,39 @@
 ---
 title: Overview
 pageTitle: "<o-embed> Web Component"
-skipMarkdownTitle: true
 tableOfContents: true
 slug: wc
 sidebar:
   order: 1
-head:
-  - tag: style
-    content: "p:has(> a) { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }"
 ---
 
-import README from "../../../../../wc/README.md";
+`<o-embed>` is a Web Component that turns media URLs into embedded players with a single HTML tag. It uses `@social-embed/lib` internally for URL detection and conversion, then renders the correct `<iframe>` with provider-specific defaults.
 
-<README />
+```html
+<script type="module" src="https://unpkg.com/@social-embed/wc?module"></script>
+
+<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
+```
+
+## Key features
+
+- **One tag** — `<o-embed url="...">` is all you need. No configuration.
+- **7 built-in providers** — YouTube, Spotify, Vimeo, DailyMotion, Loom, EdPuzzle, Wistia
+- **Generic fallback** — Any valid URL renders as a plain iframe
+- **CSS custom properties** — `--social-embed-iframe-width` and `--social-embed-iframe-height` for responsive sizing
+- **Slot content** — Add child elements for captions or JS-off fallback
+- **Reactive** — Changing the `url` attribute re-renders the embed dynamically
+- **Accessible** — Auto-generates iframe titles from provider name; override with the `title` attribute
+- **Built with [Lit](https://lit.dev/)** — Lightweight, standards-based web component framework
+
+## What to read next
+
+- [Installation](/wc/installation) — npm, CDN, and framework setup
+- [Attributes & Styling](/wc/configuration/attributes-and-styling) — All attributes, CSS custom properties, CLS prevention
+- [Framework usage](/wc/framework-usage) — React, Vue, Svelte, Angular, and SSR setup
+- [Provider examples](/wc/providers/youtube) — Per-platform demos with live embeds
+- [Accessibility & fallbacks](/wc/accessibility) — Iframe titles, slot fallback, no-JS strategies
+
+## How it fits
+
+`<o-embed>` handles the full pipeline — detect provider, extract ID, build embed URL, render iframe. If you need just URL parsing without rendering (for server-side validation or custom UIs), see [`@social-embed/lib`](/lib/).

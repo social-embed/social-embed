@@ -1,4 +1,6 @@
+export type { EmbedProvider } from "./provider";
 export * from "./providers";
+export { EmbedProviderRegistry } from "./registry";
 export {
   convertUrlToEmbedUrl,
   getProviderFromUrl,

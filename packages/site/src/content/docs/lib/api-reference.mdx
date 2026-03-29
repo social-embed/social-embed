@@ -1,0 +1,199 @@
+---
+title: API reference
+description: Complete API reference for @social-embed/lib — all exports, types, and function signatures
+sidebar:
+  order: 30
+---
+
+## Universal functions
+
+### `convertUrlToEmbedUrl(url: string): string`
+
+Converts any recognized media URL to its embeddable form. This is the main entry point for most use cases.
+
+- Detects the provider, extracts the ID, and builds the embed URL in one call
+- Returns `""` if the URL is not recognized by any registered provider
+- Returns `""` if the URL is empty or ID extraction fails
+
+```ts
+import { convertUrlToEmbedUrl } from "@social-embed/lib";
+
+convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
+// "https://www.youtube.com/embed/Bd8_vO5zrjo"
+
+convertUrlToEmbedUrl("https://example.com/unknown");
+// ""
+```
+
+### `getProviderFromUrl(url: string): EmbedProvider | undefined`
+
+Returns the provider object that can parse the given URL, or `undefined` if no provider matches.
+
+Useful for detecting which platform a URL belongs to, or for restricting embeds to known providers in server-side validation.
+
+```ts
+import { getProviderFromUrl } from "@social-embed/lib";
+
+const provider = getProviderFromUrl("https://youtu.be/Bd8_vO5zrjo");
+// { name: "YouTube", canParseUrl, getIdFromUrl, getEmbedUrlFromId }
+
+getProviderFromUrl("https://example.com");
+// undefined
+```
+
+### `isValidUrl(url: string): boolean`
+
+Checks if a string is a syntactically valid HTTP or HTTPS URL using `new URL()`.
+
+```ts
+import { isValidUrl } from "@social-embed/lib";
+
+isValidUrl("https://example.com"); // true
+isValidUrl("not-a-url");           // false
+isValidUrl("ftp://example.com");   // false (only http/https)
+```
+
+---
+
+## Types
+
+### `EmbedProvider` interface
+
+Every provider implements this interface:
+
+```ts
+interface EmbedProvider {
+  readonly name: string;
+  canParseUrl(url: string): boolean;
+  getIdFromUrl(url: string): string | string[];
+  getEmbedUrlFromId(id: string, ...args: unknown[]): string;
+}
+```
+
+| Member | Description |
+|--------|-------------|
+| `name` | Unique identifier (e.g., `"YouTube"`, `"Spotify"`) |
+| `canParseUrl(url)` | Returns `true` if this provider can handle the URL |
+| `getIdFromUrl(url)` | Extracts the media ID (or `[id, type]` for Spotify) |
+| `getEmbedUrlFromId(id, ...args)` | Builds the embed-ready URL from the extracted ID |
+
+### `EmbedProviderRegistry` class
+
+A registry for managing multiple `EmbedProvider` instances.
+
+```ts
+import { EmbedProviderRegistry } from "@social-embed/lib";
+
+const registry = new EmbedProviderRegistry();
+```
+
+| Method | Signature | Description |
+|--------|-----------|-------------|
+| `register` | `(provider: EmbedProvider) => void` | Registers a provider. Overwrites if name exists. |
+| `listProviders` | `() => EmbedProvider[]` | Returns all registered providers. |
+| `getProviderByName` | `(name: string) => EmbedProvider \| undefined` | Retrieves a provider by its `name`. |
+| `findProviderByUrl` | `(url: string) => EmbedProvider \| undefined` | Returns the first provider whose `canParseUrl()` returns `true`. |
+
+---
+
+## Instances
+
+### `defaultRegistry`
+
+A pre-configured `EmbedProviderRegistry` with all 7 built-in providers registered. This is the registry used by `convertUrlToEmbedUrl()` and `getProviderFromUrl()`.
+
+```ts
+import { defaultRegistry } from "@social-embed/lib";
+
+// Register a custom provider on the shared registry
+defaultRegistry.register(myCustomProvider);
+```
+
+### `defaultProviders`
+
+An array of all 7 built-in `EmbedProvider` objects: DailyMotion, EdPuzzle, Loom, Spotify, Vimeo, Wistia, YouTube.
+
+```ts
+import { defaultProviders } from "@social-embed/lib";
+
+console.log(defaultProviders.map((p) => p.name));
+// ["DailyMotion", "EdPuzzle", "Loom", "Spotify", "Vimeo", "Wistia", "YouTube"]
+```
+
+---
+
+## Per-provider exports
+
+Each provider exports its implementation object, helper functions, and regex patterns.
+
+### YouTube
+
+| Export | Type | Description |
+|--------|------|-------------|
+| `YouTubeProvider` | `EmbedProvider` | Provider implementation |
+| `getYouTubeIdFromUrl(url)` | `(string) => string` | Extract video ID from URL |
+| `getYouTubeEmbedUrlFromId(id)` | `(string) => string` | Build `youtube.com/embed/{id}` |
+| `isYouTubeShortsUrl(url)` | `(string) => boolean` | Detect YouTube Shorts URLs |
+| `youTubeUrlRegex` | `RegExp` | Matches standard YouTube URLs |
+| `youTubeShortsRegex` | `RegExp` | Matches YouTube Shorts URLs |
+| `YOUTUBE_SHORTS_DIMENSIONS` | `{ width, height }` | Default Shorts dimensions (347×616) |
+
+### Spotify
+
+| Export | Type | Description |
+|--------|------|-------------|
+| `SpotifyProvider` | `EmbedProvider` | Provider implementation |
+| `getSpotifyIdAndTypeFromUrl(url)` | `(string) => [string, string]` | Extract `[id, type]` from URL |
+| `getSpotifyEmbedUrlFromIdAndType(id, type)` | `(string, string) => string` | Build embed URL with content type |
+| `spotifyUrlRegex` | `RegExp` | Matches `open.spotify.com` URLs |
+| `spotifySymbolRegex` | `RegExp` | Matches `spotify:type:id` URIs |
+| `SPOTIFY_TYPES` | `string[]` | Valid content types: track, album, playlist, artist, show, episode |
+
+### Vimeo
+
+| Export | Type | Description |
+|--------|------|-------------|
+| `VimeoProvider` | `EmbedProvider` | Provider implementation |
+| `getVimeoIdFromUrl(url)` | `(string) => string` | Extract video ID |
+| `getVimeoEmbedUrlFromId(id)` | `(string) => string` | Build `player.vimeo.com/video/{id}` |
+| `vimeoUrlRegex` | `RegExp` | Matches Vimeo URLs |
+
+### DailyMotion
+
+| Export | Type | Description |
+|--------|------|-------------|
+| `DailyMotionProvider` | `EmbedProvider` | Provider implementation |
+| `getDailyMotionIdFromUrl(url)` | `(string) => string` | Extract video ID |
+| `getDailyMotionEmbedFromId(id)` | `(string) => string` | Build embed URL |
+| `dailyMotionUrlRegex` | `RegExp` | Matches DailyMotion URLs |
+
+### Loom
+
+| Export | Type | Description |
+|--------|------|-------------|
+| `LoomProvider` | `EmbedProvider` | Provider implementation |
+| `getLoomIdFromUrl(url)` | `(string) => string` | Extract share ID |
+| `getLoomEmbedUrlFromId(id)` | `(string) => string` | Build `loom.com/embed/{id}` |
+| `loomUrlRegex` | `RegExp` | Matches Loom URLs |
+
+### EdPuzzle
+
+| Export | Type | Description |
+|--------|------|-------------|
+| `EdPuzzleProvider` | `EmbedProvider` | Provider implementation |
+| `getEdPuzzleIdFromUrl(url)` | `(string) => string` | Extract media ID |
+| `getEdPuzzleEmbedUrlFromId(id)` | `(string) => string` | Build embed URL |
+| `edPuzzleUrlRegex` | `RegExp` | Matches EdPuzzle URLs |
+
+### Wistia
+
+| Export | Type | Description |
+|--------|------|-------------|
+| `WistiaProvider` | `EmbedProvider` | Provider implementation |
+| `getWistiaIdFromUrl(url)` | `(string) => string` | Extract media ID |
+| `getWistiaEmbedUrlFromId(id)` | `(string) => string` | Build `fast.wistia.net/embed/iframe/{id}` |
+| `wistiaUrlRegex` | `RegExp` | Matches Wistia URLs |
+
+---
+
+For usage patterns and examples, see the [Examples](/lib/examples) page. To add custom providers, see [Adding a new provider](/lib/examples#5-adding-a-new-provider).

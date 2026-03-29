@@ -1,0 +1,149 @@
+---
+title: Security & validation
+slug: security-and-validation
+sidebar:
+  order: 4
+---
+
+import { Aside } from '../../components/mdx';
+
+social-embed is a client-side URL parser and renderer. It does not validate user intent, enforce access controls, or make server-side requests. Security decisions are your responsibility.
+
+## What social-embed is NOT
+
+- **Not a security boundary.** The [generic fallback](/wc/providers/generic) renders any valid URL as an iframe. It does not restrict which domains can be embedded.
+- **Not an oEmbed protocol client.** It does not make HTTP requests to provider oEmbed endpoints. All URL detection is local pattern matching.
+- **Not a content moderator.** It cannot verify that a URL points to safe or appropriate content.
+
+## Content Security Policy (CSP)
+
+Embedding third-party iframes requires the appropriate `frame-src` directive in your Content Security Policy. Here are the domains used by each built-in provider:
+
+| Provider | Embed domain(s) |
+|----------|-----------------|
+| YouTube | `youtube.com`, `www.youtube.com` |
+| Spotify | `open.spotify.com` |
+| Vimeo | `player.vimeo.com` |
+| DailyMotion | `www.dailymotion.com` |
+| Loom | `www.loom.com` |
+| EdPuzzle | `edpuzzle.com` |
+| Wistia | `fast.wistia.net` |
+
+Example CSP header allowing all built-in providers:
+
+```
+Content-Security-Policy: frame-src youtube.com www.youtube.com open.spotify.com player.vimeo.com www.dailymotion.com www.loom.com edpuzzle.com fast.wistia.net;
+```
+
+<Aside type="tip">
+  If you enable the [generic fallback](/wc/providers/generic), you will also need to allow whatever domains your users embed. Consider restricting to known providers via server-side validation instead.
+</Aside>
+
+## Server-side URL validation
+
+When accepting user-submitted URLs, validate before storing. Use `getProviderFromUrl()` to restrict embeds to known providers:
+
+```ts
+import { getProviderFromUrl } from "@social-embed/lib";
+
+function validateEmbedUrl(url: string): boolean {
+  const provider = getProviderFromUrl(url);
+  return provider !== undefined; // Only allow recognized providers
+}
+```
+
+This ensures that only URLs matching a built-in provider's regex patterns can be stored. The generic fallback (which renders any valid URL) never triggers for validated URLs.
+
+### Express middleware example
+
+```ts
+import { getProviderFromUrl } from "@social-embed/lib";
+
+app.post("/api/embeds", (req, res) => {
+  const { url } = req.body;
+  const provider = getProviderFromUrl(url);
+
+  if (!provider) {
+    return res.status(400).json({ error: "Unsupported media provider" });
+  }
+
+  // Safe to store — will match a known provider at render time
+  saveEmbed({ url, provider: provider.name });
+});
+```
+
+## Sanitizer allowlists
+
+Some HTML sanitizers strip unknown tags by default. Add `<o-embed>` and its attributes to your sanitizer's allowlist.
+
+### DOMPurify
+
+```ts
+import DOMPurify from "dompurify";
+
+const clean = DOMPurify.sanitize(html, {
+  ADD_TAGS: ["o-embed"],
+  ADD_ATTR: ["url", "width", "height", "allowfullscreen", "title"],
+});
+```
+
+### rehype-sanitize (for Markdown/MDX pipelines)
+
+```ts
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+
+const schema = {
+  ...defaultSchema,
+  tagNames: [...(defaultSchema.tagNames ?? []), "o-embed"],
+  attributes: {
+    ...defaultSchema.attributes,
+    "o-embed": ["url", "width", "height", "allowfullscreen", "title"],
+  },
+};
+```
+
+### react-markdown
+
+```tsx
+import ReactMarkdown from "react-markdown";
+
+<ReactMarkdown
+  components={{
+    "o-embed": ({ node, ...props }) => <o-embed {...props} />,
+  }}
+>
+  {markdown}
+</ReactMarkdown>
+```
+
+## Generic fallback risks
+
+The [generic fallback](/wc/providers/generic) renders any valid HTTP/HTTPS URL as a sandboxed iframe with `sandbox="allow-scripts allow-same-origin allow-popups"` and `referrerpolicy="no-referrer"`. While the sandbox restricts some capabilities, it does not prevent:
+
+- **Phishing content** rendered inside the iframe
+- **Tracking pixels** loaded by the embedded page
+- **UI confusion** from embedding arbitrary websites
+
+For user-generated content, always validate server-side with `getProviderFromUrl()` to restrict to known providers.
+
+## Privacy & consent
+
+Third-party embeds (YouTube, Spotify, etc.) load external resources that may:
+
+- Leak user IP addresses to the third-party provider
+- Set tracking cookies
+- Load advertising scripts
+
+In GDPR jurisdictions, this may require user consent before the embed loads. Strategies:
+
+**Click-to-load with slot content:** Use `<o-embed>` slot content as a consent placeholder. The embed loads only when the user takes action:
+
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo" id="yt-embed" style="display:none">
+  <button onclick="this.parentElement.style.display='block'; this.remove()">
+    Load YouTube video (sets cookies)
+  </button>
+</o-embed>
+```
+
+**Privacy-respecting domains:** YouTube offers `youtube-nocookie.com` which uses fewer cookies. Check if your URL patterns support this before relying on it.

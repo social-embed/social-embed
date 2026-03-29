@@ -1,0 +1,56 @@
+---
+title: Reactive URL binding
+description: How dynamic URL changes re-render the embed automatically
+sidebar:
+  order: 15
+---
+
+The `url` attribute on `<o-embed>` is reactive. Changing it dynamically re-renders the embed without any DOM manipulation — the component detects the new provider and swaps the iframe automatically.
+
+## JavaScript
+
+```js
+const embed = document.querySelector("o-embed");
+embed.url = "https://open.spotify.com/track/7Ca8EuTCyU3pjJR4TNOXqs";
+// The embed re-renders as a Spotify player immediately
+```
+
+## Framework bindings
+
+Because `<o-embed>` is a standard Web Component with reactive properties, it works with framework attribute/property binding. For detailed per-framework setup (TypeScript types, Vue config, React 18, SSR), see [Framework usage](/wc/framework-usage).
+
+**React (19+):**
+```jsx
+function MediaEmbed({ url }) {
+  return <o-embed url={url}></o-embed>;
+}
+```
+
+**Vue 3:**
+```vue
+<template>
+  <o-embed :url="mediaUrl"></o-embed>
+</template>
+```
+
+**Svelte 5:**
+```svelte
+<o-embed url={mediaUrl}></o-embed>
+```
+
+## Preview-as-you-type
+
+Reactive binding enables live preview patterns — useful in editors and CMS interfaces:
+
+```html
+<input id="url-input" placeholder="Paste a media URL..." />
+<o-embed id="preview"></o-embed>
+
+<script>
+  const input = document.getElementById("url-input");
+  const preview = document.getElementById("preview");
+  input.addEventListener("input", () => {
+    preview.url = input.value;
+  });
+</script>
+```

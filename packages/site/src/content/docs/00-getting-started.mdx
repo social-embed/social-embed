@@ -1,22 +1,130 @@
 ---
 title: Getting started
 slug: getting-started
-tableOfContents: false
+tableOfContents: true
+sidebar:
+  order: 1
 ---
 
-For a high-level overview, `@social-embed` is made up of two main packages:
+import { Tabs, TabItem } from '../../components/mdx';
 
-| Name    | Package               | Source location  | Type            | Description                                                                                  |
-| ------- | --------------------- | ---------------- | --------------- | -------------------------------------------------------------------------------------------- |
-| [`lib`] | [`@social-embed/lib`] | [/packages/lib/] | Library         | Repository of regexes / parsers for embed-friendly websites (e.g. YouTube)                   |
-| [`wc`]  | [`@social-embed/wc`]  | [/packages/wc/]  | [Web component] | Renders native web players via `<o-embed>`. Built with [Lit] + [TypeScript] + [`lib`]        |
+social-embed turns media URLs into embeddable content. Instead of storing platform-specific iframe HTML, you store one portable tag:
 
-[/packages/lib/]: https://github.com/social-embed/social-embed/tree/master/packages/lib
-[/packages/wc/]: https://github.com/social-embed/social-embed/tree/master/packages/wc
-[`wc`]: /wc/
-[`lib`]: /lib/
-[`@social-embed/lib`]: https://www.npmjs.com/package/@social-embed/lib
-[`@social-embed/wc`]: https://www.npmjs.com/package/@social-embed/wc
-[web component]: https://developer.mozilla.org/en-US/docs/Web/Web_Components
-[lit]: https://lit.dev/
-[typescript]: https://www.typescriptlang.org/
+```html
+<!-- What you used to store -->
+<iframe width="560" height="315"
+  src="https://www.youtube.com/embed/Bd8_vO5zrjo"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media"
+  allowfullscreen></iframe>
+
+<!-- What you store now -->
+<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
+```
+
+The URL is the canonical data. Provider detection, embed URL construction, and rendering happen automatically at render time. See [How it works](/how-it-works) for the full pipeline.
+
+**Note:** `<o-embed>` requires JavaScript to render. For resilience in non-JS contexts, add a fallback link:
+
+```html
+<o-embed url="https://youtu.be/Bd8_vO5zrjo">
+  <a href="https://youtu.be/Bd8_vO5zrjo">Watch on YouTube</a>
+</o-embed>
+```
+
+## Have 30 seconds?
+
+Add one script tag and one `<o-embed>` element — that's it:
+
+```html
+<script type="module" src="https://unpkg.com/@social-embed/wc?module"></script>
+
+<o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>
+```
+
+No build step, no bundler, no framework.
+
+## Which package do I need?
+
+| I want to...                          | Use                                     |
+|---------------------------------------|-----------------------------------------|
+| Embed media in HTML, Markdown, or CMS | [`@social-embed/wc`](/wc/)              |
+| Validate or transform URLs server-side | [`@social-embed/lib`](/lib/)           |
+| Build a custom embed renderer          | [`@social-embed/lib`](/lib/)           |
+| Both validate and render               | Both packages together                  |
+
+## Building something?
+
+Install the web component for drop-in embedding:
+
+<Tabs>
+  <TabItem label="npm">
+    ```bash
+    npm i @social-embed/wc
+    ```
+  </TabItem>
+  <TabItem label="pnpm">
+    ```bash
+    pnpm add @social-embed/wc
+    ```
+  </TabItem>
+  <TabItem label="yarn">
+    ```bash
+    yarn add @social-embed/wc
+    ```
+  </TabItem>
+</Tabs>
+
+Then import and use:
+
+```js
+import "@social-embed/wc";
+```
+
+```html
+<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
+```
+
+See the [web component docs](/wc/) for [attributes and styling](/wc/configuration/attributes-and-styling), [framework setup](/wc/framework-usage), and per-provider examples.
+
+## Just need URL parsing?
+
+Use the core library for server-side validation, custom renderers, or programmatic URL handling:
+
+<Tabs>
+  <TabItem label="npm">
+    ```bash
+    npm i @social-embed/lib
+    ```
+  </TabItem>
+  <TabItem label="pnpm">
+    ```bash
+    pnpm add @social-embed/lib
+    ```
+  </TabItem>
+  <TabItem label="yarn">
+    ```bash
+    yarn add @social-embed/lib
+    ```
+  </TabItem>
+</Tabs>
+
+```ts
+import { convertUrlToEmbedUrl, getProviderFromUrl } from "@social-embed/lib";
+
+const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
+// "https://www.youtube.com/embed/Bd8_vO5zrjo"
+
+const provider = getProviderFromUrl("https://youtu.be/Bd8_vO5zrjo");
+// { name: "YouTube", canParseUrl, getIdFromUrl, getEmbedUrlFromId }
+```
+
+See the [library docs](/lib/) for examples and the full API.
+
+## Good to know
+
+**social-embed is a client-side URL parser, not an oEmbed protocol client.** Despite the name similarity, it does not make HTTP requests to oEmbed endpoints. It derives embed URLs locally using static pattern matching — no API keys, no server, no network requests for the URL conversion step.
+
+**It is not a security boundary.** The generic fallback renders any valid URL as an iframe. If you accept user-submitted URLs, validate them server-side with `getProviderFromUrl()` to restrict to known providers.
+
+**Requires JavaScript to render.** `<o-embed>` is a Web Component — it needs JS to upgrade and display the iframe. Use slot content as a fallback for non-JS contexts (see above).

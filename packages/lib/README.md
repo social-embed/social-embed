@@ -1,6 +1,6 @@
 # @social-embed/lib
 
-> A lightweight utility for transforming media URLs into embeddable content or extracting media IDs.
+> The embed normalization engine — detect providers, extract IDs, generate embed URLs. Zero dependencies, ~2 kB gzipped.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) 
 [![npm version](https://img.shields.io/npm/v/@social-embed/lib.svg?style=flat)](https://www.npmjs.com/package/@social-embed/lib)
@@ -15,14 +15,13 @@ This library makes it easy to work with media URLs from popular platforms like Y
 - **Detect** which platform a URL belongs to
 - **Validate** URLs with a simple utility function
 
-All with **zero server-side dependencies** - everything runs in the browser.
+All with **zero dependencies** - runs in any JavaScript environment (browsers, Node.js, edge workers).
 
 ## Quick Start
 
 ```typescript
 import { convertUrlToEmbedUrl } from "@social-embed/lib";
 
-// Convert ANY supported URL to its embed form
 const embedUrl = convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
 console.log(embedUrl); // "https://www.youtube.com/embed/Bd8_vO5zrjo"
 ```
@@ -46,12 +45,10 @@ pnpm add @social-embed/lib
 
 ### Using a CDN
 
-```typescript
-// unpkg
-import { getYouTubeIdFromUrl } from "https://www.unpkg.com/@social-embed/lib?module";
+unpkg:
 
-// skypack
-import { getYouTubeIdFromUrl } from "https://cdn.skypack.dev/@social-embed/lib";
+```typescript
+import { convertUrlToEmbedUrl } from "https://www.unpkg.com/@social-embed/lib?module";
 ```
 
 ## Key Features
@@ -66,16 +63,23 @@ import { getYouTubeIdFromUrl } from "https://cdn.skypack.dev/@social-embed/lib";
 
 ### YouTube
 
+Extract ID from any YouTube URL format:
+
 ```typescript
-// Extract ID from any YouTube URL format
 const videoId = getYouTubeIdFromUrl("https://youtu.be/Bd8_vO5zrjo");
 console.log(videoId); // "Bd8_vO5zrjo"
+```
 
-// Convert to embed URL
+Convert to embed URL:
+
+```typescript
 const embedUrl = getYouTubeEmbedUrlFromId("Bd8_vO5zrjo");
 console.log(embedUrl); // "https://www.youtube.com/embed/Bd8_vO5zrjo"
+```
 
-// Or do it all in one step
+Or do it all in one step:
+
+```typescript
 console.log(convertUrlToEmbedUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"));
 // "https://www.youtube.com/embed/Bd8_vO5zrjo"
 ```
@@ -85,7 +89,9 @@ console.log(convertUrlToEmbedUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo"))
 ```typescript
 const videoId = getDailyMotionIdFromUrl("https://www.dailymotion.com/video/x7znrd0");
 console.log(videoId); // "x7znrd0"
+```
 
+```typescript
 console.log(getDailyMotionEmbedFromId("x7znrd0"));
 // "https://www.dailymotion.com/embed/video/x7znrd0"
 ```
@@ -133,6 +139,25 @@ import { isValidUrl } from "@social-embed/lib";
 console.log(isValidUrl("https://apple.com")); // true
 console.log(isValidUrl("notaurl")); // false
 ```
+
+## Custom Providers
+
+Add support for any platform by implementing the `EmbedProvider` interface (3 methods + a name) and registering it:
+
+```typescript
+import { defaultRegistry } from "@social-embed/lib";
+
+defaultRegistry.register({
+  name: "MyPlatform",
+  canParseUrl: (url) => /myplatform\.com\/video\//.test(url),
+  getIdFromUrl: (url) => url.split("/").pop() || "",
+  getEmbedUrlFromId: (id) => `https://myplatform.com/embed/${id}`,
+});
+
+// Now convertUrlToEmbedUrl() handles MyPlatform URLs
+```
+
+See the [full extensibility guide](https://social-embed.org/lib/examples#5-adding-a-new-provider) for details.
 
 ## Try It Out
 

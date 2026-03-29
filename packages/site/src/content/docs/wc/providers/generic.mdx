@@ -1,18 +1,62 @@
 ---
 id: generic
-title: Generic Embed
-sidebar_label: Generic
-description: iframe fallback for <o-embed> component.
+title: Generic Fallback
+sidebar_label: Generic Fallback
+description: How <o-embed> handles URLs from unsupported providers as a universal embed tag.
+sidebar:
+  order: 99
 ---
 
-As a fallback, values satisfying `isValidUrl` in [`@social-embed/lib`] will render as [`<iframe>`]s.
+import { Aside } from '../../../../components/mdx';
 
-[`@social-embed/lib`]: /lib
-[`<iframe>`]: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe
+`<o-embed>` is a **universal embed tag**. Any valid HTTP or HTTPS URL renders as an iframe — known providers get smart defaults (dimensions, permissions, aspect ratios), while unrecognized URLs fall back to a sandboxed iframe. This makes `<o-embed>` useful even for platforms that are not built-in providers.
 
-## Basic
+## How it works
 
-### HTML
+When you pass a URL to `<o-embed>`:
+
+1. The component checks each registered provider's `canParseUrl()` method
+2. If a provider matches, the URL is processed through the full pipeline (detect → extract → build → render) with provider-specific defaults
+3. If **no provider matches**, the component checks `isValidUrl()` from `@social-embed/lib`
+4. If the URL is a valid HTTP/HTTPS URL, it renders as a plain `<iframe>` with security restrictions
+
+## Security attributes
+
+Generic fallback iframes are sandboxed to limit their capabilities:
+
+| Attribute | Value | Effect |
+|-----------|-------|--------|
+| `sandbox` | `allow-scripts allow-same-origin allow-popups` | Allows JavaScript, same-origin access, and popups. Blocks forms, top-level navigation, and other capabilities. |
+| `referrerpolicy` | `no-referrer` | Prevents the embedded page from seeing which page embedded it. |
+| `allowfullscreen` | (not set) | Fullscreen is **not** enabled for generic embeds, unlike provider-specific ones. |
+
+<Aside type="caution">
+  **For user-generated content, always validate server-side.** The generic fallback will render *any* valid URL as an iframe. Use `getProviderFromUrl()` from `@social-embed/lib` to restrict embeds to known providers before storing user-submitted URLs. See the [security & validation](/security-and-validation) guide.
+</Aside>
+
+## Library vs component behavior
+
+`@social-embed/lib` and `@social-embed/wc` handle unrecognized URLs differently:
+
+| Package | Unrecognized URL behavior |
+|---------|--------------------------|
+| `@social-embed/lib` | `convertUrlToEmbedUrl()` returns `""`. `getProviderFromUrl()` returns `undefined`. |
+| `@social-embed/wc` | Renders the URL as a sandboxed `<iframe>` with the security attributes above. |
+
+This means the library is strict (no match = no output) while the component is permissive (no match = generic iframe). When building server-side validation, use the library's behavior as the allowlist.
+
+## Limitations
+
+Some sites prevent iframe embedding via HTTP headers:
+
+- `X-Frame-Options: DENY` or `SAMEORIGIN` — The browser will refuse to render the page in an iframe
+- `Content-Security-Policy: frame-ancestors 'none'` — Same effect via CSP
+
+The generic fallback cannot work around these restrictions. If an embedded site blocks framing, the iframe will show an error or blank page.
+
+## Examples
+
+### Basic
 
 URL: https://netlify.com
 
@@ -22,7 +66,7 @@ URL: https://netlify.com
 
 <o-embed url="https://netlify.com/"></o-embed>
 
-## Styled
+### Styled
 
 ```html
 <style>

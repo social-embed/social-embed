@@ -1,0 +1,135 @@
+---
+title: Attributes & Styling
+description: All <o-embed> HTML attributes, CSS custom properties, and styling options
+sidebar:
+  order: 10
+  label: Attributes & Styling
+---
+
+import { Aside } from '../../../../components/mdx';
+
+## Attribute reference
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `url` | `string` | — | The media URL to embed (required) |
+| `width` | `string` | `"560"` | Width of the outer embed container |
+| `height` | `string` | `"315"` | Height of the outer embed container |
+| `allowfullscreen` | `string \| boolean` | `"true"` | Enable fullscreen button. Omitted for Spotify and generic embeds. |
+| `frameborder` | `string` | `"0"` | Iframe border width. Deprecated in HTML5 but kept for backward compatibility. |
+| `title` | `string` | (auto-generated) | Accessible iframe title. See [Title (accessibility)](#title-accessibility) below. |
+
+## URL
+
+The `url` attribute accepts any URL from a [supported provider](/wc/providers/youtube). The component detects the provider, extracts the media ID, and renders the correct embed.
+
+```html
+<o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
+```
+
+<o-embed url="https://youtu.be/FTQbiNvZqaY"></o-embed>
+
+### Playlist URLs
+
+YouTube playlist URLs are also supported:
+
+```html
+<o-embed
+  url="https://youtu.be/FTQbiNvZqaY?list=RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs"
+></o-embed>
+```
+
+<o-embed url="https://youtu.be/FTQbiNvZqaY?list=RDCLAK5uy_lf8okgl2ygD075nhnJVjlfhwp8NsUgEbs"></o-embed>
+
+## Dimensions
+
+### Outer container (HTML attributes)
+
+The `width` and `height` attributes control the outer container size:
+
+```html
+<o-embed url="https://youtu.be/FTQbiNvZqaY" width="300" height="300"></o-embed>
+```
+
+<o-embed url="https://youtu.be/FTQbiNvZqaY" width="300" height="300"></o-embed>
+
+### Inner iframe (CSS custom properties)
+
+CSS custom properties control the inner `<iframe>` sizing independently of the container:
+
+- `--social-embed-iframe-width`
+- `--social-embed-iframe-height`
+
+```html
+<style>
+  o-embed.full {
+    --social-embed-iframe-height: 100%;
+    --social-embed-iframe-width: 100%;
+    height: 500px;
+  }
+</style>
+<o-embed url="https://youtu.be/FTQbiNvZqaY" class="full"></o-embed>
+```
+
+<o-embed url="https://youtu.be/FTQbiNvZqaY" style={{height:"500px"}} class="full"></o-embed>
+
+### Dimension resolution order
+
+Dimensions are resolved in this order (first match wins):
+
+1. CSS custom properties (`--social-embed-iframe-width` / `--social-embed-iframe-height`)
+2. HTML attributes (`width` / `height`)
+3. Provider-specific defaults (e.g., Spotify: 100% × 352px, YouTube Shorts: 347 × 616px)
+4. Global default: 560 × 315px
+
+### Preventing layout shift (CLS)
+
+To prevent Cumulative Layout Shift while the component loads, set explicit dimensions with CSS custom properties:
+
+```css
+o-embed {
+  display: block;
+  --social-embed-iframe-width: 100%;
+  --social-embed-iframe-height: 315px;
+  min-height: 315px;
+}
+```
+
+This reserves space before the iframe renders, improving Core Web Vitals scores.
+
+## Fullscreen
+
+The `allowfullscreen` attribute is enabled by default. To disable the fullscreen button:
+
+```html
+<o-embed
+  url="https://www.youtube.com/watch?v=G_QhTdzWBJk"
+  allowfullscreen="false"
+></o-embed>
+```
+
+<o-embed url="https://www.youtube.com/watch?v=G_QhTdzWBJk" allowfullscreen="false"></o-embed>
+
+Values `"false"` and `"0"` disable fullscreen. The attribute is omitted entirely for Spotify embeds and [generic fallback](/wc/providers/generic) iframes.
+
+## Title (accessibility)
+
+The `title` attribute sets an accessible name on the rendered `<iframe>`, which screen readers announce when the user navigates to the embed.
+
+If you do not set `title`, the component auto-generates one:
+
+1. If a known provider matches: `"YouTube embed"`, `"Spotify embed"`, etc.
+2. For unknown providers (generic fallback): `"Embedded content"`
+
+Override with an explicit title for more descriptive labels:
+
+```html
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  title="Tony Narlock's conference talk on tmux"
+></o-embed>
+```
+
+## Frameborder
+
+The `frameborder` attribute defaults to `"0"` (no border). This attribute is deprecated in HTML5 — use CSS `border` instead — but is kept for backward compatibility with older browsers.
