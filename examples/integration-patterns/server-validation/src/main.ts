@@ -42,7 +42,7 @@ export function bootstrapApp(container: HTMLElement) {
       return;
     }
 
-    status.textContent = "Rejected: URL is not a recognized provider";
+    status.textContent = `Rejected: ${result.reason}`;
     preview.innerHTML = "";
   }
 

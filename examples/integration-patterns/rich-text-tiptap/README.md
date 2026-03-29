@@ -1,6 +1,17 @@
-# Rich Text TipTap Example
+# Rich Text — TipTap
 
-This example shows a TipTap editor that inserts a single embed node and serializes to `<o-embed url="..."></o-embed>`.
+Use this when:
+- You are adding embed support to a TipTap-based rich text editor
+- You need paste-to-embed (URLs pasted into the editor become `<o-embed>` nodes automatically)
+- You serialize editor content to HTML and expect `<o-embed url="..."></o-embed>` in the output
+
+Steal these files:
+- `src/embedExtension.ts` — TipTap `Node` extension: block node definition, paste rule, `insertOEmbed` command, HTML parse/render
+
+Production notes:
+- The paste rule uses `\S+` to catch any URL; scope it to known provider patterns to avoid auto-embedding every link
+- `atom: true` prevents the cursor from entering the embed node — remove it only if you need inline editing inside the node
+- Serialized HTML is safe to store; `<o-embed>` renders only when `@social-embed/wc` is loaded on the reading side
 
 Install dependencies:
 
@@ -14,16 +25,10 @@ Start the dev server:
 pnpm dev
 ```
 
-Run all tests:
+Run unit tests:
 
 ```bash
-pnpm test
-```
-
-Run the full local verification suite:
-
-```bash
-pnpm verify
+pnpm test:unit
 ```
 
 Run browser tests:
@@ -32,20 +37,8 @@ Run browser tests:
 pnpm test:browser
 ```
 
-Run unit tests only:
+Run all tests:
 
 ```bash
-pnpm test:unit
-```
-
-Repo path:
-
-```bash
-examples/integration-patterns/rich-text-tiptap
-```
-
-StackBlitz GitHub-subdir URL pattern:
-
-```text
-https://stackblitz.com/github/social-embed/social-embed/tree/BRANCH/examples/integration-patterns/rich-text-tiptap
+pnpm test
 ```
