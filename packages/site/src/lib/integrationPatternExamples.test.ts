@@ -28,7 +28,10 @@ describe("integration pattern examples manifest", () => {
 
   it("includes at least one example per docs section", () => {
     const sectionsWithExamples = new Set(
-      integrationPatternExamples.map((example) => example.section),
+      integrationPatternExamples.map(
+        (example: (typeof integrationPatternExamples)[number]) =>
+          example.section,
+      ),
     );
 
     for (const sectionId of Object.keys(integrationPatternSectionTitles)) {

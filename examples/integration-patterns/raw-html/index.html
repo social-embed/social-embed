@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raw HTML social-embed Example</title>
+  <style>
+    body {
+      max-width: 800px;
+      padding: 2rem;
+      margin: 0 auto;
+      font-family: sans-serif;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #333;
+    }
+    o-embed {
+      margin: 2rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div data-testid="app-root">
+    <h1>Raw HTML &lt;o-embed&gt; Example</h1>
+    <p>
+      This example demonstrates how to use the <code>&lt;o-embed&gt;</code> web component
+      in a plain HTML file, loading the component from a CDN.
+    </p>
+
+    <o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
+
+    <p>
+      The web component is loaded from unpkg via the script tag below.
+      No build tools or frameworks are required.
+    </p>
+  </div>
+
+  <script type="module" src="https://unpkg.com/@social-embed/wc@latest/dist/OEmbedElement.js"></script>
+</body>
+</html>
