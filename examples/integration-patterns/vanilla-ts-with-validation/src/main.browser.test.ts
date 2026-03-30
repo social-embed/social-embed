@@ -11,7 +11,9 @@ describe("vanilla-ts-with-validation example app", () => {
     await new Promise((resolve) => window.setTimeout(resolve, 50));
 
     // Initial input is INVALID_URL — status shows rejected, no embed
-    expect(document.querySelector('[data-testid="preview"] o-embed')).toBeNull();
+    expect(
+      document.querySelector('[data-testid="preview"] o-embed'),
+    ).toBeNull();
     const status = document.querySelector(
       '[data-testid="status"]',
     ) as HTMLParagraphElement | null;
@@ -38,7 +40,9 @@ describe("vanilla-ts-with-validation example app", () => {
     malformedButton?.click();
     await new Promise((resolve) => window.setTimeout(resolve, 50));
 
-    expect(document.querySelector('[data-testid="preview"] o-embed')).toBeNull();
+    expect(
+      document.querySelector('[data-testid="preview"] o-embed'),
+    ).toBeNull();
     expect(status?.textContent).toMatch(/Must be a valid URL/);
   });
 });
