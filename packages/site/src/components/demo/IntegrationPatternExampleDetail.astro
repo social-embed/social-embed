@@ -1,0 +1,114 @@
+---
+import type { IntegrationPatternExample } from "@examples/integration-patterns/manifest";
+import { integrationPatternSectionTitles } from "@examples/integration-patterns/manifest";
+import {
+  buildStackBlitzUrl,
+  integrationPatternGithubBaseUrl,
+} from "../../lib/integrationPatternLinks";
+
+interface Props {
+  basePath: string;
+  example: IntegrationPatternExample;
+}
+
+const { basePath, example } = Astro.props;
+const backHref = `${basePath.replace(/\/$/, "")}/#${example.section}`;
+const pageTitle = `${example.title} Example`;
+const sectionTitle = integrationPatternSectionTitles[example.section];
+const stackBlitzEmbedUrl =
+  example.kind === "runnable"
+    ? buildStackBlitzUrl(example, {
+        ctl: 1,
+        embed: 1,
+        hideExplorer: 1,
+        terminalHeight: 45,
+        view: "editor",
+      })
+    : undefined;
+---
+
+<div class="mx-auto max-w-6xl space-y-6 p-6">
+  <div class="space-y-3">
+    <a class="text-sm text-blue-600 no-underline hover:underline dark:text-blue-400" href={backHref}>
+      Back to {sectionTitle}
+    </a>
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold uppercase text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+        {example.kind}
+      </span>
+      <span class="rounded-full bg-sky-100 px-2.5 py-1 text-xs font-semibold uppercase text-sky-800 dark:bg-sky-950 dark:text-sky-300">
+        {example.tier}
+      </span>
+    </div>
+    <h1 class="text-3xl font-bold text-slate-900 dark:text-white">{pageTitle}</h1>
+    <p class="text-base font-medium text-slate-700 dark:text-slate-300">{example.problemSolved}</p>
+    <p class="text-slate-600 dark:text-slate-400">{example.description}</p>
+  </div>
+
+  <div class="flex flex-wrap gap-3 text-sm">
+    <a
+      class="rounded-md border border-slate-300 px-3 py-2 font-medium text-slate-900 no-underline hover:bg-slate-50 dark:border-slate-700 dark:text-white dark:hover:bg-slate-800"
+      href={`${integrationPatternGithubBaseUrl}/${example.githubPath}`}
+      rel="noreferrer"
+      target="_blank"
+    >
+      View source
+    </a>
+    {
+      example.kind === "runnable" && (
+        <a
+          class="rounded-md bg-blue-600 px-3 py-2 font-medium text-white no-underline hover:bg-blue-700"
+          href={buildStackBlitzUrl(example, { view: "editor" })}
+          rel="noreferrer"
+          target="_blank"
+        >
+          Open in StackBlitz
+        </a>
+      )
+    }
+  </div>
+
+  {
+    example.kind === "runnable" ? (
+      <section class="space-y-3">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">
+          Embedded StackBlitz
+        </h2>
+        <p class="text-sm text-slate-600 dark:text-slate-400">
+          This is the same runnable example exposed through StackBlitz&apos;s forkable GitHub import flow.
+        </p>
+        <iframe
+          allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; xr-spatial-tracking"
+          class="h-[780px] w-full rounded-xl border border-slate-200 bg-white dark:border-slate-800"
+          loading="lazy"
+          sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+          src={stackBlitzEmbedUrl}
+          title={`${example.title} embedded StackBlitz`}
+        />
+      </section>
+    ) : (
+      <section class="space-y-3">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">
+          Copy-paste files
+        </h2>
+        <p class="text-sm text-slate-600 dark:text-slate-400">
+          Fixture examples are reference files meant to be copied into an existing app.
+        </p>
+        <ul class="space-y-2">
+          {example.files.map((filePath: string) => (
+            <li>
+              <a
+                class="text-blue-600 no-underline hover:underline dark:text-blue-400"
+                href={`${integrationPatternGithubBaseUrl}/${filePath}`}
+                rel="noreferrer"
+                target="_blank"
+              >
+                {filePath}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</div>
