@@ -17,8 +17,10 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
     </h1>
     <p style="color: var(--sl-color-gray-3, #64748b); margin-bottom: 2rem;">
       Runnable apps and fixtures showing how to integrate social-embed into
-      real applications. Each example answers one concrete integration question.
+      real applications. Start with the concrete problem you need to solve,
+      inspect the implementation, and only then jump into StackBlitz when you
+      want to fork it.
     </p>
-    <DemoIntegrationPatternsBrowse client:only="react" />
+    <DemoIntegrationPatternsBrowse basePath="/wc/integration-patterns" client:only="react" />
   </div>
 </BaseLayout>
