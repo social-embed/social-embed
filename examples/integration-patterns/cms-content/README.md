@@ -1,5 +1,9 @@
 # CMS Content
 
+Repo path: `examples/integration-patterns/cms-content`
+
+Expected StackBlitz GitHub-subdir URL pattern: `https://stackblitz.com/fork/github/social-embed/social-embed/tree/<branch-or-tag>/examples/integration-patterns/cms-content?file=src%2FcmsHelpers.ts`
+
 Use this when:
 - Your CMS stores embeds in different shapes (raw HTML body, structured URL field, or legacy plain text) and you need a single render path
 - You want a typed discriminated union to replace stringly-typed content records

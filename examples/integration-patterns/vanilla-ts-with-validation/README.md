@@ -1,5 +1,9 @@
 # Vanilla TS + Zod Validation
 
+Repo path: `examples/integration-patterns/vanilla-ts-with-validation`
+
+Expected StackBlitz GitHub-subdir URL pattern: `https://stackblitz.com/fork/github/social-embed/social-embed/tree/<branch-or-tag>/examples/integration-patterns/vanilla-ts-with-validation?file=src%2FvalidationHelpers.ts`
+
 Use this when:
 - You need a framework-agnostic starting point that validates embed URLs before rendering
 - You want three explicit validation gates: URL format (Zod), provider recognition, and an allow list
