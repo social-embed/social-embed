@@ -6,14 +6,18 @@ export type SectionId =
   | "framework-agnostic"
   | "markdown-and-mdx"
   | "rich-text-editors"
-  | "server-side-validation";
+  | "server-side-validation"
+  | "raw-html"
+  | "spa-frameworks-ssr";
 
 export const integrationPatternSectionTitles: Record<SectionId, string> = {
   "database-cms-content": "Database / CMS content",
-  "framework-agnostic": "Framework-agnostic / Vanilla TS",
-  "markdown-and-mdx": "Markdown and MDX",
+  "framework-agnostic": "Vanilla TS",
+  "markdown-and-mdx": "Markdown / MDX",
+  "raw-html": "Raw HTML / No Framework",
   "rich-text-editors": "Rich text editors",
   "server-side-validation": "Server-side validation",
+  "spa-frameworks-ssr": "SPA Frameworks / SSR",
 } as const;
 
 type ExampleBase = {
@@ -95,6 +99,22 @@ export const integrationPatternExamples: IntegrationPatternExample[] = [
   },
   {
     description:
+      "Native ProseMirror node spec showing the smallest useful o-embed block definition.",
+    files: [
+      "examples/integration-patterns/fixtures/prosemirror/prosemirror-node-spec.ts",
+    ],
+    githubPath:
+      "examples/integration-patterns/fixtures/prosemirror/prosemirror-node-spec.ts",
+    id: "prosemirror-node-spec",
+    kind: "fixture",
+    problemSolved:
+      "Copy-paste a native ProseMirror NodeSpec that parses and serializes one stable <o-embed> block node.",
+    section: "rich-text-editors",
+    tier: "community",
+    title: "ProseMirror Node Spec",
+  },
+  {
+    description:
       "React Markdown and DOMPurify example showing raw HTML pass-through and sanitizer allowlists.",
     devPort: 4313,
     files: ["examples/integration-patterns/markdown-react-markdown"],
@@ -103,10 +123,25 @@ export const integrationPatternExamples: IntegrationPatternExample[] = [
     kind: "runnable",
     problemSolved:
       "Render <o-embed> tags in a react-markdown pipeline by allowing them through DOMPurify.",
-    section: "markdown-and-mdx",
+    section: "spa-frameworks-ssr",
     stackblitzOpenFile: "src/markdownHelpers.ts",
     tier: "core",
-    title: "Markdown + Sanitizer",
+    title: "React Markdown + Sanitizer",
+  },
+  {
+    description:
+      "SvelteKit example showing how to use the web component with SSR.",
+    devPort: 4318,
+    files: ["examples/integration-patterns/svelte-with-ssr"],
+    githubPath: "examples/integration-patterns/svelte-with-ssr",
+    id: "svelte-with-ssr",
+    kind: "runnable",
+    problemSolved:
+      "Use <o-embed> in a SvelteKit app with server-side rendering.",
+    section: "spa-frameworks-ssr",
+    stackblitzOpenFile: "src/routes/+page.svelte",
+    tier: "core",
+    title: "SvelteKit + SSR",
   },
   {
     description:
@@ -191,4 +226,19 @@ export const integrationPatternExamples: IntegrationPatternExample[] = [
     tier: "core",
     title: "Vanilla TS + Zod Validation",
   },
-];
+  {
+    description:
+      "Demonstrates the simplest possible integration of <o-embed>: a plain HTML page loading the web component from a CDN.",
+    devPort: 4317,
+    files: ["examples/integration-patterns/raw-html"],
+    githubPath: "examples/integration-patterns/raw-html",
+    id: "raw-html",
+    kind: "runnable",
+    problemSolved:
+      "Use <o-embed> without any build tools, frameworks, or bundlers.",
+    section: "raw-html",
+    stackblitzOpenFile: "index.html",
+    tier: "core",
+    title: "Raw HTML",
+  },
+].sort((a, b) => a.title.localeCompare(b.title));
