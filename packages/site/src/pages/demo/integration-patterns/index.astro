@@ -6,13 +6,16 @@ import BaseLayout from "../../../layouts/BaseLayout.astro";
 
 <BaseLayout
   title="Integration Pattern Examples"
-  description="Runnable apps and fixtures behind the integration patterns docs"
-  head={[{ tag: "meta", attrs: { "http-equiv": "refresh", content: "0; url=/wc/integration-patterns/" } }]}
+  description="Staff-facing attic for the integration pattern examples and embeds"
   hideFooter
 >
   <div class="demo-container">
     <DemoLayout currentPath="/demo/integration-patterns" client:only="react">
-      <DemoIntegrationPatternsBrowse client:only="react" />
+      <DemoIntegrationPatternsBrowse
+        basePath="/demo/integration-patterns"
+        client:only="react"
+        mode="demo"
+      />
     </DemoLayout>
   </div>
 </BaseLayout>
