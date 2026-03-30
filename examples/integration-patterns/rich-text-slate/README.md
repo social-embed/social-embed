@@ -1,5 +1,9 @@
 # Rich Text — Slate
 
+Repo path: `examples/integration-patterns/rich-text-slate`
+
+Expected StackBlitz GitHub-subdir URL pattern: `https://stackblitz.com/fork/github/social-embed/social-embed/tree/<branch-or-tag>/examples/integration-patterns/rich-text-slate?file=src%2FslateHelpers.ts`
+
 Use this when:
 - You are adding embed support to a Slate-based rich text editor
 - You need a custom void element type for embeds with typed narrowing
