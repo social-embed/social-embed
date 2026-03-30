@@ -1,5 +1,9 @@
 # Server-side Validation
 
+Repo path: `examples/integration-patterns/server-validation`
+
+Expected StackBlitz GitHub-subdir URL pattern: `https://stackblitz.com/fork/github/social-embed/social-embed/tree/<branch-or-tag>/examples/integration-patterns/server-validation?file=src%2FvalidationHelpers.ts`
+
 Use this when:
 - You need to accept embed URLs from users and must reject unknown providers before storing or rendering
 - You want a discriminated-union result type so TypeScript narrows `providerName` and `reason` without casting
