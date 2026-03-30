@@ -1,5 +1,9 @@
 # Markdown — react-markdown
 
+Repo path: `examples/integration-patterns/markdown-react-markdown`
+
+Expected StackBlitz GitHub-subdir URL pattern: `https://stackblitz.com/fork/github/social-embed/social-embed/tree/<branch-or-tag>/examples/integration-patterns/markdown-react-markdown?file=src%2FmarkdownHelpers.ts`
+
 Use this when:
 - You render Markdown to React and want `<o-embed>` custom elements to survive the sanitizer
 - You need a toggle showing the difference between stripped and allowed embed output
