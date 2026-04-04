@@ -26,6 +26,6 @@ export function validateEmbedUrl(url: string): EmbedValidationResult {
       reason: "URL is not a recognized provider",
     };
   }
-  const embedUrl = convertUrlToEmbedUrl(url) ?? url;
+  const embedUrl = convertUrlToEmbedUrl(url) || url;
   return { embedUrl, isValid: true, providerName: provider.name };
 }
