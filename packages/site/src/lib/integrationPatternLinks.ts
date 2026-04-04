@@ -7,7 +7,7 @@ const gitBranch =
 const branchSegment = encodeURIComponent(gitBranch);
 
 export const integrationPatternGithubBaseUrl = `https://github.com/social-embed/social-embed/tree/${branchSegment}`;
-export const integrationPatternStackBlitzBaseUrl = `https://stackblitz.com/github/social-embed/social-embed/tree/${branchSegment}`;
+export const integrationPatternStackBlitzBaseUrl = `https://stackblitz.com/fork/github/social-embed/social-embed/tree/${branchSegment}`;
 
 type StackBlitzUrlOptions = {
   ctl?: 0 | 1;
