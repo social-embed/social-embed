@@ -28,7 +28,7 @@ describe("integrationPatternLinks", () => {
     );
 
     expect(url).toContain(
-      "https://stackblitz.com/github/social-embed/social-embed/tree/examples-branch/examples/integration-patterns/rich-text-tiptap",
+      "https://stackblitz.com/fork/github/social-embed/social-embed/tree/examples-branch/examples/integration-patterns/rich-text-tiptap",
     );
     expect(url).toContain("file=src%2FembedExtension.ts");
     expect(url).toContain("embed=1");
