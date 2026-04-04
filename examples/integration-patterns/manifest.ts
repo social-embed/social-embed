@@ -1,16 +1,7 @@
 export type ExampleKind = "runnable" | "fixture";
 export type ExampleTier = "core" | "community";
 
-export type SectionId =
-  | "database-cms-content"
-  | "framework-agnostic"
-  | "markdown-and-mdx"
-  | "rich-text-editors"
-  | "server-side-validation"
-  | "raw-html"
-  | "spa-frameworks-ssr";
-
-export const integrationPatternSectionTitles: Record<SectionId, string> = {
+export const integrationPatternSectionTitles = {
   "database-cms-content": "Database / CMS content",
   "framework-agnostic": "Vanilla TS",
   "markdown-and-mdx": "Markdown / MDX",
@@ -19,6 +10,8 @@ export const integrationPatternSectionTitles: Record<SectionId, string> = {
   "server-side-validation": "Server-side validation",
   "spa-frameworks-ssr": "SPA Frameworks / SSR",
 } as const;
+
+export type SectionId = keyof typeof integrationPatternSectionTitles;
 
 type ExampleBase = {
   id: string;
@@ -49,6 +42,14 @@ export type FixtureExample = ExampleBase & {
 };
 
 export type IntegrationPatternExample = RunnableExample | FixtureExample;
+
+export function isRunnable(e: IntegrationPatternExample): e is RunnableExample {
+  return e.kind === "runnable";
+}
+
+export function isFixture(e: IntegrationPatternExample): e is FixtureExample {
+  return e.kind === "fixture";
+}
 
 export const integrationPatternExamples: IntegrationPatternExample[] = [
   {
