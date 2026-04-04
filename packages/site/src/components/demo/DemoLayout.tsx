@@ -37,6 +37,10 @@ const navigation: DemoNavItem[] = [
     ],
     label: "Widgets",
   },
+  {
+    href: "/demo/integration-patterns",
+    label: "Integration Patterns",
+  },
 ];
 
 function NavItem({

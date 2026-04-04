@@ -1,0 +1,25 @@
+{
+  "name": "svelte-with-ssr",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "^3.2.3",
+    "@sveltejs/kit": "^2.5.21",
+    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "svelte": "^4.2.18",
+    "vite": "^5.4.1",
+    "vitest": "^2.0.5",
+    "@social-embed/lib": "0.1.0-next.11",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@social-embed/wc": "0.1.0-next.13"
+  },
+  "type": "module"
+}

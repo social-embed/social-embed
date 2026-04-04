@@ -1,0 +1,32 @@
+---
+import { DemoIntegrationPatternsBrowse } from "../../../components/demo/DemoIntegrationPatternsBrowse";
+import { DemoLayout } from "../../../components/demo/DemoLayout";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Integration Pattern Examples"
+  description="Staff-facing attic for the integration pattern examples and embeds"
+  hideFooter
+>
+  <div class="demo-container">
+    <DemoLayout currentPath="/demo/integration-patterns" client:only="react">
+      <DemoIntegrationPatternsBrowse
+        basePath="/demo/integration-patterns"
+        client:only="react"
+        mode="demo"
+      />
+    </DemoLayout>
+  </div>
+</BaseLayout>
+
+<style>
+  .demo-container {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+  }
+</style>
