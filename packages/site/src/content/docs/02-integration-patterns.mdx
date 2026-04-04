@@ -44,7 +44,7 @@ function validateAndBuildEmbed(rawUrl: string) {
   if (!provider || !ALLOWED_PROVIDERS.includes(provider.name)) {
     return { isValid: false, reason: "Provider not in allow list" };
   }
-  return { isValid: true, embedUrl: convertUrlToEmbedUrl(parsed.data) ?? parsed.data };
+  return { isValid: true, embedUrl: convertUrlToEmbedUrl(parsed.data) || parsed.data };
 }
 ```
 
