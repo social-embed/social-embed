@@ -5,6 +5,7 @@ import { join } from "node:path";
 import {
   integrationPatternExamples,
   integrationPatternSectionTitles,
+  isRunnable,
 } from "@examples/integration-patterns/manifest";
 import { describe, expect, it } from "vitest";
 
@@ -41,6 +42,18 @@ describe("integration pattern examples manifest", () => {
         ),
       ).toBe(true);
     }
+  });
+
+  it("has unique id values", () => {
+    const ids = integrationPatternExamples.map((e) => e.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it("has unique devPort values across all runnable examples", () => {
+    const ports = integrationPatternExamples
+      .filter(isRunnable)
+      .map((e) => e.devPort);
+    expect(new Set(ports).size).toBe(ports.length);
   });
 
   it("points only at files that exist in the repo", async () => {
