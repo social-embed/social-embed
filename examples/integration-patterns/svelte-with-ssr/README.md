@@ -11,7 +11,10 @@ Expected StackBlitz GitHub-subdir URL pattern: `https://stackblitz.com/fork/gith
 This approach ensures that:
 1.  The server-side rendering process does not fail, as it will simply render a plain `<o-embed>` tag without trying to execute the browser-specific component code.
 2.  The web component is loaded on the client, where it "hydrates" the existing `<o-embed>` tag, turning it into a fully functional embedded element.
-3.  You can still use Svelte's event binding syntax (`on:oembed-rendered`) to listen to events dispatched from the web component.
+
+## Version constraints
+
+`@sveltejs/vite-plugin-svelte` v3 requires Vite 5.x. This example pins `vite@^5`, `vitest@^2`, and `typescript@^5` — do **not** bump them to the workspace-root versions (Vite 6 / TS 6) or the SvelteKit build will fail.
 
 ## How to run this example
 
