@@ -6,6 +6,7 @@ import {
   useMemo,
   useRef,
 } from "react";
+import { type ViewMode, wrapSnippet } from "./presets";
 
 export interface ConsoleEntry {
   id: string;
@@ -19,6 +20,8 @@ export interface PreviewPaneProps {
   wcUrl: string;
   onConsoleMessage?: (entry: ConsoleEntry) => void;
   className?: string;
+  /** When "snippet", wraps code in the standard HTML page template before rendering */
+  viewMode?: ViewMode;
 }
 
 export interface PreviewPaneHandle {
@@ -99,9 +102,16 @@ function getConsoleCaptureScript(): string {
 /**
  * Generate the full srcdoc HTML with WC URL replaced and scripts injected.
  */
-function generateSrcdoc(code: string, wcUrl: string): string {
+function generateSrcdoc(
+  code: string,
+  wcUrl: string,
+  viewMode: ViewMode = "full",
+): string {
+  // In snippet mode, wrap the code in a full HTML page first
+  const sourceCode = viewMode === "snippet" ? wrapSnippet(code) : code;
+
   // Replace {{WC_URL}} placeholder with actual WC URL
-  let processedCode = code.replace(/\{\{WC_URL\}\}/g, wcUrl);
+  let processedCode = sourceCode.replace(/\{\{WC_URL\}\}/g, wcUrl);
 
   // Inject console capture script after <head> tag
   const consoleCaptureScript = getConsoleCaptureScript();
@@ -128,7 +138,10 @@ function generateSrcdoc(code: string, wcUrl: string): string {
  * Sandboxed iframe preview for the playground.
  */
 export const PreviewPane = forwardRef<PreviewPaneHandle, PreviewPaneProps>(
-  function PreviewPane({ code, wcUrl, onConsoleMessage, className = "" }, ref) {
+  function PreviewPane(
+    { code, wcUrl, onConsoleMessage, className = "", viewMode = "full" },
+    ref,
+  ) {
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     // Expose updateAttribute method to parent via ref
@@ -150,7 +163,10 @@ export const PreviewPane = forwardRef<PreviewPaneHandle, PreviewPaneProps>(
     useImperativeHandle(ref, () => ({ updateAttribute }), [updateAttribute]);
 
     // Generate srcdoc from inputs
-    const srcdoc = useMemo(() => generateSrcdoc(code, wcUrl), [code, wcUrl]);
+    const srcdoc = useMemo(
+      () => generateSrcdoc(code, wcUrl, viewMode),
+      [code, wcUrl, viewMode],
+    );
 
     // Listen for postMessage from iframe
     const handleMessage = useCallback(
