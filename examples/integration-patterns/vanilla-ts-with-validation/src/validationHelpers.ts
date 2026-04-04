@@ -34,6 +34,6 @@ export function validateAndBuildEmbed(rawUrl: string): EmbedValidationResult {
     };
   }
 
-  const embedUrl = convertUrlToEmbedUrl(parsed.data) ?? parsed.data;
+  const embedUrl = convertUrlToEmbedUrl(parsed.data) || parsed.data;
   return { embedUrl, isValid: true, providerName: provider.name };
 }
