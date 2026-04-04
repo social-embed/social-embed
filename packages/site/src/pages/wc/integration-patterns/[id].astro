@@ -1,0 +1,25 @@
+---
+import {
+  type IntegrationPatternExample,
+  integrationPatternExamples,
+} from "@examples/integration-patterns/manifest";
+import IntegrationPatternExampleDetail from "../../../components/demo/IntegrationPatternExampleDetail.astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return integrationPatternExamples.map(
+    (example: IntegrationPatternExample) => ({
+      params: { id: example.id },
+      props: { example },
+    }),
+  );
+}
+const { example } = Astro.props;
+---
+
+<BaseLayout title={`${example.title} Example`} description={example.problemSolved}>
+  <IntegrationPatternExampleDetail
+    basePath="/wc/integration-patterns"
+    example={example}
+  />
+</BaseLayout>
