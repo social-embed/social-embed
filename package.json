@@ -27,7 +27,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "dependencies": {
     "typescript": "^6.0.3"
   },
