@@ -11,6 +11,8 @@
     "check": "pnpm run --recursive check",
     "type-check": "pnpm run --recursive type-check",
     "type-check:tsc": "pnpm run --recursive type-check:tsc",
+    "knip": "knip",
+    "knip:fix": "knip --fix",
     "build:watch": "pnpm run --recursive build:watch",
     "test": "pnpm run --recursive test",
     "test:watch": "pnpm run --recursive test:watch",
