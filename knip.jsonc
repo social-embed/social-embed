@@ -1,0 +1,34 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
+  "ignoreBinaries": [
+    // npm-check-updates invoked via the `ncu` shell name in the
+    // root `update:all`/`ncu-local` scripts, not a declared
+    // dependency.
+    "ncu"
+  ],
+  "workspaces": {
+    "packages/lib": {
+      "ignoreBinaries": [
+        // ncu invoked in this workspace's own `ncu`/`update`
+        // scripts; root-level ignoreBinaries only merges with the
+        // "." (root) workspace, so the same suppression must
+        // repeat per workspace that needs it.
+        "ncu"
+      ]
+    },
+    "packages/site": {
+      "ignoreBinaries": [
+        "ncu"
+      ]
+    },
+    "packages/wc": {
+      "ignoreBinaries": [
+        "ncu"
+      ]
+      // No explicit entry: knip auto-discovers src/OEmbedElement.ts
+      // from package.json#main / #module / #exports. A baseline run
+      // with the explicit entry returned a "Remove redundant entry
+      // pattern" hint — auto-discovery already covers it.
+    }
+  }
+}
