@@ -17,14 +17,10 @@
       ]
     },
     "packages/site": {
-      "ignoreBinaries": [
-        "ncu"
-      ]
+      "ignoreBinaries": ["ncu"]
     },
     "packages/wc": {
-      "ignoreBinaries": [
-        "ncu"
-      ]
+      "ignoreBinaries": ["ncu"]
       // No explicit entry: knip auto-discovers src/OEmbedElement.ts
       // from package.json#main / #module / #exports. A baseline run
       // with the explicit entry returned a "Remove redundant entry
