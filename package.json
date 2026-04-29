@@ -36,8 +36,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.13",
     "cross-env": "^10.1.0",
-    "knip": "^6.7.0",
-    "oxlint": "^1.61.0",
+    "knip": "^6.9.0",
+    "oxlint": "^1.62.0",
     "oxlint-tsgolint": "^0.21.1"
   }
 }

@@ -45,7 +45,7 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "astro-expressive-code": "^0.41.7",
-    "es-module-lexer": "^2.0.0",
+    "es-module-lexer": "^2.1.0",
     "happy-dom": "^20.9.0",
     "magic-string": "^0.30.21",
     "pagefind": "^1.5.2",
