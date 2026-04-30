@@ -38,6 +38,6 @@
     "cross-env": "^10.1.0",
     "knip": "^6.9.0",
     "oxlint": "^1.62.0",
-    "oxlint-tsgolint": "^0.21.1"
+    "oxlint-tsgolint": "^0.22.1"
   }
 }
