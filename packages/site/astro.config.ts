@@ -171,6 +171,7 @@ export default defineConfig({
           "../lib/src/index.ts",
         ),
       },
+      tsconfigPaths: false,
     },
   },
 });
