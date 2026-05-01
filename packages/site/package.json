@@ -40,7 +40,7 @@
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.8",
+    "@astrojs/check": "^0.9.9",
     "@biomejs/biome": "^2.4.13",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
