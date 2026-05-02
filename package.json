@@ -6,7 +6,7 @@
     "clean": "pnpm run --recursive clean",
     "distclean": "pnpm run --recursive distclean",
     "format": "pnpm run --recursive format",
-    "format:check": "biome format .",
+    "format:check": "biome format . --check",
     "lint": "biome lint .",
     "check": "pnpm run --recursive check",
     "type-check": "pnpm run --recursive type-check",
@@ -23,6 +23,8 @@
     "docs": "pnpm run --recursive docs",
     "docs:gen:watch": "pnpm run --recursive docs:gen:watch",
     "docs:serve": "pnpm run --recursive docs:serve",
+    "examples:sync-deps": "pnpm tsx scripts/update-example-deps.ts",
+    "verify:integration-patterns": "pnpm exec biome check . && pnpm check && pnpm --filter @social-embed/lib test && pnpm --filter @social-embed/wc test && pnpm --filter \"./examples/integration-patterns/*\" test && pnpm --filter @social-embed/site test && pnpm --filter \"./examples/integration-patterns/*\" build && pnpm --filter @social-embed/site build && pnpm tsx scripts/smoke-example-previews.ts",
     "serve": "pnpm run --recursive serve",
     "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
   },
@@ -38,6 +40,7 @@
     "cross-env": "^10.1.0",
     "knip": "^6.11.0",
     "oxlint": "^1.62.0",
-    "oxlint-tsgolint": "^0.22.1"
+    "oxlint-tsgolint": "^0.22.1",
+    "tsx": "^4.21.0"
   }
 }

@@ -7,6 +7,100 @@ sidebar:
 
 social-embed integrates with content systems through one simple pattern: store the URL, render `<o-embed>`. Here are concrete examples.
 
+The [integration pattern examples](/wc/integration-patterns/) page is the live index. Runnable examples also have embedded StackBlitz detail pages so you can inspect the source and preview without leaving the docs site.
+
+## Raw HTML / No Framework
+
+For the simplest possible use case, load the web component from a CDN and use the `<o-embed>` tag directly in your HTML. No build tools are required.
+
+```html
+<o-embed url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"></o-embed>
+
+<script type="module" src="https://unpkg.com/@social-embed/wc@latest/dist/OEmbedElement.js"></script>
+```
+
+This is a great option for static sites, CMS content previews, or quick prototypes.
+
+Browse the runnable example for this section on the [Integration pattern examples](/wc/integration-patterns/#raw-html) page.
+
+## Vanilla TS
+
+For environments without a framework, add three validation gates before storing or rendering a URL: parse with a schema library, check against the provider registry, then enforce an explicit allow list:
+
+
+```ts
+import { convertUrlToEmbedUrl, getProviderFromUrl } from "@social-embed/lib";
+import { z } from "zod";
+
+const ALLOWED_PROVIDERS = ["YouTube", "Vimeo", "Spotify"];
+const embedUrlSchema = z.string().url("Must be a valid URL");
+
+function validateAndBuildEmbed(rawUrl: string) {
+  const parsed = embedUrlSchema.safeParse(rawUrl);
+  if (!parsed.success) {
+    return { isValid: false, reason: parsed.error.issues[0]?.message };
+  }
+  const provider = getProviderFromUrl(parsed.data);
+  if (!provider || !ALLOWED_PROVIDERS.includes(provider.name)) {
+    return { isValid: false, reason: "Provider not in allow list" };
+  }
+  return { isValid: true, embedUrl: convertUrlToEmbedUrl(parsed.data) || parsed.data };
+}
+```
+
+This pattern works in Node.js, Deno, Cloudflare Workers, and any browser environment — no React, Vue, or Angular required. Replace `ALLOWED_PROVIDERS` with your own list.
+
+Browse the runnable example for this section on the [Integration pattern examples](/wc/integration-patterns/#framework-agnostic) page.
+
+## SPA Frameworks / SSR
+
+When using a framework like React, Svelte, or Vue, the key is to ensure the web component is loaded correctly, especially when using Server-Side Rendering (SSR).
+
+**SvelteKit:**
+In SvelteKit, use `onMount` and a dynamic import to load the component only on the client.
+
+```ts
+// src/routes/+page.svelte
+import { onMount } from 'svelte';
+
+onMount(async () => {
+  await import('@social-embed/wc');
+});
+```
+
+**React / Next.js:**
+For React-based frameworks, especially with SSR, you might need a client-side wrapper. In Next.js App Router, this means a component with a `'use client'` directive.
+
+Some libraries like `react-markdown` may strip unknown HTML tags. Add `<o-embed>` to your sanitizer's allow list:
+
+```ts
+// DOMPurify with react-markdown
+import DOMPurify from 'dompurify';
+
+DOMPurify.sanitize(html, {
+  ADD_TAGS: ["o-embed"],
+  ADD_ATTR: ["url"],
+});
+```
+
+Browse the runnable examples for this section on the [Integration pattern examples](/wc/integration-patterns/#spa-frameworks-ssr) page.
+
+## Markdown / MDX
+
+`<o-embed>` tags work inline in markdown because HTML passes through most parsers:
+
+```md
+Watch the demo:
+
+<o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>
+
+Continue reading...
+```
+
+This renders in any markdown pipeline that preserves HTML (Astro, Hugo, Jekyll, MDX). The social-embed docs site itself uses this pattern — every provider page contains live `<o-embed>` tags.
+
+Browse the markdown fixtures for this section on the [Integration pattern examples](/wc/integration-patterns/#markdown-and-mdx) page.
+
 ## Rich text editors
 
 In editors like TipTap, ProseMirror, or Slate, define one embed node instead of one per provider.
@@ -39,29 +133,7 @@ const OEmbed = Node.create({
 
 When a user pastes a media URL, the editor wraps it in a single node. The serialized output is always `<o-embed url="..."></o-embed>` — one shape, regardless of provider.
 
-## Markdown and MDX
-
-`<o-embed>` tags work inline in markdown because HTML passes through most parsers:
-
-```md
-Watch the demo:
-
-<o-embed url="https://youtu.be/Bd8_vO5zrjo"></o-embed>
-
-Continue reading...
-```
-
-This renders in any markdown pipeline that preserves HTML (Astro, Hugo, Jekyll, MDX). The social-embed docs site itself uses this pattern — every provider page contains live `<o-embed>` tags.
-
-**Sanitizer note:** Some markdown renderers strip unknown HTML tags by default (notably `react-markdown` and DOMPurify). Add `<o-embed>` to your sanitizer's allow list:
-
-```ts
-// DOMPurify
-DOMPurify.sanitize(html, {
-  ADD_TAGS: ["o-embed"],
-  ADD_ATTR: ["url"],
-});
-```
+Browse the runnable examples and fixtures for this section on the [Integration pattern examples](/wc/integration-patterns/#rich-text-editors) page, including native ProseMirror and TipTap node-spec fixtures.
 
 ## Database / CMS content
 
@@ -82,6 +154,8 @@ INSERT INTO posts (embed_url) VALUES (
 
 At render time, load the web component once and every `<o-embed>` on the page resolves automatically.
 
+Browse the runnable example for this section on the [Integration pattern examples](/wc/integration-patterns/#database-cms-content) page.
+
 ## Server-side validation
 
 When accepting user-submitted URLs, validate before storing:
@@ -96,3 +170,5 @@ function validateEmbedUrl(url: string): boolean {
 ```
 
 This restricts embeds to known providers. The web component's generic fallback renders any valid URL — server-side validation is where the allowlist lives. See [Security & validation](/security-and-validation) for CSP configuration, sanitizer allowlists, and privacy considerations.
+
+Browse the runnable example for this section on the [Integration pattern examples](/wc/integration-patterns/#server-side-validation) page.
