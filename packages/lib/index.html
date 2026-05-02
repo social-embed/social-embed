@@ -3,120 +3,263 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test @social-embed/lib Functions</title>
+    <title>Test @social-embed/lib v2 API</title>
+    <style>
+      body {
+        max-width: 900px;
+        padding: 0 1rem;
+        margin: 2rem auto;
+        font-family: system-ui, sans-serif;
+        line-height: 1.6;
+      }
+      pre {
+        padding: 1rem;
+        overflow-x: auto;
+        background: #f4f4f4;
+        border-radius: 4px;
+      }
+      code {
+        padding: 0.2rem 0.4rem;
+        background: #f4f4f4;
+        border-radius: 2px;
+      }
+      .result {
+        padding: 0.5rem 1rem;
+        margin: 0.5rem 0;
+        background: #e8f5e9;
+        border-left: 4px solid #4caf50;
+      }
+      .error {
+        background: #ffebee;
+        border-left-color: #f44336;
+      }
+      h2 {
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #ddd;
+      }
+    </style>
     <script type="module">
       import {
-        getProviderFromUrl,
-        getVimeoIdFromUrl,
-        getYouTubeIdFromUrl,
-        isValidUrl,
-        youTubeUrlRegex,
+        defineIframeMatcher,
+        MatcherRegistry,
+        SpotifyMatcher,
+        YouTubeMatcher,
       } from "/src/index.ts";
 
-      // 1. Simple usage for direct YouTube or Vimeo extraction
-      // ------------------------------------------------------
+      // ─────────────────────────────────────────────────────────────
+      // 1. Basic Usage - MatcherRegistry
+      // ─────────────────────────────────────────────────────────────
 
-      // YouTube examples
-      const outputGetYouTubeIdFromUrl = (url) => {
-        console.log(`getYouTubeIdFromUrl("${url}"):`, getYouTubeIdFromUrl(url));
-      };
+      const registry = MatcherRegistry.withDefaults();
 
-      outputGetYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo");
-      outputGetYouTubeIdFromUrl("https://youtu.be/watch?v=Bd8_vO5zrjo");
+      console.group("1. Basic Usage");
 
-      // Vimeo example
-      const outputGetVimeoIdFromUrl = (url) => {
-        console.log(`getVimeoIdFromUrl("${url}"):`, getVimeoIdFromUrl(url));
-      };
-      outputGetVimeoIdFromUrl("https://vimeo.com/134668506");
+      // Match URLs
+      const youtubeUrl = "https://youtu.be/dQw4w9WgXcQ";
+      const youtubeResult = registry.match(youtubeUrl);
+      console.log(`registry.match("${youtubeUrl}"):`, youtubeResult);
 
-      // Show how we can use a regex (youTubeUrlRegex) directly
-      const testYouTubeRegex = "https://youtu.be/watch?v=Bd8_vO5zrjo";
-      console.log(
-        `"${testYouTubeRegex}".match(youTubeUrlRegex):`,
-        testYouTubeRegex.match(youTubeUrlRegex),
-      );
-
-      // 2. Using getProviderFromUrl for any recognized service
-      // ------------------------------------------------------
-      const testUrl = "https://youtu.be/watch?v=Bd8_vO5zrjo";
-      const provider = getProviderFromUrl(testUrl);
-      console.log(`getProviderFromUrl("${testUrl}"):`, provider);
-
-      if (provider) {
-        // Example: if the provider is YouTube, this will extract the 11-char ID
-        const extractedId = provider.getIdFromUrl(testUrl);
-        console.log(`provider.getIdFromUrl("${testUrl}"):`, extractedId);
-
-        // Then build the embed URL from that ID
-        const embedUrl = provider.getEmbedUrlFromId(extractedId);
-        console.log(`provider.getEmbedUrlFromId("${extractedId}"):`, embedUrl);
-      } else {
-        console.log(`No recognized provider for "${testUrl}"`);
+      if (youtubeResult.ok) {
+        console.log("  matcher.name:", youtubeResult.matcher.name);
+        console.log("  data:", youtubeResult.data);
       }
 
-      // 3. Checking a random URL for validity
-      // -------------------------------------
+      // Convert to embed URL
+      const embedUrl = registry.toEmbedUrl(youtubeUrl);
+      console.log(`registry.toEmbedUrl("${youtubeUrl}"):`, embedUrl);
+
+      console.groupEnd();
+
+      // ─────────────────────────────────────────────────────────────
+      // 2. Type-Safe Matching with isMatch()
+      // ─────────────────────────────────────────────────────────────
+
+      console.group("2. Type-Safe Matching with isMatch()");
+
+      const spotifyUrl = "https://open.spotify.com/track/4iV5W9uYEdYUVa79Axb7Rh";
+      const spotifyResult = registry.match(spotifyUrl);
+
+      // Type guard narrows the result
+      if (registry.isMatch(spotifyResult, SpotifyMatcher)) {
+        console.log("Spotify match found!");
+        console.log("  contentType:", spotifyResult.data.contentType);
+        console.log("  id:", spotifyResult.data.id);
+      }
+
+      if (registry.isMatch(youtubeResult, YouTubeMatcher)) {
+        console.log("YouTube match found!");
+        console.log("  videoId:", youtubeResult.data.videoId);
+      }
+
+      // Check non-matching matchers
       console.log(
-        `isValidUrl("https://apple.com"):`,
-        isValidUrl("https://apple.com"),
+        "isMatch(youtubeResult, SpotifyMatcher):",
+        registry.isMatch(youtubeResult, SpotifyMatcher),
       );
-      console.log(
-        `isValidUrl("notaurl"):`,
-        isValidUrl("notaurl"),
-      );
+
+      console.groupEnd();
+
+      // ─────────────────────────────────────────────────────────────
+      // 3. Custom Matchers with Priority
+      // ─────────────────────────────────────────────────────────────
+
+      console.group("3. Custom Matchers with Priority");
+
+      // Create a custom matcher
+      const MyTikTokMatcher = defineIframeMatcher({
+        domains: ["tiktok.com"],
+        embedUrl: (id) => `https://www.tiktok.com/embed/${id}`,
+        name: "TikTok",
+        patterns: [/tiktok\.com\/@[\w]+\/video\/(\d+)/],
+      });
+
+      // Register with priority
+      registry.register(MyTikTokMatcher, { priority: 10 });
+      console.log("Registered TikTok matcher with priority 10");
+
+      // Test the custom matcher
+      const tiktokUrl = "https://www.tiktok.com/@user/video/1234567890123";
+      const tiktokResult = registry.match(tiktokUrl);
+      console.log(`registry.match("${tiktokUrl}"):`, tiktokResult);
+
+      if (tiktokResult.ok) {
+        console.log("  embed URL:", tiktokResult.matcher.toEmbedUrl(tiktokResult.data));
+      }
+
+      console.groupEnd();
+
+      // ─────────────────────────────────────────────────────────────
+      // 4. List Available Matchers
+      // ─────────────────────────────────────────────────────────────
+
+      console.group("4. Available Matchers");
+      console.log("Registered matchers:", registry.list().map((m) => m.name));
+      console.log("Total count:", registry.size);
+      console.groupEnd();
     </script>
   </head>
   <body>
-    <h2>@social-embed/lib Test Page</h2>
+    <h1>@social-embed/lib v2 API Test Page</h1>
 
     <p>
-      Open your browser’s dev tools console (<code>console.log</code> output) to
-      see the library functions in action.
+      Open your browser's dev tools console to see the library functions in
+      action. This page demonstrates the v2 API.
     </p>
 
     <hr />
 
-    <h2>Example in HTML</h2>
-
-    <h3>Code Snippet</h3>
+    <h2>1. Basic Usage</h2>
 
     <pre>
-// This script demonstrates basic usage:
-//   - Extracting a YouTube video ID from multiple link formats
-//   - Checking validity of a random URL
-//   - Using getProviderFromUrl() for a recognized service
+import { MatcherRegistry } from "@social-embed/lib";
 
-import { getYouTubeIdFromUrl } from "/src/index.ts";
+const registry = MatcherRegistry.withDefaults();
 
-const outputGetYouTubeIdFromUrl = (url) =>
-  \`<code>getYouTubeIdFromUrl("\${url}")</code>: \${getYouTubeIdFromUrl(url)}\`;
+// Match a URL
+const result = registry.match("https://youtu.be/dQw4w9WgXcQ");
+if (result.ok) {
+  console.log(result.matcher.name);  // "YouTube"
+  console.log(result.data.videoId);  // "dQw4w9WgXcQ"
+}
 
-document.body.innerHTML += \`
-  \${outputGetYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo")}
-  <br />
-  \${outputGetYouTubeIdFromUrl("https://www.youtu.be/watch?v=Bd8_vO5zrjo")}
-\`;
+// Get embed URL directly
+const embedUrl = registry.toEmbedUrl("https://youtu.be/dQw4w9WgXcQ");
+// => "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
     </pre>
 
-    <h3>Output</h3>
+    <h2>2. Type-Safe Matching with isMatch()</h2>
+
+    <pre>
+import { MatcherRegistry, YouTubeMatcher, SpotifyMatcher } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+const result = registry.match(url);
+
+// Type guard narrows result type
+if (registry.isMatch(result, YouTubeMatcher)) {
+  console.log(result.data.videoId);  // TypeScript knows this is YouTubeData
+}
+
+if (registry.isMatch(result, SpotifyMatcher)) {
+  console.log(result.data.contentType);  // "track", "album", etc.
+  console.log(result.data.id);
+}
+    </pre>
+
+    <h2>3. Custom Matchers with Priority</h2>
+
+    <pre>
+import { MatcherRegistry, defineIframeMatcher } from "@social-embed/lib";
+
+const registry = MatcherRegistry.withDefaults();
+
+const MyMatcher = defineIframeMatcher({
+  name: "TikTok",
+  domains: ["tiktok.com"],
+  patterns: [/tiktok\.com\/@[\w]+\/video\/(\d+)/],
+  embedUrl: (id) => `https://www.tiktok.com/embed/${id}`,
+});
+
+// Register with priority (higher = matches first)
+registry.register(MyMatcher, { priority: 10 });
+    </pre>
+
+    <h2>Live Demo</h2>
+
+    <div id="demo"></div>
 
     <script type="module">
-      import { getYouTubeIdFromUrl } from "/src/index.ts";
+      import { MatcherRegistry } from "/src/index.ts";
 
-      const outputGetYouTubeIdFromUrl = (url) =>
-        `<code>getYouTubeIdFromUrl("${url}")</code>: ${
-          getYouTubeIdFromUrl(url)
-        }`;
+      const registry = MatcherRegistry.withDefaults();
+      const demo = document.getElementById("demo");
 
-      // We append this HTML after the <pre> block
-      document.body.innerHTML += `
-        <p>
-          ${outputGetYouTubeIdFromUrl("https://www.youtube.com/watch?v=Bd8_vO5zrjo")}
-          <br />
-          ${outputGetYouTubeIdFromUrl("https://www.youtu.be/watch?v=Bd8_vO5zrjo")}
-        </p>
-      `;
+      const urls = [
+        "https://youtu.be/dQw4w9WgXcQ",
+        "https://open.spotify.com/track/4iV5W9uYEdYUVa79Axb7Rh",
+        "https://vimeo.com/134668506",
+        "https://example.com/not-supported",
+      ];
+
+      for (const url of urls) {
+        const result = registry.match(url);
+        const div = document.createElement("div");
+        div.className = result.ok ? "result" : "result error";
+
+        if (result.ok) {
+          // Build DOM safely without innerHTML
+          const strong = document.createElement("strong");
+          strong.textContent = result.matcher.name;
+          div.appendChild(strong);
+          div.appendChild(document.createElement("br"));
+
+          div.appendChild(document.createTextNode("URL: "));
+          const urlCode = document.createElement("code");
+          urlCode.textContent = url;
+          div.appendChild(urlCode);
+          div.appendChild(document.createElement("br"));
+
+          div.appendChild(document.createTextNode("Embed: "));
+          const embedCode = document.createElement("code");
+          embedCode.textContent = result.matcher.toEmbedUrl(result.data);
+          div.appendChild(embedCode);
+        } else {
+          const strong = document.createElement("strong");
+          strong.textContent = "No Match";
+          div.appendChild(strong);
+          div.appendChild(document.createElement("br"));
+
+          div.appendChild(document.createTextNode("URL: "));
+          const urlCode = document.createElement("code");
+          urlCode.textContent = url;
+          div.appendChild(urlCode);
+          div.appendChild(document.createElement("br"));
+
+          div.appendChild(document.createTextNode(`Error: ${result.error.message}`));
+        }
+
+        demo.appendChild(div);
+      }
     </script>
   </body>
 </html>

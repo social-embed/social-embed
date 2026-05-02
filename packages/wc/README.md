@@ -1,6 +1,6 @@
 # &lt;o-embed&gt; Web Component
 
-> A portable embed primitive — store `<o-embed url="...">`, render the right player. ~10 kB gzipped.
+> Transform media URLs into beautiful embeds with a single HTML tag.
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) 
 [![npm version](https://img.shields.io/npm/v/@social-embed/wc.svg?style=flat)](https://www.npmjs.com/package/@social-embed/wc)
@@ -8,15 +8,11 @@
 
 A [Web Component](https://developer.mozilla.org/en-US/docs/Web/Web_Components) that turns URLs from popular media platforms (YouTube, Spotify, Vimeo, etc.) into fully functional embedded players. Just add a single tag to your HTML:
 
-Before — a raw link your users can't interact with:
-
-```
-https://www.youtube.com/watch?v=G_QhTdzWBJk
-```
-
-After — an interactive embedded player:
-
 ```html
+<!-- Before: Raw link your users can't interact with -->
+https://www.youtube.com/watch?v=G_QhTdzWBJk
+
+<!-- After: Interactive embedded player -->
 <o-embed url="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
 ```
 
@@ -64,30 +60,43 @@ pnpm add @social-embed/wc
 
 ### 2. Add to your project
 
-**Option A: Via Script Tag**
+**Option A: Via CDN (recommended for quick start)**
 
 ```html
-<script type="module" src="https://unpkg.com/@social-embed/wc?module"></script>
-```
+<!-- esm.sh (recommended) -->
+<script type="module" src="https://esm.sh/@social-embed/wc"></script>
 
-```html
+<!-- Or jsDelivr -->
+<script type="module" src="https://esm.run/@social-embed/wc"></script>
+
+<!-- Or unpkg -->
+<script type="module" src="https://unpkg.com/@social-embed/wc"></script>
+
 <o-embed url="https://www.youtube.com/watch?v=G_QhTdzWBJk"></o-embed>
 ```
 
-**Option B: Via Import**
-
-In your JavaScript/TypeScript file:
-
+**Option B: Via Import (for bundlers)**
 ```js
+// In your JavaScript/TypeScript file
 import "@social-embed/wc";
-```
 
-Then in your HTML:
-
-```js
+// Then in your HTML
 document.body.innerHTML = `
   <o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
 `;
+```
+
+**Option C: Complete HTML Example**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="module" src="https://esm.sh/@social-embed/wc"></script>
+</head>
+<body>
+  <o-embed url="https://youtu.be/dQw4w9WgXcQ" allowfullscreen></o-embed>
+</body>
+</html>
 ```
 
 ## Supported Media Platforms
@@ -114,62 +123,36 @@ document.body.innerHTML = `
 
 ### Attributes
 
-| Attribute | Default | Description |
-|-----------|---------|-------------|
-| `url` | — | The media URL to embed (required) |
-| `width` | `"560"` | Width of the embed |
-| `height` | `"315"` | Height of the embed |
-| `allowfullscreen` | `"true"` | Enable fullscreen button |
-| `frameborder` | `"0"` | Iframe border width |
-| `title` | (auto-generated) | Accessible iframe title. Auto-generated from provider name (e.g. `"YouTube embed"`) if not set. Falls back to `"Embedded content"` for unknown providers. |
+```html
+<!-- Set custom dimensions -->
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  width="640"
+  height="360"
+></o-embed>
 
-Set custom dimensions:
+<!-- Enable fullscreen button -->
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  allowfullscreen
+></o-embed>
+
+<!-- Add loading spinner with message -->
+<o-embed
+  url="https://youtu.be/Bd8_vO5zrjo"
+  loading="Loading video..."
+></o-embed>
+```
+
+### Error Handling
 
 ```html
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" width="640" height="360"></o-embed>
+<!-- Custom error message -->
+<o-embed
+  url="invalid-url"
+  error-message="Sorry, this URL isn't supported"
+></o-embed>
 ```
-
-Enable fullscreen button:
-
-```html
-<o-embed url="https://youtu.be/Bd8_vO5zrjo" allowfullscreen></o-embed>
-```
-
-### CSS Custom Properties
-
-Control embed dimensions globally with CSS custom properties:
-
-```css
-o-embed {
-  --social-embed-iframe-width: 100%;
-  --social-embed-iframe-height: 400px;
-}
-```
-
-This is useful for responsive layouts and preventing Cumulative Layout Shift (CLS):
-
-```css
-o-embed {
-  display: block;
-  --social-embed-iframe-width: 100%;
-  --social-embed-iframe-height: 315px;
-  min-height: 315px;
-}
-```
-
-### Slot Content
-
-You can add child content inside `<o-embed>` — it renders after the iframe via a `<slot>`. This can be used for captions or as a fallback when JavaScript is unavailable:
-
-```html
-<o-embed url="https://youtu.be/Bd8_vO5zrjo">
-  <a href="https://youtu.be/Bd8_vO5zrjo">Watch on YouTube</a>
-</o-embed>
-```
-
-### Generic Fallback
-
-Any valid URL — even from unsupported platforms — renders as a plain `<iframe>`. This makes `<o-embed>` a universal embed tag that happens to have smart defaults for known providers.
 
 ## Technical Details
 
