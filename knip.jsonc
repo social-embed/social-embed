@@ -28,7 +28,21 @@
       ]
     },
     "packages/site": {
-      "ignoreBinaries": ["ncu"]
+      "ignoreBinaries": ["ncu"],
+      "ignoreDependencies": [
+        // CSS side-effect imports in src/tailwind.css / BaseLayout.astro
+        // / astro.config.ts — knip's module graph doesn't follow these.
+        "@fontsource/ibm-plex-mono",
+        "@fontsource/ibm-plex-sans",
+        // Runtime UI loaded by Pagefind itself; not imported from source.
+        "@pagefind/default-ui",
+        // Consumed across .astro pages and playground sources; knip's
+        // Astro coverage is partial.
+        "@social-embed/wc",
+        // Invoked via `npx pagefind` from
+        // plugins/astro-pagefind-integration.ts during the build hook.
+        "pagefind"
+      ]
     },
     "packages/wc": {
       // No explicit entry: knip auto-discovers src/OEmbedElement.ts
