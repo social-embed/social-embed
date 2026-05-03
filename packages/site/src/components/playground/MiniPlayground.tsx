@@ -67,7 +67,7 @@ function TabButton({ active, badge, children, onClick }: TabButtonProps) {
   );
 }
 
-export interface MiniPlaygroundProps {
+interface MiniPlaygroundProps {
   /** Additional CSS classes */
   className?: string;
   /** Height for the code editor section (e.g., "200px", "50%") */

@@ -4,7 +4,7 @@ import {
   type ProviderFilter,
 } from "./constants";
 
-export interface ProviderSelectorProps {
+interface ProviderSelectorProps {
   /** Currently selected provider filter */
   value: ProviderFilter;
   /** Called when selection changes */

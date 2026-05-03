@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export type RerollButtonProps = {
+type RerollButtonProps = {
   /** Size variant: xxs (20px), xs (22px), sm (24px), md (32px), lg (36px), xl (40px), xxl (44px), xxxl (48px) */
   variant?: "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl" | "xxxl";
   /** Show "Reroll" label (default: false) */

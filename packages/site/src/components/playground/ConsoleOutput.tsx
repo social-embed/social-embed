@@ -1,6 +1,6 @@
 import type { ConsoleEntry } from "./PreviewPane";
 
-export interface ConsoleOutputProps {
+interface ConsoleOutputProps {
   logs: ConsoleEntry[];
   onClear?: () => void;
   className?: string;

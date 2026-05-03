@@ -3,7 +3,7 @@
  * Uses the modern Clipboard API (97%+ browser support).
  */
 
-export interface CopyResult {
+interface CopyResult {
   success: boolean;
   error?: string;
 }

@@ -7,7 +7,7 @@ import {
   getCdnUrls,
 } from "../../lib/cdnSources";
 
-export interface CdnSourcePickerProps {
+interface CdnSourcePickerProps {
   value: CdnSource;
   onChange: (source: CdnSource) => void;
   className?: string;

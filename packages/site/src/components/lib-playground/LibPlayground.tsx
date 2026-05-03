@@ -25,7 +25,7 @@ import { type LibOutput, OutputDisplay } from "./OutputDisplay";
 import { ProviderSelector } from "./ProviderSelector";
 import { UrlInput } from "./UrlInput";
 
-export interface LibPlaygroundProps {
+interface LibPlaygroundProps {
   /** Display mode */
   mode?: "mini" | "full";
   /** Initial URL to test */

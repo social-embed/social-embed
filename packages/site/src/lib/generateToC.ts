@@ -10,7 +10,7 @@ export interface ToCItem {
   children: ToCItem[];
 }
 
-export interface ToCOptions {
+interface ToCOptions {
   /** Minimum heading level to include (default: 2 = h2) */
   minLevel?: number;
   /** Maximum heading level to include (default: 3 = h3) */

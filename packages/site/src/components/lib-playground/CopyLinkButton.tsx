@@ -9,7 +9,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { copyToClipboard } from "../../lib/clipboard";
 
-export interface CopyLinkButtonProps {
+interface CopyLinkButtonProps {
   /**
    * Function that returns the URL to copy.
    * Called at click time to get current state.

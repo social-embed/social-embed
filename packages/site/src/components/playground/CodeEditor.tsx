@@ -19,7 +19,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { seDark } from "./codemirror-dark";
 import { seLight } from "./codemirror-light";
 
-export interface CodeEditorProps {
+interface CodeEditorProps {
   value: string;
   onChange: (value: string) => void;
   language?: "html" | "javascript";

@@ -21,7 +21,7 @@ export type ProviderFilter = ProviderType | "all";
 /**
  * Display metadata for each provider in the UI.
  */
-export interface ProviderDisplayInfo {
+interface ProviderDisplayInfo {
   /** Human-readable name */
   name: string;
   /** Emoji icon for quick recognition */
@@ -109,7 +109,7 @@ export type LibSourceType =
 /**
  * Library source configuration.
  */
-export interface LibSourceConfig {
+interface LibSourceConfig {
   /** Display label */
   label: string;
   /** CDN URL pattern (null for local import) */
