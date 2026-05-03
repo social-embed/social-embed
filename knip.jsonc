@@ -6,6 +6,17 @@
     // dependency.
     "ncu"
   ],
+  // Temporary: lib and wc are published libraries — exported types
+  // are public API surface, so "Unused exported types" findings are
+  // noise rather than signal. Per-workspace issue-type filtering is
+  // expressed via the top-level `ignoreIssues` glob map (knip's
+  // workspace blocks don't accept `exclude` for issue types).
+  // Revisit if/when consumer tracking lets us tell which exports
+  // are actually unused downstream.
+  "ignoreIssues": {
+    "packages/lib/**": ["types"],
+    "packages/wc/**": ["types"]
+  },
   "workspaces": {
     "packages/lib": {
       "ignoreBinaries": [
@@ -20,11 +31,11 @@
       "ignoreBinaries": ["ncu"]
     },
     "packages/wc": {
-      "ignoreBinaries": ["ncu"]
       // No explicit entry: knip auto-discovers src/OEmbedElement.ts
       // from package.json#main / #module / #exports. A baseline run
       // with the explicit entry returned a "Remove redundant entry
       // pattern" hint — auto-discovery already covers it.
+      "ignoreBinaries": ["ncu"]
     }
   }
 }
