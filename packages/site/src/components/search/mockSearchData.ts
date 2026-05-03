@@ -9,7 +9,7 @@ import type { SearchResult } from "./searchTypes";
  * Mock search results database.
  * Maps search terms to results for testing different scenarios.
  */
-export const mockSearchResults: SearchResult[] = [
+const mockSearchResults: SearchResult[] = [
   {
     excerpt:
       "Get started with <mark>social-embed</mark> library. Install via npm or pnpm and start embedding videos in minutes.",

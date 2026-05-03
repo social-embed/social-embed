@@ -7,11 +7,7 @@
  */
 
 import { useState } from "react";
-import type {
-  SearchResult,
-  SearchResultItemProps,
-  SearchSubResult,
-} from "./searchTypes";
+import type { SearchResultItemProps, SearchSubResult } from "./searchTypes";
 
 /** Maximum number of sub-results to show in inline mode */
 const INLINE_SUBRESULTS_LIMIT = 3;
@@ -273,20 +269,4 @@ export function SearchResultItem({
       {/* The breadcrumb path is shown above the title instead */}
     </div>
   );
-}
-
-/**
- * Extract the title from a search result (strips HTML tags).
- * Utility function for accessibility descriptions.
- */
-export function getResultTitle(result: SearchResult): string {
-  const title = result.meta.title || result.url;
-  // Strip HTML tags repeatedly to handle malformed nested tags like <scr<script>ipt>
-  let clean = title;
-  let prev: string;
-  do {
-    prev = clean;
-    clean = clean.replace(/<[^>]*>/g, "");
-  } while (clean !== prev);
-  return clean;
 }

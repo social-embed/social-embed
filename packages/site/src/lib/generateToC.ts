@@ -73,22 +73,3 @@ export function generateToC(
 
   return result;
 }
-
-/**
- * Flatten nested ToC back into a flat array (useful for iteration).
- */
-export function flattenToC(items: ToCItem[]): ToCItem[] {
-  const result: ToCItem[] = [];
-
-  function traverse(tocItems: ToCItem[]) {
-    for (const item of tocItems) {
-      result.push(item);
-      if (item.children.length > 0) {
-        traverse(item.children);
-      }
-    }
-  }
-
-  traverse(items);
-  return result;
-}

@@ -5,14 +5,13 @@
 
 import {
   PROVIDER_CHECK_ORDER,
-  PROVIDER_PATTERNS,
   type ProviderType,
   URL_POOLS,
 } from "../../lib/constants";
 
 // Re-export for convenience
 export type { ProviderType };
-export { PROVIDER_CHECK_ORDER, PROVIDER_PATTERNS, URL_POOLS };
+export { PROVIDER_CHECK_ORDER, URL_POOLS };
 
 /**
  * Extended provider type including 'all' for no filtering.
