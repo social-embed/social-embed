@@ -14,7 +14,7 @@ export interface ConsoleEntry {
   timestamp: number;
 }
 
-export interface PreviewPaneProps {
+interface PreviewPaneProps {
   code: string;
   wcUrl: string;
   onConsoleMessage?: (entry: ConsoleEntry) => void;

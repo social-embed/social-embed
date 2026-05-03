@@ -1,6 +1,6 @@
 import { LIB_SOURCE_ORDER, LIB_SOURCES, type LibSourceType } from "./constants";
 
-export interface LibSourcePickerProps {
+interface LibSourcePickerProps {
   /** Currently selected library source */
   value: LibSourceType;
   /** Called when selection changes */

@@ -15,7 +15,7 @@ import { pickFromArray } from "../../lib/seededRng";
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type EmbedInfo = {
+type EmbedInfo = {
   /** Index of this embed in the HTML (0-based) */
   index: number;
   /** The URL value from the url attribute */
@@ -28,13 +28,13 @@ export type EmbedInfo = {
   provider: ProviderType | null;
 };
 
-export type AttributeUpdate = {
+type AttributeUpdate = {
   selector: string;
   attribute: string;
   value: string;
 };
 
-export type ReplacementResult = {
+type ReplacementResult = {
   html: string;
   updates: AttributeUpdate[];
 };

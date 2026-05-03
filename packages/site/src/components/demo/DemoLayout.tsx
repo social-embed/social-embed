@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-export type DemoNavItem = {
+type DemoNavItem = {
   label: string;
   href: string;
   items?: DemoNavItem[];

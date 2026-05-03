@@ -1,5 +1,4 @@
 import { expect as vitestExpect } from "vitest";
-import { page } from "vitest/browser";
 
 /**
  * Creates a fixture with the given template
@@ -24,61 +23,6 @@ export async function fixture<T extends Element>(template: string): Promise<T> {
 // biome-ignore lint/suspicious/noExplicitAny: This matches the open-wc/testing API which uses any[] for values
 export function html(strings: TemplateStringsArray, ...values: any[]): string {
   return String.raw({ raw: strings }, ...values);
-}
-
-/**
- * Custom assertion for comparing shadow DOM content
- * Similar to @open-wc/testing assert.shadowDom.equal but adapted for Lit's rendering
- */
-export function expectShadowDomToEqual(element: Element, expected: string) {
-  if (!element.shadowRoot) {
-    throw new Error("Element does not have a shadow root");
-  }
-
-  // Get all the actual elements from the shadow DOM, ignoring comments and styles
-  const getElements = (shadowRoot: ShadowRoot) => {
-    // Get only the real elements, ignore comments
-    const elements = Array.from(shadowRoot.querySelectorAll("*:not(style)"));
-    return elements;
-  };
-
-  // Parse the expected HTML string into actual elements for comparison
-  const parseExpected = (html: string) => {
-    const template = document.createElement("template");
-    template.innerHTML = html.trim();
-    return Array.from(template.content.querySelectorAll("*"));
-  };
-
-  const actualElements = getElements(element.shadowRoot);
-  const expectedElements = parseExpected(expected);
-
-  // Compare the number of elements
-  vitestExpect(actualElements.length).toBe(expectedElements.length);
-
-  // Compare element types and attributes
-  for (let i = 0; i < actualElements.length; i++) {
-    const actual = actualElements[i];
-    const expect = expectedElements[i];
-
-    // Check tag name
-    vitestExpect(actual.tagName.toLowerCase()).toBe(
-      expect.tagName.toLowerCase(),
-    );
-
-    // Check attributes
-    const actualAttrs = actual.getAttributeNames();
-    const expectedAttrs = expect.getAttributeNames();
-
-    // Same number of attributes
-    vitestExpect(actualAttrs.length).toBe(expectedAttrs.length);
-
-    // Check each attribute
-    for (const attr of expectedAttrs) {
-      const actualValue = actual.getAttribute(attr);
-      const expectedValue = expect.getAttribute(attr);
-      vitestExpect(actualValue).toBe(expectedValue);
-    }
-  }
 }
 
 /**
@@ -164,14 +108,4 @@ export async function expectShadowDomEventually(
       { timeout },
     )
     .toBe(true);
-}
-
-/**
- * Creates a locator from an element
- * Useful for testing element interactions
- */
-export function locator(
-  element: Element,
-): ReturnType<typeof page.elementLocator> {
-  return page.elementLocator(element);
 }

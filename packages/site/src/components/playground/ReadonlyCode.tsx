@@ -10,7 +10,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { seDark } from "./codemirror-dark";
 import { seLight } from "./codemirror-light";
 
-export interface ReadonlyCodeProps {
+interface ReadonlyCodeProps {
   code: string;
   language?: "html" | "javascript";
   className?: string;

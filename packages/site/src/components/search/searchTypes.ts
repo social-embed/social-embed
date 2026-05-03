@@ -37,7 +37,7 @@ export interface SearchResult {
 }
 
 /** Current status of the search operation */
-export type SearchStatus = "idle" | "loading" | "success" | "error";
+type SearchStatus = "idle" | "loading" | "success" | "error";
 
 /**
  * Display mode for sub-results (sections within a page).
@@ -45,7 +45,7 @@ export type SearchStatus = "idle" | "loading" | "success" | "error";
  * - 'toggle': Collapsible toggle, user clicks to expand (default)
  * - 'breadcrumbs': Show path like "Lib > Providers > YouTube" (Algolia-style)
  */
-export type SubResultsDisplay = "inline" | "toggle" | "breadcrumbs";
+type SubResultsDisplay = "inline" | "toggle" | "breadcrumbs";
 
 /** State for the search modal */
 export interface SearchState {

@@ -5,7 +5,7 @@ import {
   useRef,
 } from "react";
 
-export interface UrlInputProps {
+interface UrlInputProps {
   /** Current URL value */
   value: string;
   /** Called when URL changes */

@@ -13,12 +13,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "./dist",
-    "plugins": [
-      {
-        "name": "ts-lit-plugin",
-        "strict": true
-      }
-    ],
     "rootDir": "./",
     "skipLibCheck": true,
     "sourceMap": true,

@@ -6,13 +6,13 @@ import { getCollection } from "astro:content";
 
 type DocsEntry = CollectionEntry<"docs">;
 
-export interface SidebarLink {
+interface SidebarLink {
   label: string;
   href: string;
   order?: number;
 }
 
-export interface SidebarSection {
+interface SidebarSection {
   label: string;
   badge?: {
     text: string;

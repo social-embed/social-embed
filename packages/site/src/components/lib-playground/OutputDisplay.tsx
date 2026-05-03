@@ -19,7 +19,7 @@ export interface LibOutput {
   isShorts?: boolean;
 }
 
-export interface OutputDisplayProps {
+interface OutputDisplayProps {
   /** The transformation output to display */
   output: LibOutput | null;
   /** Additional CSS classes */
