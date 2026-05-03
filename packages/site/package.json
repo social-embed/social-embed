@@ -38,7 +38,6 @@
     "@social-embed/wc": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
     "astro": "^6.1.9",
-    "codemirror": "^6.0.2",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-live": "^4.1.8",
