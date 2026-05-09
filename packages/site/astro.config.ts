@@ -171,6 +171,7 @@ export default defineConfig({
           "../lib/src/index.ts",
         ),
       },
+      // @ts-expect-error: Astro 6 types target Vite 7 and don't include Vite 8's tsconfigPaths field (required at runtime by rolldown rc.17 — see commit c94b9151)
       tsconfigPaths: false,
     },
   },
