@@ -31,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: "playwright: Install browsers"
-        run: pnpm dlx playwright install --with-deps
+        run: pnpm --filter @social-embed/wc exec playwright install --with-deps
 
       - name: pnpm biome format .
         run: pnpm biome format .
