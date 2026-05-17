@@ -27,7 +27,7 @@
     "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "packageManager": "pnpm@11.1.2",
   "dependencies": {
