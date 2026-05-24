@@ -20,16 +20,16 @@
     "format": "pnpm run biome check . --write; pnpm run biome format . --write"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "^7.1.1",
-    "@astrojs/mdx": "^5.0.4",
-    "@astrojs/react": "^5.0.4",
+    "@astrojs/markdown-remark": "^7.1.2",
+    "@astrojs/mdx": "^5.0.6",
+    "@astrojs/react": "^5.0.5",
     "@codemirror/autocomplete": "^6.20.2",
     "@codemirror/commands": "^6.10.3",
     "@codemirror/lang-html": "^6.4.11",
     "@codemirror/lang-javascript": "^6.2.5",
     "@codemirror/language": "^6.12.3",
     "@codemirror/state": "^6.6.0",
-    "@codemirror/view": "^6.42.1",
+    "@codemirror/view": "^6.43.0",
     "@fontsource/ibm-plex-mono": "^5.2.7",
     "@fontsource/ibm-plex-sans": "^5.2.8",
     "@lezer/highlight": "^1.2.3",
@@ -37,7 +37,7 @@
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
     "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.1.9",
+    "astro": "^6.3.7",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "sharp": "^0.34.5",
@@ -47,7 +47,7 @@
     "@astrojs/check": "^0.9.9",
     "@biomejs/biome": "^2.4.15",
     "@types/hast": "^3.0.4",
-    "@types/react": "^19.2.14",
+    "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "astro-expressive-code": "^0.42.0",
     "es-module-lexer": "^2.1.0",
@@ -61,7 +61,7 @@
     "remark-rehype": "^11.1.2",
     "unified": "^11.0.5",
     "vfile": "^6.0.3",
-    "vite": "^8.0.11",
-    "vitest": "^4.1.6"
+    "vite": "^8.0.14",
+    "vitest": "^4.1.7"
   }
 }

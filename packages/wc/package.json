@@ -63,20 +63,20 @@
   },
   "dependencies": {
     "@social-embed/lib": "workspace:*",
-    "lit": "^3.3.2"
+    "lit": "^3.3.3"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.15",
-    "@vitest/browser-playwright": "^4.1.6",
-    "@vitest/coverage-istanbul": "^4.1.6",
-    "@vitest/ui": "^4.1.6",
+    "@vitest/browser-playwright": "^4.1.7",
+    "@vitest/coverage-istanbul": "^4.1.7",
+    "@vitest/ui": "^4.1.7",
     "lit-analyzer": "^2.0.3",
     "playwright": "^1.60.0",
     "rimraf": "^5.0.7",
     "typescript": "^6.0.3",
-    "vite": "^8.0.11",
-    "vite-plugin-dts": "^5.0.0",
-    "vitest": "^4.1.6",
+    "vite": "^8.0.14",
+    "vite-plugin-dts": "^5.0.1",
+    "vitest": "^4.1.7",
     "web-component-analyzer": "^2.0.0"
   },
   "engines": {
