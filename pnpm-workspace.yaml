@@ -1,6 +1,7 @@
 packages:
   - packages/*
 nodeLinker: hoisted
+verifyDepsBeforeRun: false
 allowBuilds:
   esbuild: true
   sharp: true
