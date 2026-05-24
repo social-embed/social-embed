@@ -14,7 +14,7 @@ This site is built with [Astro](https://astro.build).
 
 ### Prerequisites
 
-- Node.js 18 or higher
+- Node.js 22 or higher
 - pnpm (recommended) or npm/yarn
 
 ### Setup
