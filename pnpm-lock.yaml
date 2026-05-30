@@ -53,7 +53,7 @@ importers:
         version: 7.1.2
       '@astrojs/mdx':
         specifier: ^5.0.6
-        version: 5.0.6(astro@6.3.7(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0))
+        version: 5.0.6(astro@6.3.8(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0))
       '@astrojs/react':
         specifier: ^5.0.5
         version: 5.0.5(@types/node@20.19.30)(@types/react-dom@19.2.3(@types/react@19.2.15))(@types/react@19.2.15)(jiti@2.7.0)(lightningcss@1.32.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)(yaml@2.9.0)
@@ -100,8 +100,8 @@ importers:
         specifier: ^4.3.0
         version: 4.3.0(vite@8.0.14(@types/node@20.19.30)(esbuild@0.27.3)(jiti@2.7.0)(yaml@2.9.0))
       astro:
-        specifier: ^6.3.7
-        version: 6.3.7(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0)
+        specifier: ^6.3.8
+        version: 6.3.8(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0)
       react:
         specifier: ^19.2.6
         version: 19.2.6
@@ -132,7 +132,7 @@ importers:
         version: 19.2.3(@types/react@19.2.15)
       astro-expressive-code:
         specifier: ^0.42.0
-        version: 0.42.0(astro@6.3.7(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0))
+        version: 0.42.0(astro@6.3.8(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0))
       es-module-lexer:
         specifier: ^2.1.0
         version: 2.1.0
@@ -1945,8 +1945,8 @@ packages:
     peerDependencies:
       astro: ^4.0.0-beta || ^5.0.0-beta || ^3.3.0 || ^6.0.0-beta
 
-  astro@6.3.7:
-    resolution: {integrity: sha512-zIeDRrI0qNgN1lcCjNqt6/IVCVej7VwSa326cO8uP9BOk1cg4QuffhLnOn2gCgWQr32/wxpSRFfXiLKHglu1Tw==}
+  astro@6.3.8:
+    resolution: {integrity: sha512-xH2UA8Z17IS+JaqSlSkBor7jO6gd7zXTLdmu06nKpfpDDJFbi/7KZEy3NDmWxmier+6XrCZ9Z4aitO8jhC9oiA==}
     engines: {node: '>=22.12.0', npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
@@ -4009,12 +4009,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@5.0.6(astro@6.3.7(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0))':
+  '@astrojs/mdx@5.0.6(astro@6.3.8(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0))':
     dependencies:
       '@astrojs/markdown-remark': 7.1.2
       '@mdx-js/mdx': 3.1.1
       acorn: 8.16.0
-      astro: 6.3.7(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0)
+      astro: 6.3.8(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0)
       es-module-lexer: 2.1.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -5451,12 +5451,12 @@ snapshots:
 
   astring@1.9.0: {}
 
-  astro-expressive-code@0.42.0(astro@6.3.7(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0)):
+  astro-expressive-code@0.42.0(astro@6.3.8(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0)):
     dependencies:
-      astro: 6.3.7(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0)
+      astro: 6.3.8(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0)
       rehype-expressive-code: 0.42.0
 
-  astro@6.3.7(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0):
+  astro@6.3.8(@types/node@20.19.30)(jiti@2.7.0)(lightningcss@1.32.0)(rollup@4.55.1)(yaml@2.9.0):
     dependencies:
       '@astrojs/compiler': 4.0.0
       '@astrojs/internal-helpers': 0.9.1
