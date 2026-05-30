@@ -139,10 +139,11 @@ export class OEmbedElement extends LitElement {
    * The matched provider object, determined by calling `getProviderFromUrl(this.url)`.
    * If the URL is recognized, this will be an EmbedProvider object.
    *
-   * Use @property for reactivity, but do not reflect to attribute.
+   * Reactive but not reflected to an attribute: the setter calls
+   * `requestUpdate("provider", old)` manually (decorator-free, matching the
+   * static-properties pattern used for the attribute-backed properties).
    * Always set a new object reference for reactivity.
    */
-  @property({ type: Object, attribute: false })
   public get provider(): EmbedProvider | undefined {
     return this._provider;
   }
@@ -289,10 +290,10 @@ export class OEmbedElement extends LitElement {
     if (providerObj?.defaultDimensions) {
       return this.calculateDefaultDimensions({
         defaults: {
-          width: providerObj.defaultDimensions.width,
           height: providerObj.defaultDimensions.height,
-          widthWithUnits: providerObj.defaultDimensions.width,
           heightWithUnits: providerObj.defaultDimensions.height,
+          width: providerObj.defaultDimensions.width,
+          widthWithUnits: providerObj.defaultDimensions.width,
         },
       });
     }
