@@ -1,6 +1,8 @@
 export type { EmbedProvider } from "./provider";
 export * from "./providers";
+
 import { EmbedProviderRegistry } from "./registry";
+
 export { EmbedProviderRegistry };
 
 import { DailyMotionProvider } from "./providers/dailymotion";
@@ -42,7 +44,7 @@ for (const provider of defaultProviders) {
 }
 
 // Re-export utility functions
-export { getProviderFromUrl, convertUrlToEmbedUrl };
+export { convertUrlToEmbedUrl, getProviderFromUrl };
 
 /**
  * Get the default registry with all built-in providers.
