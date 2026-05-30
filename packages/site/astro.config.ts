@@ -166,6 +166,7 @@ export default defineConfig({
     plugins: [tailwindPlugin, localCdn, mdxMergeHeadings],
     resolve: {
       alias: {
+        "@examples": resolve(import.meta.dirname, "../../examples"),
         "@social-embed/lib": resolve(
           import.meta.dirname,
           "../lib/src/index.ts",

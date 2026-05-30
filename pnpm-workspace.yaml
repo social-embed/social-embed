@@ -1,5 +1,9 @@
+linkWorkspacePackages: true
+preferWorkspacePackages: true
+
 packages:
   - packages/*
+  - examples/integration-patterns/*
 nodeLinker: hoisted
 verifyDepsBeforeRun: false
 # Supply-chain cooldown: ignore versions younger than 3 days (4320 minutes).

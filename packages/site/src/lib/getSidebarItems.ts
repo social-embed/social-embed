@@ -216,6 +216,13 @@ export async function getSidebarItems(
       },
       ...wcGroups,
       {
+        badge: { text: "examples", variant: "tip" },
+        items: [
+          { href: "/wc/integration-patterns/", label: "Integration Patterns" },
+        ],
+        label: "WC Examples",
+      },
+      {
         badge: { text: "try it", variant: "success" },
         items: [
           { href: "/wc/playground/", label: "Interactive" },
@@ -260,6 +267,15 @@ export async function getSidebarItems(
 
     // WC subgroups (providers, configuration)
     ...wcGroups,
+
+    // WC Examples (manual)
+    {
+      badge: { text: "examples", variant: "tip" },
+      items: [
+        { href: "/wc/integration-patterns/", label: "Integration Patterns" },
+      ],
+      label: "WC Examples",
+    },
 
     // WC Playground (manual)
     {
