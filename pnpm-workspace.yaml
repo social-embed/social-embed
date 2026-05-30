@@ -2,6 +2,15 @@ packages:
   - packages/*
 nodeLinker: hoisted
 verifyDepsBeforeRun: false
+# Supply-chain cooldown: ignore versions younger than 3 days (4320 minutes).
+# pnpm's key/unit differ from npm's: pnpm reads `minimumReleaseAge` in minutes,
+# npm reads `min-release-age` in days (~/.npmrc). pnpm ignores the npm key, so
+# this must be set here to actually take effect. pnpm 11 defaults this to 1 day.
+minimumReleaseAge: 4320
+# Loose mode: when `ncu -u` pins a range whose only matches are younger than the
+# cooldown, fall back to the newest available instead of failing the install.
+# Explicitly setting minimumReleaseAge would otherwise force strict=true.
+minimumReleaseAgeStrict: false
 allowBuilds:
   esbuild: true
   sharp: true
