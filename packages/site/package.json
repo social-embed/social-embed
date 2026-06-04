@@ -37,9 +37,9 @@
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
     "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.4.1",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
+    "astro": "^6.4.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.3.0"
   },
@@ -47,7 +47,7 @@
     "@astrojs/check": "^0.9.9",
     "@biomejs/biome": "^2.4.16",
     "@types/hast": "^3.0.4",
-    "@types/react": "^19.2.15",
+    "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
     "astro-expressive-code": "^0.42.0",
     "es-module-lexer": "^2.1.0",
@@ -61,7 +61,7 @@
     "remark-rehype": "^11.1.2",
     "unified": "^11.0.5",
     "vfile": "^6.0.3",
-    "vite": "^8.0.14",
-    "vitest": "^4.1.7"
+    "vite": "^8.0.16",
+    "vitest": "^4.1.8"
   }
 }
