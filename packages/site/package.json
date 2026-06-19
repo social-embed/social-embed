@@ -36,23 +36,23 @@
     "@pagefind/default-ui": "^1.5.2",
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
-    "@tailwindcss/vite": "^4.3.0",
-    "astro": "^6.4.5",
+    "@tailwindcss/vite": "^4.3.1",
+    "astro": "^6.4.7",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "sharp": "^0.34.5",
-    "tailwindcss": "^4.3.0"
+    "sharp": "^0.35.1",
+    "tailwindcss": "^4.3.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@biomejs/biome": "^2.4.16",
+    "@biomejs/biome": "^2.5.0",
     "@types/hast": "^3.0.4",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "astro-expressive-code": "^0.43.1",
     "es-module-lexer": "^2.1.0",
     "glob": "^13.0.6",
-    "happy-dom": "^20.10.2",
+    "happy-dom": "^20.10.4",
     "magic-string": "^0.30.21",
     "pagefind": "^1.5.2",
     "rehype-autolink-headings": "^7.1.0",
@@ -62,6 +62,6 @@
     "unified": "^11.0.5",
     "vfile": "^6.0.3",
     "vite": "^8.0.16",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.9"
   }
 }

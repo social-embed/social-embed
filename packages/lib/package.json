@@ -56,12 +56,12 @@
     "format": "pnpm run biome check . --write; pnpm run biome format . --write"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.16",
+    "@biomejs/biome": "2.5.0",
     "rimraf": "^5.0.10",
     "typescript": "^6.0.3",
     "vite": "^8.0.16",
     "vite-plugin-dts": "^5.0.2",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.9"
   },
   "engines": {
     "node": ">=22"
