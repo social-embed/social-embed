@@ -32,7 +32,8 @@
       "!**/docs",
       "!**/package.json",
       "!**/.vscode",
-      "!**/*.d.ts"
+      "!**/*.d.ts",
+      "!**/*.svg"
     ]
   },
   "formatter": {
