@@ -38,12 +38,18 @@ export function bootstrapApp(container: HTMLElement) {
 
     if (result.isValid) {
       status.textContent = `Accepted provider: ${result.providerName}`;
-      preview.innerHTML = `<o-embed data-testid="validated-embed" url="${input.value}"></o-embed>`;
+      // Build the element via DOM APIs and set `url` with setAttribute so the
+      // user-supplied value is treated as a literal attribute, never parsed as
+      // HTML (avoids DOM XSS from breaking out of the attribute).
+      const embed = document.createElement("o-embed");
+      embed.setAttribute("data-testid", "validated-embed");
+      embed.setAttribute("url", input.value);
+      preview.replaceChildren(embed);
       return;
     }
 
     status.textContent = `Rejected: ${result.reason}`;
-    preview.innerHTML = "";
+    preview.replaceChildren();
   }
 
   validateButton.addEventListener("click", renderStatus);
