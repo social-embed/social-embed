@@ -9,10 +9,15 @@ Format commit messages as:
 type(scope[detail]) concise description
 
 why: Explanation of necessity or impact.
+
 what:
 - Specific technical changes made
 - Focused on a single topic
 ```
+
+Keep the subject ≤50 chars (excluding any trailing `(#NN)` PR ref); wrap
+body lines at ≤72 chars. Separate the `why:` and `what:` blocks with a
+blank line.
 
 Notes:
 - `commit-type` is always lowercase.
@@ -37,6 +42,7 @@ Example:
 feat(lib[youtube]) Support YouTube Shorts URLs
 
 why: Users often paste Shorts links; embeds should just work.
+
 what:
 - Detect `/shorts/<id>` URL pattern
 - Convert Shorts URLs to `youtube.com/embed/<id>`
@@ -48,6 +54,7 @@ git commit -m "$(cat <<'EOF'
 feat(Component[method]) add feature description
 
 why: Explanation of the change.
+
 what:
 - First change
 - Second change
@@ -96,6 +103,7 @@ git commit -m "$(cat <<'EOF'
 feat(lib[youtube]) Support YouTube Shorts URLs
 
 why: Users often paste Shorts links; embeds should just work.
+
 what:
 - Detect `/shorts/<id>` URL pattern
 EOF
