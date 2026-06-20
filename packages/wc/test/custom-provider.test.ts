@@ -1,4 +1,3 @@
-/// <reference types="@vitest/browser/providers/playwright" />
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { fixture, html } from "./utils";
 import "../src/OEmbedElement";
