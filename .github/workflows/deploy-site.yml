@@ -42,7 +42,7 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync packages/site/build "s3://${{ secrets.SOCIAL_EMBED_SITE_BUCKET }}" \
+          aws s3 sync packages/site/dist "s3://${{ secrets.SOCIAL_EMBED_SITE_BUCKET }}" \
             --delete \
             --cache-control "public,max-age=3600"
 

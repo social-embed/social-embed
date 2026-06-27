@@ -81,7 +81,7 @@ jobs:
 
           aws s3 sync packages/lib/dist "s3://${bucket}/${base}/@social-embed/lib/dist" --cache-control "$cache"
           aws s3 sync packages/wc/dist "s3://${bucket}/${base}/@social-embed/wc/dist" --cache-control "$cache"
-          aws s3 sync packages/site/build "s3://${bucket}/${base}/site" --cache-control "$cache"
+          aws s3 sync packages/site/dist "s3://${bucket}/${base}/site" --cache-control "$cache"
 
       - name: Upload latest aliases
         if: env.PUBLISH_LATEST == 'true'
@@ -92,7 +92,7 @@ jobs:
 
           aws s3 sync packages/lib/dist "s3://${bucket}/${latest}/@social-embed/lib/dist" --delete --cache-control "$cache"
           aws s3 sync packages/wc/dist "s3://${bucket}/${latest}/@social-embed/wc/dist" --delete --cache-control "$cache"
-          aws s3 sync packages/site/build "s3://${bucket}/${latest}/site" --delete --cache-control "$cache"
+          aws s3 sync packages/site/dist "s3://${bucket}/${latest}/site" --delete --cache-control "$cache"
 
       - name: Invalidate CloudFront (latest)
         if: env.PUBLISH_LATEST == 'true'
