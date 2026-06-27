@@ -34,6 +34,14 @@ describe("satteriSkipFirstHeading", () => {
     const { code } = await render("# Title\n\n## Section\n");
     expect(code).toContain("Title");
   });
+
+  it("removes only the first h1, keeps later ones", async () => {
+    const { code } = await render("# First\n\n# Second\n", {
+      skipMarkdownTitle: true,
+    });
+    expect(code).not.toContain("First");
+    expect(code).toContain("Second");
+  });
 });
 
 describe("satteriHeadingAnchors", () => {
