@@ -1,3 +1,4 @@
+import { satteriCollectHastText } from "@astrojs/markdown-satteri";
 import GithubSlugger from "github-slugger";
 import { defineHastPlugin } from "satteri";
 
@@ -24,10 +25,12 @@ export function satteriHeadingAnchors() {
       filter: ["h1", "h2", "h3", "h4", "h5", "h6"],
       visit(node, ctx) {
         const existing = node.properties?.id;
+        const rawText = ctx.textContent(node);
+        const text = rawText.includes("frontmatter")
+          ? satteriCollectHastText(node, ctx.data.astro?.frontmatter)
+          : rawText;
         const slug =
-          typeof existing === "string"
-            ? existing
-            : slugger.slug(ctx.textContent(node));
+          typeof existing === "string" ? existing : slugger.slug(text);
         if (typeof existing !== "string") {
           ctx.setProperty(node, "id", slug);
         }

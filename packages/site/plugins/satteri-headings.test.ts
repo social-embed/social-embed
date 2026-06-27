@@ -1,6 +1,10 @@
 // @vitest-environment node
 
-import { createSatteriMarkdownProcessor } from "@astrojs/markdown-satteri";
+import {
+  createSatteriMarkdownProcessor,
+  satteriHeadingIdsPlugin,
+} from "@astrojs/markdown-satteri";
+import { mdxToJs } from "satteri";
 import { beforeAll, describe, expect, it } from "vitest";
 import { satteriHeadingAnchors } from "./satteri-heading-anchors";
 import { satteriSkipFirstHeading } from "./satteri-skip-first-heading";
@@ -60,5 +64,25 @@ describe("satteriHeadingAnchors", () => {
     const { code } = await render("## Dup\n\n## Dup\n");
     expect(code).toContain('id="dup"');
     expect(code).toContain('id="dup-1"');
+  });
+
+  it("preserves frontmatter-resolved MDX heading slugs", async () => {
+    const astro = {
+      frontmatter: { title: "The Frontmatter Title" },
+      headings: [],
+      localImagePaths: new Set<string>(),
+      remoteImagePaths: new Set<string>(),
+    };
+
+    await mdxToJs("# {frontmatter.title}\n\n## frontmatter.title\n", {
+      data: { astro },
+      hastPlugins: [satteriHeadingAnchors, satteriHeadingIdsPlugin()],
+      jsxImportSource: "astro",
+    });
+
+    expect(astro.headings.map(({ slug, text }) => ({ slug, text }))).toEqual([
+      { slug: "the-frontmatter-title", text: "The Frontmatter Title" },
+      { slug: "frontmattertitle", text: "frontmatter.title" },
+    ]);
   });
 });
