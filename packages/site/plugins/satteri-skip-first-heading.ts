@@ -24,7 +24,17 @@ export function satteriSkipFirstHeading() {
         const astro = ctx.data.astro as AstroData | undefined;
         if (!astro?.frontmatter?.skipMarkdownTitle) return;
         removed = true;
+        // Capture the blank line the dropped title leaves behind, then remove
+        // both — matching the deleted rehype plugin's whitespace cleanup.
+        const index = ctx.indexOf(node);
+        const blank =
+          index === undefined
+            ? undefined
+            : ctx.parent(node).children[index + 1];
         ctx.removeNode(node);
+        if (blank?.type === "text" && /^\s*$/.test(blank.value)) {
+          ctx.removeNode(blank);
+        }
       },
     },
     name: "skip-first-heading",
