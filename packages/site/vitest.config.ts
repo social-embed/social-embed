@@ -1,4 +1,4 @@
-/// <reference types="vitest" />
+/// <reference types="vitest/config" />
 import { getViteConfig } from "astro/config";
 import { viteMdxMergeHeadings } from "./plugins/vite-plugin-mdx-merge-headings";
 
@@ -8,11 +8,10 @@ export default getViteConfig({
     // Build-time globals needed by cdnSources.ts
     __GIT_BRANCH__: JSON.stringify("test-branch"),
   },
-  // Vite 8: Astro 6 still sets esbuild.jsx via @vitejs/plugin-react, but
-  // Vite 8 uses Oxc instead. Explicitly configure Oxc JSX for test files.
-  // @ts-expect-error: Astro 6 types target Vite 7 and don't include Vite 8's oxc property
+  // Vite 8 transforms JSX with Oxc (not esbuild); configure Oxc's JSX
+  // runtime so the React component tests compile.
   oxc: {
-    jsx: "automatic",
+    jsx: { runtime: "automatic" },
   },
   // biome-ignore lint/suspicious/noExplicitAny: Astro/Vite Plugin type version mismatch
   plugins: [viteMdxMergeHeadings() as any],
