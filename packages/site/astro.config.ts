@@ -1,6 +1,6 @@
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
-import { rehypeHeadingIds } from "@astrojs/markdown-remark";
+import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
@@ -127,27 +127,33 @@ export default defineConfig({
     react(),
     pagefindIntegration(),
   ],
-  // Markdown processing for pure Astro pages
+  // Markdown processing for pure Astro pages.
+  // Astro 7 makes Sätteri the default Markdown processor and turns the
+  // remark/rehype pipeline into an explicit opt-in. Select unified()
+  // (from @astrojs/markdown-remark) so our rehype plugins keep running on
+  // both .md and .mdx with byte-identical output to Astro 6.
   markdown: {
-    rehypePlugins: [
-      rehypeSkipFirstHeading,
-      rehypeHeadingIds,
-      [
-        rehypeAutolinkHeadings,
-        {
-          behavior: "append",
-          content: {
-            children: [{ type: "text", value: "#" }],
-            properties: { ariaHidden: "true", className: ["anchor-icon"] },
-            tagName: "span",
-            type: "element",
+    processor: unified({
+      rehypePlugins: [
+        rehypeSkipFirstHeading,
+        rehypeHeadingIds,
+        [
+          rehypeAutolinkHeadings,
+          {
+            behavior: "append",
+            content: {
+              children: [{ type: "text", value: "#" }],
+              properties: { ariaHidden: "true", className: ["anchor-icon"] },
+              tagName: "span",
+              type: "element",
+            },
+            properties: {
+              className: ["anchor-link"],
+            },
           },
-          properties: {
-            className: ["anchor-link"],
-          },
-        },
+        ],
       ],
-    ],
+    }),
   },
   redirects: {
     "/playground": "/wc/playground/",
