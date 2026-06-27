@@ -1,15 +1,15 @@
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
-import { rehypeHeadingIds, unified } from "@astrojs/markdown-remark";
+import { satteri } from "@astrojs/markdown-satteri";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import type { ViteUserConfig } from "astro";
 import { defineConfig, fontProviders } from "astro/config";
 import expressiveCode from "astro-expressive-code";
-import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { pagefindIntegration } from "./plugins/astro-pagefind-integration";
-import { rehypeSkipFirstHeading } from "./plugins/rehype-skip-first-heading";
+import { satteriHeadingAnchors } from "./plugins/satteri-heading-anchors";
+import { satteriSkipFirstHeading } from "./plugins/satteri-skip-first-heading";
 import { localCdnPlugin } from "./plugins/vite-plugin-local-cdn";
 import { viteMdxMergeHeadings } from "./plugins/vite-plugin-mdx-merge-headings";
 
@@ -128,31 +128,13 @@ export default defineConfig({
     pagefindIntegration(),
   ],
   // Markdown processing for pure Astro pages.
-  // Astro 7 makes Sätteri the default Markdown processor and turns the
-  // remark/rehype pipeline into an explicit opt-in. Select unified()
-  // (from @astrojs/markdown-remark) so our rehype plugins keep running on
-  // both .md and .mdx with byte-identical output to Astro 6.
+  // Astro 7's native Rust Markdown processor. Heading ids are built in;
+  // our two ported hast plugins add the skip-first-heading behavior and the
+  // hover anchor links (the remark/rehype equivalents on the default branch).
+  // skip-first-heading runs first so a dropped title gets no anchor or ToC entry.
   markdown: {
-    processor: unified({
-      rehypePlugins: [
-        rehypeSkipFirstHeading,
-        rehypeHeadingIds,
-        [
-          rehypeAutolinkHeadings,
-          {
-            behavior: "append",
-            content: {
-              children: [{ type: "text", value: "#" }],
-              properties: { ariaHidden: "true", className: ["anchor-icon"] },
-              tagName: "span",
-              type: "element",
-            },
-            properties: {
-              className: ["anchor-link"],
-            },
-          },
-        ],
-      ],
+    processor: satteri({
+      hastPlugins: [satteriSkipFirstHeading, satteriHeadingAnchors],
     }),
   },
   redirects: {
