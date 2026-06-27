@@ -1,7 +1,7 @@
 // @vitest-environment node
 
 import { loadRenderers } from "astro:container";
-import { getContainerRenderer } from "@astrojs/react";
+import { getContainerRenderer } from "@astrojs/react/container-renderer";
 import { experimental_AstroContainer as AstroContainer } from "astro/container";
 import { describe, expect, it } from "vitest";
 
