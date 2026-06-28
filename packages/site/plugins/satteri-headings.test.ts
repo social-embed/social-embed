@@ -46,6 +46,19 @@ describe("satteriSkipFirstHeading", () => {
     expect(code).not.toContain("First");
     expect(code).toContain("Second");
   });
+
+  it("ignores nested h1s before the first root h1", async () => {
+    const { code, metadata } = await render(
+      "> # Note\n\n# Title\n\n## Section\n",
+      {
+        skipMarkdownTitle: true,
+      },
+    );
+    expect(code).toContain("Note");
+    expect(code).not.toContain("Title");
+    expect(code).toContain("Section");
+    expect(metadata.headings.map((h) => h.slug)).toEqual(["note", "section"]);
+  });
 });
 
 describe("satteriHeadingAnchors", () => {

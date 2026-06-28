@@ -21,6 +21,8 @@ export function satteriSkipFirstHeading() {
       filter: ["h1"],
       visit(node, ctx) {
         if (removed) return;
+        const parent = ctx.parent(node);
+        if (parent?.type !== "root") return;
         const astro = ctx.data.astro as AstroData | undefined;
         if (!astro?.frontmatter?.skipMarkdownTitle) return;
         removed = true;
@@ -28,9 +30,7 @@ export function satteriSkipFirstHeading() {
         // both — matching the deleted rehype plugin's whitespace cleanup.
         const index = ctx.indexOf(node);
         const blank =
-          index === undefined
-            ? undefined
-            : ctx.parent(node).children[index + 1];
+          index === undefined ? undefined : parent.children[index + 1];
         ctx.removeNode(node);
         if (blank?.type === "text" && /^\s*$/.test(blank.value)) {
           ctx.removeNode(blank);
