@@ -33,7 +33,8 @@
       "!**/package.json",
       "!**/.vscode",
       "!**/*.d.ts",
-      "!**/*.svg"
+      "!**/*.svg",
+      "!**/.svelte-kit"
     ]
   },
   "formatter": {
@@ -60,7 +61,7 @@
   },
   "overrides": [
     {
-      "includes": ["**/*.astro"],
+      "includes": ["**/*.astro", "**/*.svelte"],
       "linter": {
         "rules": {
           "correctness": {
