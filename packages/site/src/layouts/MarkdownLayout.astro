@@ -316,6 +316,12 @@ const tocItems = showToC
     text-decoration: none;
   }
 
+  /* The `#` glyph comes from CSS so the heading's text content (and thus the
+     table-of-contents label) stays free of a trailing `#`. */
+  .prose :global(.anchor-icon)::before {
+    content: "#";
+  }
+
   .prose :global(h2:hover .anchor-link),
   .prose :global(h3:hover .anchor-link) {
     opacity: 1;
