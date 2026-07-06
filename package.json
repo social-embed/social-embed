@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.2",
-    "knip": "^6.23.0",
+    "knip": "^6.24.0",
     "oxlint": "^1.72.0",
     "oxlint-tsgolint": "^0.24.0"
   }
