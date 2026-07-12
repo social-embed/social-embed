@@ -14,7 +14,7 @@
   },
   "scripts": {
     "prebuild": "pnpm clean && pnpm --filter @social-embed/lib build",
-    "build": "vite build",
+    "build": "vite build && tsc -p tsconfig.build.json --emitDeclarationOnly",
     "prepublishOnly": "pnpm build",
     "build:watch": "pnpm build --watch",
     "vite": "vite",
@@ -75,7 +75,6 @@
     "rimraf": "^5.0.7",
     "typescript": "^7.0.2",
     "vite": "^8.1.4",
-    "vite-plugin-dts": "^5.0.3",
     "vitest": "^4.1.10",
     "web-component-analyzer": "^2.0.0"
   },
