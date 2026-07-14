@@ -20,7 +20,12 @@ allowBuilds:
 # mean highlight decorations register against a facet the live view never reads.
 overrides:
   '@codemirror/view': '^6.43.0'
+# @astrojs/language-server 2.16.12 (published 2026-07-13) turns the opaque
+# `Cannot read properties of undefined (reading 'fileExists')` crash under the
+# TypeScript 7 native compiler into an actionable error. It is younger than the
+# 3-day cooldown, so exclude it to let the in-range (`^2.16.7`) bump through.
 minimumReleaseAgeExclude:
+  - '@astrojs/language-server@2.16.12'
   - '@expressive-code/core@0.44.0'
   - '@expressive-code/plugin-frames@0.44.0'
   - '@expressive-code/plugin-shiki@0.44.0'
