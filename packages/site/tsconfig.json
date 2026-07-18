@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["ES2022", "DOM", "DOM.Iterable"]
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@examples/*": ["../../examples/*"]
+    }
   },
   // `types/` holds the `*.astro` shim used only by tsconfig.typecheck.json
   // (TS7 workaround; see that file). Excluded here so `astro check` and the
