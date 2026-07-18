@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "type-check": "astro check",
+    "type-check": "astro sync && tsc --noEmit -p tsconfig.typecheck.json && echo '[site] NOTE: .astro templates unchecked under TS7 - astro check returns at TS 7.1 (pnpm type-check:astro)'",
+    "type-check:astro": "astro check",
     "test": "vitest run",
     "test:watch": "vitest",
     "ncu": "ncu",
@@ -57,6 +58,7 @@
     "magic-string": "^0.30.21",
     "pagefind": "^1.5.2",
     "satteri": "^0.9.5",
+    "typescript": "^7.0.2",
     "vite": "^8.1.4",
     "vitest": "^4.1.10"
   }

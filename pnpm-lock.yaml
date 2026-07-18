@@ -154,6 +154,9 @@ importers:
       satteri:
         specifier: ^0.9.5
         version: 0.9.5
+      typescript:
+        specifier: ^7.0.2
+        version: 7.0.2
       vite:
         specifier: ^8.1.4
         version: 8.1.4(@types/node@25.9.1)(esbuild@0.28.1)(jiti@2.7.0)(yaml@2.9.0)

@@ -2,7 +2,11 @@
   "compilerOptions": {
     "lib": ["ES2022", "DOM", "DOM.Iterable"]
   },
-  "exclude": ["dist", "build", "public"],
+  // `types/` holds the `*.astro` shim used only by tsconfig.typecheck.json
+  // (TS7 workaround; see that file). Excluded here so `astro check` and the
+  // editor keep resolving real .astro component types once TS 7.1 restores
+  // the language server (TypeScript roadmap#1321).
+  "exclude": ["dist", "build", "public", "types"],
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"]
 }

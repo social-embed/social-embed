@@ -1,0 +1,21 @@
+{
+  // TS7-native type-check project, used by `pnpm type-check`
+  // (`astro sync && tsc --noEmit -p tsconfig.typecheck.json`).
+  //
+  // `astro check` cannot run under the TypeScript 7 native compiler:
+  // @astrojs/language-server needs the TS programmatic JS API that TS7
+  // does not ship (upstream: TypeScript roadmap#1321, expected ~TS 7.1).
+  // This project checks every .ts/.tsx in the package with plain `tsc`
+  // instead. COVERAGE LIMIT: `.astro` frontmatter/templates are NOT
+  // type-checked — see types/astro-modules.d.ts for the shim that makes
+  // `.astro` imports resolve, and `type-check:astro` in package.json for
+  // the original command to restore once TS 7.1 lands.
+  //
+  // Same compilerOptions as the editor/astro-check config; the only
+  // differences are the `types/` shim include and replacing the
+  // inherited exclude (tsconfig.json excludes `types/` so the shim
+  // never leaks into the astro-check graph).
+  "exclude": ["dist", "build", "public"],
+  "extends": "./tsconfig.json",
+  "include": [".astro/types.d.ts", "types/**/*", "**/*"]
+}
