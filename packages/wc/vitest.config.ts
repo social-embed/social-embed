@@ -1,5 +1,4 @@
 import { playwright } from "@vitest/browser-playwright";
-import dts from "vite-plugin-dts";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -13,7 +12,6 @@ export default defineConfig({
     manifest: false,
     minify: false,
   },
-  plugins: [dts()],
   // Module resolution aliases for both Vite and Vitest
   resolve: {
     alias: {

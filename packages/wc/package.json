@@ -14,7 +14,7 @@
   },
   "scripts": {
     "prebuild": "pnpm clean && pnpm --filter @social-embed/lib build",
-    "build": "vite build",
+    "build": "vite build && tsc -p tsconfig.build.json --emitDeclarationOnly",
     "prepublishOnly": "pnpm build",
     "build:watch": "pnpm build --watch",
     "vite": "vite",
@@ -66,16 +66,15 @@
     "lit": "^3.3.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.2",
+    "@biomejs/biome": "2.5.4",
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-istanbul": "^4.1.10",
     "@vitest/ui": "^4.1.10",
     "lit-analyzer": "^2.0.3",
     "playwright": "^1.61.1",
     "rimraf": "^5.0.7",
-    "typescript": "^6.0.3",
-    "vite": "^8.1.3",
-    "vite-plugin-dts": "^5.0.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.4",
     "vitest": "^4.1.10",
     "web-component-analyzer": "^2.0.0"
   },

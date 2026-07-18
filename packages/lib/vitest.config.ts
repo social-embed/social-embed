@@ -1,5 +1,4 @@
 import { resolve } from "node:path";
-import dts from "vite-plugin-dts";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
@@ -9,7 +8,6 @@ export default defineConfig({
       name: "SocialEmbedLib",
     },
   },
-  plugins: [dts()],
   test: {
     environment: "node",
     globals: true,
