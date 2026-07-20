@@ -37,12 +37,12 @@
     "@pagefind/default-ui": "^1.5.2",
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
-    "@tailwindcss/vite": "^4.3.2",
-    "astro": "^7.0.9",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.1.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "sharp": "^0.35.3",
-    "tailwindcss": "^4.3.2"
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
@@ -55,11 +55,11 @@
     "github-slugger": "^2.0.0",
     "glob": "^13.0.6",
     "happy-dom": "^20.10.6",
-    "magic-string": "^0.30.21",
+    "magic-string": "^1.0.0",
     "pagefind": "^1.5.2",
     "satteri": "^0.9.5",
     "typescript": "^7.0.2",
-    "vite": "^8.1.4",
+    "vite": "^8.1.5",
     "vitest": "^4.1.10"
   }
 }
