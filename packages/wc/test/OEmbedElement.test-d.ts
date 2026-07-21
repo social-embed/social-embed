@@ -5,6 +5,7 @@
  * They are executed during compilation to ensure proper type constraints.
  */
 
+import type { MatcherRegistry } from "@social-embed/lib";
 import type { LitElement, TemplateResult } from "lit";
 import { describe, expectTypeOf, test } from "vitest";
 import type { OEmbedElement } from "../src/OEmbedElement";
@@ -20,54 +21,32 @@ describe("OEmbedElement Type Tests", () => {
     expectTypeOf<OEmbedElement>().toHaveProperty("url");
     expectTypeOf<OEmbedElement["url"]>().toBeString();
 
-    // Dimension properties
+    // Dimension properties (string | number for flexibility)
     expectTypeOf<OEmbedElement>().toHaveProperty("width");
-    expectTypeOf<OEmbedElement["width"]>().toBeString();
+    expectTypeOf<OEmbedElement["width"]>().toEqualTypeOf<string | number>();
 
     expectTypeOf<OEmbedElement>().toHaveProperty("height");
-    expectTypeOf<OEmbedElement["height"]>().toBeString();
+    expectTypeOf<OEmbedElement["height"]>().toEqualTypeOf<string | number>();
 
-    // iframe attributes
-    expectTypeOf<OEmbedElement>().toHaveProperty("frameborder");
-    expectTypeOf<OEmbedElement["frameborder"]>().toBeString();
-
+    // allowfullscreen (now boolean)
     expectTypeOf<OEmbedElement>().toHaveProperty("allowfullscreen");
-    expectTypeOf<OEmbedElement["allowfullscreen"]>().toEqualTypeOf<
-      string | boolean | undefined
-    >();
+    expectTypeOf<OEmbedElement["allowfullscreen"]>().toBeBoolean();
+
+    // privacy option
+    expectTypeOf<OEmbedElement>().toHaveProperty("privacy");
+    expectTypeOf<OEmbedElement["privacy"]>().toBeBoolean();
   });
 
-  test("OEmbedElement should have render methods for each provider", () => {
-    // Define the expected render methods for providers
-    const renderMethods = [
-      "renderYouTube",
-      "renderVimeo",
-      "renderSpotify",
-      "renderDailyMotion",
-      "renderLoom",
-      "renderEdPuzzle",
-      "renderWistia",
-    ] as const;
+  test("OEmbedElement should have registry property", () => {
+    expectTypeOf<OEmbedElement>().toHaveProperty("registry");
+    expectTypeOf<OEmbedElement["registry"]>().toMatchTypeOf<MatcherRegistry>();
+  });
 
-    // Test each render method
-    for (const method of renderMethods) {
-      expectTypeOf<OEmbedElement>().toHaveProperty(method);
-    }
-
-    // Test the main render method
+  test("OEmbedElement should have render method", () => {
     expectTypeOf<OEmbedElement>().toHaveProperty("render");
     expectTypeOf<
       OEmbedElement["render"]
     >().returns.toEqualTypeOf<TemplateResult>();
-  });
-
-  test("dimension methods should have correct signature", () => {
-    // Test dimension calculation methods
-    expectTypeOf<OEmbedElement>().toHaveProperty("getDefaultDimensions");
-    expectTypeOf<OEmbedElement["getDefaultDimensions"]>().toBeFunction();
-
-    expectTypeOf<OEmbedElement>().toHaveProperty("calculateDefaultDimensions");
-    expectTypeOf<OEmbedElement["calculateDefaultDimensions"]>().toBeFunction();
   });
 
   test("Provider detection property should exist with correct type", () => {
