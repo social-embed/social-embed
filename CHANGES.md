@@ -24,6 +24,7 @@ Here you can find project-wide changes. For more detailed changes:
   - Fixed TypeScript module resolution for Vite 5+ compatibility
   - Applied new sorting rules for imports and object properties
 - **Tooling**: Fix biome.jsonc `$schema` URL typo (`hchema.json` → `schema.json`)
+- **Tooling**: Workflow actions moved to their current major releases: `actions/checkout` v7 and `actions/setup-node` v7. Workflow behavior is unchanged.
 
 ### Breaking changes
 
