@@ -15,14 +15,14 @@ This site is built with [Astro](https://astro.build).
 ### Prerequisites
 
 - Node.js 22 or higher
-- pnpm (recommended) or npm/yarn
+- bun
 
 ### Setup
 
 Install dependencies from the repository root:
 
 ```bash
-pnpm install
+bun install
 ```
 
 ### Local Development
@@ -30,7 +30,7 @@ pnpm install
 Start the development server:
 
 ```bash
-pnpm dev
+bun run dev
 ```
 
 The site will be available at http://localhost:4321.
@@ -40,13 +40,13 @@ The site will be available at http://localhost:4321.
 Build the production site:
 
 ```bash
-pnpm build
+bun run build
 ```
 
 Preview the production build:
 
 ```bash
-pnpm preview
+bun run preview
 ```
 
 ## Project Structure

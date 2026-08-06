@@ -42,10 +42,10 @@
     "type-check": "oxlint --type-aware --type-check -A all --tsconfig tsconfig.json src",
     "type-check:tsc": "tsc --noEmit",
     "vite": "vite",
-    "start": "pnpm vite",
+    "start": "bun run vite",
     "watch": "vite start",
     "build": "vite build && tsc -p tsconfig.build.json --emitDeclarationOnly",
-    "prepublishOnly": "pnpm build",
+    "prepublishOnly": "bun run build",
     "bootstrap": "echo 'NOOP'",
     "test": "vitest run",
     "test:watch": "vitest run",
@@ -53,7 +53,7 @@
     "ncu": "ncu",
     "update": "ncu",
     "biome": "biome",
-    "format": "pnpm run biome check . --write; pnpm run biome format . --write"
+    "format": "bun run biome check . --write; bun run biome format . --write"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.6",

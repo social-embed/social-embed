@@ -205,23 +205,23 @@ Good:
 Install dependencies:
 
 ```bash
-pnpm install
+bun install
 ```
 
 Start the dev server:
 
 ```bash
-pnpm dev
+bun run dev
 ```
 
 Bad:
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Start the dev server
-pnpm dev
+bun run dev
 ```
 
 **Split long commands with `\` for readability.** Each flag or argument group gets its own continuation line, indented.
