@@ -30,7 +30,8 @@ Here you can find project-wide changes. For more detailed changes:
 
 - Build system: Move to `vite` (#8)
 - Docs: Move from docusaurus to `starlight` (#32)
-- Package managers: Move from [yarn classic] to [pnpm] (#29)
+- Package managers: Move from [yarn classic] to [pnpm] (#29), then
+  from [pnpm] to [bun]
 - Minimum Node.js version to v18+ (#12)
 - Move from `prettier` to `biome` (#27)
 - Move from `eslint` to ~`oxc` (#26)~ `biome` (#27)
@@ -68,6 +69,7 @@ Here you can find project-wide changes. For more detailed changes:
 
 [yarn classic]: https://classic.yarnpkg.com/
 [pnpm]: https://pnpm.io/
+[bun]: https://bun.com/
 
 ### Infrastructure
 

@@ -18,32 +18,43 @@ jobs:
         shell: bash
       - uses: actions/checkout@v7
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
+      - name: Install bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+
+      # setup-bun caches only the bun executable, not the dependency cache.
+      - name: Cache bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
 
       - name: project - install
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: "playwright: Install browsers"
-        run: pnpm --filter @social-embed/wc exec playwright install --with-deps
+        run: bunx playwright install --with-deps
+        working-directory: packages/wc
 
-      - name: pnpm biome format .
-        run: pnpm biome format .
+      - name: biome format .
+        run: bunx biome format .
 
-      - name: pnpm biome lint .
-        run: pnpm biome lint .
+      - name: biome lint .
+        run: bunx biome lint .
 
-      - name: pnpm biome check .
-        run: pnpm biome check .
+      - name: biome check .
+        run: bunx biome check .
 
       - name: build
-        run: pnpm build
+        run: bun run build
 
       - name: test
-        run: pnpm test
+        run: bun run test

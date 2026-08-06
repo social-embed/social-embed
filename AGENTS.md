@@ -2,6 +2,33 @@
 
 This file provides guidance to AI agents (including Codex CLI, Cursor, and other LLM-powered tools) when working with code in this repository.
 
+## Package Manager
+
+Install with bun; run workspace scripts through `bun run --filter`.
+Astro, Vite, `astro check`, `tsc`, Vitest and Playwright still execute
+on Node — do not add `--bun` to them.
+
+`bunfig.toml` sets `linker = "hoisted"`. `packages/site/astro.config.ts`
+resolves fonts through `../../node_modules/@fontsource/...`, which bun's
+default isolated linker does not produce.
+
+`package.json` pins `overrides["@codemirror/view"]` to one version. JSON
+cannot carry the reason, so it lives here: when the resolver splits that
+package (site's direct `^6.43.0` against a transitive 6.42.x), CodeMirror
+syntax highlighting breaks — two `EditorView.decorations` facet
+identities mean highlight decorations register against a facet the live
+view never reads.
+
+`bunfig.toml` also sets a 3-day supply-chain cooldown, in seconds. bun
+has no equivalent of pnpm's `minimumReleaseAgeStrict`, so a `ncu -u`
+range that only matches versions inside the cooldown fails the install
+rather than falling back.
+
+bun runs lifecycle scripts only for packages on its default-trusted
+list. `esbuild` and `sharp` get their native binaries here with no extra
+config; anything new that needs a postinstall goes in
+`trustedDependencies`.
+
 ## Git Commit Standards
 
 Format commit messages as:
@@ -205,23 +232,23 @@ Good:
 Install dependencies:
 
 ```bash
-pnpm install
+bun install
 ```
 
 Start the dev server:
 
 ```bash
-pnpm dev
+bun run dev
 ```
 
 Bad:
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Start the dev server
-pnpm dev
+bun run dev
 ```
 
 **Split long commands with `\` for readability.** Each flag or argument group gets its own continuation line, indented.

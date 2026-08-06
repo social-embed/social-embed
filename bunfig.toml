@@ -1,0 +1,16 @@
+[install]
+# Supply-chain cooldown: ignore versions younger than 3 days.
+# UNIT DIFFERS FROM pnpm: pnpm-workspace.yaml's `minimumReleaseAge` is MINUTES
+# (was 4320); bun's is SECONDS. 3 days = 259200. Copying 4320 verbatim would
+# silently collapse the 3-day cooldown to 72 minutes.
+#
+# NOTE: pnpm-workspace.yaml also set `minimumReleaseAgeStrict: false` (loose
+# fallback when a pinned range only matches versions younger than the cooldown).
+# bun has no equivalent key, so bun is effectively always strict here.
+minimumReleaseAge = 259200
+frozenLockfile = true
+# packages/site/astro.config.ts resolves fonts via
+# `../../node_modules/@fontsource/...` (workspace-root-relative), and
+# pnpm-workspace.yaml set `nodeLinker: hoisted`. bun's default isolated
+# linker would not satisfy those paths.
+linker = "hoisted"

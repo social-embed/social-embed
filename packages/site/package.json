@@ -10,7 +10,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "type-check": "astro sync && tsc --noEmit -p tsconfig.typecheck.json && echo '[site] NOTE: .astro templates unchecked under TS7 - astro check returns at TS 7.1 (pnpm type-check:astro)'",
+    "type-check": "astro sync && tsc --noEmit -p tsconfig.typecheck.json && echo '[site] NOTE: .astro templates unchecked under TS7 - astro check returns at TS 7.1 (bun run type-check:astro)'",
     "type-check:astro": "astro check",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -18,7 +18,7 @@
     "update": "ncu",
     "lint": "biome lint .",
     "biome": "biome",
-    "format": "pnpm run biome check . --write; pnpm run biome format . --write"
+    "format": "bun run biome check . --write; bun run biome format . --write"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "^0.3.5",
