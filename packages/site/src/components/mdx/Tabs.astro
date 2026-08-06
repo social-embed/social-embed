@@ -27,6 +27,7 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
 </div>
 
 <script>
+  // oxlint-disable-next-line typescript/no-extraneous-class -- namespace for the tab controller; kept static so the sync map is shared
   class TabsManager {
     private static syncGroups = new Map<string, Set<Element>>();
 
@@ -84,6 +85,7 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`;
         if (!TabsManager.syncGroups.has(syncKey)) {
           TabsManager.syncGroups.set(syncKey, new Set());
         }
+        // oxlint-disable-next-line typescript/no-non-null-assertion -- the key was just inserted above
         TabsManager.syncGroups.get(syncKey)!.add(container);
 
         // Restore saved selection

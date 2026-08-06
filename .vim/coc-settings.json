@@ -4,5 +4,19 @@
   },
   "biome.enable": true,
   "eslint.enable": false,
-  "prettier.enable": false
+  "prettier.enable": false,
+  "languageserver": {
+    "oxc": {
+      "command": "./node_modules/.bin/oxlint",
+      "args": ["--lsp"],
+      "filetypes": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "astro"
+      ],
+      "rootPatterns": [".oxlintrc.json"]
+    }
+  }
 }

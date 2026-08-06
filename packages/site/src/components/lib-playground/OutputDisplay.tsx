@@ -219,7 +219,7 @@ export function OutputDisplay({
               {(output.providerId as string[]).map((id, index) => (
                 <span
                   className="inline-flex items-center gap-0.5"
-                  // biome-ignore lint/suspicious/noArrayIndexKey: IDs can be duplicates
+                  // oxlint-disable-next-line react/no-array-index-key -- IDs can be duplicates
                   key={`${id}-${index}`}
                 >
                   <span className="text-sm font-mono text-slate-700 dark:text-slate-300">

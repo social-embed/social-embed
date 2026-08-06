@@ -610,7 +610,6 @@ declare global {
   }
 
   // If you're using JSX/TSX, include a declaration for the custom element:
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       "o-embed": Partial<OEmbedElement>;

@@ -76,7 +76,7 @@ describe("o-embed", () => {
     const customHeight = "450";
 
     const el = await fixture(
-      html`<o-embed 
+      html`<o-embed
         url=${customUrl}
         width=${customWidth}
         height=${customHeight}

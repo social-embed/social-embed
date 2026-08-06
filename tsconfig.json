@@ -6,7 +6,10 @@
     "forceConsistentCasingInFileNames": true,
     "lib": ["esnext", "dom", "dom.iterable"],
     "module": "esnext",
-    "moduleResolution": "node",
+    // TypeScript 7 removed `node` (node10). Both packages/lib and packages/wc
+    // already use "bundler"; this root project is the fallback for files no
+    // package tsconfig claims, and tsgolint reports it as a tsconfig-error.
+    "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,

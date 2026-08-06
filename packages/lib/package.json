@@ -39,7 +39,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "type-check": "oxlint --type-aware --type-check -A all --tsconfig tsconfig.json src",
+    "type-check": "oxlint --type-aware --type-check -A all src",
     "type-check:tsc": "tsc --noEmit",
     "vite": "vite",
     "start": "pnpm vite",
@@ -49,14 +49,10 @@
     "bootstrap": "echo 'NOOP'",
     "test": "vitest run",
     "test:watch": "vitest run",
-    "lint": "biome lint",
     "ncu": "ncu",
-    "update": "ncu",
-    "biome": "biome",
-    "format": "pnpm run biome check . --write; pnpm run biome format . --write"
+    "update": "ncu"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.6",
     "rimraf": "^5.0.10",
     "typescript": "^7.0.2",
     "vite": "^8.1.5",

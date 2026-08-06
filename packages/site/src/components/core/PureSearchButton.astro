@@ -59,9 +59,13 @@ const useMockData = import.meta.env.DEV;
   class PureSearch extends HTMLElement {
     constructor() {
       super();
+      // oxlint-disable-next-line typescript/no-non-null-assertion -- markup below is rendered by this same component
       const openBtn = this.querySelector<HTMLButtonElement>('button[data-open-modal]')!;
+      // oxlint-disable-next-line typescript/no-non-null-assertion -- markup below is rendered by this same component
       const closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
+      // oxlint-disable-next-line typescript/no-non-null-assertion -- markup below is rendered by this same component
       const dialog = this.querySelector<HTMLDialogElement>('dialog')!;
+      // oxlint-disable-next-line typescript/no-non-null-assertion -- markup below is rendered by this same component
       const dialogFrame = this.querySelector('.dialog-frame')!;
 
       const onClick = (event: MouseEvent) => {
@@ -97,7 +101,11 @@ const useMockData = import.meta.env.DEV;
       // Keyboard shortcuts: Ctrl+K / Cmd+K
       window.addEventListener('keydown', (e) => {
         if ((e.metaKey === true || e.ctrlKey === true) && e.key === 'k') {
-          dialog.open ? closeModal() : openModal();
+          if (dialog.open) {
+            closeModal();
+          } else {
+            openModal();
+          }
           e.preventDefault();
         }
       });

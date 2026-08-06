@@ -1,0 +1,98 @@
+// Layer 2 -- type-aware linting, OPT-IN and deliberately kept in a separate file.
+//
+// Run with:  pnpm run lint:type-aware
+//            (= `oxlint -c .oxlintrc.typeaware.json --type-aware`)
+//
+// Why a second file rather than `options.typeAware` in `.oxlintrc.json`:
+//  1. `pnpm lint` must not require the 22 MB `oxlint-tsgolint` binary or a
+//     TypeScript program build on every invocation.
+//  2. The cutover stays reviewable -- Layer 1 is a strict biome-parity port,
+//     Layer 2 is new capability with a measured, non-zero diagnostic count.
+//
+// PRECONDITIONS:
+//  - `pnpm exec oxlint --type-aware` must report zero `tsconfig-error`.
+//    Check with:
+//      OXC_LOG=debug pnpm exec oxlint -c .oxlintrc.typeaware.json --type-aware \
+//        2>&1 | rg 'Program |Unmatched|tsconfig-error'
+//    The escape hatch OXLINT_TSGOLINT_DANGEROUSLY_SUPPRESS_PROGRAM_DIAGNOSTICS=true
+//    hides real misconfiguration and must never be made permanent.
+//    This repo's root tsconfig.json has no `references` and no `composite`, so it
+//    does not carry the project-reference blocker some of the fleet does.
+//  - `astro sync` must have run first (`pnpm --filter @social-embed/site exec
+//    astro sync`). Without the generated .astro/types.d.ts, `astro:content`
+//    resolves to an error type and cascades through every no-unsafe-* rule.
+//  - `.astro` files get ZERO type-aware coverage: tsgolint gates on
+//    `SourceType::from_path`, which rejects `.astro`. That is 40 of the 143 files
+//    oxlint lints here. `astro check` is the only thing that sees frontmatter
+//    types, and packages/site deliberately does not run it under TS7 (see
+//    `type-check:astro`), so those 40 files are type-unchecked today. Pre-existing,
+//    not caused by this migration.
+//
+// `typeCheck` stays FALSE. `tsc --noEmit` (`pnpm run type-check:tsc`) remains the
+// type-check authority: the two file sets provably diverge in both directions
+// (ignorePatterns and .gitignore skip files tsc checks; oxlint type-checks files
+// outside the tsconfig `include`), and there is no declaration emit under oxlint
+// so TS4023/TS4060-class errors never surface. Note the usual "tsgolint embeds
+// TS 7.0.2 while the repo pins ^6" argument does NOT apply here -- this repo is
+// already on typescript ^7.0.2 -- but the two reasons above are sufficient.
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": ["./.oxlintrc.json"],
+
+  // MEASURED GOTCHA (oxlint 1.76.0): `extends` merges rules / plugins / settings /
+  // env / overrides but does NOT inherit `categories` or `ignorePatterns`. Both
+  // must be restated verbatim here and kept in sync with .oxlintrc.json BY HAND.
+  "categories": { "correctness": "error", "perf": "error" },
+
+  "options": {
+    "reportUnusedDisableDirectives": "warn",
+    "typeAware": true,
+    "typeCheck": false
+  },
+
+  "rules": {
+    // NEVER enable these two. Measured across the pilots they are 61-73% of all
+    // type-aware diagnostic volume with minimal bug-finding value. Pinned "off"
+    // explicitly so a future category change cannot reintroduce them.
+    "typescript/prefer-readonly-parameter-types": "off",
+    "typescript/no-unsafe-type-assertion": "off",
+
+    // Tier 1 -- high signal, low volume.
+    "typescript/no-misused-promises": "error",
+    "typescript/only-throw-error": "error",
+    "typescript/prefer-promise-reject-errors": "error",
+    "typescript/use-unknown-in-catch-callback-variable": "error",
+    "typescript/no-unsafe-enum-comparison": "error",
+    "typescript/switch-exhaustiveness-check": "error",
+    "typescript/related-getter-setter-pairs": "error",
+    "typescript/no-mixed-enums": "error",
+    "typescript/require-await": "error",
+    "typescript/return-await": "error",
+    "typescript/promise-function-async": "error",
+
+    // These are the tsgolint-backed rules deliberately ABSENT from Layer 1 --
+    // there they silently do nothing (no warning, no error, exit 0).
+    "typescript/dot-notation": "error", // biome complexity/useLiteralKeys
+    "typescript/consistent-type-exports": "error",
+    "typescript/prefer-optional-chain": "error",
+
+    // Advisory only -- fires on third-party API churn, not on our own bugs.
+    "typescript/no-deprecated": "warn"
+  },
+
+  // NOT inherited via `extends` -- copied VERBATIM from .oxlintrc.json.
+  // Keep the two lists identical.
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.astro/**",
+    "**/coverage/**",
+    "**/playwright-report/**",
+    "**/test-results/**",
+    "**/static/**",
+    "**/public/**",
+    "**/notes/**",
+    "**/*.d.ts"
+  ]
+}

@@ -4,7 +4,7 @@
     // npm-check-updates invoked via the `ncu` shell name in the
     // root `update:all`/`ncu-local` scripts, not a declared
     // dependency.
-    "ncu"
+    "ncu",
   ],
   // Temporary: lib and wc are published libraries — exported types
   // are public API surface, so "Unused exported types" findings are
@@ -15,7 +15,7 @@
   // are actually unused downstream.
   "ignoreIssues": {
     "packages/lib/**": ["types"],
-    "packages/wc/**": ["types"]
+    "packages/wc/**": ["types"],
   },
   "workspaces": {
     "packages/lib": {
@@ -24,8 +24,8 @@
         // scripts; root-level ignoreBinaries only merges with the
         // "." (root) workspace, so the same suppression must
         // repeat per workspace that needs it.
-        "ncu"
-      ]
+        "ncu",
+      ],
     },
     "packages/site": {
       "ignoreBinaries": ["ncu"],
@@ -41,15 +41,15 @@
         "@social-embed/wc",
         // Invoked via `npx pagefind` from
         // plugins/astro-pagefind-integration.ts during the build hook.
-        "pagefind"
-      ]
+        "pagefind",
+      ],
     },
     "packages/wc": {
       // No explicit entry: knip auto-discovers src/OEmbedElement.ts
       // from package.json#main / #module / #exports. A baseline run
       // with the explicit entry returned a "Remove redundant entry
       // pattern" hint — auto-discovery already covers it.
-      "ignoreBinaries": ["ncu"]
-    }
-  }
+      "ignoreBinaries": ["ncu"],
+    },
+  },
 }

@@ -14,7 +14,7 @@
    - Never modify critical implementations sheerly for the sake of linting or type checking
    - Always prioritize making tests pass over addressing linting or type checking issues
    - Prompt or communicate before making substantial implementation changes
-   - Add `// biome-ignore` or `// @ts-ignore` comments for linting/typing issues rather than changing core functionality
+   - Add `// oxlint-disable-next-line <plugin>/<rule> -- why` or `// @ts-ignore` comments for linting/typing issues rather than changing core functionality
 
 2. **Core Functionality** - Ensure the code works correctly
    - Focus on correctness of implementation first
@@ -68,8 +68,7 @@
 
 5. **Format For Readability** (only after tests pass):
    ```sh
-   pnpm biome format . --write && \
-   pnpm biome check . --write
+   pnpm format
    ```
    - Run formatting and checking to maintain code readability
    - If formatting would break tests, skip this step and add a note in your commit
@@ -88,10 +87,10 @@
 
 8. **Post-Commit Linting** (lowest priority, only after tests pass):
    ```sh
-   pnpm biome lint . --write --max-diagnostics=5
+   pnpm lint:fix
    ```
    - Address any lint issues in separate follow-up commits 
-   - If a linting fix would break functionality or tests, use `// biome-ignore` comments
+   - If a linting fix would break functionality or tests, use `// oxlint-disable-next-line` comments
    - **NEVER change core functionality just to satisfy a linter**
 
 ### Package-Specific Context
