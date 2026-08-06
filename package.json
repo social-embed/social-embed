@@ -24,8 +24,7 @@
     "docs": "pnpm run --recursive docs",
     "docs:gen:watch": "pnpm run --recursive docs:gen:watch",
     "docs:serve": "pnpm run --recursive docs:serve",
-    "serve": "pnpm run --recursive serve",
-    "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
+    "serve": "pnpm run --recursive serve"
   },
   "engines": {
     "node": ">=22"
