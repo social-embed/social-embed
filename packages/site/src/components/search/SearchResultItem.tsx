@@ -97,8 +97,8 @@ export function SearchResultItem({
       role="option"
       tabIndex={-1}
     >
-      {/* Main result - biome-ignore needed as this div delegates keyboard to inner link */}
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: Keyboard events delegate to focusable link inside */}
+      {/* Main result - suppression needed as this div delegates keyboard to inner link */}
+      {/* oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- Keyboard events delegate to focusable link inside */}
       <div
         className={`
           cursor-pointer rounded-lg

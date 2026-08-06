@@ -20,7 +20,7 @@ export async function fixture<T extends Element>(template: string): Promise<T> {
  * Template literal for creating HTML snippets
  * Similar to @open-wc/testing html utility
  */
-// biome-ignore lint/suspicious/noExplicitAny: This matches the open-wc/testing API which uses any[] for values
+// oxlint-disable-next-line typescript/no-explicit-any -- This matches the open-wc/testing API which uses any[] for values
 export function html(strings: TemplateStringsArray, ...values: any[]): string {
   return String.raw({ raw: strings }, ...values);
 }
@@ -43,7 +43,7 @@ export async function expectShadowDomEventually(
     await vitestExpect
       .poll(
         () => {
-          // biome-ignore lint/style/noNonNullAssertion: We've already checked for shadowRoot presence above
+          // shadowRoot presence is asserted above, hence the non-null assertion
           return expectedOrCallback(element.shadowRoot!);
         },
         { timeout },
@@ -72,7 +72,7 @@ export async function expectShadowDomEventually(
   await vitestExpect
     .poll(
       () => {
-        // biome-ignore lint/style/noNonNullAssertion: We've already checked for shadowRoot presence above
+        // shadowRoot presence is asserted above, hence the non-null assertion
         const actualElements = getElementsToCompare(element.shadowRoot!);
 
         if (actualElements.length !== expectedElements.length) {

@@ -16,7 +16,7 @@ globs: *.ts, *.tsx, package.json, tsconfig.json, vite*.ts
    - Never modify critical implementations sheerly for the sake of linting or type checking
    - Always prioritize making tests pass over addressing linting or type checking issues
    - Prompt or communicate before making substantial implementation changes
-   - Add `// biome-ignore` or `// @ts-ignore` comments for linting/typing issues rather than changing core functionality
+   - Add `// oxlint-disable-next-line <plugin>/<rule> -- why` or `// @ts-ignore` comments for linting/typing issues rather than changing core functionality
 
 2. **Core Functionality** - Ensure the code works correctly
    - Focus on correctness of implementation first
@@ -72,8 +72,7 @@ globs: *.ts, *.tsx, package.json, tsconfig.json, vite*.ts
 
 3. **Format For Readability** (only after tests pass):
    ```sh
-   pnpm biome format . --write && \
-   pnpm biome check . --write
+   pnpm format
    ```
    - Run formatting and checking to maintain code readability
    - If formatting would break tests, skip this step and add a note in your commit
@@ -92,10 +91,10 @@ globs: *.ts, *.tsx, package.json, tsconfig.json, vite*.ts
 
 6. **Post-Commit Linting** (lowest priority, only after tests pass):
    ```sh
-   pnpm biome lint . --write --max-diagnostics=5
+   pnpm lint:fix
    ```
    - Address any lint issues in separate follow-up commits 
-   - If a linting fix would break functionality or tests, use `// biome-ignore` comments
+   - If a linting fix would break functionality or tests, use `// oxlint-disable-next-line` comments
    - **NEVER change core functionality just to satisfy a linter**
 
 ## Package-Specific Context
@@ -207,7 +206,7 @@ globs: *.ts, *.tsx, package.json, tsconfig.json, vite*.ts
 
 1. Navigate to correct package
 2. Run tests and fix failures
-3. Format and check code with biome (if it doesn't break tests)
+3. Format code with oxfmt + biome (if it doesn't break tests)
 4. Make feature changes and commit
 5. Run type checks and fix in follow-up commits if needed (if fixes don't break tests)
 6. Run linting and fix in follow-up commits if needed (if fixes don't break tests)

@@ -1,4 +1,8 @@
 {
-  "recommendations": ["runem.lit-plugin", "biomejs.biome"],
+  "recommendations": [
+    "runem.lit-plugin",
+    "oxc.oxc-vscode",
+    "biomejs.biome"
+  ],
   "unwantedRecommendations": []
 }

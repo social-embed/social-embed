@@ -25,7 +25,7 @@ describe("Utility Functions Type Tests", () => {
     expectTypeOf(isString).returns.toEqualTypeOf<boolean>();
 
     // Verify type narrowing behavior through conditional type
-    type IsStringReturn<T> = T extends (val: unknown) => val is string
+    type IsStringReturn<T> = T extends ((val: unknown) => val is string)
       ? true
       : false;
     type Result = IsStringReturn<typeof isString>;
@@ -41,7 +41,7 @@ describe("Utility Functions Type Tests", () => {
     expectTypeOf(isRegExp).returns.toEqualTypeOf<boolean>();
 
     // Verify type narrowing behavior through conditional type
-    type IsRegExpReturn<T> = T extends (val: unknown) => val is RegExp
+    type IsRegExpReturn<T> = T extends ((val: unknown) => val is RegExp)
       ? true
       : false;
     type Result = IsRegExpReturn<typeof isRegExp>;

@@ -18,6 +18,17 @@ Here you can find project-wide changes. For more detailed changes:
 
 ### Development
 
+- **Tooling**: Move linting and formatting from Biome to the oxc suite
+
+  `oxlint` lints (`.oxlintrc.json`), `oxfmt` formats everything except `.astro`
+  (`.oxfmtrc.json`), and Biome is retained only to format `.astro` frontmatter
+  with its linter disabled. `pnpm lint:type-aware` adds opt-in type-aware rules
+  via `oxlint-tsgolint`; `tsc --noEmit` stays the type-check authority.
+
+  `// biome-ignore` comments are inert under oxlint and were rewritten to
+  `// oxlint-disable-next-line <plugin>/<rule> -- why`. CSS linting is dropped —
+  oxlint has no CSS support. See `OXC_MIGRATION.md`.
+
 - **Tooling**: Upgrade to Biome 2.0 (#45)
   - Migrated configuration from v1 to v2 format
   - Updated ignore patterns to use new glob syntax (`/**` instead of `/`)

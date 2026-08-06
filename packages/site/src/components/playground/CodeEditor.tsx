@@ -82,7 +82,6 @@ export function CodeEditor({
   }, [theme]);
 
   // Create editor on mount
-  // biome-ignore lint/correctness/useExhaustiveDependencies: value is intentionally excluded to avoid destroying editor on every keystroke
   useLayoutEffect(() => {
     if (!containerRef.current) return;
 
@@ -142,6 +141,7 @@ export function CodeEditor({
       view.destroy();
       viewRef.current = null;
     };
+    // oxlint-disable-next-line react/exhaustive-deps -- value is intentionally excluded to avoid destroying editor on every keystroke
   }, [language, readOnly, resolvedTheme]);
 
   // Sync value from props (external changes)

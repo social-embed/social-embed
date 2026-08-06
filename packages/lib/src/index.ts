@@ -1,10 +1,7 @@
 export type { EmbedProvider } from "./provider";
 export * from "./providers";
 export { EmbedProviderRegistry } from "./registry";
-export {
-  convertUrlToEmbedUrl,
-  getProviderFromUrl,
-} from "./utils";
+export { convertUrlToEmbedUrl, getProviderFromUrl } from "./utils";
 
 import type { EmbedProvider } from "./provider";
 import { DailyMotionProvider } from "./providers/dailymotion";

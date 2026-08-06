@@ -18,6 +18,7 @@ describe("utils test", () => {
   });
 
   it("should reject javascript: URIs", () => {
+    // oxlint-disable-next-line eslint/no-script-url -- hostile input the rule under test must reject
     expect(isValidUrl("javascript:alert(1)")).toBe(false);
   });
 

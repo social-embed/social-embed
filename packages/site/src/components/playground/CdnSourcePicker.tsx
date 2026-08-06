@@ -71,11 +71,11 @@ export function CdnSourcePicker({
 
   // Sync customUrl when value changes from parent (e.g., URL state restoration)
   const valueUrl = value.type === "custom" ? value.url : "";
-  // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally sync only on parent value changes
   useEffect(() => {
     if (value.type === "custom" && valueUrl !== customUrl) {
       setCustomUrl(valueUrl);
     }
+    // oxlint-disable-next-line react/exhaustive-deps -- intentionally sync only on parent value changes
   }, [value.type, valueUrl]);
 
   const handleSourceChange = (type: CdnSourceType) => {

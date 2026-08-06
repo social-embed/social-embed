@@ -33,17 +33,43 @@ jobs:
       - name: "playwright: Install browsers"
         run: pnpm --filter @social-embed/wc exec playwright install --with-deps
 
-      - name: pnpm biome format .
-        run: pnpm biome format .
+      # Generates .astro/types.d.ts. `pnpm --recursive run type-check` re-runs it,
+      # but keeping it as its own step makes a sync failure diagnosable on its own.
+      # NOTE: `pnpm -r exec astro sync` fails -- the workspace root has no astro
+      # config. Use --filter.
+      - name: Astro sync
+        run: pnpm --filter @social-embed/site exec astro sync
 
-      - name: pnpm biome lint .
-        run: pnpm biome lint .
+      # oxfmt formats everything except .astro. Exits 1 on unformatted files,
+      # 2 on "no files matched".
+      - name: Format check (oxfmt)
+        run: pnpm exec oxfmt --check
 
-      - name: pnpm biome check .
-        run: pnpm biome check .
+      # Biome is retained ONLY as the .astro formatter, and only for the `---`
+      # frontmatter. Scope lives in biome.jsonc (files.includes ["**/*.astro"]).
+      # Expected file count = (.astro count) + 1; the +1 is biome.jsonc itself.
+      - name: Format check (.astro, biome)
+        run: pnpm exec biome format .
+
+      # Exits 1 on any error-severity diagnostic. That works ONLY because
+      # .oxlintrc.json sets categories.correctness = "error"; the out-of-the-box
+      # default is correctness at WARN with exit code 0, so a bare `oxlint` would
+      # pass CI unconditionally.
+      # Do NOT add --deny-warnings during the ramp: react/exhaustive-deps ships
+      # as "warn" deliberately.
+      - name: Lint (oxlint)
+        run: pnpm exec oxlint
 
       - name: build
         run: pnpm build
+
+      # oxlint --type-check over the packages that opt in. NOT the authority.
+      - name: Type check (oxlint --type-check)
+        run: pnpm run --recursive type-check
+
+      # tsc --noEmit is the AUTHORITY. Never continue-on-error this step.
+      - name: Type check (tsc, authority)
+        run: pnpm run --recursive type-check:tsc
 
       - name: test
         run: pnpm test
