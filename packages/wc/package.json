@@ -71,7 +71,7 @@
     "@vitest/coverage-istanbul": "^4.1.10",
     "@vitest/ui": "^4.1.10",
     "lit-analyzer": "^2.0.3",
-    "playwright": "^1.62.0",
+    "playwright": "^1.62.1",
     "rimraf": "^5.0.7",
     "typescript": "^7.0.2",
     "vite": "^8.2.0",
