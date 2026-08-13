@@ -7,6 +7,7 @@ export default getViteConfig({
   define: {
     // Build-time globals needed by cdnSources.ts
     __GIT_BRANCH__: JSON.stringify("test-branch"),
+    __GIT_SHA__: JSON.stringify("abc1234567890"),
   },
   // Vite 8 transforms JSX with Oxc (not esbuild); configure Oxc's JSX
   // runtime so the React component tests compile.

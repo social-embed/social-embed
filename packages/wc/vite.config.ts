@@ -5,10 +5,10 @@ export default defineConfig({
     lib: {
       entry: "src/OEmbedElement.ts",
       fileName: "OEmbedElement",
-      formats: ["es", "umd"],
-      name: "oembed",
+      formats: ["es"],
     },
     manifest: false,
-    minify: false,
+    minify: true,
+    sourcemap: true,
   },
 });

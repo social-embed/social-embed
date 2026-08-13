@@ -1,0 +1,43 @@
+---
+title: Stable vs advanced API
+description: Which @social-embed/lib exports we recommend by default and which are power-user APIs.
+slug: lib/stable-and-advanced
+sidebar:
+  order: 8
+  label: Stable vs advanced
+---
+
+The package exports a wide surface from `index.ts`. This page separates **stable, recommended** APIs from **advanced** building blocks most apps never need.
+
+## Stable (recommended)
+
+Use these for typical apps, SSR, and custom renderers:
+
+| API | Purpose |
+|-----|---------|
+| **`MatcherRegistry`** / **`MatcherRegistry.withDefaults()`** | Match URLs, get embed URLs, produce structured output |
+| **`defineIframeMatcher`** / **`defineScriptMatcher`** | Define custom matchers with less boilerplate than raw `UrlMatcher` |
+| **`renderOutput`** | Turn `EmbedOutput` into an HTML string (SSR-safe) |
+| **`@social-embed/lib/browser`** | **`toEmbedUrl`**, **`toEmbed`**, **`register`**, **`mount`** — CDN-friendly helpers and the shared **`defaultStore`** |
+| **`convertUrlToEmbedUrl`** | **Deprecated** but still supported; prefer `registry.toEmbedUrl()` for new code |
+
+Start with [Installation](/lib/installation), [Examples](/lib/examples), and [Matchers](/lib/providers).
+
+## Advanced (power users)
+
+Reach for these when you need maximum control or framework-style patterns:
+
+| API | Purpose |
+|-----|---------|
+| **`defineMatcher`** | Unified factory (`type: "iframe" \| "script"`) when you want one entry point |
+| **`Embed`** class | Rich object with `.toHtml()`, `.toUrl()`, `.toNodes()` over a match result |
+| **`RegistryStore`** | Mutable registry + **`subscribe()`** for reactive UIs (the **`<o-embed>`** element uses this) |
+| **`MatcherRegistry.isMatch()`** | Type guard to narrow `MatchResult` to a specific matcher’s data |
+| **`DangerousHtmlNode` / script matchers** | HTML or script-based embeds — you must escape user-controlled strings |
+| **`MatchContext`**, **`Result`**, **`MatchInput`** | Low-level types for custom matcher implementations |
+
+See [v0.1 → v0.2 migration](/lib/migration/0.2/) if you are porting from the old `EmbedProvider` API.
+
+## Related
+
+- [Tree-shaking and side effects](/lib/installation#tree-shaking-and-side-effects) — `sideEffects: false` on the main entry vs `@social-embed/lib/browser`

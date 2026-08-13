@@ -7,34 +7,37 @@ sidebar:
   order: 1
 ---
 
-`@social-embed/lib` is a zero-dependency JavaScript library for detecting media platforms, extracting IDs from URLs, and generating embeddable URLs. It runs in any JavaScript environment — browsers, Node.js, edge workers.
+`@social-embed/lib` is a zero-dependency JavaScript library for matching media URLs, extracting structured IDs, and generating embeddable URLs. It runs in any JavaScript environment — browsers, Node.js, edge workers.
 
 ```ts
-import { convertUrlToEmbedUrl } from "@social-embed/lib";
+import { MatcherRegistry } from "@social-embed/lib";
 
-convertUrlToEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
-// "https://www.youtube.com/embed/Bd8_vO5zrjo"
+const registry = MatcherRegistry.withDefaults();
+registry.toEmbedUrl("https://youtu.be/Bd8_vO5zrjo");
+// "https://www.youtube-nocookie.com/embed/Bd8_vO5zrjo" (privacy-enhanced by default)
 ```
 
 ## Key features
 
-- **Universal conversion** — `convertUrlToEmbedUrl()` handles all providers in one call
-- **Provider detection** — `getProviderFromUrl()` identifies which platform a URL belongs to
-- **Extensible registry** — Add custom providers with `defaultRegistry.register()`
-- **Zero dependencies** — No npm dependencies, no DOM requirement
-- **Type-safe** — Full TypeScript with exported `EmbedProvider` type and `EmbedProviderRegistry` class
+- **Unified matching** — `registry.match()` and `registry.toEmbedUrl()` across all built-in platforms
+- **Type-safe matchers** — `UrlMatcher` + `defineIframeMatcher` / `defineScriptMatcher` for custom services
+- **SSR-friendly core** — Immutable `MatcherRegistry`; optional `RegistryStore` and `@social-embed/lib/browser` for reactive / CDN usage
+- **Zero dependencies** — No npm dependencies, no DOM requirement in the core entry
+- **Migration path** — Deprecated `convertUrlToEmbedUrl()` still works; new code should use the registry API
 
 ## What to read next
 
-- [Installation](/lib/installation) — npm, CDN, and bundler setup
-- [Examples](/lib/examples) — Universal conversion, per-provider functions, custom providers
-- [API reference](/lib/api-reference) — All exports, types, and function signatures
-- [Providers](/lib/providers) — The `EmbedProvider` interface and registry system
+- [Installation](/lib/installation) — npm, CDN, bundler setup, and **tree-shaking / side effects**
+- [Stable vs advanced](/lib/stable-and-advanced) — Which exports we recommend vs power-user APIs
+- [v0.1 → v0.2 migration](/lib/migration/0.2/) — Breaking changes if you used `EmbedProvider`, `getProviderFromUrl`, or per-provider helpers
+- [Examples](/lib/examples) — Registry, browser module, custom matchers
+- [Matchers](/lib/providers) — `UrlMatcher` interface and custom matchers
+- [API reference](/lib/api-reference) — Symbol listing (some sections may still describe pre-v0.2 names; prefer migration + examples for v0.2)
 
 ## How it fits
 
 This library handles steps 1-3 of the social-embed pipeline (detect → extract → build). It is used internally by the [`<o-embed>` web component](/wc/), but you can use it standalone for:
 
-- **Server-side URL validation** — Check if a URL is from a recognized provider before storing it
+- **Server-side URL validation** — `registry.match()` before storing user-submitted URLs
 - **Custom renderers** — Build your own embed UI in React, Vue, Svelte, or any framework
 - **Content pipelines** — Transform URLs in batch processing, API endpoints, or build steps
