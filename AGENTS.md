@@ -192,52 +192,42 @@ Treat this file like code and prune it.
   reader can infer from the code, a manifest, or a linter does not
   belong.
 
-## Code Blocks in Documentation
+## Documentation Standards
 
-When writing documentation (README, CHANGES, docs/), follow these rules for shell command blocks:
+### Code Blocks
 
-**One command per code block.** This makes commands individually copyable.
+Code blocks are paste-and-run units: pasting one block runs exactly one
+intended action. Doctests and other executed examples are exempt — the test
+suite runs them, nobody pastes them.
 
-**Put explanations outside the code block**, not as comments inside.
+- **One command per block.** Multiple steps may share a block only when
+  explicitly chained with `&&`, `;`, or `\` continuations — the chain is
+  then one logical command.
+- **Explanations go in prose above the block**, never as `#` comments inside it.
+- **Command menus are per-command blocks with prose lead-ins**, not tables.
+- **Shell commands use the `console` tag with a `$ ` prefix.** This separates
+  interactive commands from scripts and enables prompt-aware copy.
+- **Split long commands with `\`** — one flag or flag+value pair per indented
+  continuation line, positional arguments last.
 
 Good:
 
-Install dependencies:
+Show the last ten commits as a graph:
 
-```bash
-pnpm install
-```
-
-Start the dev server:
-
-```bash
-pnpm dev
+```console
+$ git log \
+    --max-count=10 \
+    --graph \
+    --oneline
 ```
 
 Bad:
 
-```bash
-# Install dependencies
-pnpm install
-
-# Start the dev server
-pnpm dev
+```console
+# Show the last ten commits as a graph
+$ git log --max-count=10 --graph --oneline
 ```
 
-**Split long commands with `\` for readability.** Each flag or argument group gets its own continuation line, indented.
-
-Good:
-
-```bash
-git commit -m "$(cat <<'EOF'
-feat(lib[youtube]) Support YouTube Shorts URLs
-
-why: Users often paste Shorts links; embeds should just work.
-
-what:
-- Detect `/shorts/<id>` URL pattern
-EOF
-)"
-```
-
-**Note:** These rules apply to shell commands in documentation. Code examples (TypeScript, HTML) may contain inline output annotations (e.g. `// "result"`) — those are idiomatic and should stay.
+**Note:** These rules apply to shell commands in documentation. Code examples
+(TypeScript, HTML) may contain inline output annotations (e.g. `// "result"`)
+— those are idiomatic and should stay.
