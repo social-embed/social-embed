@@ -523,8 +523,9 @@ follow. A colon after `)` reads as machine-generated here. (A bare filename
 subject with no parentheses is a different, legitimate shape — see
 [Config-file commits](#config-file-commits) below.)
 
-Keep the subject to 50 characters or fewer, excluding any trailing `(#NN)`
-pull request reference, and wrap body lines at 72. Separate the `why:` and
+Keep the subject scannable in `git log --oneline`: aim for 50 characters and
+treat 72 as the practical limit, excluding any trailing `(#NN)` pull request
+reference. Wrap body lines at 72. Separate the `why:` and
 `what:` blocks with a blank line.
 
 `type` is always lowercase; `scope` is usually lowercase, with proper
