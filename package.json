@@ -4,7 +4,6 @@
   "scripts": {
     "build": "pnpm --filter @social-embed/lib build && pnpm --filter @social-embed/wc build",
     "clean": "pnpm run --recursive clean",
-    "distclean": "pnpm run --recursive distclean",
     "format": "pnpm run --recursive format",
     "format:check": "biome format .",
     "lint": "biome lint .",
@@ -21,9 +20,6 @@
     "update": "pnpm run --recursive update",
     "update:all": "ncu -u && pnpm --recursive exec ncu -u",
     "reinstall": "rm -rf node_modules packages/*/node_modules && pnpm i",
-    "docs": "pnpm run --recursive docs",
-    "docs:gen:watch": "pnpm run --recursive docs:gen:watch",
-    "docs:serve": "pnpm run --recursive docs:serve",
     "serve": "pnpm run --recursive serve",
     "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
   },
@@ -32,7 +28,7 @@
   },
   "packageManager": "pnpm@11.22.0",
   "dependencies": {
-    "typescript": "^7.0.2"
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.9",
