@@ -47,7 +47,6 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@biomejs/biome": "^2.5.9",
-    "@types/hast": "^3.0.5",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "astro-expressive-code": "^0.44.1",
@@ -58,7 +57,7 @@
     "magic-string": "^1.2.1",
     "pagefind": "^1.5.2",
     "satteri": "^0.10.3",
-    "typescript": "^7.0.2",
+    "typescript": "^6.0.3",
     "vite": "^8.2.1",
     "vitest": "^4.1.11"
   }
