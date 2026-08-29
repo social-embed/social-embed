@@ -41,24 +41,24 @@
     "astro": "^7.2.3",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@biomejs/biome": "^2.5.9",
     "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
+    "@types/react-dom": "^19.2.5",
     "astro-expressive-code": "^0.44.1",
     "es-module-lexer": "^2.3.2",
     "github-slugger": "^2.0.0",
     "glob": "^13.0.6",
-    "happy-dom": "^20.11.2",
-    "magic-string": "^1.2.1",
+    "happy-dom": "^20.11.6",
+    "magic-string": "^1.2.3",
     "pagefind": "^1.5.2",
     "satteri": "^0.10.3",
     "typescript": "^6.0.3",
-    "vite": "^8.2.1",
+    "vite": "^8.2.2",
     "vitest": "^4.1.11"
   }
 }
