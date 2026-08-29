@@ -1,0 +1,3 @@
+{
+  "reject": ["satteri", "@astrojs/markdown-satteri"]
+}
