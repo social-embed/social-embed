@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
-    "@biomejs/biome": "^2.5.11",
+    "@biomejs/biome": "^2.5.12",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "astro-expressive-code": "^0.44.2",
