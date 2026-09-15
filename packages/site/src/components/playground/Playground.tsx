@@ -15,7 +15,15 @@ import {
   PreviewPane,
   type PreviewPaneHandle,
 } from "./PreviewPane";
-import { DEFAULT_PRESET, getPresetById, PRESETS, type Preset } from "./presets";
+import {
+  DEFAULT_PRESET,
+  extractSnippet,
+  getPresetById,
+  PRESETS,
+  type Preset,
+  type ViewMode,
+  wrapSnippet,
+} from "./presets";
 import { RerollButton } from "./RerollButton";
 import {
   applySeededUrls,
@@ -90,6 +98,7 @@ export function Playground() {
         };
   });
 
+  const [viewMode, setViewMode] = useState<ViewMode>("full");
   const [consoleLogs, setConsoleLogs] = useState<ConsoleEntry[]>([]);
   const [stableCode, setStableCode] = useState(state.code);
   const previewRef = useRef<PreviewPaneHandle>(null);
@@ -134,16 +143,31 @@ export function Playground() {
     setConsoleLogs([]); // Clear console on CDN change
   }, []);
 
-  const handlePresetChange = useCallback((preset: Preset) => {
-    setState((prev) => ({
-      ...prev,
-      code: preset.code,
-      presetId: preset.id,
-      seed: undefined, // Clear any previous seed
-      templateCode: undefined, // Will be derived from presetId
-    }));
-    setConsoleLogs([]); // Clear console on preset change
+  const handleViewModeToggle = useCallback(() => {
+    setViewMode((prev) => {
+      const next = prev === "full" ? "snippet" : "full";
+      setState((s) => ({
+        ...s,
+        code: next === "snippet" ? extractSnippet(s.code) : wrapSnippet(s.code),
+      }));
+      return next;
+    });
   }, []);
+
+  const handlePresetChange = useCallback(
+    (preset: Preset) => {
+      setState((prev) => ({
+        ...prev,
+        code:
+          viewMode === "snippet" ? extractSnippet(preset.code) : preset.code,
+        presetId: preset.id,
+        seed: undefined,
+        templateCode: undefined,
+      }));
+      setConsoleLogs([]);
+    },
+    [viewMode],
+  );
 
   const handleConsoleMessage = useCallback((entry: ConsoleEntry) => {
     setConsoleLogs((prev) => [...prev, entry]);
@@ -157,11 +181,11 @@ export function Playground() {
   const handleReroll = useCallback(() => {
     const newSeed = generateSeed();
 
-    // Get template (preset code, existing template, or current code)
+    // Get full HTML template (preset code, existing template, or current code)
     const template =
       state.templateCode ??
       (state.presetId ? getPresetById(state.presetId)?.code : undefined) ??
-      state.code;
+      (viewMode === "snippet" ? wrapSnippet(state.code) : state.code);
 
     // Reactive update via postMessage (no iframe reload)
     const updates = generateReactiveUpdates(template, newSeed);
@@ -174,15 +198,15 @@ export function Playground() {
     }
 
     // Compute display code from template + seed
-    const { html } = applySeededUrls(template, newSeed);
+    const { html: fullHtml } = applySeededUrls(template, newSeed);
 
     setState((prev) => ({
       ...prev,
-      code: html, // Display code for editor
+      code: viewMode === "snippet" ? extractSnippet(fullHtml) : fullHtml,
       seed: newSeed,
-      templateCode: template, // Preserve template for URL encoding
+      templateCode: template,
     }));
-  }, [state.code, state.templateCode, state.presetId]);
+  }, [state.code, state.templateCode, state.presetId, viewMode]);
 
   // Check if current code can be randomized
   const canReroll = useMemo(() => canRandomize(state.code), [state.code]);
@@ -215,6 +239,27 @@ export function Playground() {
 
         {/* Reroll button */}
         {canReroll && <RerollButton onClick={handleReroll} variant="sm" />}
+
+        {/* View mode toggle */}
+        <button
+          className={`
+            h-[26px] px-2 py-1 text-xs font-medium border rounded transition-colors cursor-pointer select-none
+            ${
+              viewMode === "snippet"
+                ? "bg-indigo-50 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 border-indigo-300 dark:border-indigo-700"
+                : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-slate-400 dark:hover:border-slate-500"
+            }
+          `}
+          onClick={handleViewModeToggle}
+          title={
+            viewMode === "snippet"
+              ? "Show full HTML page"
+              : "Show only the embed tag"
+          }
+          type="button"
+        >
+          {viewMode === "snippet" ? "Tag" : "HTML"}
+        </button>
 
         {/* CDN source picker */}
         <div className="flex-1 min-w-[300px]">
@@ -269,6 +314,7 @@ export function Playground() {
               code={stableCode}
               onConsoleMessage={handleConsoleMessage}
               ref={previewRef}
+              viewMode={viewMode}
               wcUrl={cdnUrls.wc}
             />
           </div>

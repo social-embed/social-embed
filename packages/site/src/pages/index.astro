@@ -13,6 +13,7 @@ import PureSocialIcons from "../components/core/PureSocialIcons.astro";
 import PureThemeSelect from "../components/core/PureThemeSelect.astro";
 import GitPullLogo from "../components/GitPullLogo.astro";
 import { LibPlayground } from "../components/lib-playground/LibPlayground";
+import { BeforeAfterDemo } from "../components/playground/BeforeAfterDemo";
 import { MiniPlayground } from "../components/playground/MiniPlayground";
 import { ReadonlyCode } from "../components/playground/ReadonlyCode";
 ---
@@ -98,35 +99,7 @@ import { ReadonlyCode } from "../components/playground/ReadonlyCode";
       </div>
 
       <!-- Before / After -->
-      <div class="mb-12">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Before — stored in your database</p>
-            <ReadonlyCode
-              client:only="react"
-              code={`<iframe width="560" height="315"
-  src="https://www.youtube.com/embed/Bd8_vO5zrjo"
-  frameborder="0"
-  allow="accelerometer; autoplay;
-    clipboard-write; encrypted-media;
-    gyroscope; picture-in-picture"
-  allowfullscreen></iframe>`}
-            />
-          </div>
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">After — stored now</p>
-            <ReadonlyCode
-              client:only="react"
-              code={`<o-embed
-  url="https://www.youtube.com/watch?v=Bd8_vO5zrjo"
-></o-embed>`}
-            />
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
-              The URL is the data. Provider detection, embed URL construction, and rendering happen at render time. <a href="#playground" class="text-indigo-600 dark:text-indigo-400 hover:underline">See example</a>
-            </p>
-          </div>
-        </div>
-      </div>
+      <BeforeAfterDemo client:only="react" className="mb-12" />
 
       <!-- Use cases -->
       <div class="max-w-4xl mx-auto mb-12">
