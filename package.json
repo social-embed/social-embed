@@ -31,9 +31,9 @@
     "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.12",
-    "knip": "^6.35.1",
-    "oxlint": "^1.82.0",
+    "@biomejs/biome": "2.5.14",
+    "knip": "^6.36.0",
+    "oxlint": "^1.83.0",
     "oxlint-tsgolint": "^7.0.2001"
   }
 }

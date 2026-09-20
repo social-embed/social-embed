@@ -19,4 +19,6 @@ allowBuilds:
 # CodeMirror syntax highlighting: two `EditorView.decorations` facet identities
 # mean highlight decorations register against a facet the live view never reads.
 overrides:
+  # Keep Astro checks installable: 2.17.0 loses its wasm runtime in hoisted installs.
+  '@astrojs/language-server': 2.16.12
   '@codemirror/view': '^6.43.11'
