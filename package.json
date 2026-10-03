@@ -20,8 +20,7 @@
     "update": "pnpm run --recursive update",
     "update:all": "ncu -u && pnpm --recursive exec ncu -u",
     "reinstall": "rm -rf node_modules packages/*/node_modules && pnpm i",
-    "serve": "pnpm run --recursive serve",
-    "deduplicate": "npx --yes yarn-deduplicate yarn.lock"
+    "serve": "pnpm run --recursive serve"
   },
   "engines": {
     "node": ">=22"
