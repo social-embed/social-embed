@@ -33,15 +33,15 @@
     "@codemirror/view": "^6.43.13",
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@fontsource/ibm-plex-sans": "^5.3.0",
-    "@lezer/highlight": "^1.2.3",
+    "@lezer/highlight": "^1.2.5",
     "@pagefind/default-ui": "^1.5.2",
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.3.4",
+    "astro": "^7.3.5",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "sharp": "^0.35.4",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
@@ -54,11 +54,11 @@
     "github-slugger": "^2.0.0",
     "glob": "^13.0.6",
     "happy-dom": "^20.14.5",
-    "magic-string": "^1.4.1",
+    "magic-string": "^1.4.2",
     "pagefind": "^1.5.2",
     "satteri": "^0.10.5",
     "typescript": "^6.0.3",
-    "vite": "^8.3.0",
-    "vitest": "^5.0.1"
+    "vite": "^8.3.1",
+    "vitest": "^5.0.3"
   }
 }
