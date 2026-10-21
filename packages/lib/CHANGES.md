@@ -19,6 +19,14 @@ sidebar:
   - Updated `youTubeUrlRegex` to capture Shorts video IDs
   - Fixed regex to properly handle URL fragments (`#`) in addition to query parameters
 
+### Internal Improvements
+
+- Removed all lint and TypeScript warnings from the codebase for maintainability.
+- Documented and enforced that custom provider `getIdFromUrl` must return a `string`, not `string[]`.
+- Added runtime check in `OEmbedElement` (in wc) to warn if a custom provider returns an array and use the first value.
+- Expanded doc comments for custom provider extension and lifecycle caveats.
+- Cleaned up unused imports/variables in test files.
+
 ### Development
 
 - **Type Safety**: Improved test suite with built-in type checking (#42)

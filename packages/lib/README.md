@@ -2,7 +2,7 @@
 
 > The embed normalization engine — detect providers, extract IDs, generate embed URLs. Zero dependencies, ~2 kB gzipped.
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE) 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/social-embed/social-embed/blob/master/LICENSE)
 [![npm version](https://img.shields.io/npm/v/@social-embed/lib.svg?style=flat)](https://www.npmjs.com/package/@social-embed/lib)
 [![Bundle size](https://img.shields.io/bundlephobia/minzip/@social-embed/lib)](https://bundlephobia.com/package/@social-embed/lib)
 
@@ -57,7 +57,38 @@ import { convertUrlToEmbedUrl } from "https://www.unpkg.com/@social-embed/lib?mo
 - **Type-safe** - Full TypeScript support with exported types
 - **Platform-agnostic** - Works in browsers, Node.js, and other JavaScript environments
 - **Comprehensive support** - Works with numerous media platforms
+- **Extensible** - Create and register custom providers for any platform
 - **No external dependencies** - Zero npm dependencies
+
+## Custom Providers
+
+You can extend the library with your own custom providers for platforms not natively supported:
+
+```typescript
+import { type EmbedProvider, getDefaultRegistry } from "@social-embed/lib";
+
+// Create a custom provider
+const MyCustomProvider: EmbedProvider = {
+  name: "MyCustom",
+  canParseUrl(url) { return /mycustom\.example\.com\/video\//.test(url); },
+  getIdFromUrl(url) { return url.split("/").pop() || ""; },
+  getEmbedUrlFromId(id) { return `https://mycustom.example.com/embed/${id}`; },
+  // Optional: Specify default dimensions
+  defaultDimensions: { width: "640", height: "360" },
+  // Optional: Specify custom iframe attributes
+  iframeAttributes: {
+    allowtransparency: "true",
+    allow: "autoplay; encrypted-media"
+  }
+};
+
+// Register your provider
+getDefaultRegistry().register(MyCustomProvider);
+
+// Now you can use it like any built-in provider
+const embedUrl = convertUrlToEmbedUrl("https://mycustom.example.com/video/xyz123");
+console.log(embedUrl); // "https://mycustom.example.com/embed/xyz123"
+```
 
 ## Supported Platforms & Examples
 
