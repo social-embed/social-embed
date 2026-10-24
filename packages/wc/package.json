@@ -67,15 +67,15 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.2",
-    "@vitest/browser-playwright": "^5.0.4",
-    "@vitest/coverage-istanbul": "^5.0.4",
-    "@vitest/ui": "^5.0.4",
+    "@vitest/browser-playwright": "^5.0.5",
+    "@vitest/coverage-istanbul": "^5.0.5",
+    "@vitest/ui": "^5.0.5",
     "lit-analyzer": "^2.0.3",
     "playwright": "^1.64.0",
     "rimraf": "^6.1.3",
     "typescript": "^6.0.3",
     "vite": "^8.3.4",
-    "vitest": "^5.0.4",
+    "vitest": "^5.0.5",
     "web-component-analyzer": "^2.0.0"
   },
   "engines": {
