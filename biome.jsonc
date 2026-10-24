@@ -31,6 +31,7 @@
       "!**/yarn-error.log",
       "!**/docs",
       "!**/package.json",
+      "!**/pnpm-lock.yaml",
       "!**/.vscode",
       "!**/*.d.ts",
       "!**/*.svg"
