@@ -59,6 +59,11 @@
       }
     }
   },
+  "markdown": {
+    "formatter": {
+      "enabled": false
+    }
+  },
   "overrides": [
     {
       "includes": ["**/*.astro"],
