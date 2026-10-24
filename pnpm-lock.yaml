@@ -177,7 +177,7 @@ importers:
         specifier: 2.5.15
         version: 2.5.15
       knip:
-        specifier: ^6.39.0
+        specifier: 6.39.0
         version: 6.39.0
       oxlint:
         specifier: ^1.88.0
