@@ -54,7 +54,7 @@
     "github-slugger": "^2.0.0",
     "glob": "^14.0.3",
     "happy-dom": "^21.0.4",
-    "magic-string": "^1.4.3",
+    "magic-string": "^1.4.5",
     "pagefind": "^1.5.2",
     "satteri": "^0.10.5",
     "typescript": "^6.0.3",
