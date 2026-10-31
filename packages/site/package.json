@@ -52,7 +52,7 @@
     "astro-expressive-code": "^0.44.3",
     "es-module-lexer": "^2.3.2",
     "github-slugger": "^2.0.0",
-    "glob": "^13.0.6",
+    "glob": "^14.0.3",
     "happy-dom": "^21.0.4",
     "magic-string": "^1.4.3",
     "pagefind": "^1.5.2",
