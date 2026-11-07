@@ -13,8 +13,7 @@ export default getViteConfig({
   oxc: {
     jsx: { runtime: "automatic" },
   },
-  // biome-ignore lint/suspicious/noExplicitAny: Astro/Vite Plugin type version mismatch
-  plugins: [viteMdxMergeHeadings() as any],
+  plugins: [viteMdxMergeHeadings()],
   test: {
     // happy-dom provides DOM APIs for React component tests
     environment: "happy-dom",

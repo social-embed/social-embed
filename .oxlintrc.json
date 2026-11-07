@@ -248,7 +248,9 @@
       "env": { "vitest": true },
       "rules": {
         "typescript/no-non-null-assertion": "off",
-        "eslint/no-console": "off"
+        "eslint/no-console": "off",
+        // Tests assert that `javascript:` URLs are rejected.
+        "eslint/no-script-url": "off"
       }
     },
     {
