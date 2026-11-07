@@ -61,7 +61,9 @@ function CopyButton({ value }: { value: string }) {
           ? "text-green-600 dark:text-green-400"
           : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700"
       }`}
-      onClick={handleCopy}
+      onClick={() => {
+        void handleCopy();
+      }}
       title={copied ? "Copied!" : "Copy"}
       type="button"
     >

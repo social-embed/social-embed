@@ -20,8 +20,13 @@ beforeAll(async () => {
   });
 });
 
-const render = (content: string, frontmatter: Record<string, unknown> = {}) =>
-  processor.render(content, { frontmatter });
+const render = async (
+  content: string,
+  frontmatter: Record<string, unknown> = {},
+) => {
+  const result = await processor.render(content, { frontmatter });
+  return result;
+};
 
 describe("satteriSkipFirstHeading", () => {
   it("drops the first h1 when skipMarkdownTitle is true", async () => {

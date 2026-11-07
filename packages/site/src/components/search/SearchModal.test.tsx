@@ -461,7 +461,9 @@ describe("SearchModal", () => {
 
     test("does not clear state while navigating", async () => {
       // Create a navigation handler that never resolves (simulates slow navigation)
-      const onNavigate = vi.fn(() => new Promise<void>(() => {}));
+      const onNavigate = vi.fn(async () => {
+        await new Promise<void>(() => {});
+      });
       const { input, getResults, container } = renderModal({
         onNavigate,
       });
@@ -494,7 +496,9 @@ describe("SearchModal", () => {
     test("ignores Escape key while navigating", async () => {
       const onClose = vi.fn();
       // Create a navigation handler that never resolves
-      const onNavigate = vi.fn(() => new Promise<void>(() => {}));
+      const onNavigate = vi.fn(async () => {
+        await new Promise<void>(() => {});
+      });
       const { input, container } = renderModal({ onClose, onNavigate });
 
       // Search for results

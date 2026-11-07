@@ -137,7 +137,9 @@ export function CdnSourcePicker({
               ? "text-green-600 dark:text-green-400"
               : "text-slate-400 hover:bg-slate-200 hover:text-slate-600 dark:text-slate-500 dark:hover:bg-slate-700 dark:hover:text-slate-300"
           }`}
-          onClick={handleCopyUrl}
+          onClick={() => {
+            void handleCopyUrl();
+          }}
           title="Copy CDN URL"
           type="button"
         >

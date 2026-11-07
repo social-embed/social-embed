@@ -23,7 +23,7 @@ const INLINE_SUBRESULTS_LIMIT = 3;
 async function tryAstroNavigate(url: string): Promise<boolean> {
   try {
     const { navigate } = await import("astro:transitions/client");
-    navigate(url);
+    void navigate(url);
     return true;
   } catch {
     return false;
@@ -239,11 +239,11 @@ export function SearchModal({
                   : result.sub_results;
               const subResult = subResults[localSelectedSubIndex];
               if (subResult) {
-                handleNavigate(subResult.url);
+                void handleNavigate(subResult.url);
               }
             } else {
               // Navigate to main result
-              handleNavigate(result.url);
+              void handleNavigate(result.url);
             }
           }
           break;
@@ -315,7 +315,9 @@ export function SearchModal({
           <SearchResults
             idPrefix={RESULT_ID_PREFIX}
             navigateSections={navigateSections}
-            onNavigate={handleNavigate}
+            onNavigate={(url) => {
+              void handleNavigate(url);
+            }}
             onSelect={setLocalSelectedIndex}
             onSubSelect={handleSubSelect}
             results={results}

@@ -104,7 +104,9 @@ export function CopyLinkButton({
           ? "bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400"
           : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
       } ${className}`}
-      onClick={handleCopy}
+      onClick={() => {
+        void handleCopy();
+      }}
       title={copied ? "Copied!" : "Copy link"}
       type="button"
     >

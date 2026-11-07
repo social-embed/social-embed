@@ -15,11 +15,11 @@ import type { AstroIntegration } from "astro";
 export function pagefindIntegration(): AstroIntegration {
   return {
     hooks: {
-      "astro:build:done": ({ dir, logger }) => {
+      "astro:build:done": async ({ dir, logger }) => {
         const targetDir = fileURLToPath(dir);
         logger.info("Running Pagefind to generate search index...");
 
-        return new Promise<void>((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
           const proc = spawn("npx", ["pagefind", "--site", targetDir], {
             shell: true,
             stdio: "inherit",

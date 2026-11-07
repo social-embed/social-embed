@@ -247,7 +247,7 @@ export function usePagefindSearch(
 
       // Debounce the actual search
       debounceTimerRef.current = setTimeout(() => {
-        performSearch(query);
+        void performSearch(query);
       }, debounceMs);
     },
     [performSearch, debounceMs],
