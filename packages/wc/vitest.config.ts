@@ -47,7 +47,8 @@ export default defineConfig({
     // Include all test files
     include: ["**/*.{test,spec}.?(c|m)[jt]s?(x)", "**/*.test-d.ts"],
     // Setup files run before tests
-    setupFiles: ["./test/browser-setup.ts"],
+    // Absolute: knip >= 6.40 misreports a relative setupFiles path.
+    setupFiles: [new URL("./test/browser-setup.ts", import.meta.url).pathname],
     // Typecheck configuration - enable by default for all test runs
     typecheck: {
       checker: "tsc",

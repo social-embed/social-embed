@@ -19,6 +19,7 @@ export default getViteConfig({
     // happy-dom provides DOM APIs for React component tests
     environment: "happy-dom",
     include: ["src/**/*.test.ts", "src/**/*.test.tsx", "plugins/**/*.test.ts"],
-    setupFiles: ["./vitest.setup.ts"],
+    // Absolute: knip >= 6.40 misreports a relative setupFiles path.
+    setupFiles: [new URL("./vitest.setup.ts", import.meta.url).pathname],
   },
 });
