@@ -28,6 +28,7 @@
       ]
     },
     "packages/site": {
+      "entry": ["plugins/**/*.test.ts", "src/**/*.test.{ts,tsx}"],
       "ignoreBinaries": ["ncu"],
       "ignoreDependencies": [
         // CSS side-effect imports in src/tailwind.css / BaseLayout.astro
