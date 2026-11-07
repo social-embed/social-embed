@@ -15,10 +15,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "ncu": "ncu",
-    "update": "ncu",
-    "lint": "biome lint .",
-    "biome": "biome",
-    "format": "pnpm run biome check . --write; pnpm run biome format . --write"
+    "update": "ncu"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "^0.4.6",
@@ -46,7 +43,6 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
-    "@biomejs/biome": "^2.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "astro-expressive-code": "^0.44.3",

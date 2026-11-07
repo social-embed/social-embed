@@ -34,14 +34,17 @@ jobs:
       - name: "playwright: Install browsers"
         run: pnpm --filter @social-embed/wc exec playwright install --with-deps
 
-      - name: pnpm biome format .
-        run: pnpm biome format .
+      # Generates .astro/types.d.ts for the site type-check.
+      - name: Astro sync
+        run: pnpm --filter @social-embed/site exec astro sync
 
-      - name: pnpm biome lint .
-        run: pnpm biome lint .
+      # oxfmt formats everything except .astro; Biome formats .astro frontmatter.
+      - name: Format check (oxfmt, biome)
+        run: pnpm run format:check
 
-      - name: pnpm biome check .
-        run: pnpm biome check .
+      # Exits 1 on any error: .oxlintrc.json sets categories.correctness = "error".
+      - name: Lint (oxlint)
+        run: pnpm run lint
 
       - name: build
         run: pnpm build

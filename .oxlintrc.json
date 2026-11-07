@@ -1,0 +1,299 @@
+// `.oxlintrc.json` at the repo root. ONE per repo, never nested (nested configs
+// REPLACE the root config instead of merging it).
+//
+// Filename is `.oxlintrc.json`, not `.oxlintrc.jsonc`: knip's oxlint plugin globs
+// ['.oxlintrc.json','oxlint.config.ts'] and would not match the .jsonc form.
+// The comments below are safe in BOTH tools -- oxlint runs json_strip_comments on
+// every config format, and knip's loadJSON falls back to a JSONC parser when
+// JSON.parse throws.
+//
+// VALIDATED: `pnpm exec oxlint --print-config -f default` exits 0 with oxlint 1.76.0.
+// An unknown rule name is FATAL (exit 1, zero diagnostics, misleading message) --
+// re-run that command after any hand edit. `-f default` is required: oxlint
+// auto-selects the `agent` formatter under AI_AGENT/CLAUDECODE, where
+// --print-config produces no output at all.
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+
+  // `plugins` REPLACES the default set (eslint + unicorn + typescript + oxc) --
+  // it does not append. Always list all of them explicitly.
+  // NOT enabled on purpose: `vitest`, `react-perf`, `jsdoc`, `node`, `promise` --
+  // none has a biome counterpart and each turns on all of its correctness rules at
+  // once. Land them later, individually, after measuring.
+  "plugins": [
+    "eslint",
+    "typescript",
+    "unicorn",
+    "oxc",
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
+
+  // MANDATORY. The out-of-the-box default is correctness at WARN with exit code 0,
+  // so a naive `oxlint` in CI would pass no matter what.
+  // Do NOT add suspicious/style/pedantic/restriction categories.
+  "categories": { "correctness": "error", "perf": "error" },
+
+  // "astro": true supplies the `Astro` global (it does NOT supply `Fragment`).
+  "env": { "builtin": true, "browser": true, "node": true, "astro": true },
+
+  // "detect" is REJECTED here with a fatal config error. Must be a concrete
+  // version; this matches packages/site's react ^19.2.8.
+  "settings": { "react": { "version": "19.2" } },
+
+  "options": {
+    // Surfaces stale suppressions after the biome-ignore rewrite. Promote to
+    // "error" once the ramp is done.
+    "reportUnusedDisableDirectives": "warn"
+
+    // Layer 2 ONLY -- see OXC_MIGRATION.md. Requires oxlint-tsgolint.
+    // `options` is root-config-only.
+    // "typeAware": true,
+    // "typeCheck": false,
+
+    // Add only after the ramp completes; it would fail CI on the "warn" rules below.
+    // "denyWarnings": true
+  },
+
+  "rules": {
+    // ---- Options that must be pinned or the migration looks far worse than it is ----
+
+    // oxlint does NOT honour a `_` prefix by default despite its own help text.
+    // Matches biome's noUnusedVariables / noUnusedFunctionParameters behaviour.
+    "eslint/no-unused-vars": [
+      "error",
+      {
+        "args": "after-used",
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_"
+      }
+    ],
+
+    // biome's noInvalidUseBeforeDeclaration is TDZ-only; oxlint ships the full
+    // eslint rule, which flags arrow-function React components and hoisted
+    // helpers used above their `const`. All benign, all previously clean under
+    // biome. Accepted parity loss.
+    "eslint/no-use-before-define": "off",
+
+    // perf category, no biome counterpart, wrong for sequential test code.
+    "eslint/no-await-in-loop": "off",
+
+    // perf category, no biome counterpart. biome's performance/noAccumulatingSpread
+    // targets reduce-accumulator spread, which oxc/no-accumulating-spread below
+    // already covers. This rule fires on a DIFFERENT and deliberate idiom -- the
+    // non-mutating `map((x) => ({ ...x, extra }))` transform -- whose suggested
+    // rewrite is in-place mutation of caller-supplied data.
+    "oxc/no-map-spread": "off",
+
+    // suspicious category; wrong under the modern JSX transform.
+    "react/react-in-jsx-scope": "off",
+
+    // Fires on CSS side-effect imports (packages/site/src/tailwind.css and the
+    // @fontsource/* imports in BaseLayout.astro / astro.config.ts).
+    "import/no-unassigned-import": "off",
+
+    // correctness category, pulled in by the jsx-a11y plugin. It is materially
+    // stricter than biome's a11y/useSemanticElements, which is "recommended" and
+    // reports ZERO on the same files (verified against @biomejs/biome 2.5.6).
+    // oxlint flags `role="img"` on an emoji <span> and `role="listbox"` /
+    // `role="option"` on the Pagefind search combobox, and its suggested rewrites
+    // (<img>, <select>/<datalist>) are wrong for both: an emoji is not an image
+    // resource and a <select> cannot host the result markup. 4 hits, all
+    // deliberate ARIA on custom widgets. Off for parity.
+    "jsx-a11y/prefer-tag-over-role": "off",
+
+    // biome correctness/useExhaustiveDependencies. oxlint's version is materially
+    // stricter and reports call sites biome reported zero of. Ship as "warn",
+    // promote in a follow-up.
+    "react/exhaustive-deps": "warn",
+
+    // ---- Direct map of the 10 explicit biome `style` rules set in biome.jsonc ----
+    "typescript/no-inferrable-types": "error", // biome style/noInferrableTypes
+    "eslint/no-param-reassign": "error", // biome style/noParameterAssign
+    "eslint/no-else-return": "error", // biome style/noUselessElse
+    "typescript/prefer-as-const": "error", // biome style/useAsConstAssertion
+    "eslint/default-param-last": "error", // biome style/useDefaultParameterLast
+    "typescript/prefer-enum-initializers": "error", // biome style/useEnumInitializers
+    "unicorn/prefer-number-properties": "error", // biome style/useNumberNamespace
+    "react/self-closing-comp": "error", // biome style/useSelfClosingElements
+    // NO OXLINT EQUIVALENT, dropped: biome style/useSingleVarDeclarator
+    // (eslint/one-var is not implemented) and style/noUnusedTemplateLiteral
+    // (needs eslint/quotes, not implemented). Both were "error" here.
+
+    // ---- restriction-category rules that biome-recommended has ON ----
+    // MUST be named explicitly; they are not in `correctness`. This repo is
+    // Family A -- biome.jsonc left all three at their recommended "on".
+    "typescript/no-explicit-any": "error", // biome suspicious/noExplicitAny
+    "typescript/no-non-null-assertion": "error", // biome style/noNonNullAssertion
+    "react/no-array-index-key": "error", // biome suspicious/noArrayIndexKey
+
+    // ---- biome-recommended rules that land OUTSIDE oxlint's correctness category ----
+    "eslint/default-case-last": "error",
+    "eslint/no-extra-label": "error",
+    "eslint/no-label-var": "error",
+    "eslint/no-labels": "error",
+    "eslint/no-lone-blocks": "error",
+    "eslint/no-script-url": "error",
+    "eslint/no-template-curly-in-string": "error",
+    "eslint/no-useless-computed-key": "error",
+    // biome complexity/useArrowFunction explicitly ignores NAMED function
+    // expressions; oxlint's default (allowNamedFunctions: false) does not, and
+    // `--fix` then rewrites `memo(function Foo(props) {…})` into an anonymous
+    // arrow, losing the component's inferred name in React DevTools and in error
+    // stacks. Set for parity.
+    "eslint/prefer-arrow-callback": ["error", { "allowNamedFunctions": true }],
+    "eslint/prefer-const": "error",
+    "eslint/prefer-exponentiation-operator": "error",
+    "eslint/prefer-numeric-literals": "error",
+    "eslint/prefer-regex-literals": "error",
+    "eslint/prefer-rest-params": "error",
+    "eslint/prefer-template": "error",
+    "typescript/adjacent-overload-signatures": "error",
+    // biome style/useImportType. `disallowTypeAnnotations` defaults to TRUE in
+    // oxlint and bans inline `typeof import("...")` type annotations, which biome
+    // never touched. That form is the canonical vitest
+    // `importOriginal<typeof import("./mod")>()` idiom (1 hit,
+    // packages/site/src/components/lib-playground/LibPlayground.test.tsx).
+    // Turned off for biome parity; the import-statement half of the rule -- the
+    // part biome actually enforced -- stays on.
+    "typescript/consistent-type-imports": [
+      "error",
+      { "disallowTypeAnnotations": false }
+    ],
+    "typescript/no-empty-interface": "error",
+    "typescript/prefer-function-type": "error",
+    "unicorn/prefer-array-index-of": "error",
+    "eslint/no-proto": "error",
+    "eslint/no-regex-spaces": "error",
+    "eslint/no-sequences": "error",
+    "jsx-a11y/anchor-ambiguous-text": "error",
+    "react/button-has-type": "error",
+    "react/no-danger": "error", // biome security/noDangerouslySetInnerHtml
+    "typescript/no-invalid-void-type": "error",
+    "typescript/prefer-literal-enum-member": "error",
+    "unicorn/no-document-cookie": "error",
+    "unicorn/prefer-node-protocol": "error", // biome style/useNodejsImportProtocol
+    "eslint/array-callback-return": "error",
+    "eslint/eqeqeq": "error",
+    "eslint/no-array-constructor": "error",
+    "eslint/no-case-declarations": "error",
+    "eslint/no-constructor-return": "error",
+    "eslint/no-fallthrough": "error",
+    "eslint/no-inner-declarations": "error",
+    "eslint/no-prototype-builtins": "error",
+    "eslint/no-redeclare": "error",
+    "eslint/no-self-compare": "error",
+    "eslint/radix": "error",
+    "react/jsx-no-target-blank": "error", // biome security/noBlankTarget
+    "react/jsx-no-useless-fragment": "error",
+    "react/rules-of-hooks": "error",
+    "typescript/ban-ts-comment": "error", // biome suspicious/noTsIgnore
+    "typescript/ban-types": "error",
+    "unicorn/new-for-builtins": "error",
+    "unicorn/no-instanceof-array": "error",
+    "unicorn/no-useless-switch-case": "error",
+    "unicorn/prefer-date-now": "error",
+    "eslint/no-unneeded-ternary": "error",
+    "eslint/no-useless-constructor": "error",
+    "react/jsx-no-comment-textnodes": "error",
+    "typescript/no-extraneous-class": "error",
+    "typescript/no-unnecessary-type-constraint": "error",
+    "unicorn/prefer-array-flat-map": "error",
+    "oxc/no-const-enum": "error", // biome suspicious/noConstEnum
+    "oxc/no-accumulating-spread": "error", // biome performance/noAccumulatingSpread
+    "oxc/approx-constant": "error",
+    "oxc/misrefactored-assign-op": "error",
+    "oxc/bad-min-max-func": "error",
+    "react/no-render-return-value": "error"
+
+    // DELIBERATELY ABSENT -- these four LOOK like plain typescript rules but are
+    // tsgolint-backed and SILENTLY DO NOTHING without options.typeAware (no
+    // warning, no error, exit 0). They belong in Layer 2 only:
+    //   typescript/dot-notation              (biome complexity/useLiteralKeys)
+    //   typescript/switch-exhaustiveness-check
+    //   typescript/consistent-type-exports
+    //   typescript/prefer-optional-chain
+  },
+
+  "overrides": [
+    {
+      // Mirrors biome's `**/*.astro` override (noUnusedImports/noUnusedVariables
+      // off). Redundant in oxlint -- eslint/no-unused-vars hard-disables itself
+      // for .astro in the rule source -- but kept so the file stays diffable
+      // across archetypes.
+      // WARNING: overrides accept ONLY files/excludeFiles/env/globals/plugins/
+      // jsPlugins/rules. `settings` here is a FATAL parse error.
+      "files": ["**/*.astro"],
+      "rules": {
+        "eslint/no-unused-vars": "off",
+        "import/no-unassigned-import": "off"
+      }
+    },
+    {
+      // Include BOTH `**/tests/**` and `**/test/**`: wc's live in
+      // packages/wc/test/ (singular), site's in packages/site/src/**/__tests__.
+      "files": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/tests/**",
+        "**/test/**",
+        "**/__tests__/**",
+        "**/e2e/**"
+      ],
+      "env": { "vitest": true },
+      "rules": {
+        "typescript/no-non-null-assertion": "off",
+        "eslint/no-console": "off"
+      }
+    },
+    {
+      "files": [
+        "**/*.config.ts",
+        "**/*.config.mts",
+        "**/*.config.js",
+        "scripts/**"
+      ],
+      "rules": { "eslint/no-console": "off" }
+    },
+    {
+      // Ported from biome.jsonc: SearchResultItem renders Pagefind excerpts
+      // containing only <mark> tags from our own indexed documentation content,
+      // not user input. (biome security/noDangerouslySetInnerHtml)
+      "files": ["**/SearchResultItem.tsx"],
+      "rules": { "react/no-danger": "off" }
+    }
+  ],
+
+  // gitignore syntax, rooted at THIS file's directory.
+  // .gitignore is honoured automatically, so dist/docs/.astro are belt-and-braces.
+  // node_modules is NOT hardcoded in oxlint's walker -- keep it explicit (oxfmt
+  // DOES skip it by default; the two tools disagree).
+  // Translated from biome `files.includes`: drop the bare "**", strip each leading
+  // "!". Deleted as unreachable for a JS/TS linter: !**/*.svg, !**/package.json,
+  // !**/.vscode, !**/yarn-error.log, !**/.yarn, !**/.docusaurus.
+  //
+  // DELIBERATELY NOT CARRIED OVER: biome's `!**/docs`. It was aimed at the
+  // generated typedoc output (`docs/` is gitignored in packages/lib and
+  // packages/wc, and both oxc tools honour .gitignore automatically), but the
+  // glob also swallowed packages/site/src/components/docs/, so biome never linted
+  // those 7 .astro components. The rescoped biome.jsonc formats them now, so
+  // oxlint lints them too.
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.astro/**",
+    "**/coverage/**",
+    "**/playwright-report/**",
+    "**/test-results/**",
+    "**/static/**",
+    "**/public/**",
+    "**/notes/**",
+    "**/*.d.ts"
+  ]
+}

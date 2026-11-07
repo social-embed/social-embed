@@ -4,9 +4,11 @@
   "scripts": {
     "build": "pnpm --filter @social-embed/lib build && pnpm --filter @social-embed/wc build",
     "clean": "pnpm run --recursive clean",
-    "format": "pnpm run --recursive format",
-    "format:check": "biome format .",
-    "lint": "biome lint .",
+    "format": "oxfmt && biome format --write .",
+    "format:check": "oxfmt --check && biome format .",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "lint:type-aware": "oxlint -c .oxlintrc.typeaware.json --type-aware",
     "check": "pnpm run --recursive check",
     "type-check": "pnpm run --recursive type-check",
     "type-check:tsc": "pnpm run --recursive type-check:tsc",
@@ -32,7 +34,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.6.3",
     "knip": "^6.44.1",
+    "oxfmt": "0.76.0",
     "oxlint": "^1.91.0",
-    "oxlint-tsgolint": "^7.0.2005"
+    "oxlint-tsgolint": "7.0.2005"
   }
 }

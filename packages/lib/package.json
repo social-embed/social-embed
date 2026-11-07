@@ -49,14 +49,10 @@
     "bootstrap": "echo 'NOOP'",
     "test": "vitest run",
     "test:watch": "vitest run",
-    "lint": "biome lint",
     "ncu": "ncu",
-    "update": "ncu",
-    "biome": "biome",
-    "format": "pnpm run biome check . --write; pnpm run biome format . --write"
+    "update": "ncu"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.6.3",
     "rimraf": "^6.1.4",
     "typescript": "^6.0.3",
     "vite": "^8.3.5",
