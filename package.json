@@ -27,7 +27,7 @@
     "serve": "pnpm run --recursive serve"
   },
   "engines": {
-    "node": ">=22"
+    "node": "^22.22.2 || ^24.15.0 || >=26"
   },
   "packageManager": "pnpm@12.17.0",
   "dependencies": {
