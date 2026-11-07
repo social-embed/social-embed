@@ -19,23 +19,19 @@ describe("EmbedProvider Type Tests", () => {
     // Test methods
     expectTypeOf<Provider>().toHaveProperty("canParseUrl");
     expectTypeOf<Provider["canParseUrl"]>().toBeFunction();
-    expectTypeOf<Provider["canParseUrl"]>().parameters.toMatchTypeOf<
-      [string]
-    >();
+    expectTypeOf<Provider["canParseUrl"]>().parameters.toExtend<[string]>();
     expectTypeOf<Provider["canParseUrl"]>().returns.toBeBoolean();
 
     expectTypeOf<Provider>().toHaveProperty("getIdFromUrl");
     expectTypeOf<Provider["getIdFromUrl"]>().toBeFunction();
-    expectTypeOf<Provider["getIdFromUrl"]>().parameters.toMatchTypeOf<
-      [string]
-    >();
-    expectTypeOf<Provider["getIdFromUrl"]>().returns.toMatchTypeOf<
+    expectTypeOf<Provider["getIdFromUrl"]>().parameters.toExtend<[string]>();
+    expectTypeOf<Provider["getIdFromUrl"]>().returns.toExtend<
       string | string[]
     >();
 
     expectTypeOf<Provider>().toHaveProperty("getEmbedUrlFromId");
     expectTypeOf<Provider["getEmbedUrlFromId"]>().toBeFunction();
-    expectTypeOf<Provider["getEmbedUrlFromId"]>().parameters.toMatchTypeOf<
+    expectTypeOf<Provider["getEmbedUrlFromId"]>().parameters.toExtend<
       [string, ...unknown[]]
     >();
     expectTypeOf<Provider["getEmbedUrlFromId"]>().returns.toBeString();
@@ -74,7 +70,7 @@ describe("EmbedProvider Type Tests", () => {
       name: "TestProvider",
     };
 
-    expectTypeOf(mockProvider).toMatchTypeOf<EmbedProvider>();
+    expectTypeOf(mockProvider).toExtend<EmbedProvider>();
     expectTypeOf(mockProvider.name).toBeString();
     expectTypeOf(mockProvider.canParseUrl).toBeFunction();
     expectTypeOf(mockProvider.getIdFromUrl).toBeFunction();

@@ -60,7 +60,7 @@ describe("EmbedProviderRegistry Type Tests", () => {
     };
 
     // Check that MockProvider satisfies EmbedProvider interface
-    expectTypeOf<MockProvider>().toMatchTypeOf<EmbedProvider>();
+    expectTypeOf<MockProvider>().toExtend<EmbedProvider>();
 
     // Check method parameter and return types
     type RegistryClass = EmbedProviderRegistry;
