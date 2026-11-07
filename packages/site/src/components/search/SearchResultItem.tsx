@@ -97,8 +97,7 @@ export function SearchResultItem({
       role="option"
       tabIndex={-1}
     >
-      {/* Main result - biome-ignore needed as this div delegates keyboard to inner link */}
-      {/* biome-ignore lint/a11y/noStaticElementInteractions: Keyboard events delegate to focusable link inside */}
+      {/* Main result: presentational wrapper; keyboard events delegate to the focusable link inside */}
       <div
         className={`
           cursor-pointer rounded-lg
@@ -113,6 +112,7 @@ export function SearchResultItem({
           }
         }}
         onMouseEnter={onMouseEnter}
+        role="presentation"
       >
         <a
           className="block px-3 py-2 no-underline"
