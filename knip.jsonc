@@ -29,6 +29,8 @@
     },
     "packages/site": {
       "entry": ["plugins/**/*.test.ts", "src/**/*.test.{ts,tsx}"],
+      // Lint-only fixture: `pnpm run lint:css` parses it; nothing imports it.
+      "ignore": ["test/fixtures/**"],
       "ignoreBinaries": ["ncu"],
       "ignoreDependencies": [
         // CSS side-effect imports in src/tailwind.css / BaseLayout.astro
@@ -40,9 +42,6 @@
         // Consumed across .astro pages and playground sources; knip's
         // Astro coverage is partial.
         "@social-embed/wc",
-        // Invoked via `npx pagefind` from
-        // plugins/astro-pagefind-integration.ts during the build hook.
-        "pagefind",
       ],
     },
     "packages/wc": {
