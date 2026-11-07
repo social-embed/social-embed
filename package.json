@@ -7,6 +7,8 @@
     "format": "oxfmt && biome format --write .",
     "format:check": "oxfmt --check && biome format .",
     "lint": "oxlint",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:css:fix": "stylelint \"**/*.css\" --fix",
     "lint:fix": "oxlint --fix",
     "lint:type-aware": "oxlint -c .oxlintrc.typeaware.json --type-aware",
     "check": "pnpm run --recursive check",
@@ -36,6 +38,9 @@
     "knip": "^6.44.1",
     "oxfmt": "0.76.0",
     "oxlint": "^1.91.0",
-    "oxlint-tsgolint": "7.0.2005"
+    "oxlint-tsgolint": "7.0.2005",
+    "stylelint": "^18.0.0",
+    "stylelint-config-standard": "^41.0.0",
+    "stylelint-config-tailwindcss": "^1.0.1"
   }
 }

@@ -46,6 +46,10 @@ jobs:
       - name: Lint (oxlint)
         run: pnpm run lint
 
+      # oxlint does not lint CSS, so stylelint covers it.
+      - name: Lint (stylelint, CSS)
+        run: pnpm run lint:css
+
       # Type-aware rules (tsgolint) need the project's types, so no build first.
       - name: Lint (oxlint, type-aware)
         run: pnpm run lint:type-aware

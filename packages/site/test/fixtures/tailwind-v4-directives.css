@@ -1,0 +1,34 @@
+/*
+ * Regression fixture for `pnpm run lint:css`: the Tailwind v4 at-rules the
+ * site uses or may use. stylelint must accept all of it, so a
+ * config change that starts rejecting a directive fails the lint run.
+ */
+@import "tailwindcss";
+
+@source "../../src";
+
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is([data-theme="dark"] *));
+
+@theme {
+  --color-fixture: oklch(0.7 0.1 30 / 0.5);
+}
+
+@utility fixture-utility {
+  color: var(--color-fixture);
+}
+
+@layer components {
+  .fixture-card {
+    @apply cursor-pointer rounded-lg;
+  }
+
+  .fixture-card--active {
+    @variant dark {
+      color: var(--color-fixture);
+    }
+  }
+}
+
+@reference "../../src/tailwind.css";
