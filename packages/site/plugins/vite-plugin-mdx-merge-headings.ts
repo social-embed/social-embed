@@ -87,7 +87,7 @@ export function viteMdxMergeHeadings(): Plugin {
       const fnMatch = code.match(
         /export function getHeadings\(\)\s*\{\s*return\s*/,
       );
-      if (!fnMatch || fnMatch.index === undefined) return;
+      if (fnMatch?.index === undefined) return;
 
       const fnMatchIndex = fnMatch.index;
       const arrayStart = fnMatchIndex + fnMatch[0].length;
