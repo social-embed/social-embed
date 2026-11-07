@@ -46,6 +46,10 @@ jobs:
       - name: Lint (oxlint)
         run: pnpm run lint
 
+      # Type-aware rules (tsgolint) need the project's types, so no build first.
+      - name: Lint (oxlint, type-aware)
+        run: pnpm run lint:type-aware
+
       - name: build
         run: pnpm build
 
