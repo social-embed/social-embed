@@ -184,6 +184,16 @@ export function OutputDisplay({
   const isArrayId =
     Array.isArray(output.providerId) && output.providerId.length > 1;
 
+  // IDs can repeat, so key each by its value plus its occurrence number.
+  const idCounts = new Map<string, number>();
+  const idItems = Array.isArray(output.providerId)
+    ? output.providerId.map((id) => {
+        const occurrence = idCounts.get(id) ?? 0;
+        idCounts.set(id, occurrence + 1);
+        return { id, key: `${id}#${occurrence}` };
+      })
+    : [];
+
   return (
     <div
       className={`p-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 ${className}`}
@@ -216,17 +226,13 @@ export function OutputDisplay({
               ID:
             </span>
             <div className="flex items-start gap-1 min-w-0 flex-1 flex-wrap">
-              {(output.providerId as string[]).map((id, index) => (
-                <span
-                  className="inline-flex items-center gap-0.5"
-                  // biome-ignore lint/suspicious/noArrayIndexKey: IDs can be duplicates
-                  key={`${id}-${index}`}
-                >
+              {idItems.map(({ id, key }, index) => (
+                <span className="inline-flex items-center gap-0.5" key={key}>
                   <span className="text-sm font-mono text-slate-700 dark:text-slate-300">
                     {id}
                   </span>
                   <CopyButton value={id} />
-                  {index < (output.providerId as string[]).length - 1 && (
+                  {index < idItems.length - 1 && (
                     <span className="text-slate-400 dark:text-slate-500 mr-1">
                       ,
                     </span>
