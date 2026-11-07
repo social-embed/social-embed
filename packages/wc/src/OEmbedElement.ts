@@ -270,7 +270,7 @@ export class OEmbedElement extends LitElement {
    * @returns A `Dimensions` object with `width`, `height`, and optional unit-converted fields.
    */
   public getDefaultDimensions(providerObj?: { name?: string }): Dimensions {
-    const providerName = providerObj?.name;
+    const providerName = providerObj?.name ?? "";
     switch (providerName) {
       case "Vimeo":
         return this.calculateDefaultDimensions({
@@ -610,7 +610,6 @@ declare global {
   }
 
   // If you're using JSX/TSX, include a declaration for the custom element:
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace JSX {
     interface IntrinsicElements {
       "o-embed": Partial<OEmbedElement>;

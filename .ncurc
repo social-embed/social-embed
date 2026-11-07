@@ -1,5 +1,12 @@
+# Parsed as YAML by npm-check-updates (JSON is a YAML subset), so comments must
+# use `#`, not `//`. A `//` line kills every ncu invocation in the repo.
+#
+# typescript      Held below 7 until @astrojs/check's typescript peer admits it.
+# oxfmt           0.x, weekly cadence, no stability statement; any output change
+#                 is a repo-wide reformat. Pinned exactly; bump in its own commit.
+# oxlint-tsgolint Versioned <TypeScript version><patch>, so a TypeScript upgrade
+#                 arrives looking like a patch and a range would take it
+#                 unreviewed. Pinned exactly; bump in its own commit.
 {
-  "reject": [
-    "typescript"
-  ]
+  "reject": ["typescript", "oxfmt", "oxlint-tsgolint"]
 }

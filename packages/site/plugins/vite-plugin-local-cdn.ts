@@ -13,7 +13,8 @@
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { build, type Plugin } from "vite";
+import type { IncomingMessage, ServerResponse } from "node:http";
+import { build, type Connect, type Plugin } from "vite";
 
 const SOURCE_PATTERNS = [/packages\/lib\/src\//, /packages\/wc\/src\//];
 
@@ -107,7 +108,11 @@ export function localCdnPlugin(): Plugin {
       });
 
       // Serve the CDN bundles
-      server.middlewares.use(async (req, res, next) => {
+      const serveBundle = async (
+        req: IncomingMessage,
+        res: ServerResponse,
+        next: Connect.NextFunction,
+      ) => {
         const url = req.url ?? "";
 
         // Match /cdn/lib.js, /cdn/lib.js.map, /cdn/o-embed.js, /cdn/o-embed.js.map
@@ -155,6 +160,9 @@ export function localCdnPlugin(): Plugin {
           res.setHeader("Content-Type", "application/javascript");
           res.end(bundleCache.code);
         }
+      };
+      server.middlewares.use((req, res, next) => {
+        serveBundle(req, res, next).catch(next);
       });
     },
 

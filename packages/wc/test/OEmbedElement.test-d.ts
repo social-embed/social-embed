@@ -12,7 +12,7 @@ import type { OEmbedElement } from "../src/OEmbedElement";
 describe("OEmbedElement Type Tests", () => {
   test("OEmbedElement should extend LitElement", () => {
     // Test that OEmbedElement extends LitElement with proper inheritance
-    expectTypeOf<OEmbedElement>().toMatchTypeOf<LitElement>();
+    expectTypeOf<OEmbedElement>().toExtend<LitElement>();
   });
 
   test("OEmbedElement properties should have correct types", () => {

@@ -7,9 +7,9 @@ import { ProviderSelector } from "./ProviderSelector";
 let root: Root | null = null;
 let container: HTMLElement | null = null;
 
-afterEach(async () => {
+afterEach(() => {
   if (root) {
-    await act(async () => {
+    act(() => {
       root?.unmount();
     });
   }
@@ -25,7 +25,7 @@ interface RenderProps {
   disabled?: boolean;
 }
 
-async function renderSelector(props: RenderProps = {}) {
+function renderSelector(props: RenderProps = {}) {
   container = document.createElement("div");
   document.body.appendChild(container);
   root = createRoot(container);
@@ -36,7 +36,7 @@ async function renderSelector(props: RenderProps = {}) {
     ...props,
   };
 
-  await act(async () => {
+  act(() => {
     root?.render(<ProviderSelector {...defaultProps} />);
   });
 
@@ -50,13 +50,13 @@ async function renderSelector(props: RenderProps = {}) {
 
 describe("ProviderSelector", () => {
   describe("rendering", () => {
-    test("renders with default value", async () => {
-      const { select } = await renderSelector({ value: "all" });
+    test("renders with default value", () => {
+      const { select } = renderSelector({ value: "all" });
       expect(select.value).toBe("all");
     });
 
-    test("renders all provider options", async () => {
-      const { select } = await renderSelector();
+    test("renders all provider options", () => {
+      const { select } = renderSelector();
       const options = getProviderFilterOptions();
 
       expect(select.options.length).toBe(options.length);
@@ -67,13 +67,13 @@ describe("ProviderSelector", () => {
       }
     });
 
-    test("reflects the current value", async () => {
-      const { select } = await renderSelector({ value: "spotify-track" });
+    test("reflects the current value", () => {
+      const { select } = renderSelector({ value: "spotify-track" });
       expect(select.value).toBe("spotify-track");
     });
 
-    test("shows icon and name in options", async () => {
-      const { select } = await renderSelector();
+    test("shows icon and name in options", () => {
+      const { select } = renderSelector();
       const youtubeOption = select.querySelector('option[value="youtube"]');
       expect(youtubeOption?.textContent).toContain("▶️");
       expect(youtubeOption?.textContent).toContain("YouTube");
@@ -81,11 +81,11 @@ describe("ProviderSelector", () => {
   });
 
   describe("interaction", () => {
-    test("calls onChange when selection changes", async () => {
+    test("calls onChange when selection changes", () => {
       const onChange = vi.fn();
-      const { select } = await renderSelector({ onChange, value: "all" });
+      const { select } = renderSelector({ onChange, value: "all" });
 
-      await act(async () => {
+      act(() => {
         select.value = "youtube";
         select.dispatchEvent(new Event("change", { bubbles: true }));
       });
@@ -95,25 +95,25 @@ describe("ProviderSelector", () => {
   });
 
   describe("disabled state", () => {
-    test("can be disabled", async () => {
-      const { select } = await renderSelector({ disabled: true });
+    test("can be disabled", () => {
+      const { select } = renderSelector({ disabled: true });
       expect(select.disabled).toBe(true);
     });
 
-    test("is not disabled by default", async () => {
-      const { select } = await renderSelector();
+    test("is not disabled by default", () => {
+      const { select } = renderSelector();
       expect(select.disabled).toBe(false);
     });
   });
 
   describe("styling", () => {
-    test("applies custom className", async () => {
-      const { wrapper } = await renderSelector({ className: "custom-class" });
+    test("applies custom className", () => {
+      const { wrapper } = renderSelector({ className: "custom-class" });
       expect(wrapper.className).toContain("custom-class");
     });
 
-    test("has aria-label for accessibility", async () => {
-      const { select } = await renderSelector();
+    test("has aria-label for accessibility", () => {
+      const { select } = renderSelector();
       expect(select.getAttribute("aria-label")).toBe("Select provider filter");
     });
   });

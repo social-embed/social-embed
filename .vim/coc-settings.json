@@ -3,6 +3,7 @@
     "coc.preferences.formatOnSave": true
   },
   "biome.enable": true,
+  "oxc.enable": true,
   "eslint.enable": false,
   "prettier.enable": false
 }

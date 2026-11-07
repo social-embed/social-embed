@@ -21,13 +21,13 @@ import type {
 describe("Provider Implementations Type Tests", () => {
   test("Provider types should conform to EmbedProvider interface", () => {
     // Just test the types without instantiating
-    expectTypeOf<YouTubeProvider>().toMatchTypeOf<EmbedProvider>();
-    expectTypeOf<VimeoProvider>().toMatchTypeOf<EmbedProvider>();
-    expectTypeOf<SpotifyProvider>().toMatchTypeOf<EmbedProvider>();
-    expectTypeOf<DailyMotionProvider>().toMatchTypeOf<EmbedProvider>();
-    expectTypeOf<LoomProvider>().toMatchTypeOf<EmbedProvider>();
-    expectTypeOf<WistiaProvider>().toMatchTypeOf<EmbedProvider>();
-    expectTypeOf<EdPuzzleProvider>().toMatchTypeOf<EmbedProvider>();
+    expectTypeOf<YouTubeProvider>().toExtend<EmbedProvider>();
+    expectTypeOf<VimeoProvider>().toExtend<EmbedProvider>();
+    expectTypeOf<SpotifyProvider>().toExtend<EmbedProvider>();
+    expectTypeOf<DailyMotionProvider>().toExtend<EmbedProvider>();
+    expectTypeOf<LoomProvider>().toExtend<EmbedProvider>();
+    expectTypeOf<WistiaProvider>().toExtend<EmbedProvider>();
+    expectTypeOf<EdPuzzleProvider>().toExtend<EmbedProvider>();
   });
 
   test("YouTube provider type should have the correct method signatures", () => {
@@ -81,7 +81,7 @@ describe("Provider Implementations Type Tests", () => {
     expectTypeOf(getSpotifyIdAndTypeFromUrl).parameters.toEqualTypeOf<
       [url: string]
     >();
-    expectTypeOf(getSpotifyIdAndTypeFromUrl).returns.toMatchTypeOf<
+    expectTypeOf(getSpotifyIdAndTypeFromUrl).returns.toExtend<
       [string, string] | []
     >();
 

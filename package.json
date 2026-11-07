@@ -4,9 +4,13 @@
   "scripts": {
     "build": "pnpm --filter @social-embed/lib build && pnpm --filter @social-embed/wc build",
     "clean": "pnpm run --recursive clean",
-    "format": "pnpm run --recursive format",
-    "format:check": "biome format .",
-    "lint": "biome lint .",
+    "format": "oxfmt && biome format --write .",
+    "format:check": "oxfmt --check && biome format .",
+    "lint": "oxlint",
+    "lint:css": "stylelint \"**/*.css\"",
+    "lint:css:fix": "stylelint \"**/*.css\" --fix",
+    "lint:fix": "oxlint --fix",
+    "lint:type-aware": "oxlint -c .oxlintrc.typeaware.json --type-aware",
     "check": "pnpm run --recursive check",
     "type-check": "pnpm run --recursive type-check",
     "type-check:tsc": "pnpm run --recursive type-check:tsc",
@@ -23,7 +27,7 @@
     "serve": "pnpm run --recursive serve"
   },
   "engines": {
-    "node": ">=22"
+    "node": "^22.22.2 || ^24.15.0 || >=26"
   },
   "packageManager": "pnpm@12.17.0",
   "dependencies": {
@@ -32,7 +36,11 @@
   "devDependencies": {
     "@biomejs/biome": "2.6.3",
     "knip": "^6.44.1",
+    "oxfmt": "0.76.0",
     "oxlint": "^1.91.0",
-    "oxlint-tsgolint": "^7.0.2005"
+    "oxlint-tsgolint": "7.0.2005",
+    "stylelint": "^18.0.0",
+    "stylelint-config-standard": "^41.0.0",
+    "stylelint-config-tailwindcss": "^1.0.1"
   }
 }

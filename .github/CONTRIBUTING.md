@@ -33,15 +33,19 @@ CI (`.github/workflows/node-ci.yaml`) is the order of record, and it runs
 exactly these, across the Node matrix above:
 
 ```console
-$ pnpm biome format .
+$ pnpm run format:check
 ```
 
 ```console
-$ pnpm biome lint .
+$ pnpm run lint
 ```
 
 ```console
-$ pnpm biome check .
+$ pnpm run lint:css
+```
+
+```console
+$ pnpm run lint:type-aware
 ```
 
 ```console
@@ -52,8 +56,11 @@ $ pnpm build
 $ pnpm test
 ```
 
-`biome check` runs Biome's own combined format-and-lint pass; it is unrelated
-to the root `check` script below despite the shared name.
+`format:check` runs oxfmt over everything it supports and Biome over `.astro`
+frontmatter, which oxfmt cannot format. `lint` is oxlint; oxlint does not lint
+CSS, so `lint:css` runs stylelint. `lint:type-aware` is oxlint's type-aware
+rules (tsgolint). Fix with `pnpm run format`, `pnpm run lint:fix` and
+`pnpm run lint:css:fix`.
 
 The following exist and are useful locally, but CI does not run them today —
 a red result here does not block a push, though it should still get fixed:
@@ -87,7 +94,7 @@ Unused exports, files, and dependencies:
 $ pnpm run knip
 ```
 
-`packages/wc` also lints its Lit templates, which `biome lint` does not parse:
+`packages/wc` also lints its Lit templates, which oxlint does not parse:
 
 ```console
 $ pnpm --filter @social-embed/wc run lint:lit-analyzer

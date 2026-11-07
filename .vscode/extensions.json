@@ -1,4 +1,6 @@
 {
-  "recommendations": ["runem.lit-plugin", "biomejs.biome"],
+  "recommendations": ["runem.lit-plugin", "biomejs.biome",
+    "oxc.oxc-vscode",
+    "stylelint.vscode-stylelint"],
   "unwantedRecommendations": []
 }

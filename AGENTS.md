@@ -42,6 +42,11 @@ stated twice, the file listed above is the one that governs.
 - A passing gate is evidence only once it has been shown capable of failing.
   Pair a new test with a deliberate break that proves it bites.
 
+Lint and format with oxlint, oxfmt and stylelint (Biome remains only for
+`.astro` frontmatter): `pnpm run lint`, `pnpm run lint:css`,
+`pnpm run lint:type-aware` and `pnpm run format:check`. Fix with
+`pnpm run lint:fix`, `pnpm run lint:css:fix` and `pnpm run format`.
+
 `packages/site`'s `check` gate (`astro check`) is red under the TypeScript 7
 native compiler until TypeScript 7.1 ships the programmatic API `astro check`
 needs; `pnpm run type-check` is the working substitute. See

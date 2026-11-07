@@ -237,10 +237,10 @@ survives; "this is the right trade for now" does not.
   bug.
 - A high-level sketch of an algorithm whose local operations do not reveal the
   whole.
-- Why a `@ts-expect-error`, a cast, or a `biome-ignore` is there — the
-  suppression without the reason is the worst of both. `biome-ignore
-  lint/suspicious/noExplicitAny: Astro/Vite Plugin type version mismatch` names
-  the constraint; a bare `biome-ignore` does not.
+- Why a `@ts-expect-error`, a cast, or an `oxlint-disable` is there — the
+  suppression without the reason is the worst of both.
+  `// oxlint-disable-next-line typescript/no-explicit-any -- Astro/Vite Plugin
+  type version mismatch` names the constraint; a bare disable does not.
 
 ### Delete
 
@@ -384,7 +384,7 @@ element rather than a drifting family:
   half-documents the type.
 - **Template bindings are linted separately from script.** `lint:lit-analyzer`
   catches invalid attribute bindings and unknown attributes inside `html`
-  templates that `biome lint` cannot see, because it understands Lit's
+  templates that `oxlint` cannot see, because it understands Lit's
   template syntax. See [The gates](CONTRIBUTING.md#the-gates).
 
 ## Terminology and capitalization

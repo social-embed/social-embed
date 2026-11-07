@@ -1,102 +1,34 @@
+// Biome is retained for ONE job: formatting the `---` frontmatter of `.astro`
+// files, which oxfmt does not support. JS/TS/JSX/TSX/JSON/CSS formatting and all
+// linting live in oxfmt + oxlint (see .oxfmtrc.json, .oxlintrc.json).
+//
+// Invariants:
+//  1. `files.includes` stays scoped to `**/*.astro` (plus trunk's ignore globs),
+//     or biome and oxfmt reformat each other's output.
+//  2. Formatter options match `.oxfmtrc.json` (80 columns, double quotes,
+//     semicolons are biome's defaults; only `indentStyle` differs).
+//  3. `$schema` matches the pinned @biomejs/biome version.
+//  4. Biome always formats this file; `.oxfmtrc.json` ignores it.
 {
   "$schema": "https://biomejs.dev/schemas/2.6.3/schema.json",
-  "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": "on",
-        "useSortedAttributes": "on",
-        "useSortedKeys": "on",
-        "useSortedProperties": "on"
-      }
-    }
-  },
-  "css": {
-    "parser": {
-      "tailwindDirectives": true
-    }
-  },
+  "assist": { "enabled": false },
   "files": {
     "ignoreUnknown": true,
     "includes": [
-      "**",
-      "!**/.yarn",
+      "**/*.astro",
       "!**/node_modules",
       "!**/dist",
       "!**/static",
       "!**/public",
-      "!**/.docusaurus",
       "!**/.astro",
       "!**/build",
       "!**/playwright-report",
-      "!**/yarn-error.log",
-      "!**/docs",
-      "!**/package.json",
-      "!**/pnpm-lock.yaml",
-      "!**/.vscode",
-      "!**/*.d.ts",
-      "!**/*.svg"
+      "!**/docs"
     ]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space"
   },
-  "linter": {
-    "enabled": true,
-    "rules": {
-      "preset": "recommended",
-      "style": {
-        "noInferrableTypes": "error",
-        "noParameterAssign": "error",
-        "noUnusedTemplateLiteral": "error",
-        "noUselessElse": "error",
-        "useAsConstAssertion": "error",
-        "useDefaultParameterLast": "error",
-        "useEnumInitializers": "error",
-        "useNumberNamespace": "error",
-        "useSelfClosingElements": "error",
-        "useSingleVarDeclarator": "error"
-      }
-    }
-  },
-  "markdown": {
-    "formatter": {
-      "enabled": false
-    }
-  },
-  "overrides": [
-    {
-      "includes": ["**/*.astro"],
-      "linter": {
-        "rules": {
-          "correctness": {
-            "noUnusedImports": "off",
-            "noUnusedVariables": "off"
-          }
-        }
-      }
-    },
-    {
-      "includes": ["**/*.css"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noUnknownAtRules": "off"
-          }
-        }
-      }
-    },
-    {
-      // SearchResultItem renders Pagefind excerpts containing only <mark> tags
-      // from our own indexed documentation content, not user input
-      "includes": ["**/SearchResultItem.tsx"],
-      "linter": {
-        "rules": {
-          "security": {
-            "noDangerouslySetInnerHtml": "off"
-          }
-        }
-      }
-    }
-  ]
+  "linter": { "enabled": false }
 }

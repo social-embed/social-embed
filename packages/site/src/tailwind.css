@@ -9,13 +9,15 @@
 
 /* Reroll button animations */
 @keyframes spin-dice {
-  from {
+  0% {
     transform: rotate(0deg) scale(1);
   }
+
   50% {
     transform: rotate(180deg) scale(1.2);
   }
-  to {
+
+  100% {
     transform: rotate(360deg) scale(1);
   }
 }
@@ -24,9 +26,11 @@
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.08);
   }
+
   100% {
     transform: scale(1);
   }
@@ -86,18 +90,14 @@
   --color-mv-blue-200: oklch(0.89 0.06 250);
   --color-mv-blue-300: oklch(0.82 0.105 250);
   --color-mv-blue-700: oklch(0.5 0.1425 250);
-
   --color-mv-purple-300: oklch(0.82 0.112 295);
   --color-mv-purple-400: oklch(0.74 0.152 295);
   --color-mv-purple-600: oklch(0.59 0.168 295);
   --color-mv-purple-700: oklch(0.52 0.152 295);
-
   --color-mv-yellow-300: oklch(0.82 0.105 80);
   --color-mv-yellow-700: oklch(0.57 0.1425 80);
-
   --color-mv-orange-300: oklch(0.82 0.084 30);
   --color-mv-orange-700: oklch(0.57 0.114 30);
-
   --color-mv-red-300: oklch(0.82 0.098 10);
   --color-mv-red-600: oklch(0.6 0.147 10);
 }
@@ -123,7 +123,7 @@
   --nav-inner-pad: 1rem; /* Padding for inner elements (logo, right-group) */
 
   /* Navigation colors (dark mode default) */
-  --nav-bg: rgba(15, 23, 42, 0.95); /* slate-900/95 */
+  --nav-bg: rgb(15 23 42 / 0.95); /* slate-900/95 */
   --nav-border: var(--color-slate-700);
   --nav-text: var(--color-slate-100);
   --nav-text-muted: var(--color-slate-400);
@@ -138,9 +138,9 @@
   --search-hover-text: var(--color-slate-100);
 
   /* Shadow scale (Elastic pattern) */
-  --search-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --search-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --search-shadow-md:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 
   /* Transition timing */
   --search-transition-fast: 100ms;
@@ -158,9 +158,11 @@
     transparent 85%
   );
   --search-result-selected-border: var(--color-mv-blue);
+
   /* Selected: distinct shadow + border (not just inset) */
   --search-result-selected-shadow:
     0 0 0 1px var(--color-mv-blue), var(--search-shadow-sm);
+
   /* Dark mode - improved visibility (50% transparent instead of 70%) */
   --search-mark-bg: color-mix(in oklch, var(--color-mv-blue), transparent 50%);
   --search-breadcrumb: var(--color-slate-500);
@@ -174,8 +176,7 @@
   --color-muted: var(--color-slate-500);
   --color-mv-fg: var(--color-fg);
   --color-mv-muted: var(--color-muted);
-
-  --nav-bg: rgba(255, 255, 255, 0.95); /* white/95 */
+  --nav-bg: rgb(255 255 255 / 0.95); /* white/95 */
   --nav-border: var(--color-slate-200);
   --nav-text: var(--color-slate-900);
   --nav-text-muted: var(--color-slate-600);
@@ -190,6 +191,7 @@
   --search-hover-text: var(--color-slate-700);
 
   /* Search results colors (light mode) */
+
   /* Bump from slate-50 to slate-100 for visible contrast against white dialog */
   --search-result-bg: var(--color-slate-100);
   --search-result-hover-bg: var(--color-slate-200);
@@ -199,6 +201,7 @@
     white 90%
   );
   --search-result-selected-border: var(--color-mv-blue);
+
   /* Light mode - improved visibility (60% white instead of 80%) */
   --search-mark-bg: color-mix(in oklch, var(--color-mv-blue), white 60%);
   --search-breadcrumb: var(--color-slate-400);

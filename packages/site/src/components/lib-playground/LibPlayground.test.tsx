@@ -17,9 +17,9 @@ vi.mock("./libPlaygroundState", async (importOriginal) => {
 let root: Root | null = null;
 let container: HTMLElement | null = null;
 
-afterEach(async () => {
+afterEach(() => {
   if (root) {
-    await act(async () => {
+    act(() => {
       root?.unmount();
     });
   }
@@ -35,12 +35,12 @@ interface RenderProps {
   className?: string;
 }
 
-async function renderPlayground(props: RenderProps = {}) {
+function renderPlayground(props: RenderProps = {}) {
   container = document.createElement("div");
   document.body.appendChild(container);
   root = createRoot(container);
 
-  await act(async () => {
+  act(() => {
     root?.render(<LibPlayground {...props} />);
   });
 
@@ -49,8 +49,8 @@ async function renderPlayground(props: RenderProps = {}) {
 
 describe("LibPlayground", () => {
   describe("rendering", () => {
-    test("renders in full mode by default", async () => {
-      await renderPlayground();
+    test("renders in full mode by default", () => {
+      renderPlayground();
 
       // Should have provider selector
       const select = container?.querySelector("select");
@@ -65,8 +65,8 @@ describe("LibPlayground", () => {
       expect(input).toBeTruthy();
     });
 
-    test("renders in mini mode", async () => {
-      await renderPlayground({ mode: "mini" });
+    test("renders in mini mode", () => {
+      renderPlayground({ mode: "mini" });
 
       // Should NOT have provider selector in mini mode
       const select = container?.querySelector("select");
@@ -81,8 +81,8 @@ describe("LibPlayground", () => {
       expect(input).toBeTruthy();
     });
 
-    test("uses initial URL when provided", async () => {
-      await renderPlayground({
+    test("uses initial URL when provided", () => {
+      renderPlayground({
         initialUrl: "https://youtube.com/watch?v=test123",
       });
 
@@ -95,7 +95,7 @@ describe("LibPlayground", () => {
 
   describe("URL transformation", () => {
     test("shows placeholder when URL is empty", async () => {
-      await renderPlayground({ initialUrl: "" });
+      renderPlayground({ initialUrl: "" });
 
       // Wait for state update
       await act(async () => {
@@ -108,7 +108,7 @@ describe("LibPlayground", () => {
     });
 
     test("transforms YouTube URL and shows output", async () => {
-      await renderPlayground({
+      renderPlayground({
         initialUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       });
 
@@ -126,7 +126,7 @@ describe("LibPlayground", () => {
     });
 
     test("shows error for invalid URL", async () => {
-      await renderPlayground({ initialUrl: "https://unknown-site.com/video" });
+      renderPlayground({ initialUrl: "https://unknown-site.com/video" });
 
       // Wait for transformation
       await act(async () => {
@@ -140,16 +140,16 @@ describe("LibPlayground", () => {
   });
 
   describe("components integration", () => {
-    test("has reroll button in full mode", async () => {
-      await renderPlayground({ mode: "full" });
+    test("has reroll button in full mode", () => {
+      renderPlayground({ mode: "full" });
 
       // RerollButton has title="Reroll" (hardcoded in the component)
       const rerollButton = container?.querySelector('button[title="Reroll"]');
       expect(rerollButton).toBeTruthy();
     });
 
-    test("has reroll button in mini mode", async () => {
-      await renderPlayground({ mode: "mini" });
+    test("has reroll button in mini mode", () => {
+      renderPlayground({ mode: "mini" });
 
       const rerollButton = container?.querySelector('button[title="Reroll"]');
       expect(rerollButton).toBeTruthy();
@@ -157,8 +157,8 @@ describe("LibPlayground", () => {
   });
 
   describe("styling", () => {
-    test("applies custom className", async () => {
-      await renderPlayground({ className: "custom-class" });
+    test("applies custom className", () => {
+      renderPlayground({ className: "custom-class" });
 
       const wrapper = container?.querySelector(".custom-class");
       expect(wrapper).toBeTruthy();
