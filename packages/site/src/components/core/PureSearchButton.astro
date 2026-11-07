@@ -59,10 +59,15 @@ const useMockData = import.meta.env.DEV;
   class PureSearch extends HTMLElement {
     constructor() {
       super();
-      const openBtn = this.querySelector<HTMLButtonElement>('button[data-open-modal]')!;
-      const closeBtn = this.querySelector<HTMLButtonElement>('button[data-close-modal]')!;
-      const dialog = this.querySelector<HTMLDialogElement>('dialog')!;
-      const dialogFrame = this.querySelector('.dialog-frame')!;
+      const find = <T extends Element>(selector: string): T => {
+        const el = this.querySelector<T>(selector);
+        if (!el) throw new Error(`pure-search: missing ${selector}`);
+        return el;
+      };
+      const openBtn = find<HTMLButtonElement>('button[data-open-modal]');
+      const closeBtn = find<HTMLButtonElement>('button[data-close-modal]');
+      const dialog = find<HTMLDialogElement>('dialog');
+      const dialogFrame = find('.dialog-frame');
 
       const onClick = (event: MouseEvent) => {
         const isLink = 'href' in (event.target || {});
@@ -97,7 +102,8 @@ const useMockData = import.meta.env.DEV;
       // Keyboard shortcuts: Ctrl+K / Cmd+K
       window.addEventListener('keydown', (e) => {
         if ((e.metaKey === true || e.ctrlKey === true) && e.key === 'k') {
-          dialog.open ? closeModal() : openModal();
+          if (dialog.open) closeModal();
+          else openModal();
           e.preventDefault();
         }
       });
