@@ -6,6 +6,19 @@ import { SearchModal } from "./SearchModal";
 let root: Root | null = null;
 let container: HTMLElement | null = null;
 
+/**
+ * Set an input's value through the native setter so React's change tracking
+ * sees it, then dispatch the `input` event.
+ */
+function setInputValue(input: HTMLInputElement | null, value: string) {
+  const descriptor = Object.getOwnPropertyDescriptor(
+    window.HTMLInputElement.prototype,
+    "value",
+  );
+  descriptor?.set?.call(input, value);
+  input?.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
 beforeEach(() => {
   // Reset timers for debounce testing
   vi.useFakeTimers();
@@ -78,12 +91,7 @@ describe("SearchModal", () => {
 
       act(() => {
         // Type a query
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       // Should show loading state before debounce completes
@@ -97,12 +105,7 @@ describe("SearchModal", () => {
       const { input, getResults } = renderModal();
 
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       // Advance timers past debounce delay and simulated search delay
@@ -118,12 +121,7 @@ describe("SearchModal", () => {
       const { input, container } = renderModal();
 
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "xyznonexistent123");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "xyznonexistent123");
       });
 
       await act(async () => {
@@ -140,12 +138,7 @@ describe("SearchModal", () => {
 
       // First, search for something
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -156,12 +149,7 @@ describe("SearchModal", () => {
 
       // Clear the input
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "");
       });
 
       await act(async () => {
@@ -178,12 +166,7 @@ describe("SearchModal", () => {
 
       // Search first
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -206,12 +189,7 @@ describe("SearchModal", () => {
 
       // Search first
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -266,12 +244,7 @@ describe("SearchModal", () => {
 
       // Search to show results
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -286,12 +259,7 @@ describe("SearchModal", () => {
       const { input, getResults } = renderModal();
 
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -308,12 +276,7 @@ describe("SearchModal", () => {
       const { input, getSelectedResult } = renderModal();
 
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -334,12 +297,7 @@ describe("SearchModal", () => {
       const { input } = renderModal();
 
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -377,12 +335,7 @@ describe("SearchModal", () => {
 
       // Search for "Getting Started" which appears in the title but not prominently in excerpt
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "Getting Started");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "Getting Started");
       });
 
       await act(async () => {
@@ -401,12 +354,7 @@ describe("SearchModal", () => {
 
       // Search for "YouTube" which appears in the title "YouTube Embeds"
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "YouTube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "YouTube");
       });
 
       await act(async () => {
@@ -430,12 +378,7 @@ describe("SearchModal", () => {
 
       // Search for "Installation" which appears in sub-result titles
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "Installation");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "Installation");
       });
 
       await act(async () => {
@@ -470,12 +413,7 @@ describe("SearchModal", () => {
 
       // Search with lowercase for title that has proper case
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "vimeo");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "vimeo");
       });
 
       await act(async () => {
@@ -501,12 +439,7 @@ describe("SearchModal", () => {
 
       // Search for results
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -535,12 +468,7 @@ describe("SearchModal", () => {
 
       // Search for results
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -571,12 +499,7 @@ describe("SearchModal", () => {
 
       // Search for results
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {
@@ -611,12 +534,7 @@ describe("SearchModal", () => {
 
       // Search for results
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "youtube");
-        input?.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "youtube");
       });
 
       await act(async () => {

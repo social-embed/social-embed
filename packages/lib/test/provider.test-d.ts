@@ -72,8 +72,10 @@ describe("EmbedProvider Type Tests", () => {
 
     expectTypeOf(mockProvider).toExtend<EmbedProvider>();
     expectTypeOf(mockProvider.name).toBeString();
-    expectTypeOf(mockProvider.canParseUrl).toBeFunction();
-    expectTypeOf(mockProvider.getIdFromUrl).toBeFunction();
-    expectTypeOf(mockProvider.getEmbedUrlFromId).toBeFunction();
+    expectTypeOf(mockProvider).toHaveProperty("canParseUrl").toBeFunction();
+    expectTypeOf(mockProvider).toHaveProperty("getIdFromUrl").toBeFunction();
+    expectTypeOf(mockProvider)
+      .toHaveProperty("getEmbedUrlFromId")
+      .toBeFunction();
   });
 });

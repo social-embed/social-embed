@@ -6,6 +6,19 @@ import { UrlInput } from "./UrlInput";
 let root: Root | null = null;
 let container: HTMLElement | null = null;
 
+/**
+ * Set an input's value through the native setter so React's change tracking
+ * sees it, then dispatch the `input` event.
+ */
+function setInputValue(input: HTMLInputElement, value: string) {
+  const descriptor = Object.getOwnPropertyDescriptor(
+    window.HTMLInputElement.prototype,
+    "value",
+  );
+  descriptor?.set?.call(input, value);
+  input.dispatchEvent(new Event("input", { bubbles: true }));
+}
+
 afterEach(() => {
   if (root) {
     act(() => {
@@ -128,12 +141,7 @@ describe("UrlInput", () => {
 
       // Use native setter to trigger React's onChange
       act(() => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype,
-          "value",
-        )?.set;
-        nativeInputValueSetter?.call(input, "https://youtube.com");
-        input.dispatchEvent(new Event("input", { bubbles: true }));
+        setInputValue(input, "https://youtube.com");
       });
 
       expect(onChange).toHaveBeenCalled();

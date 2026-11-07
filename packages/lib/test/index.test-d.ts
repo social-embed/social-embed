@@ -28,10 +28,16 @@ describe("Main Library Exports Type Tests", () => {
     expectTypeOf(defaultRegistry).toExtend<EmbedProviderRegistry>();
 
     // Check the methods are available
-    expectTypeOf(defaultRegistry.register).toBeFunction();
-    expectTypeOf(defaultRegistry.listProviders).toBeFunction();
-    expectTypeOf(defaultRegistry.getProviderByName).toBeFunction();
-    expectTypeOf(defaultRegistry.findProviderByUrl).toBeFunction();
+    expectTypeOf(defaultRegistry).toHaveProperty("register").toBeFunction();
+    expectTypeOf(defaultRegistry)
+      .toHaveProperty("listProviders")
+      .toBeFunction();
+    expectTypeOf(defaultRegistry)
+      .toHaveProperty("getProviderByName")
+      .toBeFunction();
+    expectTypeOf(defaultRegistry)
+      .toHaveProperty("findProviderByUrl")
+      .toBeFunction();
   });
 
   test("defaultProviders should be an array of providers", () => {
@@ -68,8 +74,10 @@ describe("Main Library Exports Type Tests", () => {
     expectTypeOf(WistiaProvider).toExtend<EmbedProvider>();
 
     // Check specific provider method signatures
-    expectTypeOf(YouTubeProvider.canParseUrl).toBeFunction();
-    expectTypeOf(YouTubeProvider.getIdFromUrl).toBeFunction();
-    expectTypeOf(YouTubeProvider.getEmbedUrlFromId).toBeFunction();
+    expectTypeOf(YouTubeProvider).toHaveProperty("canParseUrl").toBeFunction();
+    expectTypeOf(YouTubeProvider).toHaveProperty("getIdFromUrl").toBeFunction();
+    expectTypeOf(YouTubeProvider)
+      .toHaveProperty("getEmbedUrlFromId")
+      .toBeFunction();
   });
 });
