@@ -15,7 +15,13 @@ import {
   keymap,
   lineNumbers,
 } from "@codemirror/view";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useEffectEvent,
+  useLayoutEffect,
+  useRef,
+  useSyncExternalStore,
+} from "react";
 import { seDark } from "./codemirror-dark";
 import { seLight } from "./codemirror-light";
 
@@ -26,6 +32,25 @@ interface CodeEditorProps {
   theme?: "light" | "dark" | "auto";
   className?: string;
   readOnly?: boolean;
+}
+
+function getDocumentTheme(): "light" | "dark" {
+  return document.documentElement.getAttribute("data-theme") === "light"
+    ? "light"
+    : "dark";
+}
+
+function getServerDocumentTheme(): "light" | "dark" {
+  return "dark";
+}
+
+function subscribeDocumentTheme(onChange: () => void): () => void {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributeFilter: ["data-theme"],
+    attributes: true,
+  });
+  return () => observer.disconnect();
 }
 
 /**
@@ -45,44 +70,23 @@ export function CodeEditor({
   const onChangeRef = useRef(onChange);
   const isInternalChange = useRef(false);
   const isExternalSync = useRef(false);
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">(() => {
-    if (theme === "light" || theme === "dark") {
-      return theme;
-    }
-    if (typeof document === "undefined") {
-      return "dark";
-    }
-    return document.documentElement.getAttribute("data-theme") === "light"
-      ? "light"
-      : "dark";
+  const documentTheme = useSyncExternalStore(
+    subscribeDocumentTheme,
+    getDocumentTheme,
+    getServerDocumentTheme,
+  );
+  const resolvedTheme = theme === "auto" ? documentTheme : theme;
+
+  // Keep onChange ref updated for the CodeMirror update listener
+  useLayoutEffect(() => {
+    onChangeRef.current = onChange;
   });
 
-  // Keep onChange ref updated
-  onChangeRef.current = onChange;
-
-  useEffect(() => {
-    if (theme === "light" || theme === "dark") {
-      setResolvedTheme(theme);
-      return;
-    }
-    if (typeof document === "undefined") return;
-    const root = document.documentElement;
-    const update = () => {
-      setResolvedTheme(
-        root.getAttribute("data-theme") === "light" ? "light" : "dark",
-      );
-    };
-    update();
-    const observer = new MutationObserver(update);
-    observer.observe(root, {
-      attributeFilter: ["data-theme"],
-      attributes: true,
-    });
-    return () => observer.disconnect();
-  }, [theme]);
+  // Read the latest value when (re)creating the editor without making the
+  // editor depend on it, which would destroy it on every keystroke.
+  const getInitialDoc = useEffectEvent(() => value);
 
   // Create editor on mount
-  // biome-ignore lint/correctness/useExhaustiveDependencies: value is intentionally excluded to avoid destroying editor on every keystroke
   useLayoutEffect(() => {
     if (!containerRef.current) return;
 
@@ -127,7 +131,7 @@ export function CodeEditor({
     extensions.push(resolvedTheme === "dark" ? seDark : seLight);
 
     const state = EditorState.create({
-      doc: value,
+      doc: getInitialDoc(),
       extensions,
     });
 

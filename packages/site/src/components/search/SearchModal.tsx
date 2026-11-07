@@ -77,14 +77,17 @@ export function SearchModal({
   });
 
   const { query, results, status, error, selectedIndex } = state;
-  const [localSelectedIndex, setLocalSelectedIndex] = useState(-1);
+  const [localSelectedIndex, setLocalSelectedIndex] = useState(selectedIndex);
   const [localSelectedSubIndex, setLocalSelectedSubIndex] = useState(-1);
 
-  // Sync local selection with global state
-  useEffect(() => {
+  // Sync local selection with global state. Adjusting state during render
+  // (rather than in an effect) avoids a render pass with a stale selection.
+  const [syncedIndex, setSyncedIndex] = useState(selectedIndex);
+  if (syncedIndex !== selectedIndex) {
+    setSyncedIndex(selectedIndex);
     setLocalSelectedIndex(selectedIndex);
     setLocalSelectedSubIndex(-1); // Reset sub-selection when results change
-  }, [selectedIndex]);
+  }
 
   // Set initial query if provided (on mount or when modal opens)
   useEffect(() => {

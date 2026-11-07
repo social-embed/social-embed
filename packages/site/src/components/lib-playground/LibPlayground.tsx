@@ -122,23 +122,17 @@ export function LibPlayground({
     };
   });
 
-  const [output, setOutput] = useState<LibOutput | null>(null);
-
   // Check if reroll is available
   const canReroll = useMemo(() => {
     const options = getProviderFilterOptions();
     return options.length > 1;
   }, []);
 
-  // Transform the URL whenever it changes
-  useEffect(() => {
-    if (state.url) {
-      const result = transformUrl(state.url);
-      setOutput(result);
-    } else {
-      setOutput(null);
-    }
-  }, [state.url]);
+  // Derived from the URL, so submitting needs no extra transform step.
+  const output = useMemo<LibOutput | null>(
+    () => (state.url ? transformUrl(state.url) : null),
+    [state.url],
+  );
 
   // Sync state to URL (debounced) - only in full mode
   useEffect(() => {
@@ -167,14 +161,6 @@ export function LibPlayground({
     setState((prev) => ({ ...prev, seed: newSeed, url: newUrl }));
   }, [state.providerFilter]);
 
-  const handleSubmit = useCallback(() => {
-    // Force re-transform on submit (already happens via useEffect, but explicit)
-    if (state.url) {
-      const result = transformUrl(state.url);
-      setOutput(result);
-    }
-  }, [state.url]);
-
   const isMini = mode === "mini";
 
   return (
@@ -199,7 +185,6 @@ export function LibPlayground({
         <UrlInput
           className={isMini ? "flex-1" : ""}
           onChange={handleUrlChange}
-          onSubmit={handleSubmit}
           placeholder={
             isMini
               ? "Paste a URL..."
