@@ -1,6 +1,5 @@
 {
   "reject": [
-    "knip",
     "typescript"
   ]
 }
