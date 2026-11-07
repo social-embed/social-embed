@@ -11,10 +11,10 @@ beforeEach(() => {
   vi.useFakeTimers();
 });
 
-afterEach(async () => {
+afterEach(() => {
   vi.useRealTimers();
   if (root) {
-    await act(async () => {
+    act(() => {
       root?.unmount();
     });
   }
@@ -32,7 +32,7 @@ interface RenderProps {
   onNavigate?: (url: string) => void | Promise<void>;
 }
 
-async function renderModal(props: RenderProps = {}) {
+function renderModal(props: RenderProps = {}) {
   container = document.createElement("div");
   document.body.appendChild(container);
   root = createRoot(container);
@@ -42,7 +42,7 @@ async function renderModal(props: RenderProps = {}) {
     ...props,
   };
 
-  await act(async () => {
+  act(() => {
     root?.render(<SearchModal {...defaultProps} />);
   });
 
@@ -60,23 +60,23 @@ async function renderModal(props: RenderProps = {}) {
 
 describe("SearchModal", () => {
   describe("rendering", () => {
-    test("renders search input", async () => {
-      const { input } = await renderModal();
+    test("renders search input", () => {
+      const { input } = renderModal();
       expect(input).toBeTruthy();
       expect(input?.getAttribute("aria-label")).toBe("Search documentation");
     });
 
-    test("renders with empty state initially", async () => {
-      const { container } = await renderModal();
+    test("renders with empty state initially", () => {
+      const { container } = renderModal();
       const emptyState = container?.querySelector(".search-excerpt");
       // Empty state shows when no query
       expect(emptyState).toBeNull();
     });
 
-    test("shows loading state while searching", async () => {
-      const { input } = await renderModal();
+    test("shows loading state while searching", () => {
+      const { input } = renderModal();
 
-      await act(async () => {
+      act(() => {
         // Type a query
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
@@ -94,9 +94,9 @@ describe("SearchModal", () => {
 
   describe("search functionality", () => {
     test("displays results for matching query", async () => {
-      const { input, getResults } = await renderModal();
+      const { input, getResults } = renderModal();
 
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -107,7 +107,7 @@ describe("SearchModal", () => {
 
       // Advance timers past debounce delay and simulated search delay
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       const results = getResults();
@@ -115,9 +115,9 @@ describe("SearchModal", () => {
     });
 
     test("shows no results message for non-matching query", async () => {
-      const { input, container } = await renderModal();
+      const { input, container } = renderModal();
 
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -127,7 +127,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       // Should show "No results" message
@@ -136,10 +136,10 @@ describe("SearchModal", () => {
     });
 
     test("clears results when input is cleared", async () => {
-      const { input, getResults } = await renderModal();
+      const { input, getResults } = renderModal();
 
       // First, search for something
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -149,13 +149,13 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       expect(getResults().length).toBeGreaterThan(0);
 
       // Clear the input
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -165,7 +165,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       expect(getResults().length).toBe(0);
@@ -174,10 +174,10 @@ describe("SearchModal", () => {
 
   describe("keyboard navigation", () => {
     test("arrow down selects first result", async () => {
-      const { input, getSelectedResult } = await renderModal();
+      const { input, getSelectedResult } = renderModal();
 
       // Search first
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -187,11 +187,11 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       // Press arrow down
-      await act(async () => {
+      act(() => {
         input?.dispatchEvent(
           new KeyboardEvent("keydown", { bubbles: true, key: "ArrowDown" }),
         );
@@ -202,10 +202,10 @@ describe("SearchModal", () => {
     });
 
     test("arrow up moves selection up", async () => {
-      const { input, container } = await renderModal();
+      const { input, container } = renderModal();
 
       // Search first
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -215,11 +215,11 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       // Press arrow down twice, then up once
-      await act(async () => {
+      act(() => {
         input?.dispatchEvent(
           new KeyboardEvent("keydown", { bubbles: true, key: "ArrowDown" }),
         );
@@ -236,11 +236,11 @@ describe("SearchModal", () => {
       expect(selected?.id).toBe("search-result-0");
     });
 
-    test("escape calls onClose", async () => {
+    test("escape calls onClose", () => {
       const onClose = vi.fn();
-      const { input } = await renderModal({ onClose });
+      const { input } = renderModal({ onClose });
 
-      await act(async () => {
+      act(() => {
         input?.dispatchEvent(
           new KeyboardEvent("keydown", { bubbles: true, key: "Escape" }),
         );
@@ -251,21 +251,21 @@ describe("SearchModal", () => {
   });
 
   describe("accessibility", () => {
-    test("input has combobox role", async () => {
-      const { input } = await renderModal();
+    test("input has combobox role", () => {
+      const { input } = renderModal();
       expect(input?.getAttribute("role")).toBe("combobox");
     });
 
-    test("input has aria-autocomplete", async () => {
-      const { input } = await renderModal();
+    test("input has aria-autocomplete", () => {
+      const { input } = renderModal();
       expect(input?.getAttribute("aria-autocomplete")).toBe("list");
     });
 
     test("results list has listbox role", async () => {
-      const { input, container } = await renderModal();
+      const { input, container } = renderModal();
 
       // Search to show results
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -275,7 +275,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       const listbox = container?.querySelector('[role="listbox"]');
@@ -283,9 +283,9 @@ describe("SearchModal", () => {
     });
 
     test("result items have option role", async () => {
-      const { input, getResults } = await renderModal();
+      const { input, getResults } = renderModal();
 
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -295,7 +295,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       const results = getResults();
@@ -305,9 +305,9 @@ describe("SearchModal", () => {
     });
 
     test("selected result has aria-selected true", async () => {
-      const { input, getSelectedResult } = await renderModal();
+      const { input, getSelectedResult } = renderModal();
 
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -317,10 +317,10 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
-      await act(async () => {
+      act(() => {
         input?.dispatchEvent(
           new KeyboardEvent("keydown", { bubbles: true, key: "ArrowDown" }),
         );
@@ -331,9 +331,9 @@ describe("SearchModal", () => {
     });
 
     test("input has aria-activedescendant when result is selected", async () => {
-      const { input } = await renderModal();
+      const { input } = renderModal();
 
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -343,10 +343,10 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
-      await act(async () => {
+      act(() => {
         input?.dispatchEvent(
           new KeyboardEvent("keydown", { bubbles: true, key: "ArrowDown" }),
         );
@@ -360,11 +360,11 @@ describe("SearchModal", () => {
 
   describe("initial query", () => {
     test("uses initial query when provided", async () => {
-      const { input } = await renderModal({ initialQuery: "vimeo" });
+      const { input } = renderModal({ initialQuery: "vimeo" });
 
       // Wait for the effect to run
       await act(async () => {
-        vi.advanceTimersByTime(100);
+        await vi.advanceTimersByTimeAsync(100);
       });
 
       expect(input?.value).toBe("vimeo");
@@ -373,10 +373,10 @@ describe("SearchModal", () => {
 
   describe("title matching and highlighting", () => {
     test("matches results by title content", async () => {
-      const { input, getResults } = await renderModal();
+      const { input, getResults } = renderModal();
 
       // Search for "Getting Started" which appears in the title but not prominently in excerpt
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -386,7 +386,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       const results = getResults();
@@ -395,12 +395,12 @@ describe("SearchModal", () => {
 
     test("highlights matching terms in title", async () => {
       // Use toggle mode to test title highlighting behavior
-      const { input, container } = await renderModal({
+      const { input, container } = renderModal({
         subResultsDisplay: "toggle",
       });
 
       // Search for "YouTube" which appears in the title "YouTube Embeds"
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -410,7 +410,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       // Find the first result's title element (first div inside the link)
@@ -424,12 +424,12 @@ describe("SearchModal", () => {
 
     test("highlights matching terms in sub-result titles", async () => {
       // Use toggle mode to test sub-result expansion and highlighting
-      const { input, container } = await renderModal({
+      const { input, container } = renderModal({
         subResultsDisplay: "toggle",
       });
 
       // Search for "Installation" which appears in sub-result titles
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -439,7 +439,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       // Expand sub-results by clicking the toggle button
@@ -447,7 +447,7 @@ describe("SearchModal", () => {
         '[aria-expanded="false"]',
       ) as HTMLButtonElement | null;
       if (toggleButton) {
-        await act(async () => {
+        act(() => {
           toggleButton.click();
         });
       }
@@ -464,12 +464,12 @@ describe("SearchModal", () => {
 
     test("preserves original case when highlighting", async () => {
       // Use toggle mode to test title highlighting
-      const { input, container } = await renderModal({
+      const { input, container } = renderModal({
         subResultsDisplay: "toggle",
       });
 
       // Search with lowercase for title that has proper case
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -479,7 +479,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       // Find the result with "Vimeo" in title
@@ -497,10 +497,10 @@ describe("SearchModal", () => {
   describe("navigation", () => {
     test("calls onNavigate prop when provided", async () => {
       const onNavigate = vi.fn();
-      const { input, container } = await renderModal({ onNavigate });
+      const { input, container } = renderModal({ onNavigate });
 
       // Search for results
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -510,7 +510,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       // Click on the anchor inside the first result (that's where the click handler is)
@@ -519,7 +519,7 @@ describe("SearchModal", () => {
       ) as HTMLAnchorElement | null;
       expect(firstResultLink).toBeTruthy();
 
-      await act(async () => {
+      act(() => {
         firstResultLink?.click();
       });
 
@@ -529,12 +529,12 @@ describe("SearchModal", () => {
     test("does not clear state while navigating", async () => {
       // Create a navigation handler that never resolves (simulates slow navigation)
       const onNavigate = vi.fn(() => new Promise<void>(() => {}));
-      const { input, getResults, container } = await renderModal({
+      const { input, getResults, container } = renderModal({
         onNavigate,
       });
 
       // Search for results
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -544,7 +544,7 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       const resultsBeforeNav = getResults();
@@ -554,7 +554,7 @@ describe("SearchModal", () => {
       const firstResultLink = container?.querySelector(
         '[role="option"] a',
       ) as HTMLAnchorElement | null;
-      await act(async () => {
+      act(() => {
         firstResultLink?.click();
       });
 
@@ -567,10 +567,10 @@ describe("SearchModal", () => {
       const onClose = vi.fn();
       // Create a navigation handler that never resolves
       const onNavigate = vi.fn(() => new Promise<void>(() => {}));
-      const { input, container } = await renderModal({ onClose, onNavigate });
+      const { input, container } = renderModal({ onClose, onNavigate });
 
       // Search for results
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -580,14 +580,14 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       // Click to trigger navigation (which won't complete)
       const firstResultLink = container?.querySelector(
         '[role="option"] a',
       ) as HTMLAnchorElement | null;
-      await act(async () => {
+      act(() => {
         firstResultLink?.click();
       });
 
@@ -595,7 +595,7 @@ describe("SearchModal", () => {
       onClose.mockClear();
 
       // Press Escape while navigating
-      await act(async () => {
+      act(() => {
         input?.dispatchEvent(
           new KeyboardEvent("keydown", { bubbles: true, key: "Escape" }),
         );
@@ -607,10 +607,10 @@ describe("SearchModal", () => {
 
     test("calls onNavigate when pressing Enter on selected result", async () => {
       const onNavigate = vi.fn();
-      const { input } = await renderModal({ onNavigate });
+      const { input } = renderModal({ onNavigate });
 
       // Search for results
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -620,17 +620,17 @@ describe("SearchModal", () => {
       });
 
       await act(async () => {
-        vi.advanceTimersByTime(500);
+        await vi.advanceTimersByTimeAsync(500);
       });
 
       // Arrow down to select first result, then press Enter
-      await act(async () => {
+      act(() => {
         input?.dispatchEvent(
           new KeyboardEvent("keydown", { bubbles: true, key: "ArrowDown" }),
         );
       });
 
-      await act(async () => {
+      act(() => {
         input?.dispatchEvent(
           new KeyboardEvent("keydown", { bubbles: true, key: "Enter" }),
         );

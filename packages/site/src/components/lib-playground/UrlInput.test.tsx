@@ -6,9 +6,9 @@ import { UrlInput } from "./UrlInput";
 let root: Root | null = null;
 let container: HTMLElement | null = null;
 
-afterEach(async () => {
+afterEach(() => {
   if (root) {
-    await act(async () => {
+    act(() => {
       root?.unmount();
     });
   }
@@ -26,7 +26,7 @@ interface RenderProps {
   disabled?: boolean;
 }
 
-async function renderInput(props: RenderProps = {}) {
+function renderInput(props: RenderProps = {}) {
   container = document.createElement("div");
   document.body.appendChild(container);
   root = createRoot(container);
@@ -37,7 +37,7 @@ async function renderInput(props: RenderProps = {}) {
     ...props,
   };
 
-  await act(async () => {
+  act(() => {
     root?.render(<UrlInput {...defaultProps} />);
   });
 
@@ -54,66 +54,66 @@ async function renderInput(props: RenderProps = {}) {
 
 describe("UrlInput", () => {
   describe("rendering", () => {
-    test("renders with empty value", async () => {
-      const { input } = await renderInput();
+    test("renders with empty value", () => {
+      const { input } = renderInput();
       expect(input.value).toBe("");
     });
 
-    test("renders with provided value", async () => {
-      const { input } = await renderInput({
+    test("renders with provided value", () => {
+      const { input } = renderInput({
         value: "https://youtube.com/watch?v=abc",
       });
       expect(input.value).toBe("https://youtube.com/watch?v=abc");
     });
 
-    test("has correct input type", async () => {
-      const { input } = await renderInput();
+    test("has correct input type", () => {
+      const { input } = renderInput();
       expect(input.type).toBe("url");
     });
 
-    test("uses custom placeholder", async () => {
-      const { input } = await renderInput({
+    test("uses custom placeholder", () => {
+      const { input } = renderInput({
         placeholder: "Custom placeholder",
       });
       expect(input.placeholder).toBe("Custom placeholder");
     });
 
-    test("uses default placeholder", async () => {
-      const { input } = await renderInput();
+    test("uses default placeholder", () => {
+      const { input } = renderInput();
       expect(input.placeholder).toContain("Paste a video URL");
     });
   });
 
   describe("clear button", () => {
-    test("does not show clear button when value is empty", async () => {
-      const { clearButton } = await renderInput({ value: "" });
+    test("does not show clear button when value is empty", () => {
+      const { clearButton } = renderInput({ value: "" });
       expect(clearButton).toBeNull();
     });
 
-    test("shows clear button when value is present", async () => {
-      await renderInput({ value: "https://example.com" });
+    test("shows clear button when value is present", () => {
+      renderInput({ value: "https://example.com" });
       const clearButton = container?.querySelector(
         'button[aria-label="Clear URL"]',
       );
       expect(clearButton).toBeTruthy();
     });
 
-    test("clears value when clear button is clicked", async () => {
+    test("clears value when clear button is clicked", () => {
       const onChange = vi.fn();
-      await renderInput({ onChange, value: "https://example.com" });
+      renderInput({ onChange, value: "https://example.com" });
       const clearButton = container?.querySelector(
         'button[aria-label="Clear URL"]',
       );
 
-      await act(async () => {
+      act(() => {
         clearButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
       });
 
       expect(onChange).toHaveBeenCalledWith("");
     });
 
-    test("does not show clear button when disabled", async () => {
-      await renderInput({ disabled: true, value: "https://example.com" });
+    test("does not show clear button when disabled", () => {
+      renderInput({ disabled: true, value: "https://example.com" });
       const clearButton = container?.querySelector(
         'button[aria-label="Clear URL"]',
       );
@@ -122,12 +122,12 @@ describe("UrlInput", () => {
   });
 
   describe("interaction", () => {
-    test("calls onChange when input value changes", async () => {
+    test("calls onChange when input value changes", () => {
       const onChange = vi.fn();
-      const { input } = await renderInput({ onChange });
+      const { input } = renderInput({ onChange });
 
       // Use native setter to trigger React's onChange
-      await act(async () => {
+      act(() => {
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value",
@@ -139,14 +139,14 @@ describe("UrlInput", () => {
       expect(onChange).toHaveBeenCalled();
     });
 
-    test("calls onSubmit when Enter is pressed", async () => {
+    test("calls onSubmit when Enter is pressed", () => {
       const onSubmit = vi.fn();
-      const { input } = await renderInput({
+      const { input } = renderInput({
         onSubmit,
         value: "https://example.com",
       });
 
-      await act(async () => {
+      act(() => {
         input.dispatchEvent(
           new KeyboardEvent("keydown", { bubbles: true, key: "Enter" }),
         );
@@ -155,14 +155,14 @@ describe("UrlInput", () => {
       expect(onSubmit).toHaveBeenCalled();
     });
 
-    test("does not call onSubmit when Shift+Enter is pressed", async () => {
+    test("does not call onSubmit when Shift+Enter is pressed", () => {
       const onSubmit = vi.fn();
-      const { input } = await renderInput({
+      const { input } = renderInput({
         onSubmit,
         value: "https://example.com",
       });
 
-      await act(async () => {
+      act(() => {
         input.dispatchEvent(
           new KeyboardEvent("keydown", {
             bubbles: true,
@@ -177,25 +177,25 @@ describe("UrlInput", () => {
   });
 
   describe("disabled state", () => {
-    test("can be disabled", async () => {
-      const { input } = await renderInput({ disabled: true });
+    test("can be disabled", () => {
+      const { input } = renderInput({ disabled: true });
       expect(input.disabled).toBe(true);
     });
 
-    test("is not disabled by default", async () => {
-      const { input } = await renderInput();
+    test("is not disabled by default", () => {
+      const { input } = renderInput();
       expect(input.disabled).toBe(false);
     });
   });
 
   describe("styling", () => {
-    test("applies custom className", async () => {
-      const { wrapper } = await renderInput({ className: "custom-class" });
+    test("applies custom className", () => {
+      const { wrapper } = renderInput({ className: "custom-class" });
       expect(wrapper.className).toContain("custom-class");
     });
 
-    test("has aria-label for accessibility", async () => {
-      const { input } = await renderInput();
+    test("has aria-label for accessibility", () => {
+      const { input } = renderInput();
       expect(input.getAttribute("aria-label")).toBe("URL input");
     });
   });
