@@ -13,8 +13,8 @@ map of what is where, are in [AGENTS.md](../AGENTS.md).
 ## Getting set up
 
 This is a pnpm workspace. Node 26 is what this repository develops against
-(`.nvmrc`); `engines` requires `>=22`, and CI additionally verifies 22.x and
-24.x on every push.
+(`.nvmrc`); the root `engines` requires `^22.22.2 || ^24.15.0 || >=26`, and
+CI additionally verifies 22.x and 24.x on every push.
 
 ```console
 $ pnpm install
