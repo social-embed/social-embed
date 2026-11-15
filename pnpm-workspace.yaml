@@ -20,3 +20,9 @@ allowBuilds:
 # mean highlight decorations register against a facet the live view never reads.
 overrides:
   "@codemirror/view": "^6.43.11"
+# @napi-rs/wasm-runtime peers `@emnapi/runtime ^1.7.1 || 2.0.0-beta.2`, and with
+# Astro 7.4.11 pnpm resolves the beta. The beta throws `this.bridge.setLastError
+# is not a function` in @astrojs/astro2tsx, so `astro check` crashes. Drop this
+# once @napi-rs/wasm-runtime no longer admits the 2.0 beta or `astro check` runs
+# on @emnapi/runtime 2.x.
+  "@emnapi/runtime": 1.11.3
