@@ -34,12 +34,12 @@
     "@pagefind/default-ui": "^1.6.0",
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
-    "@tailwindcss/vite": "^4.3.4",
+    "@tailwindcss/vite": "^4.3.5",
     "astro": "^7.4.11",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "sharp": "^0.35.5",
-    "tailwindcss": "^4.3.4"
+    "tailwindcss": "^4.3.5"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
