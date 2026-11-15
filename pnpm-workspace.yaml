@@ -7,10 +7,12 @@ verifyDepsBeforeRun: false
 # npm reads `min-release-age` in days (~/.npmrc). pnpm ignores the npm key, so
 # this must be set here to actually take effect. pnpm 11 defaults this to 1 day.
 minimumReleaseAge: 4320
-# Loose mode: when `ncu -u` pins a range whose only matches are younger than the
-# cooldown, fall back to the newest available instead of failing the install.
-# Explicitly setting minimumReleaseAge would otherwise force strict=true.
-minimumReleaseAgeStrict: false
+# Strict: a release younger than the cooldown stops install, add and update
+# with ERR_PNPM_NO_MATURE_MATCHING_VERSION when run from CI or a script; an
+# interactive terminal lists every young pick in one prompt, and only "y"
+# writes them to `minimumReleaseAgeExclude`. Loose mode (false) wrote those
+# entries without asking.
+minimumReleaseAgeStrict: true
 allowBuilds:
   esbuild: true
   sharp: true
