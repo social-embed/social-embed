@@ -10,7 +10,7 @@
 //  3. `$schema` matches the pinned @biomejs/biome version.
 //  4. Biome always formats this file; `.oxfmtrc.json` ignores it.
 {
-  "$schema": "https://biomejs.dev/schemas/2.6.3/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.7/schema.json",
   "assist": { "enabled": false },
   "files": {
     "ignoreUnknown": true,
