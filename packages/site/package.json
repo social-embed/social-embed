@@ -18,9 +18,9 @@
     "update": "ncu"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "^0.4.6",
-    "@astrojs/mdx": "^8.1.2",
-    "@astrojs/react": "^7.1.2",
+    "@astrojs/markdown-satteri": "^0.4.9",
+    "@astrojs/mdx": "^8.1.5",
+    "@astrojs/react": "^7.1.8",
     "@codemirror/autocomplete": "^6.20.4",
     "@codemirror/commands": "^6.11.1",
     "@codemirror/lang-html": "^6.4.12",
@@ -35,7 +35,7 @@
     "@social-embed/lib": "workspace:*",
     "@social-embed/wc": "workspace:*",
     "@tailwindcss/vite": "^4.3.4",
-    "astro": "^7.4.5",
+    "astro": "^7.4.11",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "sharp": "^0.35.5",
@@ -52,9 +52,9 @@
     "happy-dom": "^21.0.4",
     "magic-string": "^1.4.5",
     "pagefind": "^1.6.0",
-    "satteri": "^0.10.5",
+    "satteri": "^0.11.7",
     "typescript": "^6.0.3",
-    "vite": "^8.3.5",
+    "vite": "^8.3.8",
     "vitest": "^5.1.0"
   }
 }
