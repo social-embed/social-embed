@@ -48,7 +48,7 @@
     "astro-expressive-code": "^0.44.3",
     "es-module-lexer": "^2.3.2",
     "github-slugger": "^2.0.0",
-    "glob": "^14.0.3",
+    "glob": "^14.0.5",
     "happy-dom": "^21.0.4",
     "magic-string": "^1.4.5",
     "pagefind": "^1.6.0",
